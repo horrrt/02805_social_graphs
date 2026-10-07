@@ -8,6 +8,8 @@
 
 import { asset } from "./site.js";
 import { font, fs } from "./type-scale.mjs";
+import { corridor as store } from "../features/week03/store.js";
+import { showTip as showChartTip, hideTip as hideChartTip } from "../lib/ChartTip";
 
 // Not constants: the palette dropdown rewrites these from CSS custom
 // properties, so one definition in corridor.css drives the stylesheet, the SVG
@@ -148,12 +150,15 @@ export function linkAlpha(edge) {
   return state.focus === "only" ? 0 : 0.32;
 }
 
-const $ = (id) => document.getElementById(id);
-
-// Data files sit in public/assets/data; asset() adds the deploy's build id.
-function dataUrl(name) {
-  return asset(`assets/data/${name}`);
+// The elements the islands render and hand over by ref (canvases, renderer
+// hosts), looked up by id as the old page looked up its markup. A renderer
+// variant reads its hosts through api.$ the same way.
+const hosts = new Map();
+export function registerHost(id, el) {
+  if (el) hosts.set(id, el);
+  else hosts.delete(id);
 }
+const $ = (id) => hosts.get(id) ?? document.getElementById(id);
 
 const fmt = new Intl.NumberFormat("en-GB");
 const compact = new Intl.NumberFormat("en-GB", {
@@ -164,6 +169,7 @@ const compact = new Intl.NumberFormat("en-GB", {
 // The active renderer. Every drawing call on this page goes through it, so a
 // variant module can replace one visual (say the globe) and leave the rest of
 // the page exactly as it is. `installRenderer` merges, it does not swap.
+/** @type {Record<string, any>} */
 export const R = {};
 
 export function installRenderer(overrides) {
@@ -367,7 +373,7 @@ function brokers(y) {
 // Section 8 analyses one country, and that country is whatever is selected on
 // the page. Everything it needs is already per-country in the payload, so the
 // section works for any of the 238 without shipping a block for each.
-function spotlight() {
+export function spotlight() {
   const iso3 = state.selected && node(state.selected)
     ? state.selected
     : state.data.focus.iso3;
@@ -389,7 +395,7 @@ function haversine(a, b) {
 // The four countries closest to it on the ground, itself first. For Denmark
 // that is the Nordics and their neighbours; every other country gets the same
 // comparison without a hand-written list of peers.
-function peersOf(iso3) {
+export function peersOf(iso3) {
   const y = String(state.data.null_year);
   const home = node(iso3)?.coord;
   const self = metrics(iso3, y);
@@ -465,46 +471,26 @@ function row(term, value, override) {
   return `<div><dt${explainAttr(override ?? GLOSSARY[term])}>${term}</dt><dd>${value}</dd></div>`;
 }
 
-let glossaryWired = false;
-function wireGlossary() {
-  if (glossaryWired) return;
-  glossaryWired = true;
-  document.addEventListener("pointermove", (event) => {
-    const target = event.target.closest?.("[data-explain]");
-    if (target) showTip(event, `<b>${target.textContent.trim()}</b><span>${target.dataset.explain}</span>`);
-    // Canvas renderers own their tooltip through a pointermove on the canvas
-    // itself; the d3 variant's charts are real SVG marks doing the same job,
-    // so both are exempt from this fallback or it undoes their showTip on
-    // every move.
-    else if (!event.target.closest?.("canvas, svg")) hideTip();
-  });
+// Any [data-explain] term on the page explains itself on hover. The islands
+// call this from one document pointermove listener.
+export function glossaryMove(event) {
+  const target = event.target.closest?.("[data-explain]");
+  if (target) showTip(event, `<b>${target.textContent.trim()}</b><span>${target.dataset.explain}</span>`);
+  // Canvas renderers own their tooltip through a pointermove on the canvas
+  // itself; the d3 variant's charts are real SVG marks doing the same job,
+  // so both are exempt from this fallback or it undoes their showTip on
+  // every move.
+  else if (!event.target.closest?.("canvas, svg")) hideTip();
 }
 
-function renderInspector() {
+// The hero's inspector, for the selection in the slider's year: the
+// flag, name and codes, the stats rows and the two corridor lists, as HTML.
+export function inspectorView() {
   const iso3 = state.selected;
-  if (!iso3) return;
+  if (!iso3) return null;
   const n = node(iso3);
   const m = metrics(iso3);
-  $("sel-flag").textContent = flag(n.iso2);
-  $("sel-name").textContent = n.name;
-  $("sel-codes").textContent = `${iso3} · ${state.year}`;
-
   const z = m?.z;
-  $("sel-stats").innerHTML = m
-    ? [
-        row("Incoming migrants (stock)", fmt.format(m.in_strength)),
-        row("Outgoing migrants (stock)", fmt.format(m.out_strength)),
-        row("Origins represented", `${m.in_degree} <span style="color:#7a8fac">(#${m.in_degree_rank})</span>`),
-        row("Destinations sent to", `${m.out_degree} <span style="color:#7a8fac">(#${m.out_degree_rank})</span>`),
-        row("Betweenness", `${m.betweenness.toFixed(5)} <span style="color:#7a8fac">(#${m.betweenness_rank})</span>`),
-        row("Betweenness z-score", z === undefined ? "— (2020 only)" : z.toFixed(2)),
-        row("PageRank", `${m.pagerank.toFixed(5)} <span style="color:#7a8fac">(#${m.pagerank_rank})</span>`),
-        row("Flight partners", fmt.format(n.flight_partners)),
-        row("Flight routes", fmt.format(n.flight_strength)),
-        roleRow(),
-      ].join("")
-    : `<div><dt>No migration data for ${state.year}</dt><dd>—</dd></div>`;
-
   // Only the other end. The selected country was on both sides of every row,
   // which pushed the long names onto a second line to say nothing: the
   // heading already carries the direction, and section 8's tables read the
@@ -519,41 +505,57 @@ function renderInspector() {
           )
           .join("")
       : "<li><span>None recorded</span><b>—</b></li>";
-  $("sel-in").innerHTML = list(n.top_in ?? []);
-  $("sel-out").innerHTML = list(n.top_out ?? []);
-
-  // Section 4's small panel tracks the same selection.
-  $("sc-flag").textContent = flag(n.iso2);
-  $("sc-name").textContent = n.name;
-  $("sc-codes").textContent = `${iso3} · ${state.data.null_year}`;
-  const nm = metrics(iso3, String(state.data.null_year));
-  $("sc-stats").innerHTML = nm
-    ? [
-        row("k (in)", nm.in_degree),
-        row("Betweenness", nm.betweenness.toFixed(5)),
-        row("Rank", `#${nm.betweenness_rank}`),
-        row("z-score", nm.z === undefined ? "—" : nm.z.toFixed(2)),
-      ].join("")
-    : "";
-  renderPrestigePanel(iso3);
-  // Every chart carries a marker for the selected country, so all of them
-  // redraw together and the selection reads the same everywhere on the page.
-  R.hist();
-  R.ccdf();
-  R.scatters();
-  R.prestige();
-  renderDenmarkPanels();
-  R.denmark();
+  return {
+    flag: flag(n.iso2),
+    name: n.name,
+    codes: `${iso3} · ${state.year}`,
+    stats: m
+      ? [
+          row("Incoming migrants (stock)", fmt.format(m.in_strength)),
+          row("Outgoing migrants (stock)", fmt.format(m.out_strength)),
+          row("Origins represented", `${m.in_degree} <span style="color:#7a8fac">(#${m.in_degree_rank})</span>`),
+          row("Destinations sent to", `${m.out_degree} <span style="color:#7a8fac">(#${m.out_degree_rank})</span>`),
+          row("Betweenness", `${m.betweenness.toFixed(5)} <span style="color:#7a8fac">(#${m.betweenness_rank})</span>`),
+          row("Betweenness z-score", z === undefined ? "— (2020 only)" : z.toFixed(2)),
+          row("PageRank", `${m.pagerank.toFixed(5)} <span style="color:#7a8fac">(#${m.pagerank_rank})</span>`),
+          row("Flight partners", fmt.format(n.flight_partners)),
+          row("Flight routes", fmt.format(n.flight_strength)),
+          roleRow(),
+        ].join("")
+      : `<div><dt>No migration data for ${state.year}</dt><dd>—</dd></div>`,
+    into: list(n.top_in ?? []),
+    out: list(n.top_out ?? []),
+  };
 }
 
-function select(iso3) {
+// Section 4's small panel tracks the same selection, in the null model's year.
+export function bridgeView() {
+  const iso3 = state.selected;
+  if (!iso3) return null;
+  const n = node(iso3);
+  const nm = metrics(iso3, String(state.data.null_year));
+  return {
+    flag: flag(n.iso2),
+    name: n.name,
+    codes: `${iso3} · ${state.data.null_year}`,
+    stats: nm
+      ? [
+          row("k (in)", nm.in_degree),
+          row("Betweenness", nm.betweenness.toFixed(5)),
+          row("Rank", `#${nm.betweenness_rank}`),
+          row("z-score", nm.z === undefined ? "—" : nm.z.toFixed(2)),
+        ].join("")
+      : "",
+  };
+}
+
+// One selection for the whole page: the store carries it to every island,
+// and every chart carries a marker for it, so all of them redraw together and
+// the selection reads the same everywhere. Selecting never scrolls.
+export function select(iso3) {
   if (!iso3 || !node(iso3)) return;
   state.selected = iso3;
-  // renderInspector redraws every chart that carries a marker, section 8
-  // included, so the whole page follows one selection.
-  renderInspector();
-  R.globe();
-  R.map();
+  store.setState({ selected: iso3 });
 }
 
 /* ------------------------------------------------------------- picking
@@ -566,32 +568,13 @@ function select(iso3) {
 const pickable = new Map();
 
 // Every chart carries the same tooltip: what the mark is and what it is worth
-// on that chart's own axes.
-let tipEl = null;
-function tip() {
-  if (!tipEl) {
-    tipEl = document.createElement("div");
-    tipEl.className = "chart-tip";
-    tipEl.hidden = true;
-    document.body.appendChild(tipEl);
-  }
-  return tipEl;
-}
-
+// on that chart's own axes. One <ChartTip /> renders it.
 function showTip(event, html) {
-  const el = tip();
-  el.innerHTML = html;
-  el.hidden = false;
-  const pad = 14;
-  const width = el.offsetWidth;
-  const left = Math.min(event.clientX + pad, window.innerWidth - width - 8);
-  const top = Math.max(event.clientY - el.offsetHeight - pad, 8);
-  el.style.left = `${left}px`;
-  el.style.top = `${top}px`;
+  showChartTip(event, html);
 }
 
 function hideTip() {
-  if (tipEl) tipEl.hidden = true;
+  hideChartTip();
 }
 
 function collect(id) {
@@ -629,42 +612,32 @@ function nearestMark(canvas, event, radius = 22) {
   return best?.mark ?? null;
 }
 
-function enablePicking(id) {
-  const canvas = $(id);
-  if (!canvas || canvas.dataset.picking) return;
-  canvas.dataset.picking = "on";
-  canvas.title = "Click a point to select that country";
-  const redrawCharts = () => {
-    R.scatters();
-    R.prestige();
-    R.denmark();
-    R.hist();
-    R.ccdf();
-  };
-  canvas.addEventListener("pointermove", (event) => {
+// The mark under the cursor grows, which makes a 2px dot a real target. The
+// charts that draw hover marks follow store.hover.
+function setHover(iso3) {
+  if (state.hover === iso3) return;
+  state.hover = iso3;
+  store.setState({ hover: iso3 });
+}
+
+// The pointer on a pickable chart canvas, from the island that renders it.
+export const chartPointer = {
+  move(canvas, event) {
     const mark = nearestMark(canvas, event);
     canvas.style.cursor = mark ? "pointer" : "default";
     if (mark?.label) showTip(event, mark.label);
     else hideTip();
-    // The mark under the cursor grows, which makes a 2px dot a real target.
-    const iso3 = mark?.iso3 ?? null;
-    if (state.hover !== iso3) {
-      state.hover = iso3;
-      redrawCharts();
-    }
-  });
-  canvas.addEventListener("pointerleave", () => {
+    setHover(mark?.iso3 ?? null);
+  },
+  leave() {
     hideTip();
-    if (state.hover) {
-      state.hover = null;
-      redrawCharts();
-    }
-  });
-  canvas.addEventListener("click", (event) => {
+    if (state.hover) setHover(null);
+  },
+  click(canvas, event) {
     const mark = nearestMark(canvas, event);
     if (mark?.iso3) select(mark.iso3);
-  });
-}
+  },
+};
 
 // Guimer\u00e0 and Amaral's seven roles (Nature 433, 2005), in order from the
 // edge of a community to its centre. The old six labels were ours, and three
@@ -891,7 +864,8 @@ function traceMapRing(ctx, ring, width, height) {
    Any canvas renderer calls these, and the WebGL ones map the same choice onto
    their own texture settings. */
 
-const TEXTURE_URL = asset("assets/textures/earth-day-2048.jpg").href;
+// Resolved when asked, in the browser, not when the module loads.
+const TEXTURE_URL = () => asset("assets/textures/earth-day-2048.jpg").href;
 let texture = null;
 let texturePending = false;
 
@@ -907,12 +881,12 @@ export function earthTexture(onReady) {
   image.onerror = () => {
     texturePending = false;
   };
-  image.src = TEXTURE_URL;
+  image.src = TEXTURE_URL();
   return null;
 }
 
 export function textureURL() {
-  return TEXTURE_URL;
+  return TEXTURE_URL();
 }
 
 // An equirectangular photograph sampled through the orthographic projection.
@@ -1102,14 +1076,12 @@ function drawNetMap(ctx, width, height) {
     });
   }
   netLegend(ctx, width, height);
-  netNote();
 }
 
 // The panel beside the map counts links and people, neither of which changes
-// when the layer does. This line does, and it moves with the year slider.
-function netNote() {
-  const host = $("net-note");
-  if (!host) return;
+// when the layer does. This line does, and it moves with the year slider. The
+// map island shows it while the net layer is on.
+export function netNote() {
   let up = 0;
   let down = 0;
   let best = null;
@@ -1122,15 +1094,16 @@ function netNote() {
     if (!best || net > best.net) best = { iso3, net };
     if (!worst || net < worst.net) worst = { iso3, net };
   }
-  if (!best) return;
-  host.innerHTML =
+  if (!best) return "";
+  return (
     `In ${year()}, <b>${up}</b> countries hold more foreign-born residents ` +
     `than they have people living abroad and <b>${down}</b> hold fewer. ` +
     `The largest surplus is ${node(best.iso3).name}, up ` +
     `${compact.format(best.net)}; the largest deficit is ` +
     `${node(worst.iso3).name}, down ${compact.format(-worst.net)}. ` +
     `Both sides are stocks from the same table, so this is a standing balance ` +
-    `and not a count of anybody who moved this year.`;
+    `and not a count of anybody who moved this year.`
+  );
 }
 
 function netLegend(ctx, width, height) {
@@ -1330,7 +1303,7 @@ function topEdges(limit) {
 
 function flightEdges(limit) {
   // Own file, independent of whether the pair also has a DESA migration row
-  // (see main()): week03_flights.json carries every directed pair with a
+  // (the boot island loads it): week03_flights.json carries every directed pair with a
   // route, all 4,331 of them, not just the 2,583 that also moved people.
   const list = (state.flights?.edges ?? []).map(([oi, di, routes]) => ({ oi, di, routes }));
   list.sort((a, b) => b.routes - a.routes);
@@ -1867,35 +1840,14 @@ function drawCcdf() {
 // closed by default so it costs a reader nothing until they want it.
 //
 // The table is built from the arrays the draw function already has, so it
-// cannot drift from the picture above it.
+// cannot drift from the picture above it. The chart's island renders it from
+// the store.
 function chartTable(hostId, caption, headers, rows) {
-  const host = $(hostId);
-  if (!host || !rows.length) return;
-  const id = `${hostId}-table`;
-  let box = document.getElementById(id);
-  if (!box) {
-    box = document.createElement("details");
-    box.className = "chart-table";
-    box.id = id;
-    host.after(box);
-  }
-  const open = box.open;
-  box.innerHTML =
-    `<summary>Table${caption ? `: ${caption}` : ""}</summary>` +
-    "<div class=\"chart-table-scroll\"><table>" +
-    `<thead><tr>${headers
-      .map((h, i) => `<th${i ? ' scope="col" class="num"' : ' scope="col"'}>${h}</th>`)
-      .join("")}</tr></thead><tbody>` +
-    rows
-      .map(
-        (row) =>
-          `<tr>${row
-            .map((cell, i) => (i ? `<td class="num">${cell}</td>` : `<th scope="row">${cell}</th>`))
-            .join("")}</tr>`,
-      )
-      .join("") +
-    "</tbody></table></div>";
-  box.open = open;
+  if (!rows.length) return;
+  const spec = { caption, headers, rows: rows.map((row) => row.map(String)) };
+  const tables = store.getState().tables;
+  if (tables[hostId] && JSON.stringify(tables[hostId]) === JSON.stringify(spec)) return;
+  store.setState({ tables: { ...tables, [hostId]: spec } });
 }
 
 function markSelected(ctx, box, pick, opts = {}) {
@@ -2043,9 +1995,7 @@ function drawBetweenness() {
 // The caption says how many countries are on the baseline, because a reader who
 // cannot see that number cannot tell a sparse cloud from a truncated one. It is
 // written from the data rather than by a renderer, so every skin says the same.
-function writeBetweennessNote() {
-  const target = $("between-note");
-  if (!target) return;
+export function betweennessNote() {
   const y = String(state.data.null_year);
   const rows = withMetrics(y).filter((r) => r.m.in_degree > 0);
   const flights = state.data.countries
@@ -2053,12 +2003,13 @@ function writeBetweennessNote() {
     .filter((r) => r.n.flight_in_degree > 0);
   const zeroMigration = rows.filter((r) => r.m.betweenness === 0).length;
   const zeroFlights = flights.filter((r) => r.n.flight_betweenness === 0).length;
-  target.textContent =
+  return (
     `Every country is here. ${zeroMigration} of ${rows.length} broker nothing in the ` +
     `migration network and ${zeroFlights} of ${flights.length} broker nothing in the ` +
     "flight network: they sit on no shortest path between two others, so they are " +
     "drawn on the baseline row marked 0, under the dashed break. A log axis cannot " +
-    "place a zero anywhere else.";
+    "place a zero anywhere else."
+  );
 }
 
 // PageRank runs on the same weighted graph as everything else on this page, so
@@ -2130,7 +2081,6 @@ function drawPrestige() {
     marks.push({ x: leftX, y: y1, iso3: r.iso3, label });
     marks.push({ x: rightX, y: y2, iso3: r.iso3, label });
   }
-  writePrestigeNote(rows, shown);
   chartTable(
     "prestige",
     "rank by people against rank by PageRank",
@@ -2172,20 +2122,33 @@ function rankCorrelation(values) {
   return num / Math.sqrt(da * db);
 }
 
-function writePrestigeNote(rows, shown) {
-  writeMovers(shown);
-  const target = $("prestige-note");
-  if (!target) return;
+// The two lines around the slope chart, from the same rows it draws: the
+// note above it and the movers under it. Both read the null model's year only.
+export function prestigeNotes() {
+  const y = String(state.data.null_year);
+  const rows = withMetrics(y).filter((r) => r.m.in_strength > 0);
+  if (!rows.length) return null;
+  const TOP = 12;
+  const byPeople = [...rows].sort((a, b) => b.m.in_strength - a.m.in_strength).slice(0, TOP);
+  const byRank = [...rows].sort((a, b) => b.m.pagerank - a.m.pagerank).slice(0, TOP);
+  const shown = [...new Set([...byPeople, ...byRank].map((r) => r.iso3))].map((iso3) =>
+    rows.find((r) => r.iso3 === iso3),
+  );
+  return { note: prestigeNote(rows), movers: movers(shown) };
+}
+
+function prestigeNote(rows) {
   const people = rankCorrelation(rows.map((r) => ({ a: r.m.pagerank, b: r.m.in_strength })));
   const partners = rankCorrelation(rows.map((r) => ({ a: r.m.pagerank, b: r.m.in_degree })));
-  target.textContent =
+  return (
     "Every country in either top twelve, with the rank it holds in the world on " +
     "each side. PageRank runs on the same weighted graph as the rest of the page " +
     "with the standard damping factor, 0.85, so a link is people: it tracks the " +
     "people ranking closely " +
     `(ρ = ${people.toFixed(2)}) and the partner count loosely (ρ = ${partners.toFixed(2)}). ` +
     "The lines that cross are the point. Click a country to see which senders " +
-    "give it its score.";
+    "give it its score."
+  );
 }
 
 // Country names that take a definite article inside a sentence. The payload
@@ -2200,62 +2163,61 @@ function withArticle(name, startsSentence = false) {
 // The two ends of the chart, named and explained, for a reader who does not
 // click. Both are read from the data rather than written down, so regenerating
 // the payload cannot leave the sentence claiming something it no longer shows.
-function writeMovers(shown) {
-  const target = $("prestige-movers");
-  if (!target) return;
+function movers(shown) {
   const move = (r) => r.m.pagerank_rank - r.m.in_strength_rank;
   const ordered = [...shown].sort((a, b) => move(b) - move(a));
   const faller = ordered[0];
   const riser = ordered[ordered.length - 1];
   const source = (r) => (r.n.pagerank_sources ?? [])[0];
-  if (!faller || !riser || !source(faller) || !source(riser)) {
-    target.textContent = "";
-    return;
-  }
+  if (!faller || !riser || !source(faller) || !source(riser)) return "";
   const senderName = (r) => node(source(r).other)?.name ?? source(r).other;
   const givesPct = (r) => Math.round((source(r).gives / r.m.pagerank) * 100);
-  target.textContent =
+  return (
     `${withArticle(faller.n.name, true)} is #${faller.m.in_strength_rank} in the world by foreign-born ` +
     `residents and #${faller.m.pagerank_rank} here: the sender that gives it most of ` +
     `its score, ${withArticle(senderName(faller))}, ranks #${source(faller).sender_rank} itself. ` +
     `${withArticle(riser.n.name, true)} is #${riser.m.in_strength_rank} by residents and ` +
     `#${riser.m.pagerank_rank} here, because ${withArticle(senderName(riser))}, ranked ` +
-    `#${source(riser).sender_rank}, hands it ${givesPct(riser)}% of its score.`;
+    `#${source(riser).sender_rank}, hands it ${givesPct(riser)}% of its score.`
+  );
 }
 
 // The aside beside the slope chart: not how many people a country draws, but
 // which senders the walk arrives from.
-function renderPrestigePanel(iso3) {
-  const n = node(iso3);
+export function prestigeView() {
+  const iso3 = state.selected;
+  const n = iso3 ? node(iso3) : null;
+  if (!n) return null;
   const m = metrics(iso3, String(state.data.null_year));
-  if (!n || !$("pr-name")) return;
-  $("pr-flag").textContent = flag(n.iso2);
-  $("pr-name").textContent = n.name;
-  $("pr-codes").textContent = `${iso3} · ${state.data.null_year}`;
-  $("pr-stats").innerHTML = m
-    ? [
-        row("PageRank", `${m.pagerank.toFixed(5)} <span style="color:#7a8fac">(#${m.pagerank_rank})</span>`),
-        row("Incoming migrants (stock)", `${compact.format(m.in_strength)} <span style="color:#7a8fac">(#${m.in_strength_rank})</span>`),
-        row("Origins represented", `${m.in_degree} <span style="color:#7a8fac">(#${m.in_degree_rank})</span>`),
-      ].join("")
-    : "";
   const sources = n.pagerank_sources ?? [];
-  $("pr-sources").innerHTML = sources.length && m
-    ? sources
-        .map(
-          (source) =>
-            `<li><span>${node(source.other)?.name ?? source.other} ` +
-            `<span style="color:#7a8fac">#${source.sender_rank}, sends ` +
-            `${Math.round(source.share * 100)}% of its people here</span></span>` +
-            `<b>${Math.round((source.gives / m.pagerank) * 100)}%</b></li>`,
-        )
-        .join("")
-    : "<li><span>No incoming corridors recorded</span><b>—</b></li>";
-  $("pr-note").textContent = sources.length
-    ? "Each share is how much of this country's PageRank that sender hands over: " +
-      "0.85 times the sender's own score, times the fraction of its people who " +
-      "came here. A big sender that ranks low gives little."
-    : "";
+  return {
+    flag: flag(n.iso2),
+    name: n.name,
+    codes: `${iso3} · ${state.data.null_year}`,
+    stats: m
+      ? [
+          row("PageRank", `${m.pagerank.toFixed(5)} <span style="color:#7a8fac">(#${m.pagerank_rank})</span>`),
+          row("Incoming migrants (stock)", `${compact.format(m.in_strength)} <span style="color:#7a8fac">(#${m.in_strength_rank})</span>`),
+          row("Origins represented", `${m.in_degree} <span style="color:#7a8fac">(#${m.in_degree_rank})</span>`),
+        ].join("")
+      : "",
+    sources: sources.length && m
+      ? sources
+          .map(
+            (source) =>
+              `<li><span>${node(source.other)?.name ?? source.other} ` +
+              `<span style="color:#7a8fac">#${source.sender_rank}, sends ` +
+              `${Math.round(source.share * 100)}% of its people here</span></span>` +
+              `<b>${Math.round((source.gives / m.pagerank) * 100)}%</b></li>`,
+          )
+          .join("")
+      : "<li><span>No incoming corridors recorded</span><b>—</b></li>",
+    note: sources.length
+      ? "Each share is how much of this country's PageRank that sender hands over: " +
+        "0.85 times the sender's own score, times the fraction of its people who " +
+        "came here. A big sender that ranks low gives little."
+      : "",
+  };
 }
 
 function drawZ() {
@@ -2355,7 +2317,7 @@ function markSelectedPoint(ctx, box, pick, y, place) {
 // strength up. Guimer\u00e0 and Amaral's cut-offs are drawn as lines rather than
 // applied silently, so a reader can see how far a country is from the name it
 // was given. Every country has a position here; only the boxes are discrete.
-function drawCartography() {
+export function drawCartography() {
   refreshPalette();
   const canvas = $("cartography");
   if (!canvas || !state.cart) return;
@@ -2526,8 +2488,11 @@ function drawCartography() {
   );
 }
 
-function renderTypology() {
-  if (!state.cart) return;
+// Section 6 for the slider's year: the tag, the proportional strip, the seven
+// cards and the note, as HTML for the typology island. The island draws the
+// cartography beside them.
+export function typologyView() {
+  if (!state.cart) return null;
   const y = String(state.year);
   const rows = state.cart.by_year[y] ?? {};
   const buckets = new Map(ROLE_ORDER.map((k) => [k, []]));
@@ -2554,37 +2519,31 @@ function renderTypology() {
       widestBelow = people;
   }
 
-  const tag = $("typology-tag");
-  if (tag) {
-    const sure = Object.values(rows).filter((r) => r.stability >= CONFIDENT()).length;
-    tag.textContent =
-      `(${y} \u00b7 follows the slider \u00b7 ${sure} of ${total} roles agreed by ` +
-      `${Math.round(CONFIDENT() * 100)}% of ${state.cart.seeds} runs)`;
-  }
-
-  drawCartography();
+  const sure = Object.values(rows).filter((r) => r.stability >= CONFIDENT()).length;
+  const tag =
+    `(${y} · follows the slider · ${sure} of ${total} roles agreed by ` +
+    `${Math.round(CONFIDENT() * 100)}% of ${state.cart.seeds} runs)`;
 
   // Seven cards of equal size say seven labels of equal weight, and they are
   // not: peripheral alone holds more than half the world. One proportional
   // strip says that before the cards say anything else.
-  const strip = $("typology-strip");
-  if (strip && total) {
-    strip.innerHTML = ROLE_ORDER.map((key) => {
-      const meta = TYPES[key];
-      const count = buckets.get(key).length;
-      if (!count) return "";
-      const share = (count / total) * 100;
-      return (
-        `<span class="type-slice" data-type="${key}"` +
-        ` aria-label="${meta.title}: ${count} of ${total} countries"` +
-        ` title="${meta.title}: ${count} of ${total}"` +
-        ` style="width:${share}%;background:${meta.fg}29;color:${meta.fg}">` +
-        `${share > 9 ? `${meta.title} ${count}` : share > 3 ? count : ""}</span>`
-      );
-    }).join("");
-  }
+  const strip = total
+    ? ROLE_ORDER.map((key) => {
+        const meta = TYPES[key];
+        const count = buckets.get(key).length;
+        if (!count) return "";
+        const share = (count / total) * 100;
+        return (
+          `<span class="type-slice" data-type="${key}"` +
+          ` aria-label="${meta.title}: ${count} of ${total} countries"` +
+          ` title="${meta.title}: ${count} of ${total}"` +
+          ` style="width:${share}%;background:${meta.fg}29;color:${meta.fg}">` +
+          `${share > 9 ? `${meta.title} ${count}` : share > 3 ? count : ""}</span>`
+        );
+      }).join("")
+    : null;
 
-  $("typology-cards").innerHTML = ROLE_ORDER.map((key) => {
+  const cards = ROLE_ORDER.map((key) => {
     const meta = TYPES[key];
     const members = buckets.get(key);
     // Examples are the countries that define the bucket, so each is ranked by
@@ -2612,76 +2571,56 @@ function renderTypology() {
           // An empty role keeps its card, because a reader still needs the
           // word to read the chart, but a button that opens nothing goes.
           members.length
-            ? `<button class="eg-all" data-type="${key}" type="button">See all ${members.length} \u2192</button>`
+            ? `<button class="eg-all" data-type="${key}" type="button">See all ${members.length} →</button>`
             : ""
         }
       </article>`;
   }).join("");
 
-  const note = $("typology-note");
-  if (note) {
-    const moved = state.cart.moved;
-    const first = state.cart.years[0];
-    const last = state.cart.years.at(-1);
-    // Semicolons between the three, because each item has a comma inside it.
-    // No bold on the names: .notice b is the block headline of a notice, so an
-    // inline one puts every country on a line of its own.
-    const named = moved
-      .slice(0, 3)
-      .map((m) => `${m.name}, ${m.from} to ${m.to}`)
-      .join("; ");
-    const venStart = metrics("VEN", first)?.out_strength;
-    const venEnd = metrics("VEN", last)?.out_strength;
-    note.innerHTML =
-      `<b>${moved.length} countries changed role between ${first} and ${last}</b>` +
-      `Counting only the ones whose role was agreed by ${Math.round(CONFIDENT() * 100)}% of runs at ` +
-      `both ends, because an unstable label moving is Louvain moving and not the world. ` +
-      `The three that climbed furthest are ${named}. Venezuela's outward stock went from ` +
-      `${fmt.format(venStart)} to ${fmt.format(venEnd)} over that span and almost all of it went to Colombia, Peru and ` +
-      `Chile, which is what a provincial hub is: enormous inside one community, absent from ` +
-      `the others. Of the ${inNetwork} countries with migration figures in ${y}, ${below} have ` +
-      `no corridor above the ${fmt.format(state.cart.threshold)}-person floor and so carry no ` +
-      `role. They are the microstates and small territories, and the biggest corridor any of ` +
-      `them has is ${fmt.format(widestBelow)} people.`;
-  }
+  const moved = state.cart.moved;
+  const first = state.cart.years[0];
+  const last = state.cart.years.at(-1);
+  // Semicolons between the three, because each item has a comma inside it.
+  // No bold on the names: .notice b is the block headline of a notice, so an
+  // inline one puts every country on a line of its own.
+  const named = moved
+    .slice(0, 3)
+    .map((m) => `${m.name}, ${m.from} to ${m.to}`)
+    .join("; ");
+  const venStart = metrics("VEN", first)?.out_strength;
+  const venEnd = metrics("VEN", last)?.out_strength;
+  const note =
+    `<b>${moved.length} countries changed role between ${first} and ${last}</b>` +
+    `Counting only the ones whose role was agreed by ${Math.round(CONFIDENT() * 100)}% of runs at ` +
+    `both ends, because an unstable label moving is Louvain moving and not the world. ` +
+    `The three that climbed furthest are ${named}. Venezuela's outward stock went from ` +
+    `${fmt.format(venStart)} to ${fmt.format(venEnd)} over that span and almost all of it went to Colombia, Peru and ` +
+    `Chile, which is what a provincial hub is: enormous inside one community, absent from ` +
+    `the others. Of the ${inNetwork} countries with migration figures in ${y}, ${below} have ` +
+    `no corridor above the ${fmt.format(state.cart.threshold)}-person floor and so carry no ` +
+    `role. They are the microstates and small territories, and the biggest corridor any of ` +
+    `them has is ${fmt.format(widestBelow)} people.`;
 
-  const host = $("typology-cards");
-  if (host.dataset.wired) return;
-  host.dataset.wired = "on";
-  host.addEventListener("pointermove", (event) => {
-    const chip = event.target.closest(".eg-chip");
-    if (!chip) {
-      hideTip();
-      return;
-    }
-    const iso3 = chip.dataset.iso3;
-    const r = cartRow(iso3);
-    if (!r) return;
-    showTip(
-      event,
-      `<b>${node(iso3).name}</b><span>${TYPES[r.role].title}</span>` +
-        `<span>z ${r.z.toFixed(2)} \u00b7 P ${r.p.toFixed(2)}</span>` +
-        `<span>${Math.round(r.stability * 100)}% of ${state.cart.seeds} runs agreed</span>`,
-    );
-  });
-  host.addEventListener("pointerleave", hideTip);
-  host.addEventListener("click", (event) => {
-    const chip = event.target.closest(".eg-chip");
-    if (chip) {
-      select(chip.dataset.iso3);
-      return;
-    }
-    const all = event.target.closest(".eg-all");
-    if (all) openTypologyDrawer(all.dataset.type);
-  });
+  return { tag, strip, cards, note };
+}
+
+// The tooltip on an example chip: the country and the numbers behind its role.
+export function typologyChipTip(iso3) {
+  const r = cartRow(iso3);
+  if (!r) return null;
+  return (
+    `<b>${node(iso3).name}</b><span>${TYPES[r.role].title}</span>` +
+    `<span>z ${r.z.toFixed(2)} · P ${r.p.toFixed(2)}</span>` +
+    `<span>${Math.round(r.stability * 100)}% of ${state.cart.seeds} runs agreed</span>`
+  );
 }
 
 // The full membership of one role, with the numbers that put each country in
-// it, in a drawer rather than five expanding cards.
-function openTypologyDrawer(key) {
+// it, in a drawer rather than five expanding cards. Built when it opens, for
+// the year on the slider then.
+export function typologyDrawer(key) {
   const meta = TYPES[key];
-  const drawer = $("type-drawer");
-  if (!drawer || !state.cart) return;
+  if (!meta || !state.cart) return null;
   const y = String(state.year);
   const members = Object.entries(state.cart.by_year[y] ?? {}).filter(([, r]) => r.role === key);
   const floor = CONFIDENT();
@@ -2694,26 +2633,26 @@ function openTypologyDrawer(key) {
         <td>${node(iso3).name}</td>
         <td>${r.z.toFixed(2)}</td>
         <td>${r.p.toFixed(2)}</td>
-        <td>${Math.round(r.stability * 100)}%${r.stability < floor ? " \u26a0" : ""}</td>
-        <td>${m ? fmt.format(m.in_strength) : "\u2014"}</td>
+        <td>${Math.round(r.stability * 100)}%${r.stability < floor ? " ⚠" : ""}</td>
+        <td>${m ? fmt.format(m.in_strength) : "—"}</td>
       </tr>`;
     })
     .join("");
   const shaky = members.filter(([, r]) => r.stability < floor).length;
-  drawer.innerHTML = `
+  return `
     <div class="drawer-head">
       <div>
         <span class="badge" style="background:${meta.tint};color:${meta.fg}">${meta.icon}</span>
         <h3 style="color:${meta.fg}">${meta.title}</h3>
         <p>${meta.what}</p>
       </div>
-      <button class="drawer-close" type="button" aria-label="Close">\u00d7</button>
+      <button class="drawer-close" type="button" aria-label="Close">×</button>
     </div>
     <p class="drawer-note">${members.length} countries in ${y}${
       shaky
         ? `, of which ${shaky} ${shaky === 1 ? "sits" : "sit"} close enough to a threshold ` +
           `that fewer than ${Math.round(floor * 100)}% of the runs agreed; ` +
-          `${shaky === 1 ? "it is" : "they are"} marked \u26a0`
+          `${shaky === 1 ? "it is" : "they are"} marked ⚠`
         : ", all of them agreed by every run that matters"
     }. Click a row to select it.</p>
     <table class="drawer-table">
@@ -2722,13 +2661,6 @@ function openTypologyDrawer(key) {
       </tr></thead>
       <tbody>${rows}</tbody>
     </table>`;
-  drawer.hidden = false;
-  drawer.querySelector(".drawer-close").addEventListener("click", () => {
-    drawer.hidden = true;
-  });
-  drawer.querySelectorAll("tbody tr").forEach((tr) => {
-    tr.addEventListener("click", () => select(tr.dataset.iso3));
-  });
 }
 
 /* ---------------------------------------------------------------- section 7 */
@@ -2739,7 +2671,7 @@ function edgeLookup(origin, dest) {
   return state.edges.edges.find((e) => e[0] === oi && e[1] === di) ?? null;
 }
 
-// Flights are indexed separately (see main()), so a route can exist here
+// Flights are indexed separately (their own file), so a route can exist here
 // with no migration edge at all: UK -> Germany's 73 routes, or China <->
 // Taiwan, which never had a DESA row to ride along on.
 function flightLookup(origin, dest) {
@@ -2749,15 +2681,24 @@ function flightLookup(origin, dest) {
   return edge ? edge[2] : 0;
 }
 
-function renderEdge() {
-  const origin = $("edge-origin").value;
-  const dest = $("edge-dest").value;
+// The two pickers' countries: every one with null-year figures, by name, and
+// the pair the section opens on.
+export function edgeOptions() {
+  const options = state.data.countries
+    .filter((iso3) => metrics(iso3, String(state.data.null_year)))
+    .map((iso3) => ({ iso3, name: node(iso3).name }))
+    .sort((a, b) => a.name.localeCompare(b.name));
+  return {
+    options,
+    origin: options.some((o) => o.iso3 === "ESP") ? "ESP" : options[0].iso3,
+    dest: options.some((o) => o.iso3 === "COL") ? "COL" : options[1].iso3,
+  };
+}
+
+// One link in the slider's year: its kind, the facts and the verdict, as HTML.
+export function edgeView(origin, dest) {
   if (!origin || !dest || origin === dest) {
-    $("edge-facts").innerHTML = "";
-    $("edge-kind").textContent = "—";
-    $("edge-note").querySelector("span:last-child").textContent =
-      "Pick two different countries.";
-    return;
+    return { kind: "—", facts: "", verdict: "Pick two different countries." };
   }
   const yi = state.data.years.indexOf(state.year);
   const edge = edgeLookup(origin, dest);
@@ -2788,7 +2729,6 @@ function renderEdge() {
     kind = "No corridor";
     verdict = "<b>Neither network connects these two.</b>";
   }
-  $("edge-kind").textContent = kind;
 
   const facts = [
     ["People on this link (stock)", weight ? fmt.format(weight) : "—"],
@@ -2798,23 +2738,30 @@ function renderEdge() {
     [`Reciprocal (${node(dest).name} → ${node(origin).name})`, reverse?.[2][yi] ? fmt.format(reverse[2][yi]) : "—"],
     ["Flight routes", routes ? fmt.format(routes) : "0"],
   ];
-  $("edge-facts").innerHTML = facts
-    .map(([term, value]) => `<div class="fact"${explainAttr(GLOSSARY[term])}><dt>${term}</dt><dd>${value}</dd></div>`)
-    .join("");
-  $("edge-note").querySelector("span:last-child").innerHTML = verdict;
+  return {
+    kind,
+    facts: facts
+      .map(([term, value]) => `<div class="fact"${explainAttr(GLOSSARY[term])}><dt>${term}</dt><dd>${value}</dd></div>`)
+      .join(""),
+    verdict,
+  };
 }
 
 /* ---------------------------------------------------------------- section 8 */
 
-function renderDenmarkPanels() {
+// Section 8's panels for the country it analyses: the head row of metrics, the
+// two ego tables and the verdict, as HTML, with its name for every .dk-name.
+// null while that country has no null-year figures, which leaves the panels as
+// they were.
+export function denmarkView() {
   const focus = spotlight();
   const iso3 = focus.iso3;
   const y = String(state.data.null_year);
   const m = metrics(iso3, y);
   const n = node(iso3);
-  if (!m) return;
+  if (!m) return null;
 
-  $("dk-head").innerHTML =
+  const head =
     `<div class="who"><span class="flag">${flag(n.iso2)}</span><span><strong>${n.name}</strong><br /><span class="codes">${iso3} · ${y}</span></span></div>` +
     [
       ["Incoming", fmt.format(m.in_strength)],
@@ -2839,23 +2786,20 @@ function renderDenmarkPanels() {
       })
       .join("");
 
+  // The rows sit in a <tbody>, where the HTML parser put them on main.
   const egoRow = (c) =>
     `<tr><td>${node(c.other)?.name ?? c.other}</td><td>${fmt.format(c.weight)}</td></tr>`;
-  $("dk-in").innerHTML =
-    `<caption>Top links into ${n.name}</caption><tr><th>Origin</th><th style="text-align:right">People</th></tr>` +
-    (n.top_in ?? []).map(egoRow).join("");
-  $("dk-out").innerHTML =
-    `<caption>Top links out of ${n.name}</caption><tr><th>Destination</th><th style="text-align:right">People</th></tr>` +
-    (n.top_out ?? []).map(egoRow).join("");
-
-  for (const slot of document.querySelectorAll(".dk-name")) slot.textContent = n.name;
-  const picker = $("dk-country");
-  if (picker && picker.value !== iso3) picker.value = iso3;
+  const into =
+    `<caption>Top links into ${n.name}</caption><tbody><tr><th>Origin</th><th style="text-align:right">People</th></tr>` +
+    (n.top_in ?? []).map(egoRow).join("") + "</tbody>";
+  const out =
+    `<caption>Top links out of ${n.name}</caption><tbody><tr><th>Destination</th><th style="text-align:right">People</th></tr>` +
+    (n.top_out ?? []).map(egoRow).join("") + "</tbody>";
 
   const rank = m.betweenness_rank;
   const strengthRank = m.in_strength_rank;
   const total = state.data.countries.length;
-  $("dk-verdict").querySelector("span:last-child").innerHTML =
+  const verdict =
     `<b>${n.name}, in one line.</b> It ranks #${strengthRank} of ${total} by the number of ` +
     `foreign-born residents and #${rank} as a bridge, with a z-score of ` +
     `${m.z === undefined ? "—" : m.z.toFixed(2)} against the degree-preserving null. ` +
@@ -2863,20 +2807,17 @@ function renderDenmarkPanels() {
     `about the country: a population register names every origin, while a survey-based country ` +
     `files most of them under "other", so origin counts are only comparable between countries ` +
     `that count the same way.`;
+
+  return { iso3, name: n.name, head, into, out, verdict };
 }
 
 // The country picker is the section's control and the page's selection at the
 // same time, so choosing here moves the maps and choosing on a map moves here.
-function setupSpotlightPicker() {
-  const picker = $("dk-country");
-  if (!picker) return;
-  picker.innerHTML = state.data.countries
+export function spotlightOptions() {
+  return state.data.countries
     .slice()
     .sort((a, b) => node(a).name.localeCompare(node(b).name))
-    .map((iso3) => `<option value="${iso3}">${node(iso3).name}</option>`)
-    .join("");
-  picker.value = spotlight().iso3;
-  picker.addEventListener("change", () => select(picker.value));
+    .map((iso3) => ({ iso3, name: node(iso3).name }));
 }
 
 function drawDenmark() {
@@ -3093,91 +3034,78 @@ function line(ctx, box, rows, getX, getY, colour) {
 
 /* -------------------------------------------------------------------- wire */
 
-function setYear(value) {
+// The year slider, as an index into the payload's years. Everything that
+// follows the year reads it from the store: the globe, the map, both
+// distributions, the roles, the panels and the edge inspector.
+export function setYear(value) {
   state.year = state.data.years[value];
-  $("year-now").textContent = String(state.year);
-  // Section 2 redraws with the slider, so its tag cannot be a fixed year.
-  const tag = $("tails-tag");
-  if (tag) tag.textContent = `(${state.year} · follows the slider)`;
-  R.globe();
-  R.map();
-  R.hist();
-  R.ccdf();
-  // The roles move with the year now that nothing in them is a 2014 snapshot,
-  // which is the whole reason the flight axis came out of them.
-  renderTypology();
-  renderInspector();
-  renderEdge();
+  store.setState({ yearIndex: value, year: state.year });
 }
 
-function setupEdgeInspector() {
-  const options = state.data.countries
-    .filter((iso3) => metrics(iso3, String(state.data.null_year)))
-    .map((iso3) => ({ iso3, name: node(iso3).name }))
-    .sort((a, b) => a.name.localeCompare(b.name));
-  const html = options.map((o) => `<option value="${o.iso3}">${o.name}</option>`).join("");
-  $("edge-origin").innerHTML = html;
-  $("edge-dest").innerHTML = html;
-  $("edge-origin").value = options.some((o) => o.iso3 === "ESP") ? "ESP" : options[0].iso3;
-  $("edge-dest").value = options.some((o) => o.iso3 === "COL") ? "COL" : options[1].iso3;
-  $("edge-origin").addEventListener("change", renderEdge);
-  $("edge-dest").addEventListener("change", renderEdge);
-  renderEdge();
+// The years the slider runs over.
+export function yearsOf() {
+  return state.data.years;
 }
 
-function setupGlobe() {
-  const canvas = $("globe-canvas");
-  let moved = false;
-  let lastX = 0;
-  canvas.addEventListener("pointerdown", (event) => {
+// Section 2 redraws with the slider, so its tag cannot be a fixed year.
+export function tailsTag() {
+  return `(${state.year} · follows the slider)`;
+}
+
+// Section 4-5's map layer: both networks, one of them, or the net balance.
+export function setLayer(layer) {
+  state.layer = layer;
+  store.setState({ layer });
+}
+
+// Section 2's axis switches, one per chart.
+export function setAxisMode(chart, mode) {
+  state.axisMode = { ...state.axisMode, [chart]: mode };
+  store.setState({ axisMode: state.axisMode });
+}
+
+// The canvas globe turns under a drag and selects on a click that did not
+// move. The hero island passes its canvas's pointer events here.
+const drag = { moved: false, lastX: 0 };
+export const globePointer = {
+  down(canvas, event) {
     state.dragging = true;
-    moved = false;
-    lastX = event.clientX;
+    drag.moved = false;
+    drag.lastX = event.clientX;
     try {
       canvas.setPointerCapture(event.pointerId);
     } catch {
       // No active pointer: the drag still tracks through pointermove.
     }
-  });
-  canvas.addEventListener("pointermove", (event) => {
+  },
+  move(event) {
     if (!state.dragging) return;
-    const dx = event.clientX - lastX;
-    if (Math.abs(dx) > 2) moved = true;
+    const dx = event.clientX - drag.lastX;
+    if (Math.abs(dx) > 2) drag.moved = true;
     state.rotation += dx * 0.4;
-    lastX = event.clientX;
+    drag.lastX = event.clientX;
     R.globe();
-  });
-  canvas.addEventListener("pointerup", (event) => {
+  },
+  up(canvas, event) {
     state.dragging = false;
     try {
       canvas.releasePointerCapture(event.pointerId);
     } catch {
       // Already released.
     }
-    if (!moved) {
+    if (!drag.moved) {
       const hit = globeHit(event);
       if (hit) select(hit);
     }
-  });
-}
+  },
+};
 
-function setupMap() {
-  const toggle = $("map-toggle");
-  toggle.addEventListener("click", (event) => {
-    const button = event.target.closest("button[data-layer]");
-    if (!button) return;
-    state.layer = button.dataset.layer;
-    for (const b of toggle.querySelectorAll("button")) {
-      b.setAttribute("aria-pressed", String(b === button));
-    }
-    if (state.layer !== "net") {
-      const note = $("net-note");
-      if (note) note.textContent = "";
-    }
-    R.map();
-  });
-  $("map-canvas").addEventListener("click", (event) => {
-    const rect = event.currentTarget.getBoundingClientRect();
+// The canvas map's pointer, handed the canvas and the event by the map island:
+// a click selects the territory under it, or the nearest dot; a move hovers it
+// and, on the net layer, says the balance.
+const canvasMapEvents = {
+  click(canvas, event) {
+    const rect = canvas.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
     const [lon, lat] = unprojectMap(x, y, rect.width, rect.height);
@@ -3196,10 +3124,12 @@ function setupMap() {
     }
     // Selecting never scrolls. The reader chose where to look.
     if (best) select(best.iso3);
-  });
-  $("map-canvas").addEventListener("pointerleave", () => hideTip());
-  $("map-canvas").addEventListener("pointermove", (event) => {
-    const rect = event.currentTarget.getBoundingClientRect();
+  },
+  leave() {
+    hideTip();
+  },
+  move(canvas, event) {
+    const rect = canvas.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
     const [lon, lat] = unprojectMap(x, y, rect.width, rect.height);
@@ -3212,7 +3142,7 @@ function setupMap() {
         return Math.hypot(p.x - x, p.y - y) < 14;
       }) ??
       null;
-    event.currentTarget.style.cursor = over ? "pointer" : "default";
+    canvas.style.cursor = over ? "pointer" : "default";
     // The choropleth carries a number no arc has to: how far up or down a
     // country is. Reading it off a colour band is guesswork, so hovering says
     // it outright.
@@ -3234,21 +3164,33 @@ function setupMap() {
       state.hover = over;
       R.map();
     }
-  });
+  },
+};
+
+// The status line under the hero once the data is in.
+export function statusLine() {
+  const corridors = state.data;
+  return (
+    `${fmt.format(corridors.countries.length)} countries · ` +
+    `${fmt.format(corridors.corridor_count)} migration links · ` +
+    `${fmt.format(corridors.flight_snapshot.country_pairs)} directed flight links · ` +
+    `null model: ${corridors.shuffles} shuffles of ${corridors.null_year}`
+  );
 }
 
-function renderTwinStats() {
+// Sections 4-5: the panel beside the map, the null model's tags and method
+// line, and the broker list, as text and HTML for the twin island.
+export function twinView() {
   const y = String(state.data.null_year);
   const totals = state.data.totals[y] ?? state.data.totals[state.data.null_year];
   const snap = state.data.flight_snapshot;
-  $("twin-stats").innerHTML = [
+  const stats = [
     row("Migration links", fmt.format(totals.corridors)),
     row("People counted", compact.format(totals.people)),
     row("Flight links", fmt.format(snap.country_pairs)),  // directed pairs, see the glossary
     row("Countries with flights", fmt.format(snap.countries)),
   ].join("");
-  $("flight-caveat").textContent = snap.note;
-  $("null-method").textContent =
+  const method =
     `Null: ${state.data.shuffles} degree-preserving shuffles of the ${state.data.null_year} network. ` +
     "Each shuffle keeps every country's in- and out-degree and deals the observed corridor weights back out at random. " +
     // The z-scores on this page are read as though they were significance,
@@ -3256,8 +3198,6 @@ function renderTwinStats() {
     // resolution can express is one in a hundred, whatever the z says.
     `With ${state.data.shuffles} draws the finest p this null can express is ` +
     `1 in ${state.data.shuffles}, so a z above about 2.5 is a floor rather than a measurement.`;
-  $("null-tag").textContent = `(null model · ${state.data.null_year} · ${state.data.shuffles} shuffles)`;
-  $("twin-tag").textContent = `(migration ${state.data.null_year} · flights undated)`;
 
   // A country whose shuffled betweenness is zero in most of the hundred draws
   // gets a null spread near zero, and its z-score inflates without its
@@ -3265,7 +3205,7 @@ function renderTwinStats() {
   // sequence leaves unexplained keeps the same question and drops that
   // artifact; z stays as the test for getting on the list at all.
   const ranked = brokers(y);
-  $("z-top").innerHTML = ranked
+  const top = ranked
     .slice(0, 6)
     .map(
       (r) =>
@@ -3279,30 +3219,42 @@ function renderTwinStats() {
   const fragile = tail.filter((r) => r.excess < ranked[0].excess / 20);
   const named = fragile.slice(0, 3).map((r) => r.n.name).join(", ");
   const rest = fragile.length > 3 ? ` and ${fragile.length - 3} more` : "";
-  $("z-floor").textContent = tail.length
+  const floor = tail.length
     ? `Ranked by betweenness beyond the null's average, not by z. ${tail.length} more ` +
       `countries clear z = 2. ${fragile.length} of them (${named}${rest}) broker under a ` +
       "twentieth of what the top of this list does, and still score up to " +
       `z = ${Math.max(...fragile.map((r) => r.m.z)).toFixed(1)}: their betweenness is zero ` +
       `in most shuffles, so the null spread collapses and the z inflates.`
     : "";
+  return {
+    stats,
+    caveat: snap.note,
+    method,
+    nullTag: `(null model · ${state.data.null_year} · ${state.data.shuffles} shuffles)`,
+    twinTag: `(migration ${state.data.null_year} · flights undated)`,
+    top,
+    floor,
+  };
 }
 
 // The canvas renderer, and the default for every visual. A variant module
-// replaces the entries it wants and inherits the rest.
+// replaces the entries it wants and inherits the rest: a drawing per visual,
+// the map's pointer events, the hero's hint under the globe, and a resize hook
+// for the libraries that size themselves.
 const CANVAS_RENDERER = {
   name: "canvas",
   globe: drawGlobe, map: drawMap, hist: drawHistogram, ccdf: drawCcdf,
   scatters: drawScatters, scatterBetween: drawBetweenness, scatterZ: drawZ,
   prestige: drawPrestige,
-  denmark: drawDenmark, setupGlobe, setupMap,
+  denmark: drawDenmark,
+  mapEvents: canvasMapEvents,
 };
 
 // What a variant module is handed: everything a renderer needs to read the
 // data and report a click, and nothing that would let it change a number.
 export const api = {
   state, R, node, metrics, withMetrics, select, topEdges, flightEdges,
-  degreeCounts, ccdf, collect, enablePicking, label,
+  degreeCounts, ccdf, collect, label,
   refreshPalette, arcSpec, syncFlow, rgb, countryAt, unprojectMap,
   showTip, hideTip, axisMode, modeFlags, ticksFor,
   linkSpec, rampColour, linkAlpha, THICKNESS, earthTexture, textureURL,
@@ -3312,112 +3264,62 @@ export const api = {
   surface, frame, axes, logTicks, logScale, linearScale, flag, chartTable,
   // The net layer, so a renderer that draws its own map can draw this one too.
   netBalance, netColour, netNote, drawNet: drawNetMap,
-  spotlight, earthScale, globeRadius, EARTH_SIZES, typologyNote,
+  spotlight, peersOf, earthScale, globeRadius, EARTH_SIZES, typologyNote,
   colours: { PEOPLE, ACCESS, INK, MUTE, MUTE_TEXT, GRID, OUTBOUND, GAIN, LOSS },
   format: { fmt, compact },
   $,
 };
 
-// Called by the style bar when a dropdown changes: re-read the palette, restart
-// or stop the flow animation, and repaint everything.
-function redrawAll() {
-  R.globe();
-  R.map();
-  R.hist();
-  R.ccdf();
-  R.scatters();
-  R.prestige();
-  R.denmark();
-}
-
+// The style bar changed something other than the renderer: re-read the
+// palette, restart or stop the flow animation, and repaint everything, the
+// two drawers included (the views drawer redraws on a restyle only).
 export function restyle() {
   refreshPalette();
   syncFlow();
-  redrawAll();
-  // The questions drawer draws on canvas in every renderer, so it repaints on
-  // the same signal rather than being reached into from here.
-  window.dispatchEvent(new CustomEvent("week03:restyle"));
+  store.setState((s) => ({ paint: s.paint + 1, restyles: s.restyles + 1 }));
 }
 
-export async function start() {
-  // Canvas fills the gaps rather than overwriting, so a variant installed
-  // before start() keeps whichever visuals it replaced.
+// Every visual repaints: a resize, a restyle.
+export function repaint() {
+  store.setState((s) => ({ paint: s.paint + 1 }));
+}
+
+// The window changed size: libraries that size themselves resize, and every
+// visual repaints.
+export function resized() {
+  R.resize?.();
+  repaint();
+}
+
+// Called once the data is in and the renderer is installed. Canvas fills the
+// gaps rather than overwriting, so a variant installed before start() keeps
+// whichever visuals it replaced.
+export function start({ corridors, edges, flights, cart, world }) {
   for (const [key, value] of Object.entries(CANVAS_RENDERER)) {
     if (!(key in R)) R[key] = value;
   }
-  return main();
+  state.data = corridors;
+  state.edges = edges;
+  state.flights = flights;
+  state.cart = cart;
+  state.world = world;
+  state.year = corridors.null_year;
+  refreshPalette();
+  syncFlow();
+  // The page opens on the country section 8 is built around, so the default
+  // selection and the default analysis are the same country.
+  select(corridors.focus.iso3);
+  setYear(corridors.years.indexOf(corridors.null_year));
+  store.setState({ status: "ready", message: statusLine() });
 }
 
-async function main() {
-  try {
-    // Resolved against this module, not the page, so the post loads the same
-    // files whatever depth it is served from, and stamped so a deploy cannot
-    // serve one reader this week's code against last week's numbers.
-    const [corridors, edges, flights, cart, world] = await Promise.all([
-      fetch(dataUrl("week03_corridors.json")).then((r) => r.json()),
-      fetch(dataUrl("week03_edges.json")).then((r) => r.json()),
-      // Flight routes used to ride along inside week03_edges.json, only for
-      // pairs that also had a DESA migration row, which dropped 1,748 of
-      // 4,331 directed flight pairs (China <-> Taiwan among them). They are
-      // their own file now, independent of whether people move on the pair.
-      fetch(dataUrl("week03_flights.json")).then((r) => r.json()),
-      // Section 6 is the only reader, and a page that still works without its
-      // role cartography is better than one that fails to open without it.
-      fetch(dataUrl("week03_cartography.json"))
-        .then((r) => r.json())
-        .catch(() => null),
-      // Land is decoration for the argument but essential for reading a map,
-      // so a failure to load it must not stop the post.
-      fetch(dataUrl("world_outline.geo.json"))
-        .then((r) => r.json())
-        .catch(() => null),
-    ]);
-    state.data = corridors;
-    state.edges = edges;
-    state.flights = flights;
-    state.cart = cart;
-    state.world = world;
-    state.year = corridors.null_year;
-    $("year-slider").max = String(corridors.years.length - 1);
-    $("year-slider").value = String(corridors.years.indexOf(corridors.null_year));
-    $("year-now").textContent = String(state.year);
-    $("status").textContent =
-      `${fmt.format(corridors.countries.length)} countries · ` +
-      `${fmt.format(corridors.corridor_count)} migration links · ` +
-      `${fmt.format(corridors.flight_snapshot.country_pairs)} directed flight links · ` +
-      `null model: ${corridors.shuffles} shuffles of ${corridors.null_year}`;
-
-    R.setupGlobe();
-    R.setupMap();
-    for (const id of [
-      "hist",
-      "ccdf",
-      "scatter-between",
-      "scatter-z",
-      "cartography",
-      "prestige",
-      "dk-time",
-      "dk-rank",
-      "dk-nordic",
-    ])
-      enablePicking(id);
-    refreshPalette();
-    syncFlow();
-    wireGlossary();
-    setupEdgeInspector();
-    setupSpotlightPicker();
-    renderTwinStats();
-    writeBetweennessNote();
-    renderTypology();
-    // The page opens on the country section 8 is built around, so the default
-    // selection and the default analysis are the same country.
-    select(corridors.focus.iso3);
-    setYear(Number($("year-slider").value));
-    $("year-slider").addEventListener("input", (event) => setYear(Number(event.target.value)));
-    window.addEventListener("resize", redrawAll);
-  } catch (error) {
-    $("status").textContent = `Could not load the corridor data: ${error.message}`;
-    throw error;
-  }
+// The style dimensions the canvas painters read off the engine state.
+export function applyStyle(chosen) {
+  state.arcs = chosen.arcs;
+  state.links = chosen.links;
+  state.thickness = chosen.thickness;
+  state.focus = chosen.focus;
+  state.dots = chosen.dots;
+  state.basemap = chosen.basemap;
+  state.earth = chosen.earth;
 }
-

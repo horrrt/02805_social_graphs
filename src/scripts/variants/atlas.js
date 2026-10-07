@@ -41,16 +41,17 @@ export function install(api, Globe) {
 
   /* ------------------------------------------------------------- the globe */
 
+  // The hero island renders the host after the canvas; the first draw sizes
+  // it and hides the canvas.
   function mount() {
     const canvas = $("globe-canvas");
     if (!canvas) return null;
     if (!host) {
-      host = document.createElement("div");
-      host.id = "globe-atlas";
+      host = $("globe-atlas");
+      if (!host) return null;
       host.style.width = "100%";
       host.style.aspectRatio = "1";
       host.style.height = "100%";
-      canvas.after(host);
       canvas.style.display = "none";
     }
     if (!world) {
@@ -306,55 +307,43 @@ export function install(api, Globe) {
     }
   }
 
+  // The dot within 14px of the pointer on the flat map, if any.
+  function nearestDot(canvas, event) {
+    const rect = canvas.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    let best = null;
+    for (const iso3 of state.data.countries) {
+      const coord = node(iso3)?.coord;
+      if (!coord || !metrics(iso3)) continue;
+      const p = mapPoint(coord, rect.width, rect.height);
+      const d = Math.hypot(p.x - x, p.y - y);
+      if (d < 14 && (!best || d < best.d)) best = { iso3, d };
+    }
+    return best?.iso3 ?? null;
+  }
+
   return {
     globe,
     map,
-    setupGlobe() {
-      const hint = document.querySelector(".stage-hint");
-      if (hint) hint.textContent = "Drag to spin, scroll to zoom. Click a country.";
-      window.addEventListener("resize", () => {
-        if (!world || !host) return;
-        const width = host.clientWidth || 720;
-        const height = host.clientHeight || width;
-        world.width(width).height(height);
-      });
+    hint: "Drag to spin, scroll to zoom. Click a country.",
+    resize() {
+      if (!world || !host) return;
+      const width = host.clientWidth || 720;
+      const height = host.clientHeight || width;
+      world.width(width).height(height);
     },
-    setupMap() {
-      const toggle = $("map-toggle");
-      if (!toggle) return;
-      toggle.addEventListener("click", (event) => {
-        const button = event.target.closest("button[data-layer]");
-        if (!button) return;
-        state.layer = button.dataset.layer;
-        for (const b of toggle.querySelectorAll("button")) {
-          b.setAttribute("aria-pressed", String(b === button));
-        }
-        map();
-      });
-      const countryAt = (event) => {
-        const rect = event.currentTarget.getBoundingClientRect();
-        const x = event.clientX - rect.left;
-        const y = event.clientY - rect.top;
-        let best = null;
-        for (const iso3 of state.data.countries) {
-          const coord = node(iso3)?.coord;
-          if (!coord || !metrics(iso3)) continue;
-          const p = mapPoint(coord, rect.width, rect.height);
-          const d = Math.hypot(p.x - x, p.y - y);
-          if (d < 14 && (!best || d < best.d)) best = { iso3, d };
-        }
-        return best?.iso3 ?? null;
-      };
-      $("map-canvas").addEventListener("click", (event) => {
-        const iso3 = countryAt(event);
+    // The map keeps the canvas, so the page hands its pointer here: a click
+    // selects the nearest dot, and the cursor says when there is one. It
+    // skips the territory fill test the canvas map's click also does.
+    mapEvents: {
+      click(canvas, event) {
+        const iso3 = nearestDot(canvas, event);
         if (iso3) select(iso3);
-      });
-      // The canvas renderer's map shows a pointer cursor before you click;
-      // give this one the same tell, even though it skips the territory fill
-      // test the canvas map's click also does.
-      $("map-canvas").addEventListener("pointermove", (event) => {
-        event.currentTarget.style.cursor = countryAt(event) ? "pointer" : "default";
-      });
+      },
+      move(canvas, event) {
+        canvas.style.cursor = nearestDot(canvas, event) ? "pointer" : "default";
+      },
     },
   };
 }
