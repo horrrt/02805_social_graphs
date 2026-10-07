@@ -4,7 +4,7 @@ import { PostSection } from "@/components/post/PostSection";
 import { QaDisclosure } from "@/components/post/QaDisclosure";
 import { SectionOpener } from "@/components/post/SectionOpener";
 
-// Closing: the takeaway, the one limit, the next step, then the methods and the AI-use note.
+// Closing: the takeaway, the one limit, then the methods and the AI-use note.
 export function Closing() {
   return (
     <PostSection id="closing" owner="">
@@ -26,15 +26,6 @@ export function Closing() {
             well-linked page may measure how much editors care about a character more than the character's
             place in the comics, and nothing on this page separates the two.
           </Notice>
-        }
-        next={
-          <>
-            <b>Next step.</b>
-            {" "}
-            Next week's TF-IDF weighs a word by how few pages use it. Rerunning the
-            section 3 queries with it tests whether the short-page misses are a counting problem, and the
-            words TF-IDF finds for each community can tell the section 4 groups apart without a guesser.
-          </>
         }
       >
         <QaDisclosure id="methods" cue="Methods, data and AI use">
