@@ -1,16 +1,16 @@
-// A dinner for a network, two ways. "One table": seat k guests beside a host
+// A dinner for a network, two ways. "Single table": seat k guests beside a host
 // so the table holds more links than chance would give it, L_in − (Σk)²/4m
 // (a table's share of modularity, times m); each chair shows what its guest
 // added, an undo takes the last one away, and the reveal sets your table
 // against a greedy host, a random host and the best table a local search
-// finds. "The whole room": lay a few place cards, label propagation seats
+// finds. "Full room": lay a few place cards, label propagation seats
 // everyone else from them, and the reveal scores the room's modularity Q
 // against Louvain, greedy merging and a random seating, and rings the guests
 // Louvain would seat elsewhere. Lists beside the map hold every choice, so the
 // game runs from the keyboard. Rules in game-core.js; frame from GameShell.
 // Style: .kit-seating in post.css.
-import { useEffect, useId, useMemo, useRef, useState } from "react";
-import GameShell, { focusWithin, useGameRun, type GameSettings } from "./GameShell";
+import { useId, useMemo, useRef, useState } from "react";
+import GameShell, { useGameRun, useRefocus, type GameSettings } from "./GameShell";
 import NetworkView from "./NetworkView";
 import {
   bestTable, candidates, disagreements, greedyModularity, greedyTable, louvainSeating, mulberry32, nmi, partitionQ, pick, randomPartition, randomTable,
@@ -69,7 +69,7 @@ export default function SeatingGame({
   const [cards, setCards] = useState<Record<number, number>>(() => (preset?.mode === "room" ? preset.cards ?? {} : {}));
   const [card, setCard] = useState(0);
   const run = useGameRun({
-    game: "seating",
+    game: `seating:${n}:${edges.length}`,
     defaults,
     better: "higher",
     seed,
@@ -88,9 +88,7 @@ export default function SeatingGame({
   const listId = useId();
   const root = useRef<HTMLDivElement>(null);
   const list = useRef<HTMLUListElement>(null);
-  useEffect(() => {
-    focusWithin(root.current, list.current?.querySelector<HTMLButtonElement>("button") ?? null);
-  }, [seats.length]);
+  useRefocus(seats.length, root, () => list.current?.querySelector<HTMLButtonElement>("button"));
 
   // ---- one table
   const score = tableScore(n, edges, seats);
@@ -162,13 +160,13 @@ export default function SeatingGame({
     legend: mode === "room" && placed > 0,
     aria:
       mode === "table"
-        ? `${n} guests; ${seats.length} at ${name(host)}'s table, scoring ${fmt(score)} links above chance`
+        ? `${n} guests; ${seats.length} at ${name(host)}'s table, scoring ${fmt(score)} against a random wiring`
         : `${n} guests; ${placed} place cards laid${seating ? `; rings mark ${off.size} guests Louvain seats elsewhere` : ""}`,
   };
   const groupKey = Array.from({ length: n }, (_, v) => groupOf(v) ?? "-").join(",");
 
   const segments = [
-    { key: "mode", label: "Game", options: [{ value: "table", label: "One table", sub: "fill the seats round a host" }, { value: "room", label: "The whole room", sub: "lay place cards, the rest follow" }] },
+    { key: "mode", label: "Game", options: [{ value: "table", label: "Single table", sub: "seat guests beside a host" }, { value: "room", label: "Full room", sub: "lay cards; label propagation seats the rest" }] },
     mode === "table"
       ? { key: "size", label: "Seats", options: sizes.map((s) => ({ value: String(s), label: `${s} seats`, sub: s > n - 1 ? `cut to ${Math.max(0, n - 1)}` : undefined })) }
       : { key: "cards", label: "Place cards", options: cardCounts.map((c) => ({ value: String(c), label: `${c} cards` })) },
@@ -198,15 +196,15 @@ export default function SeatingGame({
         run={run}
         title={title}
         dailyToggle={dailyToggle}
-        intro={<p>A community is a table where the guests share more links than chance would give them. You are the host.</p>}
+        intro={<p>A good table holds more links among its guests than a random wiring with the same degrees would put there.</p>}
         segments={segments}
         canStart={n > 0 && (mode === "room" || size > 0)}
         startNote={n === 0 ? "The room is empty: nobody to seat." : mode === "table" && Number(run.settings.size) > n - 1 ? `Only ${n - 1} guests besides the host: the table is cut to ${n - 1}.` : undefined}
-        startLabel="Open the doors"
+        startLabel="Begin seating"
         hud={
           mode === "table"
             ? [
-                { label: "Table score", value: fmt(score), sub: "links above chance" },
+                { label: "Table score", value: fmt(score), sub: "L_in − (Σk)²/4m" },
                 { label: "Seated", value: `${seats.length - 1} of ${size}` },
                 { label: "Host", value: name(host) },
               ]
@@ -215,7 +213,7 @@ export default function SeatingGame({
                 { label: "Card in hand", value: CARD_NAMES[card] },
               ]
         }
-        fmtScore={(v) => (mode === "table" ? `${fmt(v)} above chance` : `Q = ${fmt(v, 3)}`)}
+        fmtScore={(v) => (mode === "table" ? `a table score of ${fmt(v)}` : `Q = ${fmt(v, 3)}`)}
         reveal={
           <div className="kit-seating-reveal">
             {mode === "table" ? (
@@ -347,7 +345,7 @@ export default function SeatingGame({
                     Seat everyone
                   </button>
                 </div>
-                <p className="kit-note">Guests no card reaches through their friends sit at a table of their own.</p>
+                <p className="kit-note">A guest with no path to any card sits alone.</p>
               </>
             )}
           </div>

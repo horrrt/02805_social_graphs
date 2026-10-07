@@ -592,7 +592,7 @@ and Give up; the reveal lifts the fog and sets your route against the shortest o
 
 Spend a budget of hits (cut to the node count) to shrink the largest component; nodes cut off from it turn grey,
 and a hint rings the hit that shrinks it most now. The reveal plots core size against hits for you and three
-bots (most connected, biggest broker, random) and ranks all four. `preset: { budget, hits }` opens it mid-run.
+bots (highest degree, highest betweenness, random) and ranks all four. `preset: { budget, hits }` opens it mid-run.
 
 ```tsx
 <AttackGame n={34} edges={karate} names={names} budgets={[3, 5, 8]} />
@@ -600,9 +600,9 @@ bots (most connected, biggest broker, random) and ranks all four. `preset: { bud
 
 ### SeatingGame({ n, edges, names, positions, reference, sizes, cardCounts, hosts, seed, preset, title, dailyToggle })
 
-Two modes. One table: seat `size` guests beside a seeded host, each chair showing what its guest added to
+Two modes. Single table: seat `size` guests beside a seeded host, each chair showing what its guest added to
 L_in − (Σk)²/4m, with undo; the reveal sets the table against the greedy, random and best-found hosts and counts
-how many of your guests Louvain seats with the host. The whole room: lay place cards, label propagation seats the
+how many of your guests Louvain seats with the host. Full room: lay place cards, label propagation seats the
 rest, and the reveal sets the room's Q against Louvain, greedy merging and a random seating, gives the NMI with
 Louvain (and with `reference: { label, partition }`) and rings the guests Louvain seats elsewhere.
 
@@ -613,7 +613,7 @@ Louvain (and with `reference: { label, partition }`) and rings the guests Louvai
 ### QuizRun({ rounds, lengths, seed, preset, title, dailyToggle })
 
 A run of rounds dealt by seed from `rounds`, filtered by type, with score, streak and the machine's score on the
-unmask rounds; the reveal tabulates every round. Round types: `{ type: "clue", suspects, answer, clues, bags }`,
+suspect rounds; the reveal tabulates every round. Round types: `{ type: "clue", suspects, answer, clues, bags }`,
 `{ type: "two", options, answer, ask, why }` and `{ type: "blank", left, right, answer, decoys, source }`.
 
 ```tsx
@@ -622,7 +622,7 @@ unmask rounds; the reveal tabulates every round. Round types: `{ type: "clue", s
 
 ### ClueReveal({ round, onAnswer, startAt, answered })
 
-One unmask round: clue words shown one at a time (Space), suspects picked with 1 to 4. Fewer clues score more;
+One suspect round: clue words shown one at a time (Space), suspects picked with 1 to 4. Fewer clues score more;
 the machine commits when its top suspect scores at least twice the runner-up after two clues, or at the last clue,
 and the round names its clue and pick once answered. `onAnswer({ correct, points, machine })`.
 

@@ -1,14 +1,14 @@
-// Shatter the core: a budget of hits, each removing one node and its links,
+// Break the network: a budget of hits, each removing one node and its links,
 // to leave the largest connected component as small as you can. Nodes cut
 // off from the core turn grey. A hint marks the hit that would shrink the
 // core most now. When the hits run out, three bots play the same board (the
-// most connected, the biggest broker by betweenness, both recomputed after
+// highest degree and the highest betweenness, both recomputed after
 // every hit, and a seeded random hitter), the reveal plots core size against
 // hits for all four and ranks you. The list beside the map names every node
 // still standing with its links, so the game runs from the keyboard. Rules in
 // game-core.js; frame from GameShell. Style: .kit-attack in post.css.
-import { useEffect, useId, useMemo, useRef, useState } from "react";
-import GameShell, { focusWithin, useGameRun, type GameSettings } from "./GameShell";
+import { useId, useMemo, useRef, useState } from "react";
+import GameShell, { useGameRun, useRefocus, type GameSettings } from "./GameShell";
 import NetworkView from "./NetworkView";
 import { useFittedWidth } from "@/lib/useSize";
 import { useSvgBase } from "./svgBits";
@@ -19,9 +19,9 @@ type Edge = [number, number];
 export type CoreSeries = { key: string; label: string; sizes: number[]; colour: string };
 
 const BOTS: [string, string, string][] = [
-  ["degree", "Most connected", "--access"],
-  ["betweenness", "Biggest broker", "--outbound"],
-  ["random", "Random", "--ink-mute"],
+  ["degree", "Degree bot", "--access"],
+  ["betweenness", "Betweenness bot", "--outbound"],
+  ["random", "Random bot", "--ink-mute"],
 ];
 
 const HEIGHT = 200;
@@ -98,7 +98,7 @@ export default function AttackGame({
   hints = 2,
   seed = 1,
   preset,
-  title = "Shatter the core",
+  title = "Break the network",
   dailyToggle = true,
 }: {
   n: number;
@@ -119,7 +119,7 @@ export default function AttackGame({
   const [hintsLeft, setHintsLeft] = useState(hints);
   const [hinted, setHinted] = useState<number | null>(null);
   const run = useGameRun({
-    game: "attack",
+    game: `attack:${n}:${edges.length}`,
     defaults,
     better: "lower",
     seed,
@@ -143,9 +143,7 @@ export default function AttackGame({
   const listId = useId();
   const root = useRef<HTMLDivElement>(null);
   const list = useRef<HTMLUListElement>(null);
-  useEffect(() => {
-    focusWithin(root.current, list.current?.querySelector<HTMLButtonElement>("button") ?? null);
-  }, [hits.length]);
+  useRefocus(hits.length, root, () => list.current?.querySelector<HTMLButtonElement>("button"));
 
   const hit = (v: number) => {
     if (gone.has(v) || left <= 0 || run.phase !== "playing") return;
@@ -201,11 +199,11 @@ export default function AttackGame({
         run={run}
         title={title}
         dailyToggle={dailyToggle}
-        intro={<p>Each hit removes one node and every link through it. When the hits run out, the score is the size of the largest piece still holding together: smaller is better.</p>}
+        intro={<p>A hit deletes a node along with its links. Once your hits are spent, your score is the size of the largest connected component left, and smaller wins.</p>}
         segments={[{ key: "budget", label: "Hits", options: budgets.map((b) => ({ value: String(b), label: `${b} hits`, sub: b > n ? `cut to ${n}` : undefined })) }]}
         canStart={budget > 0}
         startNote={n === 0 ? "There is nothing to hit." : asked > n ? `Only ${n} nodes: the budget is cut to ${n}.` : undefined}
-        startLabel="Take the contract"
+        startLabel="Begin"
         hud={[
           { label: "Core", value: `${core.length} of ${n}` },
           { label: "Cut off", value: cut.length },
@@ -250,7 +248,7 @@ export default function AttackGame({
             <NetworkView key={cut.join(",")} spec={spec(false)} onNodeClick={(id) => hit(Number(id))} />
           </div>
           <div className="kit-attack-side">
-            <h5 id={listId}>Still standing, most connected first</h5>
+            <h5 id={listId}>Remaining nodes, by degree</h5>
             <ul ref={list} className="kit-game-list" aria-labelledby={listId}>
               {ranked.map((v) => (
                 <li key={v} className={coreSet.has(v) ? undefined : "kit-muted"}>
@@ -272,7 +270,7 @@ export default function AttackGame({
               </button>
             </div>
             <p className="kit-note" aria-live="polite">
-              {hinted !== null ? `Hint: taking out ${name(hinted)} shrinks the core most now. That is not always the most connected name.` : hits.length ? `Last hit: ${name(hits[hits.length - 1])}.` : "Pick your first hit."}
+              {hinted !== null ? `Hint: removing ${name(hinted)} now leaves the smallest core.` : hits.length ? `Last hit: ${name(hits[hits.length - 1])}.` : "Pick your first hit."}
             </p>
           </div>
         </div>

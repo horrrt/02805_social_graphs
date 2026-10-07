@@ -27,7 +27,7 @@ const noop = () => undefined;
 
 const VIEWS = {
   // Ferry links only to Island, which links nowhere: no target has a way back.
-  "games-quest-noway": () => <PathQuest names={TOWN} edges={TOWN_LINKS} homes={[29]} bands={[{ key: "near", label: "Next door", range: [1, 2] }]} />,
+  "games-quest-noway": () => <PathQuest names={TOWN} edges={TOWN_LINKS} homes={[29]} bands={[{ key: "near", label: "Close by", range: [1, 2] }]} />,
   // Out to the Library, then into the Museum and on to the Island: no link leads out.
   "games-quest-stuck": () => <PathQuest names={TOWN} edges={TOWN_LINKS} preset={{ home: 0, target: 3, moves: [7, 3, 4, 27] }} />,
   "games-attack-budget": () => <AttackGame n={4} edges={PATH4} names={PATH4_NAMES} budgets={[8]} preset={{ budget: 8, hits: [1] }} />,

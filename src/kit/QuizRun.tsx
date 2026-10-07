@@ -28,16 +28,16 @@ export type QuizRound = ClueRound | TwoRound | BlankRound;
 /** What a round reports when answered: right or not, the points, and the machine's points where it played. */
 export type RoundResult = { correct: boolean; points: number; machine?: number; note?: string };
 
-type RoundProps<R> = { round: R; onAnswer: (r: RoundResult) => void; seed?: number; startAt?: number; answered?: number | string };
+type RoundProps<R> = { round: R; onAnswer: (r: RoundResult) => void; seed?: number; startAt?: number; answered?: number | string; autoFocus?: boolean };
 
 const KEYS = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
 
-// A round's frame: a focusable box that takes the number keys and Space, and the focus once it mounts if the reader is in the game.
-function RoundBox({ label, onKey, children }: { label: string; onKey: (e: KeyboardEvent<HTMLDivElement>) => void; children: ReactNode }) {
+// A round's frame: a focusable box that takes the number keys and Space; with autoFocus it takes the focus once it mounts if the reader is in the game.
+function RoundBox({ label, onKey, autoFocus = false, children }: { label: string; onKey: (e: KeyboardEvent<HTMLDivElement>) => void; autoFocus?: boolean; children: ReactNode }) {
   const box = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    focusWithin(box.current?.closest(".kit-quiz") as HTMLElement | null, box.current);
-  }, []);
+    if (autoFocus) focusWithin(box.current?.closest(".kit-quiz") as HTMLElement | null, box.current);
+  }, [autoFocus]);
   return (
     <div ref={box} className="kit-quiz-round" tabIndex={0} role="group" aria-label={label} onKeyDown={onKey}>
       {children}
@@ -66,7 +66,7 @@ function Options({ options, picked, right, onPick, disabled }: { options: ReactN
 }
 
 /** <ClueReveal round={round} onAnswer={(r) => …} />: one suspect round. */
-export function ClueReveal({ round, onAnswer, startAt = 1, answered }: RoundProps<ClueRound>) {
+export function ClueReveal({ round, onAnswer, startAt = 1, answered, autoFocus }: RoundProps<ClueRound>) {
   const total = round.clues.length;
   const [shown, setShown] = useState(Math.max(1, Math.min(total, startAt)));
   const [picked, setPicked] = useState<number | null>(answered === undefined ? null : round.suspects.findIndex((s) => s.key === answered));
@@ -100,7 +100,7 @@ export function ClueReveal({ round, onAnswer, startAt = 1, answered }: RoundProp
   };
 
   return (
-    <RoundBox label="Who is it? Keys 1 to 4 answer, Space shows the next clue" onKey={onKey}>
+    <RoundBox label="Who is it? Keys 1 to 4 answer, Space shows the next clue" onKey={onKey} autoFocus={autoFocus}>
       <p className="kit-quiz-ask">Whose page is this? Clue {shown} of {total}.</p>
       <ol className={`kit-quiz-clues${reduced ? "" : " kit-quiz-fade"}`} aria-live="polite">
         {round.clues.slice(0, shown).map((c, i) => (
@@ -131,7 +131,7 @@ export function ClueReveal({ round, onAnswer, startAt = 1, answered }: RoundProp
 }
 
 /** <TwoChoice round={round} onAnswer={(r) => …} />: which of two sentences is real. */
-export function TwoChoice({ round, onAnswer, answered }: RoundProps<TwoRound>) {
+export function TwoChoice({ round, onAnswer, answered, autoFocus }: RoundProps<TwoRound>) {
   const [picked, setPicked] = useState<number | null>(typeof answered === "number" ? answered : null);
   const done = picked !== null;
   const choose = (i: number) => {
@@ -147,7 +147,7 @@ export function TwoChoice({ round, onAnswer, answered }: RoundProps<TwoRound>) {
     }
   };
   return (
-    <RoundBox label="Which sentence is real? Keys 1 and 2 answer" onKey={onKey}>
+    <RoundBox label="Which sentence is real? Keys 1 and 2 answer" onKey={onKey} autoFocus={autoFocus}>
       <p className="kit-quiz-ask">{round.ask ?? "One of these was written by a person, the other by a model. Which is real?"}</p>
       <Options options={round.options.map((o) => <q key={o}>{o}</q>)} picked={picked} right={done ? round.answer : null} onPick={choose} disabled={done} />
       {done ? (
@@ -160,7 +160,7 @@ export function TwoChoice({ round, onAnswer, answered }: RoundProps<TwoRound>) {
 }
 
 /** <FillBlank round={round} onAnswer={(r) => …} seed={3} />: the missing word of a concordance line, among decoys in a seeded order. */
-export function FillBlank({ round, onAnswer, seed = 1, answered }: RoundProps<BlankRound>) {
+export function FillBlank({ round, onAnswer, seed = 1, answered, autoFocus }: RoundProps<BlankRound>) {
   const options = useMemo(() => shuffle([round.answer, ...round.decoys.filter((d) => d !== round.answer)].slice(0, 4), mulberry32(seed)) as string[], [round, seed]);
   const [picked, setPicked] = useState<number | null>(typeof answered === "string" ? options.indexOf(answered) : null);
   const done = picked !== null;
@@ -178,7 +178,7 @@ export function FillBlank({ round, onAnswer, seed = 1, answered }: RoundProps<Bl
     }
   };
   return (
-    <RoundBox label="Fill the blank. Keys 1 to 4 answer" onKey={onKey}>
+    <RoundBox label="Fill the blank. Keys 1 to 4 answer" onKey={onKey} autoFocus={autoFocus}>
       <p className="kit-quiz-ask">Which word was cut from this line?</p>
       <p className="kit-quiz-line">
         <span className="kit-quiz-left">{round.left}</span> <mark>{done ? options[right] : "_____"}</mark> <span>{round.right}</span>
@@ -196,11 +196,11 @@ export function FillBlank({ round, onAnswer, seed = 1, answered }: RoundProps<Bl
 
 const TYPES: [string, string, string][] = [
   ["mixed", "Mixed", "every kind of round"],
-  ["clue", "Unmask", "suspects and clues"],
-  ["two", "Real or not", "two sentences"],
-  ["blank", "Redacted", "fill the blank"],
+  ["clue", "Suspects", "whose words are these"],
+  ["two", "Real or generated", "two sentences"],
+  ["blank", "Fill the gap", "a missing word"],
 ];
-const TYPE_LABEL: Record<string, string> = { clue: "Unmask", two: "Real or not", blank: "Redacted" };
+const TYPE_LABEL: Record<string, string> = { clue: "Suspects", two: "Real or generated", blank: "Fill the gap" };
 
 type Log = { id: string; type: string; result: RoundResult };
 
@@ -213,7 +213,7 @@ export default function QuizRun({
   lengths = [4, 8],
   seed = 1,
   preset,
-  title = "Case files",
+  title = "Text rounds",
   dailyToggle = true,
 }: {
   rounds: QuizRound[];
@@ -229,8 +229,10 @@ export default function QuizRun({
   const [cases, setCases] = useState<QuizRound[]>(() => (preset ? deal(defaults, seed) : []));
   const [log, setLog] = useState<Log[]>(() => (preset?.answered ?? []).map((result, i) => ({ id: cases[i]?.id ?? String(i), type: cases[i]?.type ?? "clue", result })));
   const [pending, setPending] = useState<RoundResult | null>(null);
+  // Rounds take the focus only once the reader has started or moved on, never on a page that opens the run mid-way.
+  const [playing, setPlaying] = useState(false);
   const run = useGameRun({
-    game: "quiz",
+    game: `quiz:${rounds.length}`,
     defaults,
     better: "higher",
     seed,
@@ -239,6 +241,7 @@ export default function QuizRun({
       setCases(deal(s, sd));
       setLog([]);
       setPending(null);
+      setPlaying(true);
     },
   });
   const tally = log.reduce((t, l) => quizAnswer(t, l.result.correct, l.result.points), quizInit());
@@ -255,13 +258,14 @@ export default function QuizRun({
     const out = [...log, { id: current.id, type: current.type, result: pending }];
     setLog(out);
     setPending(null);
+    setPlaying(true);
     if (out.length >= cases.length) run.finish(out.reduce((t, l) => quizAnswer(t, l.result.correct, l.result.points), quizInit()).score);
   };
 
   const available = pool(run.settings).length;
   const roundSeed = (run.seed + i * 7919) >>> 0;
   const body = (r: QuizRound): ReactNode => {
-    const props = { onAnswer: setPending, seed: roundSeed };
+    const props = { onAnswer: setPending, seed: roundSeed, autoFocus: playing };
     if (r.type === "clue") return <ClueReveal key={`${run.runs}-${i}`} round={r} {...props} />;
     if (r.type === "two") return <TwoChoice key={`${run.runs}-${i}`} round={r} {...props} />;
     return <FillBlank key={`${run.runs}-${i}`} round={r} {...props} />;
@@ -273,19 +277,19 @@ export default function QuizRun({
         run={run}
         title={title}
         dailyToggle={dailyToggle}
-        intro={<p>Unmask a page from as few words as you can, tell a real sentence from a generated one, and put a cut word back into its line. A machine plays the unmask rounds beside you.</p>}
+        intro={<p>Guess whose page a few words come from, spot the sentence a model wrote, and restore a missing word. In the suspect rounds a machine that scores each suspect by word counts answers too.</p>}
         segments={[
-          { key: "length", label: "Case length", options: lengths.map((l) => ({ value: String(l), label: `${l} rounds` })) },
+          { key: "length", label: "Rounds", options: lengths.map((l) => ({ value: String(l), label: `${l} rounds` })) },
           { key: "types", label: "Round types", options: TYPES.map(([value, label, sub]) => ({ value, label, sub, disabled: value !== "mixed" && !rounds.some((r) => r.type === value) })) },
         ]}
         canStart={available > 0}
         startNote={available === 0 ? "No rounds of this type." : available < Number(run.settings.length) ? `Only ${available} rounds of this type: some come round twice.` : undefined}
-        startLabel="Open the case file"
+        startLabel="Deal the rounds"
         hud={[
           { label: "Round", value: `${Math.min(i + 1, cases.length)} of ${cases.length}` },
           { label: "Score", value: tally.score },
           { label: "Streak", value: tally.streak, sub: tally.longest ? `best ${tally.longest}` : undefined },
-          { label: "Machine", value: machine, sub: "unmask rounds" },
+          { label: "Machine", value: machine, sub: "suspect rounds" },
         ]}
         fmtScore={(v) => `${v} ${v === 1 ? "point" : "points"}`}
         reveal={
@@ -315,7 +319,7 @@ export default function QuizRun({
               </tbody>
             </table>
             <p className="kit-game-verdict">
-              {tally.score} {tally.score === 1 ? "point" : "points"}, {tally.right} of {tally.answered} right, longest streak {tally.longest}. The machine scored {machine} on the unmask rounds.
+              {tally.score} {tally.score === 1 ? "point" : "points"}, {tally.right} of {tally.answered} right, longest streak {tally.longest}. The machine scored {machine} on the suspect rounds.
             </p>
           </div>
         }
@@ -325,7 +329,7 @@ export default function QuizRun({
             {body(current)}
             <div className="kit-game-tools">
               <button ref={nextRef} type="button" className="kit-game-start" disabled={!pending} onClick={next}>
-                {i + 1 >= cases.length ? "Close the case" : "Next round"}
+                {i + 1 >= cases.length ? "See the results" : "Next round"}
               </button>
             </div>
           </>

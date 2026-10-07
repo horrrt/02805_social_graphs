@@ -8,7 +8,7 @@
 // in localStorage once hydrated and in memory when storage throws; the date
 // for the daily seed is read on the click, never in render. Style:
 // .kit-game in post.css.
-import { useEffect, useId, useReducer, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
+import { useEffect, useId, useReducer, useRef, useState, type KeyboardEvent, type ReactNode, type RefObject } from "react";
 import Readouts, { type ReadoutItem } from "./Readouts";
 import { bestStore, dailySeed, runInit, runReducer, settingsKey } from "./game-core.js";
 
@@ -129,6 +129,16 @@ export function useGameRun({
 export function focusWithin(root: HTMLElement | null, el: HTMLElement | null | undefined) {
   const active = document.activeElement;
   if (el && root && (active === null || active === document.body || root.contains(active))) el.focus();
+}
+
+/** After `key` changes, never on mount, focus what `pick()` returns, through focusWithin: a game opened mid-run leaves the page's focus alone. */
+export function useRefocus(key: unknown, root: RefObject<HTMLElement | null>, pick: () => HTMLElement | null | undefined) {
+  const last = useRef(key);
+  useEffect(() => {
+    if (Object.is(last.current, key)) return;
+    last.current = key;
+    focusWithin(root.current, pick());
+  });
 }
 
 function Segment({ seg, value, onPick }: { seg: GameSegment; value: string; onPick: (v: string) => void }) {

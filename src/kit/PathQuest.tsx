@@ -6,8 +6,8 @@
 // for extra steps. The reveal lifts the fog and sets your route against the
 // shortest ones out and back, whose sum is par. Rules in game-core.js; frame
 // from GameShell. Style: .kit-quest in post.css.
-import { useEffect, useId, useMemo, useRef, useState } from "react";
-import GameShell, { focusWithin, useGameRun, type GameSettings } from "./GameShell";
+import { useId, useMemo, useRef, useState } from "react";
+import GameShell, { useGameRun, useRefocus, type GameSettings } from "./GameShell";
 import NetworkView from "./NetworkView";
 import {
   exits, goal, here, mulberry32, nextStep, par, pickTarget, questHint, questInit, questMove, questSteps, questUndo, revealed, shortestRoute,
@@ -19,9 +19,9 @@ type Edge = [number, number];
 type Quest = ReturnType<typeof questInit>;
 
 const BANDS: QuestBand[] = [
-  { key: "near", label: "Next door", sub: "1 to 2 steps out", range: [1, 2] },
-  { key: "mid", label: "Across town", sub: "3 to 4 steps out", range: [3, 4] },
-  { key: "far", label: "The far side", sub: "5 or more out", range: [5, Infinity] },
+  { key: "near", label: "Close by", sub: "1 or 2 hops", range: [1, 2] },
+  { key: "mid", label: "A walk away", sub: "3 or 4 hops", range: [3, 4] },
+  { key: "far", label: "Far out", sub: "5 hops or more", range: [5, Infinity] },
 ];
 const RATIO = 0.62;
 
@@ -63,7 +63,7 @@ export default function PathQuest({
     if (!preset) return questInit(n, edges, Number(defaults.home), null);
     return (preset.moves ?? []).reduce((q: Quest, v) => questMove(q, v), questInit(n, edges, preset.home, preset.target));
   });
-  const run = useGameRun({ game: "path-quest", defaults, better: "lower", seed, autostart: Boolean(preset), onStart: (s, sd) => setQuest(setUp(s, sd)) });
+  const run = useGameRun({ game: `path-quest:${n}:${edges.length}`, defaults, better: "lower", seed, autostart: Boolean(preset), onStart: (s, sd) => setQuest(setUp(s, sd)) });
 
   const parNow = quest.target === null ? null : par(n, edges, quest.home, quest.target);
   const steps = questSteps(quest);
@@ -75,9 +75,7 @@ export default function PathQuest({
   const exitsId = useId();
   const root = useRef<HTMLDivElement>(null);
   const list = useRef<HTMLUListElement>(null);
-  useEffect(() => {
-    focusWithin(root.current, list.current?.querySelector<HTMLButtonElement>("button:not(:disabled)") ?? null);
-  }, [quest.path.length]);
+  useRefocus(quest.path.length, root, () => list.current?.querySelector<HTMLButtonElement>("button:not(:disabled)"));
 
   const act = (next: Quest) => {
     setQuest(next);
@@ -145,7 +143,7 @@ export default function PathQuest({
         rules={
           <ol>
             <li>Pick a link out of the page you stand on, on the map or in the list.</li>
-            <li>Reach the target, then get home. The way back is rarely the way you came.</li>
+            <li>Reach the target, then get home. Links run one way, so the route home usually differs from the route out.</li>
             <li>A hint takes the next shortest step for 2 extra steps; an undo costs 1.</li>
           </ol>
         }

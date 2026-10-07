@@ -234,11 +234,11 @@ export default function Page() {
           </p>
           <h3>PathQuest: there and back on a one-way town, under fog</h3>
           <DemoGames demo="games-quest" />
-          <h3>AttackGame: shatter the karate club&apos;s core</h3>
+          <h3>AttackGame: break up the karate club</h3>
           <DemoGames demo="games-attack" />
-          <h3>SeatingGame: one table, or the whole room</h3>
+          <h3>SeatingGame: a single table or a full room</h3>
           <DemoGames demo="games-seating" />
-          <h3>QuizRun: unmask, real or not, and redacted rounds</h3>
+          <h3>QuizRun: suspects, real or generated, and fill the gap</h3>
           <DemoGames demo="games-quiz" />
         </PostSection>
         {/* ==== end Kit: games ==== */}

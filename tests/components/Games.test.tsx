@@ -50,10 +50,10 @@ test("a quiz run: pick settings, start, answer, and reach the reveal", async () 
   await user.click(screen.getByRole("button", { name: /^2 rounds/ }));
   assert.equal(screen.getByRole("button", { name: /^2 rounds/ }).getAttribute("aria-pressed"), "true");
   await user.click(screen.getByRole("button", { name: /^1 rounds/ }));
-  await user.click(screen.getByRole("button", { name: "Open the case file" }));
+  await user.click(screen.getByRole("button", { name: "Deal the rounds" }));
   await act(async () => screen.getByRole("group", { name: /Who is it/ }).focus());
   await user.keyboard("2");
-  await user.click(screen.getByRole("button", { name: "Close the case" }));
+  await user.click(screen.getByRole("button", { name: "See the results" }));
   assert.ok(screen.getByRole("button", { name: "Play again" }));
   assert.match(document.body.textContent ?? "", /3 points, 1 of 1 right/);
 });
