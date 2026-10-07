@@ -164,7 +164,7 @@
   background-clip: text;
   color: transparent;
   font-family: var(--font-display);
-  font-size: clamp(64px, 12vw, 112px);
+  font-size: var(--fs-jumbo);
   font-weight: 800;
   letter-spacing: -0.04em;
   line-height: 0.9;
@@ -181,7 +181,7 @@
 .w6s-hero h1 {
   color: var(--w6s-ink);
   font-family: var(--font-display);
-  font-size: clamp(40px, 7vw, 72px);
+  font-size: var(--fs-display);
   font-weight: 800;
   letter-spacing: -0.03em;
   line-height: 0.98;
@@ -312,7 +312,7 @@
 .w6s-idea {
   color: var(--w6s-ink);
   font-family: var(--font-display);
-  font-size: clamp(28px, 4.5vw, 44px);
+  font-size: var(--fs-h2);
   font-weight: 800;
   letter-spacing: -0.025em;
   line-height: 1.05;
@@ -602,7 +602,7 @@
 .corridor .w6-story .w6e-finder-big {
   color: #fff;
   font-family: var(--font-display);
-  font-size: clamp(28px, 5vw, 40px);
+  font-size: var(--fs-numeral);
   font-weight: 800;
   letter-spacing: -0.03em;
   line-height: 1;
@@ -708,7 +708,7 @@
 .corridor .w6-story .w6e-heat th[scope="col"] {
   background: transparent;
   color: #c5d0ea;
-  font-size: 10px;
+  font-size: var(--fs-caption);
   font-weight: 700;
   letter-spacing: 0.02em;
   padding-bottom: 8px;
@@ -790,8 +790,10 @@
 }
 
 .corridor .w6-story .w6e-morph .w6e-word {
-  font-size: calc(0.72rem + (11 - min(var(--rank, 0), 11)) * 0.04rem);
-  transition: font-size 200ms ease;
+  font-size: var(--fs-small);
+  transform: scale(calc(1.12 - (0.035 * min(var(--rank, 0), 10))));
+  transform-origin: left center;
+  transition: transform 200ms ease;
 }
 
 .corridor .w6-story .w6e-morph ol {
@@ -875,7 +877,7 @@
   border: 1px solid rgba(255, 154, 74, 0.35);
   border-radius: 999px;
   color: var(--w6s-orange);
-  font-size: 10px;
+  font-size: var(--fs-caption);
   font-weight: 700;
   letter-spacing: 0.04em;
   padding: 1px 7px;
@@ -1090,7 +1092,7 @@
 .w6s-pipe {
   align-self: center;
   color: var(--w6s-violet);
-  font-size: 20px;
+  font-size: var(--fs-h4);
   padding: 0 4px;
 }
 

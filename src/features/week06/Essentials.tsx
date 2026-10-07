@@ -13,8 +13,11 @@ import { SegmentedControl } from "@/components/post/SegmentedControl";
 import { island, useIslandReady } from "@/lib/island";
 import { useData } from "@/lib/useData";
 import { useHydrated } from "@/lib/useHydrated";
+import { useTokens, useTypeScale } from "@/lib/useTypeScale";
 import { asset } from "@/scripts/site.js";
 import { FILES, START, fit, lengths, pair, short, three, topicOverlap, two } from "@/scripts/week06-essentials.js";
+
+const CHART_TOKENS = ["--ink", "--ink-soft", "--ink-mute", "--access", "--people", "--w4-accent"] as const;
 
 type Any = any; // eslint-disable-line @typescript-eslint/no-explicit-any
 type Key = keyof typeof FILES;
@@ -121,7 +124,7 @@ function WordCloud({
             role={onPick ? "option" : undefined}
             aria-selected={active === i.word}
             className={`w6e-chip${active === i.word ? " is-active" : ""}${GRAMMAR.has(i.word) ? " is-grammar" : ""}`}
-            style={{ fontSize: `${0.7 + t * 1.15}rem`, opacity: 0.55 + t * 0.45 }}
+            style={{ transform: `scale(${0.75 + t * 0.7})`, opacity: 0.55 + t * 0.45 }}
             title={i.tip}
             onClick={onPick ? () => onPick(i.word) : undefined}
             disabled={!onPick}
@@ -279,6 +282,8 @@ function Contrast() {
   const [picked, setPicked] = useState("telepathy");
   const [focus, setFocus] = useState<"all" | "beyond" | "lean">("all");
   const [open, setOpen] = useState(false);
+  const tokens = useTokens(CHART_TOKENS);
+  const scale = useTypeScale();
 
   const catalog = useMemo(() => {
     if (!data) return [] as Any[];
@@ -300,9 +305,17 @@ function Contrast() {
   }, [catalog, picked, query]);
 
   const option = useMemo(() => {
-    if (!data) return null;
+    if (!data || !tokens || !scale) return null;
     const cut = data.null.top_z_max as number;
     const term = catalog;
+    const mute = tokens["--ink-mute"];
+    const soft = tokens["--ink-soft"];
+    const ink = tokens["--ink"];
+    const cyan = tokens["--access"];
+    const orange = tokens["--people"];
+    const violet = tokens["--w4-accent"];
+    const caption = scale.fs("caption");
+    const small = scale.fs("small");
     const group = (test: (t: Any) => boolean) => term.filter(test).map((t) => ({ value: [t[4], t[3]], name: t[0], z: t[5], f: t[1], m: t[2] }));
     const series = (name: string, d: Any[], size: number, color?: string) => ({ type: "scatter", name, data: d, symbolSize: size, ...(color ? { itemStyle: { color } } : {}) });
     const hit = hitTerm ? group((t) => t[0] === hitTerm[0]) : [];
@@ -320,8 +333,8 @@ function Contrast() {
         type: "value", min: 0, max: 1,
         name: "frequency rank on men's pages →",
         nameLocation: "middle", nameGap: 28,
-        nameTextStyle: { color: "#9aa8c7", fontSize: 11 },
-        axisLabel: { color: "#7a8fac" },
+        nameTextStyle: { color: soft, fontSize: caption },
+        axisLabel: { color: mute },
         splitLine: { lineStyle: { color: "rgba(120,140,180,0.12)" } },
         axisLine: { lineStyle: { color: "rgba(120,140,180,0.25)" } },
       },
@@ -329,31 +342,31 @@ function Contrast() {
         type: "value", min: 0, max: 1,
         name: "on women's pages →",
         nameLocation: "middle", nameGap: 40,
-        nameTextStyle: { color: "#9aa8c7", fontSize: 11 },
-        axisLabel: { color: "#7a8fac" },
+        nameTextStyle: { color: soft, fontSize: caption },
+        axisLabel: { color: mute },
         splitLine: { lineStyle: { color: "rgba(120,140,180,0.12)" } },
         axisLine: { lineStyle: { color: "rgba(120,140,180,0.25)" } },
       },
       tooltip: {
         backgroundColor: "rgba(12,16,32,0.92)",
         borderColor: "rgba(160,120,255,0.35)",
-        textStyle: { color: "#e8eefc" },
+        textStyle: { color: ink },
         formatter: (p: Any) => `${p.data.name}: ${p.data.f}× women's pages, ${p.data.m}× men's; z ${p.data.z}`,
       },
-      legend: { bottom: 0, textStyle: { color: "#c5d0ea" }, data: ["no clear lean", "leans, |z| over 1.96", "beyond every shuffle"] },
+      legend: { bottom: 0, textStyle: { color: soft }, data: ["no clear lean", "leans, |z| over 1.96", "beyond every shuffle"] },
       series: [
         ...(showNone ? [series("no clear lean", none, 3, "rgba(120,130,150,0.28)")] : []),
-        ...(showLean ? [series("leans, |z| over 1.96", lean, 6, "rgba(255,140,60,0.75)")] : []),
-        ...(showBeyond ? [series("beyond every shuffle", beyond, 12, "rgba(180,120,255,0.95)")] : []),
+        ...(showLean ? [series("leans, |z| over 1.96", lean, 6, orange)] : []),
+        ...(showBeyond ? [series("beyond every shuffle", beyond, 12, violet)] : []),
         ...(hit.length ? [{
-          ...series("your word", hit, 22, "#5ce1ff"),
-          label: { show: true, formatter: (p: Any) => p.data.name, position: "top", color: "#5ce1ff", fontWeight: 700, fontSize: 14 },
-          itemStyle: { color: "#5ce1ff", shadowBlur: 18, shadowColor: "rgba(92,225,255,0.85)" },
+          ...series("your word", hit, 22, cyan),
+          label: { show: true, formatter: (p: Any) => p.data.name, position: "top", color: cyan, fontWeight: 700, fontSize: small },
+          itemStyle: { color: cyan, shadowBlur: 18, shadowColor: "rgba(92,225,255,0.85)" },
           z: 10,
         }] : []),
       ],
     };
-  }, [data, catalog, hitTerm, focus]);
+  }, [data, catalog, hitTerm, focus, tokens, scale]);
 
   if (failed) return <div className="w6e-app" id="contrast-app"><Failed /></div>;
   if (!data || !option) return <div className="w6e-app" id="contrast-app"></div>;
@@ -665,7 +678,7 @@ function Contexts() {
                             style={{
                               background: n ? `rgba(92, 225, 255, ${0.08 + t * 0.55})` : "transparent",
                               boxShadow: n ? `inset 0 0 0 1px rgba(92,225,255,${0.15 + t * 0.45})` : undefined,
-                              fontSize: `${0.65 + t * 0.55}rem`,
+                              transform: n ? `scale(${0.85 + t * 0.35})` : undefined,
                               fontWeight: t > 0.55 ? 700 : 500,
                               color: n ? `rgba(220, 245, 255, ${0.55 + t * 0.45})` : undefined,
                             }}
