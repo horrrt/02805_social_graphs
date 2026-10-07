@@ -205,7 +205,7 @@ export function WhoseLineGame({ data, random = Math.random, level, clock = Date.
     setPhase(livesLeft === 0 ? "over" : "answered");
   };
 
-  const pace = useCountdown(LIMIT.groups, phase === "card", shown, () => say("time"), clock);
+  const pace = useCountdown(LIMIT.groups, phase === "card", shown, () => say("time"), clock, tour.running);
 
   const next = () => {
     setInspected(false);

@@ -161,7 +161,7 @@ export function TezguinoGame({ data, random = Math.random, level, clock = Date.n
 
   const answered = phase === "answered" || phase === "over";
   useHelpKey("h", () => setPeeks((n) => n + 1), phase === "play" && hidden !== null && peeks < hidden.sentences.length);
-  const pace = useCountdown(LIMIT.contexts, phase === "play", dealt, () => pick(-1), clock);
+  const pace = useCountdown(LIMIT.contexts, phase === "play", dealt, () => pick(-1), clock, tour.running);
   const now = speed(pace.elapsed, LIMIT.contexts);
   const right = picked !== null && hidden !== null && picked === order[at % order.length];
 

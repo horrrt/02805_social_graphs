@@ -99,7 +99,6 @@ export function HotColdGame({ data, random = Math.random, level, clock = Date.no
   const cos = useMemo(() => (data && target !== null ? cosinesTo(data, target) : null), [data, target]);
   const rank = useMemo(() => (cos && target !== null ? ranks(cos, target) : null), [cos, target]);
   const playing = phase === "play";
-  const pace = useCountdown(LIMIT.vectors, playing, dealt, () => giveUp(true), clock);
 
   // Keyboard players land on the input while playing and on "Next word" after.
   useEffect(() => {
@@ -128,6 +127,7 @@ export function HotColdGame({ data, random = Math.random, level, clock = Date.no
     deal(0, shuffled(data.targets.map((_, i) => i), random));
   };
   const tour = useTour(hotColdTour, start);
+  const pace = useCountdown(LIMIT.vectors, playing, dealt, () => giveUp(true), clock, tour.running);
 
   const add = (w: string, hint = false): Guess | null => {
     if (!cos || !rank) return null;

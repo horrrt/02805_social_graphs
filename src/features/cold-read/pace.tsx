@@ -32,11 +32,14 @@ export type Countdown = { elapsed: number; left: number; fraction: number; stop:
 
 /**
  * A countdown for the current item: restarts when `key` changes, runs while
- * `running`, and calls onTimeout once when it reaches zero. stop() freezes it
- * and returns the elapsed milliseconds, for scoring an answer.
+ * `running`, and calls onTimeout once when it reaches zero. While `paused`
+ * (a tutorial is on screen) the clock holds still and picks up where it
+ * stopped. stop() freezes it and returns the elapsed milliseconds, for
+ * scoring an answer.
  */
-export function useCountdown(limitS: number, running: boolean, key: unknown, onTimeout: () => void, clock: () => number = Date.now): Countdown {
+export function useCountdown(limitS: number, running: boolean, key: unknown, onTimeout: () => void, clock: () => number = Date.now, paused = false): Countdown {
   const begun = useRef(clock());
+  const held = useRef<number | null>(paused ? clock() : null);
   const frozen = useRef<number | null>(null);
   const fired = useRef(false);
   const timeout = useRef(onTimeout);
@@ -44,15 +47,28 @@ export function useCountdown(limitS: number, running: boolean, key: unknown, onT
   const [now, setNow] = useState(() => clock());
 
   useEffect(() => {
-    begun.current = clock();
+    const t = clock();
+    begun.current = t;
+    if (held.current !== null) held.current = t;
     frozen.current = null;
     fired.current = false;
-    setNow(clock());
+    setNow(t);
     // A new item restarts the clock; the clock function itself never changes.
   }, [key]);
 
   useEffect(() => {
-    if (!running) return;
+    const t = clock();
+    if (paused && held.current === null) held.current = t;
+    if (!paused && held.current !== null) {
+      // Shift the start by the time spent paused, so none of it counts.
+      begun.current += t - held.current;
+      held.current = null;
+    }
+    setNow(t);
+  }, [paused]);
+
+  useEffect(() => {
+    if (!running || paused) return;
     // setInterval, not requestAnimationFrame: a hidden tab or pane pauses rAF, and the clock must keep time.
     const id = setInterval(() => {
       const t = clock();
@@ -63,16 +79,17 @@ export function useCountdown(limitS: number, running: boolean, key: unknown, onT
       }
     }, 100);
     return () => clearInterval(id);
-  }, [running, limitS, key]);
+  }, [running, paused, limitS, key]);
 
-  const elapsed = frozen.current ?? Math.max(0, now - begun.current);
+  const at = () => held.current ?? clock();
+  const elapsed = frozen.current ?? Math.max(0, (held.current ?? now) - begun.current);
   const left = Math.max(0, limitS * 1000 - elapsed);
   return {
     elapsed,
     left,
     fraction: left / (limitS * 1000),
     stop: () => {
-      if (frozen.current === null) frozen.current = Math.max(0, clock() - begun.current);
+      if (frozen.current === null) frozen.current = Math.max(0, at() - begun.current);
       return frozen.current;
     },
   };
