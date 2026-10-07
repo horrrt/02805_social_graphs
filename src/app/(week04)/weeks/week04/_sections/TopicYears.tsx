@@ -1,7 +1,9 @@
 import { Drawer } from "@/components/post/Drawer";
 import { Drawers } from "@/components/post/Drawers";
 import { TocItem } from "@/features/week04/frame/DeepShell";
+import { Roles } from "@/features/week04/roles/Roles";
 import { StripPart } from "@/features/week04/strips/Strips";
+import { Years } from "@/features/week04/years/Years";
 import { GlossTerm } from "./GlossTerm";
 
 // Deep dive topic: five years.
@@ -29,7 +31,7 @@ export function TopicYears() {
           <span className="qa-cue">Five years of filings, 2022 to 2026</span>
         </summary>
         <div className="qa-body cut-body" id="years-body">
-          <p aria-live="polite" className="status-line" id="years-status">Loading five years of filings…</p>
+          <Years />
         </div>
       </details>
       <details className="qa cut rx-panel" data-box="cut-roles" id="cut-roles" name="w4-panel-years">
@@ -40,59 +42,7 @@ export function TopicYears() {
           <p className="w4-box-intro">
             Certified filings, stacked by detailed occupation, SOC major group or employer, across the same five fiscal years as the box above. Switch the split, the scale or the window; 2026 covers October 2025 to June 2026 only.
           </p>
-          <div className="card w4-card" id="roles-card">
-            <header className="w4-q">
-              <span className="w4-num">2</span>
-              <div>
-                <h2>Who filed, and for which roles?</h2>
-                <p className="w4-answer" id="roles-answer">Loading…</p>
-              </div>
-            </header>
-            <div className="roles-toolbar" role="group" aria-label="Chart controls">
-              <div className="axis-modes-group">
-                <span className="axis-modes-label" id="roles-split-label">Split by</span>
-                <div aria-labelledby="roles-split-label" className="axis-modes" role="group">
-                  <button aria-pressed="true" data-roles-split="occupations" type="button">Roles</button>
-                  {" "}
-                  <button aria-pressed="false" data-roles-split="groups" type="button">Occupation groups</button>
-                  {" "}
-                  <button aria-pressed="false" data-roles-split="employer" type="button">Employer</button>
-                  {" "}
-                  <button aria-pressed="false" data-roles-split="placement" type="button">Placed or direct</button>
-                </div>
-              </div>
-              <div className="axis-modes-group">
-                <span className="axis-modes-label" id="roles-scale-label">Scale</span>
-                <div aria-labelledby="roles-scale-label" className="axis-modes" role="group">
-                  <button aria-pressed="true" data-roles-scale="count" type="button">Filings</button>
-                  {" "}
-                  <button aria-pressed="false" data-roles-scale="percent" type="button">100%</button>
-                </div>
-              </div>
-              <div className="axis-modes-group">
-                <span className="axis-modes-label" id="roles-window-label">Months</span>
-                <div aria-labelledby="roles-window-label" className="axis-modes" role="group">
-                  <button aria-pressed="true" data-roles-window="full" type="button">Full year</button>
-                  {" "}
-                  <button aria-pressed="false" data-roles-window="oct_jun" type="button">Oct to Jun only</button>
-                </div>
-              </div>
-            </div>
-            <p className="axis-note">
-              Each band is one series, largest at the bottom. Hover a band for its numbers; click a legend entry to hide it.
-            </p>
-            <div className="roles-chart-wrap">
-              <div className="chart-host" id="roles-chart"></div>
-              <div className="roles-legend" id="roles-legend"></div>
-            </div>
-            <p className="roles-summary" id="roles-summary" aria-live="polite"></p>
-            <div className="notice" id="roles-notice">
-              <span className="ico">!</span>
-              {" "}
-              <span id="roles-notice-text">Loading…</span>
-            </div>
-            <Drawers variant="foot" id="roles-reveals" />
-          </div>
+          <Roles />
         </div>
       </details>
       <details className="rx-panel" name="w4-panel-years" data-box="who-q4">
