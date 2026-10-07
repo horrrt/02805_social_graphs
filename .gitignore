@@ -34,3 +34,6 @@ ds-bundle/
 .design-sync/node_modules
 .design-sync/pkg/gen/
 .design-sync/pkg/types/
+
+# a symlink to the main checkout's build/ in worktrees
+build
