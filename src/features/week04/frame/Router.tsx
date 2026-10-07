@@ -38,12 +38,10 @@ const entryId = (a: HTMLAnchorElement) => a.dataset.target || decodeURIComponent
 
 const isOpen = (el: Element | null): boolean => el instanceof HTMLDetailsElement && el.open;
 
-// The method tab showing now, or the one asked for before the tabs were built.
+// The method tab showing now, or the one asked for before the tabs work.
 function currentMethod() {
-  const pressed = document.querySelector<HTMLElement>('.w4m-tab[aria-pressed="true"]');
-  const root = $("w4m-root");
-  if (root && !root.hidden && pressed) return pressed.dataset.panel;
-  return deep.getState().method?.panel || "gn";
+  const { tab, method } = deep.getState();
+  return tab ?? method?.panel ?? "gn";
 }
 
 // Is the box behind a contents entry the one on show?
@@ -135,7 +133,6 @@ function RouterView() {
   // in href (the box is not in the page source) and the box in data-target.
   useDocumentEvent("click", (event) => {
     const target = event.target instanceof Element ? event.target : null;
-    if (target?.closest(".w4m-tab")) frame(syncContents);
     if (event.defaultPrevented || event.button !== 0) return;
     if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     const a = target?.closest<HTMLAnchorElement>('a.rx-toc-item, .rx-catalogue a[href^="#"]');
@@ -183,9 +180,9 @@ function RouterView() {
     window.addEventListener("popstate", again, { signal: controller.signal });
     route();
     syncContents();
-    // A method tab pressed in the methods panel moves the contents mark too.
+    // A box picked, a method asked for or a method tab pressed moves the contents mark too.
     const unsubscribe = deep.subscribe((s, prev) => {
-      if (s.show !== prev.show || s.method !== prev.method) syncContents();
+      if (s.show !== prev.show || s.method !== prev.method || s.tab !== prev.tab) syncContents();
     });
     return () => {
       controller.abort();

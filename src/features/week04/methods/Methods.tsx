@@ -32,7 +32,7 @@ import {
   stripScale,
 } from "@/scripts/week04-methods.js";
 import { mainland } from "@/scripts/week04-place.js";
-import { deep } from "../frame/deep";
+import { deep, setTab } from "../frame/deep";
 import { W4Chart } from "../W4Chart";
 import { W4, useW4Data } from "../useW4Data";
 import { useT, type T } from "../useT";
@@ -532,11 +532,15 @@ function MethodsView() {
     () => (explore && place && T && mapReady ? { explore, place, ctx: methodsContext(explore, place), T } : null),
     [explore, place, T, mapReady],
   );
-  const [tab, setTab] = useState("gn");
+  const [tab, setTabShown] = useState("gn");
   const ask = useStore(deep, (s) => s.method);
   useEffect(() => {
-    if (live && ask) setTab(ask.panel);
+    if (live && ask) setTabShown(ask.panel);
   }, [live, ask]);
+  // The deep dive's contents mark the method on show.
+  useEffect(() => {
+    if (live) setTab(tab);
+  }, [live, tab]);
   // The maps were set up while their container was hidden; size them once it shows.
   useEffect(() => {
     if (!live) return;
@@ -545,7 +549,7 @@ function MethodsView() {
   }, [live, tab]);
   useIslandReady(live !== null);
   const status = live ? null : error ? `Community explorables failed to load: ${error.message ?? error}` : LOADING;
-  return <Body live={live} status={status} tab={tab} onTab={setTab} />;
+  return <Body live={live} status={status} tab={tab} onTab={setTabShown} />;
 }
 
 /** <Methods />: the #cut-methods body's status line and tabs. */
