@@ -1,6 +1,7 @@
 import { PostSection } from "@/components/post/PostSection";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { KitState } from "@/features/kit-page/states";
+import { TextState } from "@/features/kit-page/states-text";
 
 export default function Page() {
   return (
@@ -169,6 +170,58 @@ export default function Page() {
           <h3>Text without its phrase</h3>
           <KitState state="term-missing" />
         </PostSection>
+        {/* ==== Kit batch D: Text ==== */}
+        <PostSection id="state-text">
+          <h2>Text</h2>
+          <div className="w4-two">
+            <div>
+              <h3>TaggedTokens: no tokens, an empty source</h3>
+              <TextState state="text-tokens-empty" />
+            </div>
+            <div>
+              <h3>TaggedTokens: fewer tokens than n</h3>
+              <TextState state="text-tokens-short" />
+            </div>
+          </div>
+          <h3>TaggedTokens: long and empty tokens, overlapping and overrunning spans</h3>
+          <TextState state="text-tokens-awkward" />
+          <div className="w4-two">
+            <div>
+              <h3>ContributionBars: no items, a bias only</h3>
+              <TextState state="text-contrib-empty" />
+            </div>
+            <div>
+              <h3>ContributionBars: off the scale, zero, NaN, long labels</h3>
+              <TextState state="text-contrib-awkward" />
+            </div>
+          </div>
+          <h3>RankedResults: three columns, an empty one, long snippets, negative scores</h3>
+          <TextState state="text-results-awkward" />
+          <h3>RankedResults: no engines</h3>
+          <TextState state="text-results-none" />
+          <h3>MethodCompare: four cards, long titles, an empty body</h3>
+          <TextState state="text-compare-four" />
+          <h3>MethodCompare: no cards</h3>
+          <TextState state="text-compare-none" />
+          <div className="w4-two">
+            <div>
+              <h3>CountMatrix: PPMI of eighteen columns, a zero row highlighted</h3>
+              <TextState state="text-matrix-ppmi" />
+            </div>
+            <div>
+              <h3>CountMatrix: TF-IDF with an idf of 0 and an empty row</h3>
+              <TextState state="text-matrix-tfidf" />
+            </div>
+          </div>
+          <div className="w4-two">
+            <div>
+              <h3>AxisMap: log axes with zero, negative and far-apart points</h3>
+              <TextState state="text-logmap-edge" />
+            </div>
+            <div></div>
+          </div>
+        </PostSection>
+        {/* ==== end Kit batch D: Text ==== */}
       </main>
       <SiteFooter>
         <span>

@@ -34,3 +34,16 @@ export { default as AnalogyPlot } from "./AnalogyPlot";
 export type { AnalogyPoints } from "./AnalogyPlot";
 export { default as GuessRanker } from "./GuessRanker";
 export type { GuessItem, Scores } from "./GuessRanker";
+
+// Text: tokens, contributions, search results and method comparisons for the
+// language weeks. Their methods are DOM-free in text-core.js.
+export { default as TaggedTokens } from "./TaggedTokens";
+export type { TaggedToken, TokenGram, TokenSource, TokenSpan, TokenTone } from "./TaggedTokens";
+export { default as ContributionBars } from "./ContributionBars";
+export type { Contribution, ContributionTotal } from "./ContributionBars";
+export { default as RankedResults } from "./RankedResults";
+export type { ResultColumn, ResultDoc, ResultQuery } from "./RankedResults";
+export { default as MethodCompare } from "./MethodCompare";
+export type { MethodCard } from "./MethodCompare";
+export type { MatrixTransform } from "./CountMatrix";
+export type { MapSides } from "./AxisMap";

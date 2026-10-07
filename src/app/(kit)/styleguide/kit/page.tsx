@@ -1,6 +1,7 @@
 import { PostSection } from "@/components/post/PostSection";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { Demo } from "@/features/kit-page/demos";
+import { TextDemo } from "@/features/kit-page/demos-text";
 
 export default function Page() {
   return (
@@ -124,6 +125,51 @@ export default function Page() {
             </div>
           </div>
         </PostSection>
+        {/* ==== Kit batch D: Text ==== */}
+        <PostSection id="demo-text">
+          <h2>Text: tokens, contributions, search and methods side by side</h2>
+          <p className="sub">
+            TaggedTokens, ContributionBars, RankedResults and MethodCompare from src/kit, and the new CountMatrix and
+            AxisMap options, with toy words and numbers. The methods behind them are in src/kit/text-core.js.
+          </p>
+          <h3>TaggedTokens: a token pipeline you can edit</h3>
+          <TextDemo demo="text-pipeline" />
+          <div className="w4-two">
+            <div>
+              <h3>TaggedTokens: an n-gram window</h3>
+              <TextDemo demo="text-ngram" />
+            </div>
+            <div>
+              <h3>TaggedTokens: BIO tags become entity spans</h3>
+              <TextDemo demo="text-ner" />
+            </div>
+          </div>
+          <div className="w4-two">
+            <div>
+              <h3>ContributionBars: a sentiment lexicon with negation</h3>
+              <TextDemo demo="text-lexicon" />
+            </div>
+            <div>
+              <h3>ContributionBars: a logistic classifier&apos;s features</h3>
+              <TextDemo demo="text-classifier" />
+            </div>
+          </div>
+          <h3>RankedResults: two engines, one query</h3>
+          <TextDemo demo="text-search" />
+          <h3>MethodCompare: one sentence, three sentiment methods</h3>
+          <TextDemo demo="text-compare" />
+          <div className="w4-two">
+            <div>
+              <h3>CountMatrix: counts, PPMI, TF and TF-IDF</h3>
+              <TextDemo demo="text-ppmi" />
+            </div>
+            <div>
+              <h3>AxisMap: two rates on log axes</h3>
+              <TextDemo demo="text-logmap" />
+            </div>
+          </div>
+        </PostSection>
+        {/* ==== end Kit batch D: Text ==== */}
       </main>
       <SiteFooter>
         <span>
