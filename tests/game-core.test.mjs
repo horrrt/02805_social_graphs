@@ -56,6 +56,7 @@ test("the run goes idle → playing → reveal and refuses actions out of turn",
   assert.deepEqual([r.phase, r.score], ["reveal", 7]);
   const again = G.runReducer(r, { type: "again" });
   assert.deepEqual([again.phase, again.seed, again.runs], ["playing", 5, 2]);
+  assert.equal(G.runReducer(r, { type: "again", seed: 4 }).seed, 4, "the daily seed replays");
   assert.equal(G.runReducer(r, { type: "replay" }).phase, "idle");
   assert.equal(G.runReducer(G.runReducer(G.runInit(), { type: "start", seed: 42 }), { type: "replay" }).seed, 42);
 });

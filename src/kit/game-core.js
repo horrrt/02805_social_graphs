@@ -101,8 +101,8 @@ export function runInit(seed = 1) {
 
 /**
  * The run every game goes through: idle → playing → reveal, then back to idle
- * (replay) or straight into a new game (again, the next seed). Actions:
- * { type: "start", seed? }, { type: "finish", score }, { type: "again" },
+ * (replay) or straight into a new game (again: the next seed, or the one
+ * given). Actions: { type: "start", seed? }, { type: "finish", score }, { type: "again", seed? },
  * { type: "replay" }. An action out of turn returns the state unchanged.
  */
 export function runReducer(state, action) {
@@ -115,7 +115,7 @@ export function runReducer(state, action) {
       return { ...state, phase: "reveal", score: action.score ?? null };
     case "again":
       if (state.phase !== "reveal") return state;
-      return { ...state, phase: "playing", seed: (state.seed + 1) >>> 0, runs: state.runs + 1, score: null };
+      return { ...state, phase: "playing", seed: action.seed ?? (state.seed + 1) >>> 0, runs: state.runs + 1, score: null };
     case "replay":
       if (state.phase === "idle") return state;
       return { ...state, phase: "idle", score: null };
