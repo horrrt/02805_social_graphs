@@ -16,7 +16,6 @@
 
 import { api } from "./corridor.js";
 import { corridor } from "../features/week03/store.js";
-import { installQuestions } from "./questions.js";
 import { installViews } from "./echarts-views.js";
 import { loadVendor as loadSharedVendor } from "./runtime/vendor.js";
 
@@ -285,7 +284,7 @@ function renderBar(chosen, onChange) {
   if (label) label.textContent = "Views";
 }
 
-// Until the style bar, the questions and the views are islands, the entry
+// Until the style bar and the views are islands, the entry
 // wires them here, once the islands have the data in and the renderer chosen.
 function legacy() {
   let wired = false;
@@ -314,7 +313,6 @@ function legacy() {
       window.history.replaceState(null, "", url.pathname + url.search);
       corridor.setState({ style: { ...chosen } });
     });
-    installQuestions(api);
     installViews(api, loadVendor);
   };
   wire(corridor.getState());

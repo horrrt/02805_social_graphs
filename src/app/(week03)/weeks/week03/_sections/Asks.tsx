@@ -1,3 +1,4 @@
+import { QAnswer, QChart, RingControls, RingScope } from "@/features/week03/questions/Questions";
 // 9: everything that goes deeper than the main path.
 export function Asks() {
   return (
@@ -17,50 +18,40 @@ export function Asks() {
             <div className="qa-body">
               <article className="qa-item">
                 <h3>1 · Which corridors actually carry the world?</h3>
-                <div className="qa-controls">
-                  <label htmlFor="q-ring-year">Year</label>
-                  <div className="qa-slider">
-                    <input defaultValue="7" aria-label="Year of the ring" id="q-ring-year" max="7" min="0" step="1" type="range" />
-                    <div className="ends">
-                      <span>1990</span>
-                      <span>2024</span>
-                    </div>
-                  </div>
-                  <b className="qa-slider-now" id="q-ring-now">2024</b>
-                </div>
-                <p className="axis-note" id="q-ring-scope"></p>
-                <canvas aria-label="Chart: which corridors carry the world's migrants" className="chart" height="660" id="q-ring" role="img" width="760"></canvas>
-                <p className="qa-answer" id="q-ring-answer"></p>
+                <RingControls />
+                <RingScope />
+                <QChart id="q-ring" width="760" height="660" label="Chart: which corridors carry the world's migrants" />
+                <QAnswer chart="q-ring" />
               </article>
               <article className="qa-item">
                 <h3>
                   2 · Where do migrants live, and where were they born?
                 </h3>
-                <canvas aria-label="Chart: where migrants live and where they were born" className="chart" height="470" id="q-hosts" role="img" width="760"></canvas>
-                <p className="qa-answer" id="q-hosts-answer"></p>
+                <QChart id="q-hosts" width="760" height="470" label="Chart: where migrants live and where they were born" />
+                <QAnswer chart="q-hosts" />
               </article>
               <article className="qa-item">
                 <h3>3 · Do migrants move far?</h3>
-                <canvas aria-label="Chart: how far migrants move" className="chart" height="420" id="q-distance" role="img" width="760"></canvas>
-                <p className="qa-answer" id="q-distance-answer"></p>
+                <QChart id="q-distance" width="760" height="420" label="Chart: how far migrants move" />
+                <QAnswer chart="q-distance" />
               </article>
               <article className="qa-item">
                 <h3>4 · Does wealth pull people, and how far?</h3>
-                <canvas aria-label="Chart: whether wealth pulls people, and how far" className="chart" height="430" id="q-wealth" role="img" width="760"></canvas>
-                <p className="qa-answer" id="q-wealth-answer"></p>
+                <QChart id="q-wealth" width="760" height="430" label="Chart: whether wealth pulls people, and how far" />
+                <QAnswer chart="q-wealth" />
               </article>
               <article className="qa-item">
                 <h3>
                   5 · Is this the highly skilled, or everybody, and was it
                   a choice?
                 </h3>
-                <canvas aria-label="Chart: whether migration is of the highly skilled or of everybody" className="chart" height="253" id="q-income" role="img" width="760"></canvas>
-                <p className="qa-answer" id="q-income-answer"></p>
+                <QChart id="q-income" width="760" height="253" label="Chart: whether migration is of the highly skilled or of everybody" />
+                <QAnswer chart="q-income" />
               </article>
               <article className="qa-item">
                 <h3>6 · Who moves?</h3>
-                <canvas aria-label="Chart: who moves, by sex" className="chart" height="470" id="q-sex" role="img" width="760"></canvas>
-                <p className="qa-answer" id="q-sex-answer"></p>
+                <QChart id="q-sex" width="760" height="470" label="Chart: who moves, by sex" />
+                <QAnswer chart="q-sex" />
               </article>
               <div className="notice">
                 <span className="ico">📄</span>

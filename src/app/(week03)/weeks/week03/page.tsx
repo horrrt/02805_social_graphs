@@ -1,6 +1,7 @@
 import PageScripts from "@/components/PageScripts";
 import { type RailItem, SectionRail } from "@/components/post/SectionRail";
 import { Boot, Status } from "@/features/week03/frame/Boot";
+import { QuestionsWatch } from "@/features/week03/questions/Questions";
 import { Asks } from "./_sections/Asks";
 import { Bridge } from "./_sections/Bridge";
 import { Denmark } from "./_sections/Denmark";
@@ -58,6 +59,7 @@ export default function Page() {
       </main>
       <SectionRail column={1132} items={RAIL} />
       <Boot />
+      <QuestionsWatch />
       <PageScripts page="week03" />
     </>
   );
