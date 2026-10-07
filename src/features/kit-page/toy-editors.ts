@@ -5,7 +5,7 @@
 // here is a result of this project.
 import type { NetLink, NetNode } from "@/kit";
 import { buildTree, girvanNewman } from "@/kit/dendro-core.js";
-import { forceLayout, louvain, mulberry32, plantedClique } from "@/kit/graph-core";
+import { circleLayout, louvain, mulberry32, plantedClique } from "@/kit/graph-core";
 import type { Point } from "@/kit/NetCanvas";
 import { KARATE, karateLayout, toBox } from "./toy-networks";
 
@@ -57,12 +57,12 @@ export const EGO = { focal: "A", neighbours: ["B", "C", "D", "E", "F", "G"], ini
 
 const LETTERS = "ABCDEFGHIJKLMNOP".split("");
 export type CliqueGraph = { nodes: NetNode[]; links: NetLink[]; answer: number[] };
-/** Twelve people, a G(n, p) of p = 0.22, with a k-clique planted: seeded, laid out by a seeded force layout. */
+/** Twelve people round a circle, a G(n, p) of p = 0.22 with a k-clique planted on shuffled members: seeded. */
 export function cliqueGraph(seed: number, k: number, n = 12): CliqueGraph {
   const rng = mulberry32(seed * 31 + k);
   const { edges, clique } = plantedClique(n, 0.22, k, rng) as { edges: [number, number][]; clique: number[] };
   const ratio = 0.62;
-  const at = toBox(forceLayout(n, edges, { rng, iterations: 160 }) as Point[], ratio);
+  const at = toBox(circleLayout(n) as Point[], ratio);
   return {
     nodes: at.map(([x, y], i) => ({ id: i, x, y, label: LETTERS[i] ?? String(i) })),
     links: edges.map(([a, b]) => ({ source: a, target: b })),

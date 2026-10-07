@@ -30,7 +30,8 @@ export default function EditableMatrix({
   caption?: ReactNode;
 }) {
   const n = labels.length;
-  const [raw, setRaw] = useState(() => toRaw(initial ?? zeros(n), n));
+  const noDiag = (mx: number[][]) => (diagonal ? mx : mx.map((row, i) => row.map((v, j) => (i === j ? 0 : v))));
+  const [raw, setRaw] = useState(() => toRaw(noDiag(initial ?? zeros(n)), n));
   const cells = useRef<(HTMLInputElement | null)[]>([]);
   if (n === 0) return <p className="kit-empty">No nodes, so no matrix.</p>;
   // A grid typed for another size (labels changed without a new key) is cut or padded to n.
@@ -51,8 +52,6 @@ export default function EditableMatrix({
     e.preventDefault();
     cells.current[to * n + j]?.focus();
   };
-  const noDiag = (mx: number[][]) => (diagonal ? mx : mx.map((row, i) => row.map((v, j) => (i === j ? 0 : v))));
-
   return (
     <div className="kit-emat">
       <table>
