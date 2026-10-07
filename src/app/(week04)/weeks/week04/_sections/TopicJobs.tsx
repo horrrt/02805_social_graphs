@@ -2,6 +2,7 @@ import { Drawer } from "@/components/post/Drawer";
 import { Drawers } from "@/components/post/Drawers";
 import { DeepPanel, TocItem } from "@/features/week04/frame/DeepShell";
 import { JobsNum, JobsPart } from "@/features/week04/jobs/Jobs";
+import { Skills } from "@/features/week04/skills/Skills";
 import { GlossTerm } from "./GlossTerm";
 
 // Deep dive topic: jobs and skills.
@@ -250,7 +251,7 @@ export function TopicJobs() {
           <span className="qa-cue">Skills behind the jobs, from O*NET</span>
         </summary>
         <div className="qa-body cut-body" id="skills-body">
-          <p aria-live="polite" className="status-line" id="skills-status">Loading the O*NET comparison…</p>
+          <Skills />
         </div>
       </DeepPanel>
       <DeepPanel className="qa cut rx-panel" box="cut-pagerank" id="cut-pagerank" name="w4-panel-jobs">

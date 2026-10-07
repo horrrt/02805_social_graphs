@@ -7,10 +7,13 @@
 // (#staffing-community-stats): its table and every figure its prose quotes.
 import { useMemo, useRef, useState } from "react";
 import { island, useIslandReady } from "@/lib/island";
+import { useHydrated } from "@/lib/useHydrated";
+import { useOwnedRef } from "@/lib/useOwnedRef";
 import { useTokens, useTypeScale } from "@/lib/useTypeScale";
 import { STAFFING_TOKENS, communityStats, coverage, flowsOption, panelFor, scatterOption, tableRows } from "@/scripts/week04-staffing.js";
 import { W4Chart } from "../W4Chart";
 import { W4Table } from "../W4Table";
+import { segKeyDown, segTab } from "../seg";
 import { W4, useW4Data } from "../useW4Data";
 
 const YEARS: [string, string][] = [
@@ -38,6 +41,7 @@ function Figure({ live }: { live: boolean }) {
   const tokens = useTokens(STAFFING_TOKENS as string[], root);
   const T = useMemo(() => (scale && tokens ? { fs: scale.fs, family: scale.family } : null), [scale, tokens]);
   const token = useMemo(() => (name: string) => tokens?.[name] ?? "", [tokens]);
+  const hydrated = useHydrated();
   const [year, setYear] = useState("2025");
   const [picked, setPicked] = useState<string | null>(null);
   const [query, setQuery] = useState("");
@@ -59,9 +63,9 @@ function Figure({ live }: { live: boolean }) {
   return (
     <figure className="staffing" id="staffing-figure" ref={root}>
       <div className="staffing-controls">
-        <div aria-label="Fiscal year, October to September" className="staffing-years" role="group">
+        <div aria-label="Fiscal year, October to September" className="staffing-years" role="group" ref={useOwnedRef()} onKeyDown={segKeyDown}>
           {YEARS.map(([y, label]) => (
-            <button key={y} aria-pressed={y === year ? "true" : "false"} data-year={y} type="button" onClick={() => setYear(y)}>
+            <button key={y} aria-pressed={y === year ? "true" : "false"} data-year={y} type="button" tabIndex={segTab(hydrated, y === year)} onClick={() => setYear(y)}>
               {label}
             </button>
           ))}

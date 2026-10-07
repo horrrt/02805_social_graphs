@@ -14,6 +14,9 @@ type Props = Omit<HTMLAttributes<HTMLDivElement>, "children"> & {
   notMerge?: boolean;
   reset?: { show: boolean; onReset: () => void };
   chartRef?: MutableRefObject<EChartsInstance | null>;
+  onChart?: (chart: EChartsInstance | null) => void;
+  /** Start ECharts before there is an option (a chart whose option needs the instance's size). */
+  eager?: boolean;
 };
 
 function ResetButton({ show, onReset }: { show: boolean; onReset: () => void }) {
@@ -28,13 +31,14 @@ function ResetButton({ show, onReset }: { show: boolean; onReset: () => void }) 
 }
 
 /** <W4Chart id="chart-rank" className="chart-host tall" option={option} onEvents={{ click }} /> */
-export function W4Chart({ option, onEvents, renderer = "canvas", notMerge = true, reset, chartRef, className, ...host }: Props) {
+export function W4Chart({ option, onEvents, renderer = "canvas", notMerge = true, reset, chartRef, onChart, eager = false, className, ...host }: Props) {
   const hydrated = useHydrated();
   const ref = useRef<HTMLDivElement>(null);
-  const chart = useEChart(ref, { option, onEvents, renderer, notMerge, enabled: hydrated && option !== null });
+  const chart = useEChart(ref, { option, onEvents, renderer, notMerge, enabled: hydrated && (eager || option !== null) });
   useEffect(() => {
     if (chartRef) chartRef.current = chart;
-  }, [chart, chartRef]);
+    onChart?.(chart);
+  }, [chart, chartRef, onChart]);
   const cls = reset && chart ? `${className ?? ""} w4-has-reset`.trim() : className;
   return (
     <div {...host} className={cls} ref={ref}>
