@@ -18,8 +18,8 @@ Each deck holds three kinds of card, chosen per page:
   sharp 3 cards: the highest TF-IDF words on at most 12 pages
 "Names hidden" builds a second deck with every name word left out.
 
-A page enters the game only when its three sharp cards alone rank it first and its loud cards alone
-do not, in both decks. The script prints how often that holds and stops if fewer than 60 pages pass.
+A page enters the game only when its three sharp cards alone rank it first, all eight cards do too,
+and its loud cards alone do not, in both decks. The script prints how often that holds and stops if fewer than 60 pages pass.
 
 Writes public/play/cold-read/data/clue_shop.json.
 
@@ -84,7 +84,7 @@ def main():
         sharp = [w for w in by_tfidf if df[w] <= SHARP_DF and c[w] >= 2][:3]
         if len(loud) < 3 or len(mid) < 2 or len(sharp) < 3:
             return None
-        if not rank_first(sharp, p) or rank_first(loud, p):
+        if not rank_first(sharp, p) or not rank_first(loud + mid + sharp, p) or rank_first(loud, p):
             return None
         return {"loud": loud, "mid": mid, "sharp": sharp}
 
@@ -97,7 +97,7 @@ def main():
             for d in (on, off):
                 for ws in d.values():
                     used.update(ws)
-    print(f"{len(rounds)} of {len(tried)} pages with at least {MIN_TOKENS} tokens are winnable on rare cards "
+    print(f"{len(rounds)} of {len(tried)} pages with at least {MIN_TOKENS} tokens are winnable on rare cards and on the full deck "
           f"and not on common ones, with names and without")
     if len(rounds) < MIN_PAGES:
         raise SystemExit(f"fewer than {MIN_PAGES} playable pages")
@@ -105,7 +105,8 @@ def main():
     words = {}
     for w in sorted(used):
         post = [[q, round(tfidf(w, q) / norm[q], 5)] for q in pages_with[w]]
-        words[w] = {"df": df[w], "name": int(w in is_name), "post": [x for x in post if x[1] > 0]}
+        # A word on every page has idf 0 and no postings; every other word keeps one per page.
+        words[w] = {"df": df[w], "name": int(w in is_name), "post": post if df[w] < n else []}
 
     def cards(d, p):
         return [{"w": w, "kind": kind, "n": counts[p][w]} for kind, ws in d.items() for w in ws]

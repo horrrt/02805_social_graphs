@@ -1,6 +1,7 @@
 // Cold Read's rules against its real decks: on every playable page the three
-// sharp cards rank the hidden page first and the three loud cards do not,
-// with names and without, which is what analysis/week06_cold_read.py promised.
+// sharp cards and all eight cards rank the hidden page first and the three
+// loud cards do not, with names and without, as analysis/week06_cold_read.py
+// promised.
 import "./dom";
 import test from "node:test";
 import assert from "node:assert/strict";
@@ -17,7 +18,12 @@ test("rare cards name the page and common cards do not", () => {
       assert.equal(deck.length, 8);
       assert.equal(shortlist(data, words(deck, "sharp"), [])[0]?.page, r.page, data.pages[r.page].name);
       assert.notEqual(shortlist(data, words(deck, "loud"), [])[0]?.page, r.page, data.pages[r.page].name);
+      assert.equal(shortlist(data, deck.map((c) => c.w), [])[0]?.page, r.page, `${data.pages[r.page].name}, all eight cards`);
     }
+});
+
+test("every word not on every page keeps one posting per page it is on", () => {
+  for (const [w, word] of Object.entries(data.words)) assert.equal(word.post.length, word.df < data.N ? word.df : 0, w);
 });
 
 test("a word on every page leaves every page a suspect and scores nothing", () => {

@@ -66,7 +66,7 @@ export function points(cardsLeft: number, namesHidden: boolean) {
   return (100 + 100 * cardsLeft) * (namesHidden ? 2 : 1);
 }
 
-/** A fresh order of the playable rounds, so a run never repeats a page. */
+/** A fresh order of the playable rounds; a run repeats a page only after all of them. */
 export function shuffled<T>(items: T[], random: () => number = Math.random): T[] {
   const out = items.slice();
   for (let i = out.length - 1; i > 0; i--) {

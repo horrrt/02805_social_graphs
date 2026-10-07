@@ -16,7 +16,7 @@ const DATA = "play/cold-read/data/clue_shop.json";
 const BEST = "cold-read:best";
 
 type Phase = "intro" | "play" | "reveal" | "over";
-type Outcome = { won: boolean; gained: number };
+type Outcome = { won: boolean; gained: number; newBest: boolean };
 
 const fmt = (x: number, d = 3) => x.toFixed(d);
 
@@ -146,7 +146,10 @@ function View() {
   const hydrated = useHydrated();
   const state = useData<ClueShopData>(hydrated ? asset(DATA) : null);
   const data = state.data;
-  useIslandReady(state.status === "ready");
+  useIslandReady(state.status === "ready" || state.status === "error");
+  useEffect(() => {
+    if (state.status === "error") console.error("cold-read decks failed", state.error);
+  }, [state.status, state.error]);
 
   const [phase, setPhase] = useState<Phase>("intro");
   const [order, setOrder] = useState<number[]>([]);
@@ -168,7 +171,13 @@ function View() {
   const list = useMemo(() => (data ? shortlist(data, flipped, struck) : []), [data, flipped, struck]);
   const left = data ? pagesWithAll(data, flipped) : 0;
 
-  if (state.status === "error") return <Placeholder />;
+  if (state.status === "error")
+    return (
+      <section className="cr-table" id="clue-shop" aria-label="Clue Shop">
+        <Intro />
+        <p className="cr-note">The decks did not load. Reload the page to try again.</p>
+      </section>
+    );
   if (!data) return <Placeholder />;
 
   const deal = (n: number, ord = order, namesHidden = hide) => {
@@ -206,16 +215,15 @@ function View() {
 
   const finish = (won: boolean, gained: number, livesLeft: number) => {
     const total = score + gained;
+    const newBest = total > best;
     setScore(total);
-    setOutcome({ won, gained });
+    setOutcome({ won, gained, newBest });
     if (won) setSolved((s) => s + 1);
-    if (livesLeft === 0) {
-      if (total > best) {
-        setBest(total);
-        saveBest(total);
-      }
-      setPhase("over");
-    } else setPhase("reveal");
+    if (newBest) {
+      setBest(total);
+      saveBest(total);
+    }
+    setPhase(livesLeft === 0 ? "over" : "reveal");
   };
 
   const accuse = (page: number) => {
@@ -320,7 +328,7 @@ function View() {
           {phase === "over" ? (
             <div className="cr-over">
               <p>
-                Run over: {solved} {solved === 1 ? "page" : "pages"} named, {score} points{score >= best && score > 0 ? ", a new best" : ""}.
+                Run over: {solved} {solved === 1 ? "page" : "pages"} named, {score} points{outcome.newBest ? ", a new best" : ""}.
               </p>
               <button type="button" className="cr-go" onClick={start}>
                 Play again
