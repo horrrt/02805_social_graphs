@@ -4,7 +4,7 @@
 // have produced it. Rules live in topics.ts; this file renders them.
 import { useEffect, useRef, useState } from "react";
 import { ScoreBox, SkipLevel } from "./LevelParts";
-import { LIMIT, speed, Ticker, timed, useCountdown } from "./pace";
+import { LIMIT, speed, Ticker, timed, useCountdown, Worth } from "./pace";
 import { mixDeskTour } from "./tours";
 import { StartButtons, useTour } from "./Tutorial";
 import { FINISH, type Level } from "./levels";
@@ -148,6 +148,7 @@ export function MixDeskGame({ data, random = Math.random, level, clock = Date.no
       <div className="cr-hud" role="status">
         <ScoreBox points={total} level={level} />
         <Ticker countdown={pace} limitS={LIMIT.mix} active={phase === "mix"} />
+        <Worth points={timed(1000, speed(pace.elapsed, LIMIT.mix))} active={phase === "mix"} />
         <span className="cr-box">
           <small>Page</small>
           <b>
@@ -259,9 +260,7 @@ export function MixDeskGame({ data, random = Math.random, level, clock = Date.no
                 </button>
                 <span className="cr-topic-foot">
                   {revealed ? (
-                    <span className="cr-topic-true">
-                      you {chips[k] * 10}% · page <b>{Math.round(page.theta[k] * 100)}%</b>
-                    </span>
+                    <Off mine={chips[k]} best={ideal[k]} />
                   ) : (
                     <>
                       <button type="button" className="cr-minus" onClick={() => add(k, -1)} disabled={chips[k] === 0} aria-label={`Take a chip from ${label(k)}`}>
@@ -279,9 +278,9 @@ export function MixDeskGame({ data, random = Math.random, level, clock = Date.no
             <div className="cr-debrief">
               <h3>Two kinds of mixture</h3>
               <p>
-                A topic is a probability distribution over words: the words on each card are its most likely. A page is a mixture of topics: the
-                percentages under the cards, which sum to 100%. The page’s words are now coloured by the topic most likely to have produced each one
-                on this page. Hover a topic to pick out its words. Hollow pips show the best {CHIPS}-chip read.
+                A topic is a probability distribution over words: the words on each card are its most likely. A page is a mixture of topics, here in
+                tenths: the hollow pips show the page’s own {CHIPS}-chip mix, and under each card how far your chips were off. The page’s words are now coloured by the topic most likely to have produced each one
+                on this page. Hover a topic to pick out its words.
               </p>
               <p>
                 The model chose none of the names on the cards. It found 8 word lists because we asked for 8, from pages with the names taken out,
@@ -297,5 +296,17 @@ export function MixDeskGame({ data, random = Math.random, level, clock = Date.no
         </>
       )}
     </section>
+  );
+}
+
+/** Under a revealed topic: how many chips you were off from the page's own mix. */
+function Off({ mine, best }: { mine: number; best: number }) {
+  const d = mine - best;
+  if (mine === 0 && best === 0) return null;
+  const text = d === 0 ? "Spot on" : d > 0 ? `${d} too many` : `${-d} too few`;
+  return (
+    <span className="cr-topic-true" data-off={d !== 0}>
+      {text}
+    </span>
   );
 }

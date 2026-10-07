@@ -92,3 +92,13 @@ export function Ticker({ countdown, limitS, active }: { countdown: Countdown; li
     </span>
   );
 }
+
+/** The scoreboard's "Playing for": what a right answer scores this instant, falling with the clock. */
+export function Worth({ points, active }: { points: number; active: boolean }) {
+  return (
+    <span className="cr-box cr-worth-box" aria-label={active ? `Playing for ${points} points` : undefined}>
+      <small>Playing for</small>
+      <b>{active ? points.toLocaleString("en") : "–"}</b>
+    </span>
+  );
+}

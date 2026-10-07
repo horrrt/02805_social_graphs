@@ -5,7 +5,7 @@
 // groups.ts; this file renders them.
 import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { Lives, ScoreBox, SkipLevel } from "./LevelParts";
-import { LIMIT, speed, Ticker, timed, useCountdown } from "./pace";
+import { LIMIT, speed, Ticker, timed, useCountdown, Worth } from "./pace";
 import { whoseLineTour } from "./tours";
 import { StartButtons, useTour } from "./Tutorial";
 import { FINISH, type Level } from "./levels";
@@ -277,7 +277,12 @@ export function WhoseLineGame({ data, random = Math.random, level, clock = Date.
         best={best}
         playing={phase === "card"}
         level={level}
-        ticker={<Ticker countdown={pace} limitS={LIMIT.groups} active={phase === "card"} />}
+        ticker={
+          <>
+            <Ticker countdown={pace} limitS={LIMIT.groups} active={phase === "card"} />
+            <Worth points={timed(gain(streak + 1, inspected), speed(pace.elapsed, LIMIT.groups))} active={phase === "card" && card !== null} />
+          </>
+        }
       />
 
       <div className="cr-match">
