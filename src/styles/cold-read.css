@@ -2354,6 +2354,21 @@ body.cold-read:fullscreen {
   font-weight: 700;
 }
 
+/* The campaign's three rules: a short numbered list above the start row. */
+.cr-rules {
+  margin: 0 0 18px;
+  padding-left: 1.4em;
+  display: grid;
+  gap: 6px;
+  font-size: var(--fs-body);
+  color: var(--ink);
+}
+
+.cr-rules li::marker {
+  font-family: var(--font-display);
+  color: var(--people);
+}
+
 /* The start row: difficulty on the left, the way in on the right. */
 .cr-camp-start {
   display: flex;
