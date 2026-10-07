@@ -378,4 +378,60 @@ such as the picked point's numbers).
 ```tsx
 <CountMatrix rows={rows} cols={cols} cells={cells} highlightRow={0} transform="ppmi" nearest />
 <AxisMap points={rates} axes={axes} log diagonal sides={{ above: "more in A", below: "more in B", band: 0.15 }} selected={picked} onPick={setPicked} detail={<p>…</p>} />
+## Distributions and nulls
+
+Four pieces for degree distributions and null models, with toy data on `/styleguide/kit/`. The numbers under
+them live in `src/kit/dist-core.js`, DOM-free and tested by `tests/dist-core.test.mjs`: `degrees` (in, out or
+undirected, from an edge list), `rawPk`, `binnedPk` (one bin per k below 8, then doubling bins), `ccdf`,
+`poisson` and `poissonCurve`, `powerLaw`, `exponential`, `lognormalFit`, `zipfIdeal`, `rankFrequency` (with tie
+levels), `envelope` (median and 5–95% per x across runs), `histogram`, `nullStats` (mean, sd, z, empirical p
+with the +1 correction) and `verdict`. Import them from `@/kit/dist-core.js`. Styles: the "Kit: distributions
+and nulls" section of `post.css`.
+
+### DistributionPlot({ series, refs, envelopes, views, defaultView, scale, scaleToggle, xLabel, yLabel, top, height, aria })
+
+A distribution on the kit's `EChart`. Each of `series` is `{ key, name, ks, points, style, color }`: raw values
+`ks` (say degrees) are drawn in the view the reader picks, raw, binned or CCDF; `points` (`[x, y]`) are drawn as
+given in every view; `style` is `"dots"` (the default) or `"line"`. `refs` (`[{ key, name, points, color }]`,
+dashed) and `envelopes` (`[{ key, name, rows: [{ x, median, lo, hi }], color }]`, a median line over a shaded
+band) are arrays or functions of the view. `scale` sets the starting axes (`{ x: "log", y: "log" }` by
+default); `scaleToggle` shows one linear/log–log toggle (`"joint"`), one per axis (`"split"`) or none. Points
+at 0 are left off a log axis and a note counts them. `top: { title, items: [{ label, value }] }` adds a ranked
+list beside the plot. Toggles are `SegmentedControl`s.
+
+```tsx
+<DistributionPlot series={[{ key: "in", name: "in-degree", ks }]} refs={(view) => poissonRef(ks, view)} top={{ title: "The tail", items }} aria="In-degrees against a Poisson" />
+```
+
+### NullHistogram({ samples, real, xLabel, normalOverlay, step, bins, realLabel, fmt })
+
+A permutation test as it grows: the first `step` of `samples` as a histogram, a fixed line at `real`, an
+optional normal curve with the same mean and sd, and readouts of the samples shown, null mean ± sd, z and the
+one- and two-sided empirical p. The x axis comes from every sample, so it holds still as `step` grows; a real
+value far beyond the samples stands at the edge with an arrow.
+
+```tsx
+<NullHistogram samples={shuffled} real={0.32} step={shown} normalOverlay xLabel="average clustering" />
+```
+
+### NullBoard({ measures, models, cells, alpha, fmt, caption })
+
+The survivor board: a small histogram per measure × null model with the real value's line, the panel's title
+naming its verdict and tinted by it (survives, dies, fixed by construction), and a table of the numbers under
+the grid. `measures` and `models` are `[{ key, label }]`; each of `cells` is `{ measure, model, samples, real,
+verdict }`, the verdict worked out by `verdict()` at `alpha` (0.05, two-sided) unless given. Hovering or focusing
+a panel highlights its row; hovering a row highlights its panel.
+
+```tsx
+<NullBoard measures={[{ key: "C", label: "Clustering" }]} models={[{ key: "gnm", label: "G(n, m)" }]} cells={[{ measure: "C", model: "gnm", samples, real: 0.32 }]} />
+```
+
+### NullBars({ rows, xLabel, fmt })
+
+Observed values against a null, one row per category: a bar for `observed`, the null mean with whiskers to
+±2 sd and z at the right, bold once |z| ≥ 2. Each row: `{ key, label, observed, samples }` or `{ key, label,
+observed, mean, sd }`. Long labels are cut with an ellipsis and keep their full text as a tooltip.
+
+```tsx
+<NullBars rows={[{ key: "hv", label: "hero – villain", observed: 268, mean: 301, sd: 13 }]} xLabel="links" />
 ```

@@ -47,3 +47,12 @@ export { default as MethodCompare } from "./MethodCompare";
 export type { MethodCard } from "./MethodCompare";
 export type { MatrixTransform } from "./CountMatrix";
 export type { MapSides } from "./AxisMap";
+// ---- Distributions and nulls (dist-core.js holds the numbers; import it directly)
+export { default as DistributionPlot } from "./DistributionPlot";
+export type { AxisScale, DistSeries, DistView, Envelope, RefCurve, TopList } from "./DistributionPlot";
+export { default as NullHistogram } from "./NullHistogram";
+export { default as NullBoard } from "./NullBoard";
+export type { BoardAxis, BoardCell } from "./NullBoard";
+export type { Verdict } from "./nullBits";
+export { default as NullBars } from "./NullBars";
+export type { NullBarRow } from "./NullBars";

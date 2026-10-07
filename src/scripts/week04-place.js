@@ -1,65 +1,49 @@
 // Where the hiring is · Week 4 post (companies × cities → metro projection).
 // Four questions, one selected city across every panel. Numbers come from
-// public/assets/data/week04_place.json (placeholder until analysis/week04_where.py).
+// public/assets/data/week04_place.json (analysis/week04_where.py). The
+// components in src/features/week04/place/ draw the charts from the ECharts
+// options built here; this module only builds them and touches no DOM.
+// `T` is { fs, family, token }: the type scale and the page's colour tokens.
 
-import { loadVendor } from "./runtime/vendor.js";
-import { asset } from "./site.js";
-import { resetButton } from "./week04-map-reset.js";
-import { fs, family, textWidth } from "./week04-strip.js";
-import { termify } from "./week04-ui.js";
-
-const DATA_URL = asset("assets/data/week04_place.json");
-const USA_URL = asset("assets/data/usa.json");
-const WHERE_WHO_URL = asset("weeks/week04/data/where_who.json");
-
-const INK = "#0f2340";
-const MUTE = "#7a8fac";
-const MUTE_TEXT = "#59708f";
-const ORANGE = "#f2820c";
-const BLUE = "#1f8fd6";
-const LINE = "#eaf0f7";
+export const INK = "#0f2340";
+export const MUTE = "#7a8fac";
+export const MUTE_TEXT = "#59708f";
+export const ORANGE = "#f2820c";
+export const BLUE = "#1f8fd6";
+export const LINE = "#eaf0f7";
+// The alpha table's row for the α on show.
+export const ON_ROW = { fontWeight: 700, background: "#f7fafd" };
 
 // week04_place.json's scope reads "FY2025"; the page writes the plain year.
-const yr = (s) => String(s).replace(/\bFY(\d{4})/g, "$1");
+export const yr = (s) => String(s).replace(/\bFY(\d{4})/g, "$1");
 
-const AXIS = {
+const axis = (T) => ({
   axisLine: { lineStyle: { color: "#c6d4e6" } },
-  axisLabel: { color: MUTE_TEXT, fontSize: fs("caption") },
+  axisLabel: { color: MUTE_TEXT, fontSize: T.fs("caption") },
   splitLine: { lineStyle: { color: LINE, type: "dashed" } },
-  nameTextStyle: { color: MUTE_TEXT, fontSize: fs("caption") },
-};
+  nameTextStyle: { color: MUTE_TEXT, fontSize: T.fs("caption") },
+});
 
-const BASE = {
+const base = (T) => ({
   animationDuration: 420,
   animationEasing: "cubicOut",
-  textStyle: { fontFamily: family("sans"), fontSize: fs("caption") },
+  textStyle: { fontFamily: T.family("sans"), fontSize: T.fs("caption") },
   tooltip: {
     trigger: "item",
     confine: true,
     backgroundColor: "rgba(15,35,64,0.92)",
     borderWidth: 0,
     padding: [10, 12],
-    textStyle: { color: "#eaf2fb", fontSize: fs("small") },
+    textStyle: { color: "#eaf2fb", fontSize: T.fs("small") },
   },
-};
+});
 
-function $(id) {
-  return document.getElementById(id);
-}
-
-function fmt(n) {
+export function fmt(n) {
   return Number(n).toLocaleString("en-US");
 }
 
-function pct(x) {
+export function pct(x) {
   return `${Math.round(x * 100)}%`;
-}
-
-function getJson(url, label) {
-  return fetch(url).then((r) => {
-    if (!r.ok) throw new Error(`${label} ${r.status}`);
-    return r.json();
-  });
 }
 
 function tipHtml(title, rows) {
@@ -67,1168 +51,802 @@ function tipHtml(title, rows) {
   return `<div style="font-weight:700;margin-bottom:4px">${title}</div>${body}`;
 }
 
-export async function startPlace(echarts) {
-  const [data, usa, whereWho] = await Promise.all([
-    getJson(DATA_URL, "place data"),
-    getJson(USA_URL, "usa map"),
-    getJson(WHERE_WHO_URL, "where-who data"),
-  ]);
+// No top-40 metro lies outside the contiguous states; drawing Alaska, Hawaii
+// and Puerto Rico shrank the 48 states to a corner of every map.
+const OFF_MAINLAND = new Set(["Alaska", "Hawaii", "Puerto Rico"]);
+export const mainland = (f) => !OFF_MAINLAND.has(f.properties.name);
 
-  // The redesign's colour grammar keeps orange and blue for placed and direct
-  // filings, so the three metro groups take violet, green and slate from the
-  // page's CSS tokens instead of the colours in the data file.
-  const css = getComputedStyle(document.body);
-  const token = (name) => css.getPropertyValue(name).trim();
-  const GROUP = [0, 1, 2].map((g) => token(`--w4-group-${g}`));
-  const GROUP_DARK = [0, 1, 2].map((g) => token(`--w4-group-${g}-dark`));
+// Fit each map inside its box. A layoutSize above 100% zoomed past the
+// box whenever a full-screen window made the chart taller than it is wide,
+// and cut off the east coast. The wider sides and bottom leave room for
+// the city labels, which sit below their dots.
+const MAP_FIT = { left: 24, right: 24, top: 10, bottom: 24 };
+
+/** The lookups every chart shares, from the three files. */
+export function placeModel(data, whereWho) {
+  const byId = Object.fromEntries(data.cities.map((c) => [c.id, c]));
+  const byFilings = [...data.cities].sort((a, b) => b.filings - a.filings);
+  const placedShare = Object.fromEntries(whereWho.rows.map((r) => [r.id, r.placed_share]));
+  return {
+    data,
+    byId,
+    byFilings,
+    placedShare,
+    heroEdges: data.backbone.graphs["0.2"].edges,
+    heroDefault: byFilings[0].id,
+    defaultAlpha: String(
+      data.backbone.alphas.find((a) => Number(a) === Number(data.backbone.default_alpha)) ?? data.backbone.default_alpha,
+    ),
+  };
+}
+
+// The redesign's colour grammar keeps orange and blue for placed and direct
+// filings, so the three metro groups take violet, green and slate from the
+// page's CSS tokens instead of the colours in the data file.
+export const groups = (T) => [0, 1, 2].map((g) => T.token(`--w4-group-${g}`));
+const groupsDark = (T) => [0, 1, 2].map((g) => T.token(`--w4-group-${g}-dark`));
+
+/** The tokens the place charts read. */
+export const PLACE_TOKENS = [
+  "--w4-group-0",
+  "--w4-group-1",
+  "--w4-group-2",
+  "--w4-group-0-dark",
+  "--w4-group-1-dark",
+  "--w4-group-2-dark",
+  "--ink-soft",
+  "--w4-hero-lede",
+  "--w4-hero-ink",
+  "--deep",
+  "--w4-hero-state",
+  "--w4-hero-state-edge",
+  "--ink",
+  "--ink-mute",
+  "--ink-mute-text",
+  "--card",
+  "--w4-grid",
+];
+
+function colourFor(m, state, T, city) {
+  if (state.regionMode === "census") return m.data.census_colours[city.census] ?? MUTE;
+  return groups(T)[city.community] ?? MUTE;
+}
+
+// Counts of positions or employers carry no placed-or-direct meaning, so
+// they take the neutral ink tone rather than the grammar's orange or blue.
+const metricColour = (T) => T.token("--ink-soft");
+
+/** Tight bubble scale so hubs do not swallow the map. */
+function bubbleSize(m, positions, minPx = 7, maxPx = 18) {
+  const vals = m.data.cities.map((c) => c.positions);
+  const lo = Math.min(...vals);
+  const hi = Math.max(...vals);
+  const t = Math.sqrt((positions - lo) / (hi - lo || 1));
+  return Math.round(minPx + t * (maxPx - minPx));
+}
+
+function ranked(m, state) {
+  return [...m.data.cities].sort((a, b) => b[state.metric] - a[state.metric]).slice(0, 12);
+}
+
+/** #chart-rank: the twelve cities with the most positions or employers. */
+export function barsOption(m, state, T) {
+  const BASE = base(T);
+  const AXIS = axis(T);
+  const { byId } = m;
+  const rows = ranked(m, state);
+  const names = rows.map((r) => r.name).reverse();
+  const selectedName = state.selected ? byId[state.selected].name : null;
+  const colour = metricColour(T);
+  return {
+    ...BASE,
+    grid: { left: 108, right: 56, top: 12, bottom: 8 },
+    xAxis: {
+      type: "value",
+      ...AXIS,
+      splitNumber: 3,
+      axisLabel: { ...AXIS.axisLabel, formatter: (v) => (v >= 1000 ? `${Math.round(v / 1000)}k` : v) },
+    },
+    yAxis: {
+      type: "category",
+      data: names,
+      axisTick: { show: false },
+      axisLine: { show: false },
+      axisLabel: { color: INK, fontSize: T.fs("small"), fontWeight: 600 },
+    },
+    series: [
+      {
+        type: "bar",
+        barMaxWidth: 22,
+        data: rows
+          .slice()
+          .reverse()
+          .map((r) => ({
+            value: r[state.metric],
+            id: r.id,
+            itemStyle: {
+              color: r.name === selectedName ? INK : colour,
+              borderRadius: [0, 8, 8, 0],
+              opacity: selectedName && r.name !== selectedName ? 0.35 : 1,
+            },
+          })),
+        label: {
+          show: true,
+          position: "right",
+          color: INK,
+          fontSize: T.fs("small"),
+          fontWeight: 700,
+          formatter: (p) => fmt(p.value),
+        },
+        emphasis: { focus: "self" },
+      },
+    ],
+    tooltip: {
+      ...BASE.tooltip,
+      formatter: (p) => {
+        const city = byId[p.data.id];
+        return tipHtml(city.name, [
+          ["Positions", fmt(city.positions)],
+          ["Employers", fmt(city.employers)],
+          ["Top filer", `${city.top_employer} (${pct(city.top_share)})`],
+        ]);
+      },
+    },
+  };
+}
+
+/** #chart-citymap ("metric") and #chart-regions ("partition"). */
+export function usMapOption(m, state, T, colourMode = "metric") {
+  const BASE = base(T);
+  const { data, byId } = m;
+  const colour = metricColour(T);
+  const values = data.cities.map((city) => city[state.metric]);
+  const vmax = Math.max(...values, 1);
+  // Colour carries meaning in partition mode; keep sizes almost even.
+  const sizeMin = colourMode === "partition" ? 8 : 7;
+  const sizeMax = colourMode === "partition" ? 14 : 18;
+
+  const bubbles = data.cities.map((city) => {
+    const dim = state.selected && state.selected !== city.id;
+    const t = city[state.metric] / vmax;
+    return {
+      name: city.name,
+      id: city.id,
+      value: [city.lon, city.lat, city[state.metric]],
+      itemStyle: {
+        color: colourMode === "partition" ? colourFor(m, state, T, city) : colour,
+        opacity: dim ? 0.2 : colourMode === "partition" ? 0.88 : 0.5 + 0.45 * t,
+        borderColor: "#fff",
+        borderWidth: 1.5,
+        shadowBlur: dim ? 0 : 4,
+        shadowColor: "rgba(15,35,64,0.18)",
+      },
+      symbolSize: bubbleSize(m, city.positions, sizeMin, sizeMax),
+    };
+  });
+
+  const sel = state.selected ? byId[state.selected] : null;
+
+  return {
+    ...BASE,
+    geo: {
+      map: "USA",
+      roam: false,
+      ...MAP_FIT,
+      itemStyle: {
+        areaColor: "#eef3f9",
+        borderColor: "#c5d3e6",
+        borderWidth: 0.9,
+      },
+      emphasis: {
+        disabled: true,
+      },
+      select: { disabled: true },
+      silent: true,
+    },
+    series: [
+      {
+        type: "scatter",
+        coordinateSystem: "geo",
+        data: bubbles,
+        zlevel: 2,
+        emphasis: {
+          scale: 1.25,
+          itemStyle: { borderColor: INK, borderWidth: 2 },
+        },
+      },
+      ...(sel
+        ? [
+            {
+              type: "effectScatter",
+              coordinateSystem: "geo",
+              zlevel: 3,
+              data: [
+                {
+                  name: sel.name,
+                  value: [sel.lon, sel.lat, sel[state.metric]],
+                },
+              ],
+              symbolSize: bubbleSize(m, sel.positions, sizeMin, sizeMax) + 4,
+              showEffectOn: "render",
+              rippleEffect: { brushType: "stroke", scale: 1.8, period: 3.5 },
+              itemStyle: {
+                color: colourMode === "partition" ? colourFor(m, state, T, sel) : colour,
+                shadowBlur: 8,
+                shadowColor: "rgba(15,35,64,0.28)",
+              },
+              label: {
+                show: true,
+                formatter: sel.name,
+                position: "right",
+                color: INK,
+                fontSize: T.fs("small"),
+                fontWeight: 700,
+                distance: 8,
+              },
+              tooltip: { show: false },
+            },
+          ]
+        : []),
+    ],
+    tooltip: {
+      ...BASE.tooltip,
+      formatter: (p) => {
+        if (p.data?.id) {
+          const city = byId[p.data.id];
+          return tipHtml(city.name, [
+            ["Filings", fmt(city.filings)],
+            ["Positions", fmt(city.positions)],
+            ["Employers", fmt(city.employers)],
+            ["Region", city.census],
+          ]);
+        }
+        return p.name ?? "";
+      },
+    },
+  };
+}
+
+/** #place-region-legend: the chips under the region toggle. */
+export function legendChips(m, state, T) {
+  return state.regionMode === "census"
+    ? Object.entries(m.data.census_colours).map(([label, colour]) => ({ label, colour }))
+    : m.data.communities.map((c) => ({ label: c.label, colour: groups(T)[c.id] ?? MUTE }));
+}
+
+/** #chart-backbone: the links the disparity filter keeps at the α on show. */
+export function backboneOption(m, state, T) {
+  const BASE = base(T);
+  const { data, byId, byFilings } = m;
+  const g = data.backbone.graphs[state.alpha];
+  if (!g) return null;
+  // The backbone drawn on the map: lines are the links kept at this alpha, and
+  // metros outside the giant component turn grey.
+  const inGiant = new Set(g.nodes);
+  const maxW = Math.max(...g.edges.map(([, , w]) => w), 1);
+  const at = (id) => [byId[id].lon, byId[id].lat];
+  const named = new Set(byFilings.slice(0, 12).map((city) => city.id));
+  if (state.selected) named.add(state.selected);
+
+  return {
+    ...BASE,
+    geo: {
+      map: "USA",
+      roam: false,
+      ...MAP_FIT,
+      itemStyle: { areaColor: "#eef3f9", borderColor: "#c5d3e6", borderWidth: 0.9 },
+      emphasis: { disabled: true },
+      select: { disabled: true },
+      silent: true,
+    },
+    series: [
+      {
+        type: "lines",
+        coordinateSystem: "geo",
+        zlevel: 1,
+        data: g.edges.map(([a, b, w]) => ({
+          coords: [at(a), at(b)],
+          a,
+          b,
+          value: w,
+          lineStyle: {
+            width: 0.6 + 5 * Math.sqrt(w / maxW),
+            opacity: !state.selected || state.selected === a || state.selected === b ? 0.5 : 0.08,
+          },
+        })),
+        lineStyle: { color: "#5f7896", curveness: 0 },
+      },
+      {
+        type: "scatter",
+        coordinateSystem: "geo",
+        zlevel: 2,
+        data: data.cities.map((city) => ({
+          id: city.id,
+          name: city.name,
+          value: [city.lon, city.lat],
+          symbolSize: bubbleSize(m, city.positions),
+          itemStyle: {
+            color: inGiant.has(city.id) ? colourFor(m, state, T, city) : "#c3ccd8",
+            borderColor: state.selected === city.id ? INK : "#fff",
+            borderWidth: state.selected === city.id ? 3 : 1.5,
+          },
+          label: {
+            show: named.has(city.id),
+            formatter: city.name,
+            position: "right",
+            color: INK,
+            fontSize: T.fs("small"),
+            fontWeight: 600,
+            textBorderColor: "#fff",
+            textBorderWidth: 2,
+          },
+        })),
+        labelLayout: { hideOverlap: true },
+      },
+    ],
+    tooltip: {
+      ...BASE.tooltip,
+      formatter: (p) => {
+        if (p.seriesType === "lines") {
+          return tipHtml(`${byId[p.data.a].name} – ${byId[p.data.b].name}`, [["Shared weight", fmt(p.data.value)]]);
+        }
+        const city = byId[p.data.id];
+        return tipHtml(city.name, [
+          ["Filings", fmt(city.filings)],
+          ["Backbone links at this α", fmt(g.edges.filter(([a, b]) => a === city.id || b === city.id).length)],
+          ["In the giant component", inGiant.has(city.id) ? "yes" : "no"],
+          ["Community", data.communities[city.community]?.label ?? "—"],
+        ]);
+      },
+    },
+  };
+}
+
+// Five labels fit the crowded corner of the scatter without touching; hover names the rest.
+const LABELS = 5;
+
+/**
+ * #chart-longhaul: distance against weight for every backbone link. Returns
+ * the option and the labelled links, which the legend's
+ * labelsFor(selected) filters when a series is hidden.
+ */
+export function scatterOption(m, state, T) {
+  const BASE = base(T);
+  const AXIS = axis(T);
+  const { data, byId } = m;
+  const weights = data.longhaul.edges.map((e) => e.weight);
+  const wMin = Math.min(...weights);
+  const wMax = Math.max(...weights);
+
+  function edgeSize(w) {
+    const t = Math.sqrt((w - wMin) / (wMax - wMin || 1));
+    return Math.round(8 + t * 10);
+  }
+
+  // 84 links pass 1,500 km and their names would pile up. Label each
+  // company once, on its heaviest far edge (of the selected city, if one is
+  // selected), for the LABELS heaviest companies.
+  const isTied = (e) => !state.selected || state.selected === e.a || state.selected === e.b;
+  const heaviest = new Map();
+  for (const e of data.longhaul.edges) {
+    if (!isTied(e) || e.distance_km < 1500) continue;
+    const best = heaviest.get(e.top_employer);
+    if (!best || e.weight > best.weight) heaviest.set(e.top_employer, e);
+  }
+  const labelled = new Set([...heaviest.values()].sort((x, y) => y.weight - x.weight).slice(0, LABELS));
+
+  const staffing = [];
+  const local = [];
+  for (const e of data.longhaul.edges) {
+    const tied = isTied(e);
+    const point = {
+      value: [e.distance_km, e.weight],
+      name: `${byId[e.a].name} – ${byId[e.b].name}`,
+      staffing: e.staffing,
+      employer: e.top_employer,
+      a: e.a,
+      b: e.b,
+      symbolSize: edgeSize(e.weight),
+      itemStyle: {
+        color: e.staffing ? ORANGE : BLUE,
+        opacity: tied ? 0.9 : 0.12,
+        borderColor: "#fff",
+        borderWidth: 1.5,
+      },
+    };
+    (e.staffing ? staffing : local).push(point);
+  }
+
+  const option = {
+    ...BASE,
+    legend: {
+      top: 4,
+      right: 8,
+      icon: "circle",
+      itemWidth: 8,
+      itemHeight: 8,
+      textStyle: { color: MUTE_TEXT, fontSize: T.fs("caption") },
+      data: [
+        { name: "Staffing shortlist", itemStyle: { color: ORANGE } },
+        { name: "Other lead employer", itemStyle: { color: BLUE } },
+      ],
+    },
+    grid: { left: 58, right: 24, top: 40, bottom: 52 },
+    xAxis: {
+      type: "value",
+      name: "Distance between cities (km)",
+      ...AXIS,
+      nameLocation: "middle",
+      nameGap: 34,
+    },
+    yAxis: {
+      type: "value",
+      name: "Backbone weight",
+      ...AXIS,
+      nameGap: 42,
+    },
+    series: [
+      {
+        name: "Staffing shortlist",
+        type: "scatter",
+        data: staffing,
+        emphasis: { scale: 1.2, focus: "series" },
+      },
+      {
+        name: "Other lead employer",
+        type: "scatter",
+        data: local,
+        emphasis: { scale: 1.2, focus: "series" },
+      },
+      // The labels ride in a series of their own, above every dot.
+      {
+        name: "Labels",
+        type: "scatter",
+        silent: true,
+        z: 5,
+        itemStyle: { color: "transparent" },
+        label: {
+          show: true,
+          formatter: (p) => p.data.employer,
+          position: "top",
+          color: MUTE_TEXT,
+          fontSize: T.fs("small"),
+          fontWeight: 600,
+          distance: 4,
+          textBorderColor: "#fff",
+          textBorderWidth: 3,
+        },
+        // Neighbouring labels alternate above and below their dots, so two
+        // heavy links at similar distances do not print on top of each other.
+        labelLayout: { moveOverlap: "shiftY" },
+        data: [...labelled]
+          .sort((x, y) => x.distance_km - y.distance_km)
+          .map((e, i) => ({
+            value: [e.distance_km, e.weight],
+            employer: e.top_employer,
+            symbolSize: edgeSize(e.weight),
+            label: { position: i % 2 ? "bottom" : "top" },
+          })),
+      },
+    ],
+    tooltip: {
+      ...BASE.tooltip,
+      formatter: (p) =>
+        tipHtml(p.data.name, [
+          ["Distance", `${fmt(p.value[0])} km`],
+          ["Weight", fmt(p.value[1])],
+          ["Top employer", p.data.employer],
+          ["Type", p.data.staffing ? "Staffing shortlist" : "Other lead employer"],
+        ]),
+    },
+  };
+  // Hiding a series in the legend hides its labels too.
+  const labelsFor = (selected) => {
+    const shown = (e) => selected[e.staffing ? "Staffing shortlist" : "Other lead employer"] !== false;
+    return {
+      series: [
+        {},
+        {},
+        {
+          data: [...labelled].filter(shown).map((e) => ({
+            value: [e.distance_km, e.weight],
+            employer: e.top_employer,
+            symbolSize: edgeSize(e.weight),
+          })),
+        },
+      ],
+    };
+  };
+  return { option, labelsFor };
+}
+
+/** #chart-arcs: the backbone links one employer leads. */
+export function arcsOption(m, state, T) {
+  const BASE = base(T);
+  const { data, byId } = m;
+  const pairs = data.longhaul.employer_arcs[state.employer] ?? [];
+  const connected = new Set(pairs.flat());
+
+  const lines = pairs.map(([a, b]) => ({
+    coords: [
+      [byId[a].lon, byId[a].lat],
+      [byId[b].lon, byId[b].lat],
+    ],
+    a,
+    b,
+  }));
+
+  // Only cities this employer touches — drop the grey clutter.
+  const points = data.cities
+    .filter((city) => connected.has(city.id))
+    .map((city) => ({
+      name: city.name,
+      id: city.id,
+      value: [city.lon, city.lat],
+      symbolSize: 11,
+      itemStyle: {
+        color: ORANGE,
+        borderColor: "#fff",
+        borderWidth: 2,
+        shadowBlur: 6,
+        shadowColor: "rgba(242,130,12,0.35)",
+      },
+      label: {
+        show: true,
+        formatter: city.name,
+        position: "bottom",
+        color: INK,
+        fontSize: T.fs("small"),
+        fontWeight: 600,
+        distance: 6,
+      },
+    }));
+
+  return {
+    ...BASE,
+    geo: {
+      map: "USA",
+      roam: false,
+      ...MAP_FIT,
+      itemStyle: {
+        areaColor: "#f3f7fb",
+        borderColor: "#d0dcec",
+        borderWidth: 0.9,
+      },
+      emphasis: { disabled: true },
+      silent: true,
+    },
+    series: [
+      {
+        type: "lines",
+        coordinateSystem: "geo",
+        data: lines,
+        lineStyle: {
+          color: ORANGE,
+          width: 2.2,
+          opacity: 0.7,
+          curveness: 0,
+        },
+        effect: {
+          show: true,
+          period: 4.5,
+          trailLength: 0.25,
+          symbol: "circle",
+          symbolSize: 4,
+          color: "#ffb768",
+        },
+        zlevel: 1,
+      },
+      {
+        type: "scatter",
+        coordinateSystem: "geo",
+        data: points,
+        zlevel: 2,
+        emphasis: {
+          scale: 1.2,
+          itemStyle: { borderColor: INK, borderWidth: 2 },
+        },
+      },
+    ],
+    tooltip: {
+      ...BASE.tooltip,
+      formatter: (p) => {
+        if (p.seriesType === "lines") {
+          return tipHtml(state.employer, [["Link", `${byId[p.data.a].name} – ${byId[p.data.b].name}`]]);
+        }
+        return p.data?.name ?? "";
+      },
+    },
+  };
+}
+
+/** #place-null-stats: the null model's rows, [label, value]. */
+export function nullRows(data) {
+  const n = data.null_model;
+  const p = (v) => (v < 0.001 ? "< 0.001" : v.toFixed(3));
+  return [
+    ["Partition shown: found in", `${n.modal_runs} of ${n.seeds} Louvain runs`],
+    ["Distinct partitions found", String(n.partitions_found)],
+    ["Q of the partition shown", n.Q.toFixed(3)],
+    ["Q of rewired networks, mean ± sd", `${n.Q_null_mean.toFixed(3)} ± ${n.Q_null_std.toFixed(3)}`],
+    ["z", n.z.toFixed(1)],
+    ["NMI between two runs, median (lowest)", `${n.nmi_seeds.toFixed(2)} (${n.nmi_seeds_min.toFixed(2)})`],
+    ["NMI with Census regions (p)", `${n.nmi_census_region.toFixed(3)} (${p(n.p_region)})`],
+    ["NMI with Census divisions (p)", `${n.nmi_census_division.toFixed(3)} (${p(n.p_division)})`],
+    [
+      "Infomap modules (random-walk method)",
+      data.infomap.modules === 1 ? "1: all metros together" : `${data.infomap.modules} (NMI with Louvain ${data.infomap.nmi_with_louvain.toFixed(2)})`,
+    ],
+  ];
+}
+
+// The start card's three groups: the page holds each head with its
+// data-community, and the paragraph under it lists the group's metros,
+// largest first.
+const GROUP_LIST_MAX = 12;
+const GROUP_LIST_BY = "filings";
+
+/** The metros of community `id`, largest first, as the start card lists them. */
+export function groupList(data, id) {
+  const names = data.cities
+    .filter((city) => city.community === id)
+    .sort((a, b) => b[GROUP_LIST_BY] - a[GROUP_LIST_BY])
+    .map((city) => city.name);
+  const shown = names.slice(0, GROUP_LIST_MAX).join(", ");
+  const rest = names.length - GROUP_LIST_MAX;
+  return rest > 0 ? `${shown}, and ${rest} more` : shown;
+}
+
+// ---- the hero: every metro on a dark map, and the inspector beside it.
+// The hero shares the page's selection; with nothing picked it shows the
+// metro with the most filings.
+
+// Label positions for the metros the hero names without a click.
+const HERO_LABELS = {
+  35620: "top",
+  19100: "right",
+  41940: "bottom",
+  41860: "top",
+  42660: "right",
+  12060: "right",
+  16980: "top",
+  19820: "right",
+  38060: "right",
+};
+
+/** #chart-hero-map. */
+export function heroMapOption(m, state, T) {
+  const BASE = base(T);
+  const { data, byId, byFilings, heroEdges } = m;
+  const GROUP = groups(T);
+  const GROUP_DARK = groupsDark(T);
   // On the dark hero the third group takes the plain slate, so the two hub
   // groups stand out against it.
   const HERO_GROUP = [GROUP_DARK[0], GROUP_DARK[1], GROUP[2]];
-  const placedShare = Object.fromEntries(whereWho.rows.map((r) => [r.id, r.placed_share]));
-
-  // No top-40 metro lies outside the contiguous states; drawing Alaska, Hawaii
-  // and Puerto Rico shrank the 48 states to a corner of every map.
-  const OFF_MAINLAND = new Set(["Alaska", "Hawaii", "Puerto Rico"]);
-  echarts.registerMap("USA", {
-    ...usa,
-    features: usa.features.filter((f) => !OFF_MAINLAND.has(f.properties.name)),
+  const selId = state.selected ?? m.heroDefault;
+  const sel = byId[selId];
+  const fmax = Math.max(...data.cities.map((x) => x.filings));
+  const radius = (city) => 2.6 + 12.4 * Math.sqrt(city.filings / fmax);
+  const wmax = Math.max(...heroEdges.map((e) => e[2]));
+  const line = ([a, b, w], style) => ({
+    coords: [
+      [byId[a].lon, byId[a].lat],
+      [byId[b].lon, byId[b].lat],
+    ],
+    lineStyle: style(byId[a].community, byId[b].community, w),
   });
-
-  // Fit each map inside its box. A layoutSize above 100% zoomed past the
-  // box whenever a full-screen window made the chart taller than it is wide,
-  // and cut off the east coast. The wider sides and bottom leave room for
-  // the city labels, which sit below their dots.
-  const MAP_FIT = { left: 24, right: 24, top: 10, bottom: 24 };
-
-  const byId = Object.fromEntries(data.cities.map((c) => [c.id, c]));
-  const byFilings = [...data.cities].sort((a, b) => b.filings - a.filings);
-  const state = {
-    metric: "positions",
-    alpha: String(data.backbone.default_alpha),
-    regionMode: "communities",
-    employer: null,
-    selected: null,
+  const all = [...heroEdges]
+    .sort((x, y) => x[2] - y[2])
+    .map((e) =>
+      line(e, (ga, gb, w) => {
+        const same = ga === gb && ga !== 2;
+        return {
+          color: same ? GROUP_DARK[ga] : T.token("--w4-hero-lede"),
+          opacity: same ? 0.34 : 0.13,
+          width: 0.5 + 2.4 * Math.sqrt(w / wmax),
+        };
+      }),
+    );
+  const mine = heroEdges
+    .filter(([a, b]) => a === selId || b === selId)
+    .map((e) =>
+      line(e, (ga, gb, w) => ({
+        color: T.token("--w4-hero-ink"),
+        opacity: 0.55,
+        width: 0.8 + 2.4 * Math.sqrt(w / wmax),
+      })),
+    );
+  const dots = byFilings.map((city) => {
+    const picked = city.id === selId;
+    return {
+      name: city.name,
+      id: city.id,
+      value: [city.lon, city.lat, city.filings],
+      symbolSize: 2 * radius(city),
+      itemStyle: { color: HERO_GROUP[city.community], borderColor: T.token("--deep"), borderWidth: 1.4 },
+      label: {
+        show: picked || city.id in HERO_LABELS,
+        position: HERO_LABELS[city.id] ?? "top",
+        formatter: city.name,
+        color: picked ? T.token("--w4-hero-ink") : T.token("--w4-hero-lede"),
+        fontSize: T.fs("small"),
+        fontWeight: picked ? 700 : 600,
+      },
+    };
+  });
+  return {
+    ...BASE,
+    geo: {
+      map: "USA",
+      roam: false,
+      layoutCenter: ["50%", "50%"],
+      layoutSize: "135%",
+      itemStyle: {
+        areaColor: T.token("--w4-hero-state"),
+        borderColor: T.token("--w4-hero-state-edge"),
+        borderWidth: 0.6,
+      },
+      emphasis: { disabled: true },
+      select: { disabled: true },
+      silent: true,
+    },
+    series: [
+      { type: "lines", coordinateSystem: "geo", zlevel: 1, silent: true, data: all },
+      { type: "lines", coordinateSystem: "geo", zlevel: 2, silent: true, data: mine },
+      {
+        type: "scatter",
+        coordinateSystem: "geo",
+        zlevel: 3,
+        data: dots,
+        cursor: "pointer",
+        labelLayout: { hideOverlap: true },
+        emphasis: { scale: 1.15 },
+      },
+      {
+        type: "scatter",
+        coordinateSystem: "geo",
+        zlevel: 4,
+        silent: true,
+        data: [{ value: [sel.lon, sel.lat] }],
+        symbolSize: 2 * radius(sel) + 10,
+        itemStyle: { color: "transparent", borderColor: T.token("--w4-hero-ink"), borderWidth: 1.6 },
+      },
+    ],
+    tooltip: {
+      ...BASE.tooltip,
+      formatter: (p) => {
+        const city = p.data?.id ? byId[p.data.id] : null;
+        if (!city) return "";
+        return tipHtml(city.name, [
+          ["Filings", fmt(city.filings)],
+          ["Group", data.communities[city.community]?.label ?? "–"],
+        ]);
+      },
+    },
   };
+}
 
-  const charts = new Map();
-
-  function chart(id) {
-    const host = $(id);
-    if (!host) return null;
-    if (!charts.has(id)) {
-      const instance = echarts.init(host, null, { renderer: "canvas" });
-      charts.set(id, instance);
-      window.addEventListener("resize", () => instance.resize());
-    }
-    return charts.get(id);
-  }
-
-  function select(id) {
-    if (!byId[id]) return;
-    state.selected = id;
-    renderAll();
-  }
-
-  // A click on a mark that carries a city id (in `key`) selects that city.
-  function selectOnClick(c, key = "id") {
-    c.off("click");
-    c.on("click", (ev) => {
-      if (ev.data?.[key]) select(ev.data[key]);
-    });
-  }
-
-  function setStatus() {
-    const el = $("place-status");
-    if (!el) return;
-    const draft = data.meta.status === "placeholder";
-    el.textContent = draft
-      ? `Scaffold · ${yr(data.meta.scope)} · placeholder data`
-      : yr(data.meta.scope);
-  }
-
-  function renderInspector() {
-    const who = $("place-sel-name");
-    const codes = $("place-sel-codes");
-    const stats = $("place-sel-stats");
-    if (!who || !stats) return;
-    const c = state.selected ? byId[state.selected] : null;
-    who.textContent = c ? c.name : "Pick a city";
-    codes.textContent = c ? `${c.state} · ${c.census}` : "Click a bar, a map bubble, or a node";
-    if (!c) {
-      stats.innerHTML = "";
-      return;
-    }
-    stats.innerHTML = `
-      <div><dt>Filings</dt><dd>${fmt(c.filings)}</dd></div>
-      <div><dt>Positions</dt><dd>${fmt(c.positions)}</dd></div>
-      <div><dt>Employers</dt><dd>${fmt(c.employers)}</dd></div>
-      <div><dt>Top filer</dt><dd>${c.top_employer} · ${pct(c.top_share)}</dd></div>
-      <div><dt>Community</dt><dd>${data.communities[c.community]?.label ?? "—"}</dd></div>
-    `;
-  }
-
-  function ranked() {
-    return [...data.cities].sort((a, b) => b[state.metric] - a[state.metric]).slice(0, 12);
-  }
-
-  function colourFor(city) {
-    if (state.regionMode === "census") {
-      return data.census_colours[city.census] ?? MUTE;
-    }
-    return GROUP[city.community] ?? MUTE;
-  }
-
-  // Counts of positions or employers carry no placed-or-direct meaning, so
-  // they take the neutral ink tone rather than the grammar's orange or blue.
-  function metricColour() {
-    return token("--ink-soft");
-  }
-
-  /** Tight bubble scale so hubs do not swallow the map. */
-  function bubbleSize(positions, minPx = 7, maxPx = 18) {
-    const vals = data.cities.map((c) => c.positions);
-    const lo = Math.min(...vals);
-    const hi = Math.max(...vals);
-    const t = Math.sqrt((positions - lo) / (hi - lo || 1));
-    return Math.round(minPx + t * (maxPx - minPx));
-  }
-
-  function renderBars() {
-    const c = chart("chart-rank");
-    if (!c) return;
-    const rows = ranked();
-    const names = rows.map((r) => r.name).reverse();
-    const selectedName = state.selected ? byId[state.selected].name : null;
-    const colour = metricColour();
-
-    c.setOption({
-      ...BASE,
-      grid: { left: 108, right: 56, top: 12, bottom: 8 },
-      xAxis: {
-        type: "value",
-        ...AXIS,
-        splitNumber: 3,
-        axisLabel: { ...AXIS.axisLabel, formatter: (v) => (v >= 1000 ? `${Math.round(v / 1000)}k` : v) },
-      },
-      yAxis: {
-        type: "category",
-        data: names,
-        axisTick: { show: false },
-        axisLine: { show: false },
-        axisLabel: { color: INK, fontSize: fs("small"), fontWeight: 600 },
-      },
-      series: [
-        {
-          type: "bar",
-          barMaxWidth: 22,
-          data: rows
-            .slice()
-            .reverse()
-            .map((r) => ({
-              value: r[state.metric],
-              id: r.id,
-              itemStyle: {
-                color: r.name === selectedName ? INK : colour,
-                borderRadius: [0, 8, 8, 0],
-                opacity: selectedName && r.name !== selectedName ? 0.35 : 1,
-              },
-            })),
-          label: {
-            show: true,
-            position: "right",
-            color: INK,
-            fontSize: fs("small"),
-            fontWeight: 700,
-            formatter: (p) => fmt(p.value),
-          },
-          emphasis: { focus: "self" },
-        },
-      ],
-      tooltip: {
-        ...BASE.tooltip,
-        formatter: (p) => {
-          const city = byId[p.data.id];
-          return tipHtml(city.name, [
-            ["Positions", fmt(city.positions)],
-            ["Employers", fmt(city.employers)],
-            ["Top filer", `${city.top_employer} (${pct(city.top_share)})`],
-          ]);
-        },
-      },
-    });
-    selectOnClick(c);
-  }
-
-  function renderUsMap(hostId, { colourMode = "metric" } = {}) {
-    const c = chart(hostId);
-    if (!c) return;
-    const colour = metricColour();
-    const values = data.cities.map((city) => city[state.metric]);
-    const vmax = Math.max(...values, 1);
-    // Colour carries meaning in partition mode; keep sizes almost even.
-    const sizeMin = colourMode === "partition" ? 8 : 7;
-    const sizeMax = colourMode === "partition" ? 14 : 18;
-
-    const bubbles = data.cities.map((city) => {
-      const dim = state.selected && state.selected !== city.id;
-      const t = city[state.metric] / vmax;
-      return {
-        name: city.name,
-        id: city.id,
-        value: [city.lon, city.lat, city[state.metric]],
-        itemStyle: {
-          color: colourMode === "partition" ? colourFor(city) : colour,
-          opacity: dim ? 0.2 : colourMode === "partition" ? 0.88 : 0.5 + 0.45 * t,
-          borderColor: "#fff",
-          borderWidth: 1.5,
-          shadowBlur: dim ? 0 : 4,
-          shadowColor: "rgba(15,35,64,0.18)",
-        },
-        symbolSize: bubbleSize(city.positions, sizeMin, sizeMax),
-      };
-    });
-
-    const sel = state.selected ? byId[state.selected] : null;
-
-    c.setOption(
-      {
-        ...BASE,
-        geo: {
-          map: "USA",
-          roam: false,
-          ...MAP_FIT,
-          itemStyle: {
-            areaColor: "#eef3f9",
-            borderColor: "#c5d3e6",
-            borderWidth: 0.9,
-          },
-          emphasis: {
-            disabled: true,
-          },
-          select: { disabled: true },
-          silent: true,
-        },
-        series: [
-          {
-            type: "scatter",
-            coordinateSystem: "geo",
-            data: bubbles,
-            zlevel: 2,
-            emphasis: {
-              scale: 1.25,
-              itemStyle: { borderColor: INK, borderWidth: 2 },
-            },
-          },
-          ...(sel
-            ? [
-                {
-                  type: "effectScatter",
-                  coordinateSystem: "geo",
-                  zlevel: 3,
-                  data: [
-                    {
-                      name: sel.name,
-                      value: [sel.lon, sel.lat, sel[state.metric]],
-                    },
-                  ],
-                  symbolSize: bubbleSize(sel.positions, sizeMin, sizeMax) + 4,
-                  showEffectOn: "render",
-                  rippleEffect: { brushType: "stroke", scale: 1.8, period: 3.5 },
-                  itemStyle: {
-                    color: colourMode === "partition" ? colourFor(sel) : colour,
-                    shadowBlur: 8,
-                    shadowColor: "rgba(15,35,64,0.28)",
-                  },
-                  label: {
-                    show: true,
-                    formatter: sel.name,
-                    position: "right",
-                    color: INK,
-                    fontSize: fs("small"),
-                    fontWeight: 700,
-                    distance: 8,
-                  },
-                  tooltip: { show: false },
-                },
-              ]
-            : []),
-        ],
-        tooltip: {
-          ...BASE.tooltip,
-          formatter: (p) => {
-            if (p.data?.id) {
-              const city = byId[p.data.id];
-              return tipHtml(city.name, [
-                ["Filings", fmt(city.filings)],
-                ["Positions", fmt(city.positions)],
-                ["Employers", fmt(city.employers)],
-                ["Region", city.census],
-              ]);
-            }
-            return p.name ?? "";
-          },
-        },
-      },
-      { notMerge: true },
-    );
-    selectOnClick(c);
-  }
-
-  // The giant component against α, drawn as plain SVG: a flat ink line, open
-  // dots with the selected α filled, a dashed marker where the backbone snaps,
-  // and the links kept printed under each stop.
-  let gcWidth = 0;
-  let gcWatch = null;
-  const contentWidth = (host) => {
-    const cs = getComputedStyle(host);
-    return Math.floor(host.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight));
-  };
-  function renderGcLine() {
-    const host = $("chart-gc");
-    if (!host) return;
-    const { alphas, gc_size: gc, edges_kept: kept, snap_alpha: snap } = data.backbone;
-    const metros = data.cities.length;
-    const ink = token("--ink");
-    const soft = token("--ink-soft");
-    const mute = token("--ink-mute");
-    const muteText = token("--ink-mute-text");
-    const card = token("--card");
-    const grid = token("--w4-grid");
-
-    // Drawn at the host's width, one unit to a pixel; redrawn when it changes.
-    const W = contentWidth(host) || 1000;
-    gcWidth = W;
-    if (!gcWatch) {
-      gcWatch = new ResizeObserver(() => {
-        const w = contentWidth(host);
-        if (w > 0 && w !== gcWidth) renderGcLine();
-      });
-      gcWatch.observe(host);
-    }
-    const caption = fs("caption");
-    const small = fs("small");
-    const H = 250;
-    const L = 48;
-    const R = W - 24;
-    const T = 30;
-    const B = 192;
-    // A round tick step that gives about four gridlines above zero.
-    const gmax = Math.max(...gc, 1);
-    const raw = gmax / 4;
-    const mag = 10 ** Math.floor(Math.log10(raw));
-    const step = [1, 2, 5, 10].map((m) => m * mag).find((s) => s >= raw);
-    const top = Math.ceil(gmax / step) * step;
-    const amax = Math.max(...alphas) * 1.1;
-    const x = (a) => L + (a / amax) * (R - L);
-    const y = (v) => B - (v / top) * (B - T);
-    // Text width at the caption size, to keep labels inside the frame.
-    const width = (s) => textWidth(s, "caption");
-    const place = (px, s) =>
-      px + 12 + width(s) > W - 8 ? { x: px - 12, anchor: "end" } : { x: px + 12, anchor: "start" };
-
-    const parts = [];
-    for (let v = 0; v <= top; v += step) {
-      parts.push(
-        `<line x1="${L}" x2="${R}" y1="${y(v)}" y2="${y(v)}" stroke="${grid}"/>`,
-        `<text x="${L - 10}" y="${y(v) + 4}" text-anchor="end" font-size="${caption}" fill="${muteText}">${fmt(v)}</text>`,
-      );
-    }
-    alphas.forEach((a) => {
-      parts.push(
-        `<text x="${x(a)}" y="212" text-anchor="middle" font-size="${caption}" fill="${soft}">α ${a}</text>`,
-      );
-    });
-    parts.push(
-      `<text x="${(L + R) / 2}" y="242" text-anchor="middle" font-size="${caption}" fill="${muteText}">← stricter filter · looser filter →</text>`,
-    );
-
-    const snapIdx = alphas.findIndex((a) => Number(a) === Number(snap));
-    const snapText = snapIdx >= 0 ? `Snaps: only ${gc[snapIdx]} metros stay joined` : "";
-    const snapAt = place(x(snap) - 4, snapText);
-    parts.push(
-      `<line x1="${x(snap)}" x2="${x(snap)}" y1="${T - 8}" y2="${B}" stroke="${mute}" stroke-dasharray="4 3"/>`,
-    );
-    if (snapText) {
-      parts.push(
-        `<text x="${snapAt.x}" y="${T - 12}" text-anchor="${snapAt.anchor}" font-size="${caption}" fill="${soft}">${snapText}</text>`,
-      );
-    }
-    const snapSpan =
-      snapAt.anchor === "start" ? [snapAt.x, snapAt.x + width(snapText)] : [snapAt.x - width(snapText), snapAt.x];
-
-    parts.push(
-      `<polyline points="${alphas.map((a, i) => `${x(a)},${y(gc[i])}`).join(" ")}" fill="none" stroke="${ink}" stroke-width="2.4" stroke-linejoin="round"/>`,
-    );
-
-    const note = "shown on the map above";
-    alphas.forEach((a, i) => {
-      const cx = x(a);
-      const cy = y(gc[i]);
-      const on = String(a) === state.alpha;
-      // Near the top the value label goes under its dot.
-      const atTop = cy - 12 < T + 8;
-      parts.push(
-        `<g><title>α = ${a}: ${gc[i]} of ${metros} metros in the largest connected piece, ${fmt(kept[i])} links kept</title>` +
-          `<circle cx="${cx}" cy="${cy}" r="${on ? 6.5 : 5}" fill="${on ? ink : card}" stroke="${ink}" stroke-width="2"/></g>`,
-        `<text x="${cx}" y="${atTop ? cy + 20 : cy - 12}" text-anchor="middle" font-size="${small}" font-weight="700" fill="${ink}">${gc[i]}</text>`,
-        `<text x="${cx}" y="226" text-anchor="middle" font-size="${caption}" fill="${muteText}">${fmt(kept[i])} links</text>`,
-      );
-      if (!on) return;
-      const at = place(cx, note);
-      const span = at.anchor === "start" ? [at.x, at.x + width(note)] : [at.x - width(note), at.x];
-      const hitsSnap = snapText && span[0] < snapSpan[1] && snapSpan[0] < span[1];
-      // Above the dot on the top row, unless the snap label is there; below it otherwise.
-      const ny = atTop ? (hitsSnap ? cy + 38 : cy - 10) : cy + 22;
-      parts.push(
-        `<text x="${at.x}" y="${ny}" text-anchor="${at.anchor}" font-size="${caption}" fill="${soft}">${note}</text>`,
-      );
-    });
-
-    host.innerHTML =
-      `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Metros in the largest connected piece at each backbone alpha" style="display:block">` +
-      parts.join("") +
-      "</svg>";
-  }
-
-  function renderBackbone() {
-    const c = chart("chart-backbone");
-    if (!c) return;
-    const g = data.backbone.graphs[state.alpha];
-    if (!g) return;
-    // The backbone drawn on the map: lines are the links kept at this alpha, and
-    // metros outside the giant component turn grey.
-    const inGiant = new Set(g.nodes);
-    const maxW = Math.max(...g.edges.map(([, , w]) => w), 1);
-    const at = (id) => [byId[id].lon, byId[id].lat];
-    const named = new Set(byFilings.slice(0, 12).map((city) => city.id));
-    if (state.selected) named.add(state.selected);
-
-    c.setOption(
-      {
-        ...BASE,
-        geo: {
-          map: "USA",
-          roam: false,
-          ...MAP_FIT,
-          itemStyle: { areaColor: "#eef3f9", borderColor: "#c5d3e6", borderWidth: 0.9 },
-          emphasis: { disabled: true },
-          select: { disabled: true },
-          silent: true,
-        },
-        series: [
-          {
-            type: "lines",
-            coordinateSystem: "geo",
-            zlevel: 1,
-            data: g.edges.map(([a, b, w]) => ({
-              coords: [at(a), at(b)],
-              a,
-              b,
-              value: w,
-              lineStyle: {
-                width: 0.6 + 5 * Math.sqrt(w / maxW),
-                opacity: !state.selected || state.selected === a || state.selected === b ? 0.5 : 0.08,
-              },
-            })),
-            lineStyle: { color: "#5f7896", curveness: 0 },
-          },
-          {
-            type: "scatter",
-            coordinateSystem: "geo",
-            zlevel: 2,
-            data: data.cities.map((city) => ({
-              id: city.id,
-              name: city.name,
-              value: [city.lon, city.lat],
-              symbolSize: bubbleSize(city.positions),
-              itemStyle: {
-                color: inGiant.has(city.id) ? colourFor(city) : "#c3ccd8",
-                borderColor: state.selected === city.id ? INK : "#fff",
-                borderWidth: state.selected === city.id ? 3 : 1.5,
-              },
-              label: {
-                show: named.has(city.id),
-                formatter: city.name,
-                position: "right",
-                color: INK,
-                fontSize: fs("small"),
-                fontWeight: 600,
-                textBorderColor: "#fff",
-                textBorderWidth: 2,
-              },
-            })),
-            labelLayout: { hideOverlap: true },
-          },
-        ],
-        tooltip: {
-          ...BASE.tooltip,
-          formatter: (p) => {
-            if (p.seriesType === "lines") {
-              return tipHtml(`${byId[p.data.a].name} – ${byId[p.data.b].name}`, [
-                ["Shared weight", fmt(p.data.value)],
-              ]);
-            }
-            const city = byId[p.data.id];
-            return tipHtml(city.name, [
-              ["Filings", fmt(city.filings)],
-              ["Backbone links at this α", fmt(g.edges.filter(([a, b]) => a === city.id || b === city.id).length)],
-              ["In the giant component", inGiant.has(city.id) ? "yes" : "no"],
-              ["Community", data.communities[city.community]?.label ?? "—"],
-            ]);
-          },
-        },
-      },
-      { notMerge: true },
-    );
-    selectOnClick(c);
-  }
-
-  // Five labels fit the crowded corner of the scatter without touching; hover names the rest.
-  const LABELS = 5;
-
-  function renderScatter() {
-    const c = chart("chart-longhaul");
-    if (!c) return;
-    const weights = data.longhaul.edges.map((e) => e.weight);
-    const wMin = Math.min(...weights);
-    const wMax = Math.max(...weights);
-
-    function edgeSize(w) {
-      const t = Math.sqrt((w - wMin) / (wMax - wMin || 1));
-      return Math.round(8 + t * 10);
-    }
-
-    // 84 links pass 1,500 km and their names would pile up. Label each
-    // company once, on its heaviest far edge (of the selected city, if one is
-    // selected), for the LABELS heaviest companies.
-    const isTied = (e) =>
-      !state.selected || state.selected === e.a || state.selected === e.b;
-    const heaviest = new Map();
-    for (const e of data.longhaul.edges) {
-      if (!isTied(e) || e.distance_km < 1500) continue;
-      const best = heaviest.get(e.top_employer);
-      if (!best || e.weight > best.weight) heaviest.set(e.top_employer, e);
-    }
-    const labelled = new Set(
-      [...heaviest.values()].sort((x, y) => y.weight - x.weight).slice(0, LABELS),
-    );
-
-    const staffing = [];
-    const local = [];
-    for (const e of data.longhaul.edges) {
-      const tied = isTied(e);
-      const point = {
-        value: [e.distance_km, e.weight],
-        name: `${byId[e.a].name} – ${byId[e.b].name}`,
-        staffing: e.staffing,
-        employer: e.top_employer,
-        a: e.a,
-        b: e.b,
-        symbolSize: edgeSize(e.weight),
-        itemStyle: {
-          color: e.staffing ? ORANGE : BLUE,
-          opacity: tied ? 0.9 : 0.12,
-          borderColor: "#fff",
-          borderWidth: 1.5,
-        },
-      };
-      (e.staffing ? staffing : local).push(point);
-    }
-
-    c.setOption({
-      ...BASE,
-      legend: {
-        top: 4,
-        right: 8,
-        icon: "circle",
-        itemWidth: 8,
-        itemHeight: 8,
-        textStyle: { color: MUTE_TEXT, fontSize: fs("caption") },
-        data: [
-          { name: "Staffing shortlist", itemStyle: { color: ORANGE } },
-          { name: "Other lead employer", itemStyle: { color: BLUE } },
-        ],
-      },
-      grid: { left: 58, right: 24, top: 40, bottom: 52 },
-      xAxis: {
-        type: "value",
-        name: "Distance between cities (km)",
-        ...AXIS,
-        nameLocation: "middle",
-        nameGap: 34,
-      },
-      yAxis: {
-        type: "value",
-        name: "Backbone weight",
-        ...AXIS,
-        nameGap: 42,
-      },
-      series: [
-        {
-          name: "Staffing shortlist",
-          type: "scatter",
-          data: staffing,
-          emphasis: { scale: 1.2, focus: "series" },
-        },
-        {
-          name: "Other lead employer",
-          type: "scatter",
-          data: local,
-          emphasis: { scale: 1.2, focus: "series" },
-        },
-        // The labels ride in a series of their own, above every dot.
-        {
-          name: "Labels",
-          type: "scatter",
-          silent: true,
-          z: 5,
-          itemStyle: { color: "transparent" },
-          label: {
-            show: true,
-            formatter: (p) => p.data.employer,
-            position: "top",
-            color: MUTE_TEXT,
-            fontSize: fs("small"),
-            fontWeight: 600,
-            distance: 4,
-            textBorderColor: "#fff",
-            textBorderWidth: 3,
-          },
-          // Neighbouring labels alternate above and below their dots, so two
-          // heavy links at similar distances do not print on top of each other.
-          labelLayout: { moveOverlap: "shiftY" },
-          data: [...labelled]
-            .sort((x, y) => x.distance_km - y.distance_km)
-            .map((e, i) => ({
-              value: [e.distance_km, e.weight],
-              employer: e.top_employer,
-              symbolSize: edgeSize(e.weight),
-              label: { position: i % 2 ? "bottom" : "top" },
-            })),
-        },
-      ],
-      tooltip: {
-        ...BASE.tooltip,
-        formatter: (p) =>
-          tipHtml(p.data.name, [
-            ["Distance", `${fmt(p.value[0])} km`],
-            ["Weight", fmt(p.value[1])],
-            ["Top employer", p.data.employer],
-            ["Type", p.data.staffing ? "Staffing shortlist" : "Other lead employer"],
-          ]),
-      },
-    });
-    selectOnClick(c, "a");
-    // Hiding a series in the legend hides its labels too.
-    c.off("legendselectchanged");
-    c.on("legendselectchanged", (ev) => {
-      const shown = (e) => ev.selected[e.staffing ? "Staffing shortlist" : "Other lead employer"] !== false;
-      c.setOption({
-        series: [{}, {}, {
-          data: [...labelled].filter(shown).map((e) => ({
-            value: [e.distance_km, e.weight], employer: e.top_employer, symbolSize: edgeSize(e.weight),
-          })),
-        }],
-      });
-    });
-  }
-
-  function renderArcs() {
-    const c = chart("chart-arcs");
-    if (!c) return;
-    const pairs = data.longhaul.employer_arcs[state.employer] ?? [];
-    const connected = new Set(pairs.flat());
-
-    const lines = pairs.map(([a, b]) => ({
-      coords: [
-        [byId[a].lon, byId[a].lat],
-        [byId[b].lon, byId[b].lat],
-      ],
-      a,
-      b,
-    }));
-
-    // Only cities this employer touches — drop the grey clutter.
-    const points = data.cities
-      .filter((city) => connected.has(city.id))
-      .map((city) => ({
-        name: city.name,
-        id: city.id,
-        value: [city.lon, city.lat],
-        symbolSize: 11,
-        itemStyle: {
-          color: ORANGE,
-          borderColor: "#fff",
-          borderWidth: 2,
-          shadowBlur: 6,
-          shadowColor: "rgba(242,130,12,0.35)",
-        },
-        label: {
-          show: true,
-          formatter: city.name,
-          position: "bottom",
-          color: INK,
-          fontSize: fs("small"),
-          fontWeight: 600,
-          distance: 6,
-        },
-      }));
-
-    c.setOption(
-      {
-        ...BASE,
-        geo: {
-          map: "USA",
-          roam: false,
-          ...MAP_FIT,
-          itemStyle: {
-            areaColor: "#f3f7fb",
-            borderColor: "#d0dcec",
-            borderWidth: 0.9,
-          },
-          emphasis: { disabled: true },
-          silent: true,
-        },
-        series: [
-          {
-            type: "lines",
-            coordinateSystem: "geo",
-            data: lines,
-            lineStyle: {
-              color: ORANGE,
-              width: 2.2,
-              opacity: 0.7,
-              curveness: 0,
-            },
-            effect: {
-              show: true,
-              period: 4.5,
-              trailLength: 0.25,
-              symbol: "circle",
-              symbolSize: 4,
-              color: "#ffb768",
-            },
-            zlevel: 1,
-          },
-          {
-            type: "scatter",
-            coordinateSystem: "geo",
-            data: points,
-            zlevel: 2,
-            emphasis: {
-              scale: 1.2,
-              itemStyle: { borderColor: INK, borderWidth: 2 },
-            },
-          },
-        ],
-        tooltip: {
-          ...BASE.tooltip,
-          formatter: (p) => {
-            if (p.seriesType === "lines") {
-              return tipHtml(state.employer, [
-                ["Link", `${byId[p.data.a].name} – ${byId[p.data.b].name}`],
-              ]);
-            }
-            return p.data?.name ?? "";
-          },
-        },
-      },
-      { notMerge: true },
-    );
-    selectOnClick(c);
-  }
-
-  function renderNullBits() {
-    const box = $("place-null-stats");
-    if (!box) return;
-    const n = data.null_model;
-    const row = (k, v) => `<tr><td>${k}</td><td style="text-align:right">${v}</td></tr>`;
-    const p = (v) => (v < 0.001 ? "< 0.001" : v.toFixed(3));
-    box.innerHTML = [
-      row("Partition shown: found in", `${n.modal_runs} of ${n.seeds} Louvain runs`),
-      row("Distinct partitions found", n.partitions_found),
-      row("Q of the partition shown", n.Q.toFixed(3)),
-      row("Q of rewired networks, mean ± sd", `${n.Q_null_mean.toFixed(3)} ± ${n.Q_null_std.toFixed(3)}`),
-      row("z", n.z.toFixed(1)),
-      row("NMI between two runs, median (lowest)", `${n.nmi_seeds.toFixed(2)} (${n.nmi_seeds_min.toFixed(2)})`),
-      row("NMI with Census regions (p)", `${n.nmi_census_region.toFixed(3)} (${p(n.p_region)})`),
-      row("NMI with Census divisions (p)", `${n.nmi_census_division.toFixed(3)} (${p(n.p_division)})`),
-      row("Infomap modules (random-walk method)", data.infomap.modules === 1
-        ? "1: all metros together" : `${data.infomap.modules} (NMI with Louvain ${data.infomap.nmi_with_louvain.toFixed(2)})`),
-    ].join("");
-  }
-
-  function renderAlphaTable() {
-    const body = $("place-alpha-table");
-    if (!body) return;
-    body.innerHTML = data.backbone.alphas
-      .map((a, i) => {
-        const on = String(a) === state.alpha;
-        return `<tr${on ? ' style="font-weight:700;background:#f7fafd"' : ""}><td>${a}</td><td style="text-align:right">${data.backbone.edges_kept[i]}</td><td style="text-align:right">${data.backbone.gc_size[i]}</td></tr>`;
-      })
-      .join("");
-  }
-
-  function renderSnapNote() {
-    const el = $("place-snap-note");
-    if (el) {
-      el.textContent = data.backbone.snap_note;
-      termify(
-        el,
-        "giant component",
-        "The largest piece of the map in which every metro can reach every other along kept links.",
-        "w4-term-place-backbone-giant",
-      );
-    }
-    const choice = $("place-alpha-choice");
-    if (choice) choice.textContent = data.backbone.choice_note || "";
-  }
-
-  function renderLegendChips() {
-    const el = $("place-region-legend");
-    if (!el) return;
-    const items =
-      state.regionMode === "census"
-        ? Object.entries(data.census_colours).map(([label, colour]) => ({ label, colour }))
-        : data.communities.map((c) => ({ label: c.label, colour: GROUP[c.id] ?? MUTE }));
-    el.innerHTML = items
-      .map(
-        (it) =>
-          `<span><i style="background:${it.colour}"></i>${it.label}</span>`,
-      )
-      .join("");
-  }
-
-  // The start card's three groups: index.html holds each head with its
-  // data-community, and this fills the paragraph under it with the group's
-  // metros, largest first.
-  const GROUP_LIST_MAX = 12;
-  const GROUP_LIST_BY = "filings";
-
-  function renderGroupList() {
-    const host = $("place-groups");
-    if (!host) return;
-    host.querySelectorAll(".rx-group[data-community]").forEach((group) => {
-      const id = Number(group.dataset.community);
-      const names = data.cities
-        .filter((city) => city.community === id)
-        .sort((a, b) => b[GROUP_LIST_BY] - a[GROUP_LIST_BY])
-        .map((city) => city.name);
-      const shown = names.slice(0, GROUP_LIST_MAX).join(", ");
-      const rest = names.length - GROUP_LIST_MAX;
-      let p = group.querySelector(":scope > p");
-      if (!p) {
-        p = document.createElement("p");
-        group.append(p);
-      }
-      p.textContent = rest > 0 ? `${shown}, and ${rest} more` : shown;
-    });
-  }
-
-  // ---- the hero: every metro on a dark map, and the inspector beside it.
-  // The hero shares the page's selection; with nothing picked it shows the
-  // metro with the most filings.
-  const heroEdges = data.backbone.graphs["0.2"].edges;
-  const heroDefault = byFilings[0].id;
-  // Label positions for the metros the hero names without a click.
-  const HERO_LABELS = {
-    35620: "top",
-    19100: "right",
-    41940: "bottom",
-    41860: "top",
-    42660: "right",
-    12060: "right",
-    16980: "top",
-    19820: "right",
-    38060: "right",
-  };
-
-  function renderHeroMap() {
-    const c = chart("chart-hero-map");
-    if (!c) return;
-    const selId = state.selected ?? heroDefault;
-    const sel = byId[selId];
-    const fmax = Math.max(...data.cities.map((x) => x.filings));
-    const radius = (city) => 2.6 + 12.4 * Math.sqrt(city.filings / fmax);
-    const wmax = Math.max(...heroEdges.map((e) => e[2]));
-    const line = ([a, b, w], style) => ({
-      coords: [
-        [byId[a].lon, byId[a].lat],
-        [byId[b].lon, byId[b].lat],
-      ],
-      lineStyle: style(byId[a].community, byId[b].community, w),
-    });
-    const all = [...heroEdges]
-      .sort((x, y) => x[2] - y[2])
-      .map((e) =>
-        line(e, (ga, gb, w) => {
-          const same = ga === gb && ga !== 2;
-          return {
-            color: same ? GROUP_DARK[ga] : token("--w4-hero-lede"),
-            opacity: same ? 0.34 : 0.13,
-            width: 0.5 + 2.4 * Math.sqrt(w / wmax),
-          };
-        }),
-      );
-    const mine = heroEdges
-      .filter(([a, b]) => a === selId || b === selId)
-      .map((e) =>
-        line(e, (ga, gb, w) => ({
-          color: token("--w4-hero-ink"),
-          opacity: 0.55,
-          width: 0.8 + 2.4 * Math.sqrt(w / wmax),
-        })),
-      );
-    const dots = byFilings.map((city) => {
-      const picked = city.id === selId;
-      return {
-        name: city.name,
-        id: city.id,
-        value: [city.lon, city.lat, city.filings],
-        symbolSize: 2 * radius(city),
-        itemStyle: { color: HERO_GROUP[city.community], borderColor: token("--deep"), borderWidth: 1.4 },
-        label: {
-          show: picked || city.id in HERO_LABELS,
-          position: HERO_LABELS[city.id] ?? "top",
-          formatter: city.name,
-          color: picked ? token("--w4-hero-ink") : token("--w4-hero-lede"),
-          fontSize: fs("small"),
-          fontWeight: picked ? 700 : 600,
-        },
-      };
-    });
-    c.setOption(
-      {
-        ...BASE,
-        geo: {
-          map: "USA",
-          roam: false,
-          layoutCenter: ["50%", "50%"],
-          layoutSize: "135%",
-          itemStyle: {
-            areaColor: token("--w4-hero-state"),
-            borderColor: token("--w4-hero-state-edge"),
-            borderWidth: 0.6,
-          },
-          emphasis: { disabled: true },
-          select: { disabled: true },
-          silent: true,
-        },
-        series: [
-          { type: "lines", coordinateSystem: "geo", zlevel: 1, silent: true, data: all },
-          { type: "lines", coordinateSystem: "geo", zlevel: 2, silent: true, data: mine },
-          {
-            type: "scatter",
-            coordinateSystem: "geo",
-            zlevel: 3,
-            data: dots,
-            cursor: "pointer",
-            labelLayout: { hideOverlap: true },
-            emphasis: { scale: 1.15 },
-          },
-          {
-            type: "scatter",
-            coordinateSystem: "geo",
-            zlevel: 4,
-            silent: true,
-            data: [{ value: [sel.lon, sel.lat] }],
-            symbolSize: 2 * radius(sel) + 10,
-            itemStyle: { color: "transparent", borderColor: token("--w4-hero-ink"), borderWidth: 1.6 },
-          },
-        ],
-        tooltip: {
-          ...BASE.tooltip,
-          formatter: (p) => {
-            const city = p.data?.id ? byId[p.data.id] : null;
-            if (!city) return "";
-            return tipHtml(city.name, [
-              ["Filings", fmt(city.filings)],
-              ["Group", data.communities[city.community]?.label ?? "–"],
-            ]);
-          },
-        },
-      },
-      { notMerge: true },
-    );
-    selectOnClick(c);
-  }
-
-  function renderHeroInspector() {
-    const name = $("hero-sel-name");
-    if (!name) return;
-    const city = byId[state.selected ?? heroDefault];
-    name.textContent = city.name;
-    $("hero-sel-codes").textContent = `${city.state} · 2025`;
-    $("hero-sel-dot").style.background = GROUP[city.community];
-    $("hero-sel-group").textContent = `${data.communities[city.community]?.label ?? "–"} group`;
-    const share = placedShare[city.id];
-    const rows = [
+/** The hero inspector's metro: its name, codes, group colour and label, stats and three strongest links. */
+export function heroInspector(m, state, T) {
+  const { data, byId, heroEdges, placedShare } = m;
+  const city = byId[state.selected ?? m.heroDefault];
+  const share = placedShare[city.id];
+  const links = heroEdges
+    .filter(([a, b]) => a === city.id || b === city.id)
+    .sort((x, y) => y[2] - x[2])
+    .slice(0, 3);
+  return {
+    name: city.name,
+    codes: `${city.state} · 2025`,
+    dot: groups(T)[city.community],
+    group: `${data.communities[city.community]?.label ?? "–"} group`,
+    stats: [
       ["Filings", fmt(city.filings)],
       ["Companies", fmt(city.employers)],
       ["Largest filer", `${city.top_employer}, ${(city.top_share * 100).toFixed(1)}%`],
       ["Placed at a client", share == null ? "–" : pct(share)],
       ["Census region", city.census],
-    ];
-    $("hero-sel-stats").replaceChildren(
-      ...rows.map(([k, v]) => {
-        const row = document.createElement("div");
-        const dt = document.createElement("dt");
-        const dd = document.createElement("dd");
-        dt.textContent = k;
-        dd.textContent = v;
-        row.append(dt, dd);
-        return row;
-      }),
-    );
-    const links = heroEdges
-      .filter(([a, b]) => a === city.id || b === city.id)
-      .sort((x, y) => y[2] - x[2])
-      .slice(0, 3);
-    $("hero-sel-links").replaceChildren(
-      ...links.map(([a, b, w]) => {
-        const li = document.createElement("li");
-        const weight = document.createElement("span");
-        li.textContent = byId[a === city.id ? b : a].name;
-        weight.textContent = fmt(w);
-        li.append(weight);
-        return li;
-      }),
-    );
-  }
-
-  // Every map that shares the selected city gets a Reset view button; it
-  // shows while a city is selected and clears it everywhere at once. A button
-  // is added only once its chart exists, because echarts.init empties its host.
-  const MAPS_WITH_RESET = ["chart-hero-map", "chart-citymap", "chart-regions", "chart-backbone", "chart-arcs"];
-  const resets = new Map();
-
-  function syncResets() {
-    for (const id of MAPS_WITH_RESET) {
-      const host = $(id);
-      if (!host || !charts.has(id)) continue;
-      if (!resets.has(id)) {
-        resets.set(
-          id,
-          resetButton(host, () => {
-            state.selected = null;
-            renderAll();
-          }),
-        );
-      }
-      resets.get(id)(state.selected !== null);
-    }
-  }
-
-  function renderAll() {
-    renderHeroMap();
-    renderHeroInspector();
-    renderInspector();
-    renderBars();
-    renderUsMap("chart-citymap", { colourMode: "metric" });
-    renderUsMap("chart-regions", { colourMode: "partition" });
-    renderLegendChips();
-    renderGcLine();
-    renderBackbone();
-    renderScatter();
-    renderArcs();
-    renderNullBits();
-    renderAlphaTable();
-    renderSnapNote();
-    syncResets();
-  }
-
-  document.querySelectorAll("[data-place-metric]").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      state.metric = btn.getAttribute("data-place-metric");
-      document.querySelectorAll("[data-place-metric]").forEach((b) => {
-        b.setAttribute("aria-pressed", String(b === btn));
-      });
-      renderBars();
-      renderUsMap("chart-citymap", { colourMode: "metric" });
-    });
-  });
-
-  document.querySelectorAll("[data-place-region]").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      state.regionMode = btn.getAttribute("data-place-region");
-      document.querySelectorAll("[data-place-region]").forEach((b) => {
-        b.setAttribute("aria-pressed", String(b === btn));
-      });
-      renderUsMap("chart-regions", { colourMode: "partition" });
-      renderBackbone();
-      renderLegendChips();
-    });
-  });
-
-  // #place-alpha is a segmented control; its buttons are the α stops.
-  const alpha = $("place-alpha");
-  if (alpha) {
-    const pick = (a) => {
-      state.alpha = String(a);
-      alpha.querySelectorAll("button").forEach((b) => {
-        b.setAttribute("aria-pressed", String(b.dataset.alpha === state.alpha));
-      });
-      renderGcLine();
-      renderBackbone();
-      renderAlphaTable();
-    };
-    alpha.replaceChildren(
-      ...data.backbone.alphas.map((a) => {
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.textContent = String(a);
-        btn.dataset.alpha = String(a);
-        btn.addEventListener("click", () => pick(a));
-        return btn;
-      }),
-    );
-    pick(data.backbone.alphas.find((a) => Number(a) === Number(data.backbone.default_alpha)) ?? data.backbone.default_alpha);
-  }
-
-  const employer = $("place-employer");
-  if (employer) {
-    // The companies that lead the most backbone links.
-    state.employer = data.longhaul.arc_employers[0];
-    employer.innerHTML = data.longhaul.arc_employers
-      .map((name) => `<option value="${name}">${name} · ${data.longhaul.employer_arcs[name].length} links</option>`)
-      .join("");
-    employer.value = state.employer;
-    employer.addEventListener("change", () => {
-      state.employer = employer.value;
-      renderArcs();
-    });
-  }
-
-  setStatus();
-  renderGroupList();
-  renderAll();
-
-  const draft = $("place-draft-banner");
-  if (draft && data.meta.status === "placeholder") draft.hidden = false;
-
-  return { select, data, state };
+    ],
+    links: links.map(([a, b, w]) => [byId[a === city.id ? b : a].name, fmt(w)]),
+  };
 }
-
-// Rejects with an error event, as the <script>'s onerror did, so boot()
-// writes the same message to #place-status.
-function loadScript(file) {
-  return loadVendor(file).catch(() => {
-    throw new Event("error");
-  });
-}
-
-export async function boot() {
-  const status = $("place-status");
-  if (status) status.textContent = "Loading place data…";
-  try {
-    if (!window.echarts) {
-      await loadScript("echarts-5.5.1.min.js");
-    }
-    await startPlace(window.echarts);
-  } catch (err) {
-    console.error(err);
-    if (status) status.textContent = `Place section failed to load: ${err.message}`;
-  }
-}
-
-boot();

@@ -233,7 +233,9 @@ through `getComputedStyle`, so one definition drives the stylesheet, the SVG
 variants and the 2D canvas at once.
 
 `src/scripts/week03-boot.js` holds the registries; each renderer is one
-module under `src/scripts/variants/`.
+module under `src/scripts/variants/`. The React islands in
+`src/features/week03/` load the data and the renderer, hold the controls and
+the page state, and call `corridor.js` to draw.
 
 ### Rebuilding, and what is committed
 

@@ -18,16 +18,17 @@ export function install(api, Globe) {
   // globe is the same sphere seen from closer in.
   const altitude = () => Math.max(1.55, 2.35 / earthScale());
 
+  // The hero island renders the host after the canvas; the first draw sizes
+  // it and hides the canvas.
   function mount() {
     const canvas = $("globe-canvas");
     if (!canvas) return null;
     if (!host) {
-      host = document.createElement("div");
-      host.id = "globe-gl";
+      host = $("globe-gl");
+      if (!host) return null;
       host.style.width = "100%";
       host.style.aspectRatio = "1";
       host.style.height = "100%";
-      canvas.after(host);
       canvas.style.display = "none";
     }
     if (!world) {
@@ -145,17 +146,14 @@ export function install(api, Globe) {
   }
 
   // globe.gl owns its own pointer handling, so the canvas drag and hit-test are
-  // replaced with nothing rather than left to fight it.
-  function setupGlobe() {
-    const hint = document.querySelector(".stage-hint");
-    if (hint) hint.textContent = "Drag to spin, scroll to zoom. Click a country.";
-    window.addEventListener("resize", () => {
-      if (!world || !host) return;
-      const width = host.clientWidth || 720;
-      const height = host.clientHeight || width;
-      world.width(width).height(height);
-    });
+  // replaced with nothing rather than left to fight it. The page calls
+  // resize() on every window resize.
+  function resize() {
+    if (!world || !host) return;
+    const width = host.clientWidth || 720;
+    const height = host.clientHeight || width;
+    world.width(width).height(height);
   }
 
-  return { globe: draw, setupGlobe };
+  return { globe: draw, hint: "Drag to spin, scroll to zoom. Click a country.", resize };
 }
