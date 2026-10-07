@@ -7,7 +7,7 @@
       "gallery": "https://echarts.apache.org/examples/en/index.html",
       "version_in_repo": "5.5.1",
       "what_for": "Configuration-driven charts of almost every standard type, with built-in interaction, animation, maps and large-data rendering on canvas.",
-      "note": "Built from the gallery's own index files in apache/echarts-examples (src/data/chart-list-data.js and chart-list-data-gl.js on gh-pages), skipping the untitled, uncategorised entries that the gallery hides. ECharts GL (3D) examples have categories prefixed 'GL:' and need the echarts-gl extension.",
+      "note": "Built from the gallery's own index files in apache/echarts-examples (src/data/chart-list-data.js and chart-list-data-gl.js on gh-pages), keeping the 282 core and 59 GL entries that have a title and category and lack the noExplore flag; the other 95 core entries are hidden from the gallery. ECharts GL (3D) examples have categories prefixed 'GL:' and need the echarts-gl extension.",
       "examples": [
         {
           "title": "Histogram with Custom Series",
@@ -2269,7 +2269,7 @@
       "gallery": "https://observablehq.com/@d3/gallery",
       "version_in_repo": "7.9.0",
       "what_for": "Low-level toolkit for binding data to SVG, canvas or HTML, giving full control over scales, layouts, geography, transitions and interaction.",
-      "note": "Built from the source of the official Observable gallery notebook (api.observablehq.com/@d3/gallery.js). d3js.org itself has no separate example index; it links to this gallery. A few entries are notebooks by Mike Bostock or others that the gallery links to.",
+      "note": "Built from the source of the official Observable gallery notebook (api.observablehq.com/@d3/gallery.js). The 56 example notebooks linked from the d3js.org homepage all appear in this gallery. All 174 notebooks were confirmed to exist through the Observable API. A few entries are notebooks by Mike Bostock or others that the gallery links to.",
       "examples": [
         {
           "title": "Animated treemap",
