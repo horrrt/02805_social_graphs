@@ -5,7 +5,7 @@ Setup, once:
   uv venv -p 3.11 /tmp/kv && uv pip install -p /tmp/kv kokoro-onnx soundfile
   download kokoro-v1.0.onnx and voices-v1.0.bin (kokoro-onnx release model-files-v1.0)
 Run from the repo root with a short TMPDIR (espeak-ng truncates long data paths):
-  TMPDIR=/tmp /tmp/kv/bin/python scripts/cold-read-voices/generate.py <model dir>
+  TMPDIR=/tmp /tmp/kv/bin/python scripts/cold-read-voices/generate.py <model dir> [card ...]
 Needs ffmpeg on PATH. The lines are in lines.py next to this file.
 """
 import os
@@ -21,13 +21,15 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from lines import LINES, MAIN  # noqa: E402
 
 MODELS = sys.argv[1]
+ONLY = {int(a) for a in sys.argv[2:]}
 OUT = os.path.join("public", "play", "cold-read", "audio")
 os.makedirs(OUT, exist_ok=True)
 k = Kokoro(os.path.join(MODELS, "kokoro-v1.0.onnx"), os.path.join(MODELS, "voices-v1.0.bin"))
 t0 = time.time()
-total = len(LINES)
+todo = sorted((n, spec) for n, spec in LINES.items() if not ONLY or n in ONLY)
+total = len(todo)
 with tempfile.TemporaryDirectory() as tmp:
-    for i, (n, spec) in enumerate(sorted(LINES.items()), 1):
+    for i, (n, spec) in enumerate(todo, 1):
         if len(spec) == 2:
             (voice, speed), text = MAIN, spec[1]
         else:
