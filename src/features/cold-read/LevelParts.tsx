@@ -8,7 +8,7 @@ import { useData } from "@/lib/useData";
 import { useHydrated } from "@/lib/useHydrated";
 import { asset } from "@/scripts/site.js";
 import { readBest, saveBest } from "./best";
-import { playGameOver } from "./gameOverSfx";
+import { playGameOver, playPoints } from "./gameOverSfx";
 import { FINISH, type Level, SKIP_COST } from "./levels";
 
 /** A plain scoreboard box: a small label over a bold value. `hot` lights the value. */
@@ -68,9 +68,20 @@ export function NextButton({ level, score, over = false, last = false, nextLabel
   );
 }
 
-/** The scoreboard's score: the level's points, plus the campaign's total when it is a level. */
+/**
+ * The scoreboard's score: the level's points, plus the campaign's total when it
+ * is a level. Points won chime and points lost buzz; a round starting again at
+ * 0 stays quiet, as does the first render.
+ */
 export function ScoreBox({ points, level }: { points: number; level?: Level }) {
   const shown = (level?.total ?? 0) + points;
+  const last = useRef({ shown, points });
+  useEffect(() => {
+    const before = last.current;
+    last.current = { shown, points };
+    const reset = points === 0 && before.points !== 0;
+    if (shown !== before.shown && !reset) playPoints(shown - before.shown);
+  }, [shown, points]);
   return (
     <span className="cr-box cr-score">
       <small>Score</small>
@@ -83,7 +94,14 @@ export function ScoreBox({ points, level }: { points: number; level?: Level }) {
 export function SkipLevel({ points, level }: { points: number; level?: Level }) {
   if (!level) return null;
   return (
-    <button type="button" className="cr-skip" onClick={() => level.onSkip(points)}>
+    <button
+      type="button"
+      className="cr-skip"
+      onClick={() => {
+        playPoints(-SKIP_COST);
+        level.onSkip(points);
+      }}
+    >
       Skip level <small>−{SKIP_COST}</small>
     </button>
   );
