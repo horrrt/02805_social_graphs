@@ -61,6 +61,17 @@ OUT = os.path.join("public", "play", "cold-read", "audio")
 CREDITS = os.path.join(OUT, "fx-credits.json")
 
 
+def onset(path):
+    """Seconds of near-silence before a clip's first real sound."""
+    import numpy as np
+    raw = subprocess.run(["ffmpeg", "-loglevel", "error", "-i", path, "-f", "f32le", "-ac", "1", "-ar", "8000", "-"], capture_output=True, check=True).stdout
+    x = np.abs(np.frombuffer(raw, np.float32))
+    if not len(x):
+        return 0.0
+    loud = np.flatnonzero(x > max(x.max() * 0.1, 0.01))
+    return max(loud[0] / 8000 - 0.02, 0.0) if len(loud) else 0.0
+
+
 def key():
     k = os.environ.get("FREESOUND_API_KEY")
     if not k:
@@ -123,8 +134,9 @@ def main():
             raw = os.path.join(tmp, f"{n}.mp3")
             open(raw, "wb").write(get(h["previews"]["preview-hq-mp3"], token))
             out = os.path.join(OUT, f"fx-{n:03d}.mp3")
-            # At most 3.5 s, quick fade out, levelled to sit under the voice.
-            subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", raw, "-t", "3.5",
+            # Cut the lead-in silence so the sound lands when the card plays it,
+            # then at most 3.5 s, quick fade out, levelled to sit under the voice.
+            subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-ss", f"{onset(raw):.3f}", "-i", raw, "-t", "3.5",
                             "-af", "afade=t=out:st=3.1:d=0.4,loudnorm=I=-18:TP=-2", "-ac", "1", "-ar", "24000",
                             "-codec:a", "libmp3lame", "-b:a", "48k", out], check=True)
             credits[str(n)] = {"id": h["id"], "name": h["name"], "author": h["username"], "url": h["url"], "license": h["license"]}
