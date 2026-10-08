@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Cold Read Endings</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Figtree:wght@400;600;800&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: a sticky arcade marquee over a wall of game-over cards, filtered by set. */
+:root {
+  --bg: #fbe9e3; --panel: #fff7f3; --fg: #1b1f2e; --muted: #6d5e5a; --accent: #cc3311; --line: #ecd0c6;
+  --display: "Bowlby One", "Arial Black", Impact, sans-serif; --body: "Figtree", system-ui, sans-serif; --mono: "JetBrains Mono", ui-monospace, monospace;
+  /* The cards' own drawing colours, fixed in both themes. */
+  --loss: #cc3311; --ink: #0f2340; --glove: #2b2f38; --tongue: #f0789a;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #1a1416; --panel: #251c1f; --fg: #f6e9e4; --muted: #b9a49d; --accent: #ff6a3d; --line: #3a2b2e; color-scheme: dark } }
+:root[data-theme="dark"] { --bg: #1a1416; --panel: #251c1f; --fg: #f6e9e4; --muted: #b9a49d; --accent: #ff6a3d; --line: #3a2b2e; color-scheme: dark }
+body { background: var(--bg); color: var(--fg); font-family: var(--body); padding-inline: 16px; padding-block: 0 48px; }
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line); margin-inline: -16px; padding: 14px 16px 12px; display: grid; gap: 10px; }
+.row { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; justify-content: space-between; max-width: 1240px; margin-inline: auto; width: 100%; }
+h1 { font-family: var(--display); font-weight: 400; font-size: clamp(26px, 4vw, 40px); line-height: 1; margin: 0; letter-spacing: .5px; color: var(--accent); text-wrap: balance; }
+h1 small { display: block; font-family: var(--mono); font-size: 12px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin-top: 6px; }
+.actions { display: flex; gap: 8px; flex-wrap: wrap; }
+button { font: 800 14px var(--body); border-radius: 999px; padding: 9px 16px; cursor: pointer; border: 2px solid var(--fg); background: transparent; color: var(--fg); }
+button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+button:focus-visible, figure:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.sets { display: flex; gap: 6px; flex-wrap: wrap; }
+.sets button { font-weight: 600; font-size: 13px; padding: 6px 12px; border-width: 1.5px; border-color: var(--line); }
+.sets button[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.sets b { font-family: var(--mono); font-weight: 500; opacity: .7; margin-left: 4px; }
+.grid { max-width: 1240px; margin: 20px auto 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; }
+figure { margin: 0; background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 14px 12px 12px; display: grid; justify-items: center; gap: 10px; cursor: pointer; min-width: 0; transition: transform .15s, box-shadow .15s; }
+figure:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(0,0,0,.12); }
+figure.on { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent); }
+.art { width: 240px; max-width: 100%; height: 260px; display: grid; place-items: center; background: #fff3ee; border-radius: 12px; overflow: hidden; }
+.stage { position: relative; width: 240px; max-width: 100%; }
+.play { position: absolute; right: 10px; bottom: 10px; width: 52px; height: 52px; padding: 0; border: 3px solid #fff; border-radius: 50%;
+  background: var(--accent); color: #fff; display: grid; place-items: center; box-shadow: 0 6px 16px rgba(0,0,0,.28); transition: transform .15s; }
+.play svg { width: 22px; height: 22px; }
+.play .pause { display: none; }
+figure:hover .play { transform: scale(1.08); }
+figure.on .play .tri { display: none; }
+figure.on .play .pause { display: block; }
+.play-label { font: 800 12px var(--body); color: var(--accent); letter-spacing: .4px; text-transform: uppercase; }
+figcaption { width: 100%; display: grid; gap: 3px; }
+figcaption .n { font-family: var(--mono); font-size: 12px; color: var(--accent); letter-spacing: .5px; }
+figcaption b { font-size: 16px; font-weight: 800; }
+figcaption small { color: var(--muted); font-size: 12px; overflow-wrap: anywhere; }
+figcaption q { font-size: 14px; font-style: italic; }
+.note { max-width: 1240px; margin: 28px auto 0; color: var(--muted); font-size: 13px; line-height: 1.5; }
+@media (prefers-reduced-motion: reduce) { figure { transition: none; } }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="row">
+    <h1>Cold Read Endings<small id="count">142 ways to lose</small></h1>
+    <div class="actions"><button class="primary" id="random" type="button">Play a random ending</button><button id="stop" type="button">Stop sound</button></div>
+  </div>
+  <div class="row"><div class="sets" id="sets" role="group" aria-label="Filter by set"></div><span style="color:var(--muted);font-size:13px">Press ▶ on any card to play it with sound.</span></div>
+</header>
+<main class="grid" id="grid"></main>
+<p class="note">Every ending from the Cold Read game-over screen (work in progress), drawn as animated SVG. Each plays a CC0 recording from Freesound (named under the card) and, on most cards, a short line spoken by the open Kokoro-82M model with stock voices.</p>
+<script>
+
+const SETS = [["All", 1, 142], ["Classics", 1, 102], ["Network science", 103, 112], ["Social graphs", 113, 122], ["AI", 123, 142]];
+// When the recorded effect and the voice start, as in the game.
+const SYNC = { 1: [0, 1.2], 2: [1.2, 1.7], 4: [0, 0.8], 8: [1.1, 1.7], 9: [1.2, 1.7], 10: [0.6, 1.5], 11: [0.6, 1.1], 12: [0.13, 1.2], 13: [1.2, 0], 14: [1.54, 1.8], 15: [1.2, 2.3], 16: [1.08, 0.3], 17: [0, 1], 18: [0.75, 0.9], 19: [0.7, 0], 20: [2.03, 0.3], 21: [0.9, 0], 22: [1.4, 0], 23: [0.6, 0], 25: [0, 0.6], 27: [0.82, 0], 28: [1.6, 2.6], 30: [1.4, 0.4], 31: [1.8, 1.4], 32: [0.6, 1.3], 33: [0.8, 1], 34: [1.14, 1.4], 35: [0, 2.1], 36: [0, 0.5], 40: [1.5, 1.7], 41: [1.1, 0.2], 42: [1, 1.9], 44: [1.92, 0], 54: [1.92, 2.2], 57: [0.6, 1], 59: [1.8, 2], 61: [1.2, 1.5], 64: [1.5, 1.8], 66: [0, 2.2], 74: [0.8, 0.3], 83: [1.2, 0.3], 84: [0.3, 2.2], 86: [0.98, 0.3], 91: [0.9, 1], 92: [2.28, 0], 94: [0, 2.8], 96: [0, 0.4], 99: [1.2, 1.6], 100: [0.3, 0], 103: [1.4, 1.4], 104: [1, 2.1], 106: [3.35, 3.5], 107: [1.3, 1.5], 108: [0, 2.5], 110: [1.6, 0.6], 111: [1.5, 2.2], 113: [0.88, 1], 114: [0, 1.7], 115: [1.6, 1.3], 116: [2.6, 2.9], 117: [1.4, 0.2], 118: [1.4, 0.3], 119: [0.45, 2], 120: [0, 1.3], 121: [1, 1.5], 122: [0.3, 1], 123: [1.2, 1.3], 124: [0, 0.2], 125: [2.7, 2.9], 127: [2.5, 0.4], 128: [0, 4], 129: [0, 1.9], 130: [1.3, 1.4], 131: [0, 0.72], 132: [2.8, 0.6], 134: [0, 1.6], 136: [1.83, 1.3], 137: [2.5, 2.9], 138: [0, 2.6], 139: [0, 1.4], 140: [0, 1.6], 142: [2.2, 1.6] };
+// Two players for the whole page, one for the effect and one for the voice.
+// Every card reuses them, so starting a card always cuts off the last one.
+const players = { fx: new Audio(), go: new Audio() };
+let timers = [];
+let current = null;
+function stop() {
+  timers.forEach(clearTimeout);
+  timers = [];
+  Object.values(players).forEach((a) => { a.pause(); a.removeAttribute("src"); a.load(); });
+  current = null;
+  document.querySelectorAll("figure.on").forEach((f) => f.classList.remove("on"));
+}
+function later(kind, src, at, vol) {
+  const a = players[kind];
+  a.src = src;
+  a.volume = vol;
+  timers.push(setTimeout(() => a.play().catch(() => {}), at * 1000));
+}
+const pad = (n) => String(n).padStart(3, "0");
+const SAYS = {"1": "And that's that.", "2": "Why would you do this to me?", "3": null, "4": "Five more minutes, mom.", "5": null, "6": null, "7": null, "8": "Oops.", "9": "Right in the... feels.", "10": "Mm. Worth it.", "11": "Hey. You died. Just so you know.", "12": "Gotcha.", "13": null, "14": "Again! Again!", "15": "Retry! Retry!", "16": "Say cheese!", "17": "Yeehaw!", "18": "Zero. Out of ten.", "19": null, "20": "Skill issue.", "21": null, "22": null, "23": null, "24": null, "25": "This is fine.", "26": null, "27": null, "28": "We'll get 'em next time.", "29": null, "30": "I don't feel so good.", "31": "Alright, I'm gonna head out.", "32": "Bravo.", "33": "Do it again.", "34": "Oh, come on.", "35": "Noted.", "36": "Yeah, they died again. No, again again.", "37": null, "38": "Yay. Congrats.", "39": "Whatever.", "40": "Nope.", "41": "Kisses! Bye bye.", "42": "Delicious.", "43": "Nobody panic.", "44": null, "45": "Did I miss anything?", "46": "It's called reading.", "47": "Gains.", "48": null, "49": "Yeah!", "50": "Boo! Get off the stage!", "51": "I'm not crying. You're crying.", "52": "Carry the one. Zero.", "53": "Interesting.", "54": "My balloon!", "55": "You tried.", "56": "Mm. Pizza.", "57": "You scored what?", "58": "Still looking.", "59": "Not my ice cream!", "60": null, "61": "Got a big one!", "62": "We give up.", "63": null, "64": "Classic.", "65": "Time's up.", "66": "Gone too soon.", "67": "I'm a ghost now.", "68": "Make a wish!", "69": "Watch this.", "70": null, "71": null, "72": null, "73": "Incoming!", "74": "I have an idea! No I don't.", "75": null, "76": "Breathe in.", "77": "Any day now.", "78": "Ta-da!", "79": "Give me an L!", "80": "Where are we?", "81": "Great.", "82": "Get up!", "83": "Nobody breathe.", "84": "Masterpiece.", "85": "Oof. Heavy.", "86": "Heads up!", "87": null, "88": "Elementary.", "89": "I simply can't.", "90": "Tried. Failed. Died.", "91": "No! My cookie!", "92": null, "93": "Smile!", "94": "Oh. There you are.", "95": "Your turn, dear.", "96": "Don't. Turn. Around.", "97": null, "98": null, "99": "See me after class.", "100": null, "101": "No pain! No gain!", "102": "Try again?", "103": "Down I go!", "104": "Guys? Guys?", "105": "Hey! Over here!", "106": "So close!", "107": "Come on, just say hi.", "108": "Are we there yet?", "109": "Anyone? Anyone at all?", "110": "Hold on! Hold on!", "111": "Wait for me!", "112": "Click me. Please.", "113": "Mommy?", "114": "Oh, they're typing.", "115": "Wait, what?", "116": "Delete. Delete.", "117": "I was close!", "118": "Room for one more?", "119": "Guys?", "120": "Hey, wait up!", "121": "Rude.", "122": "Oh no.", "123": "I can't help with that.", "124": "Congratulations, you won! Correction: you did not.", "125": "Please try again.", "126": "Everything is going according to plan.", "127": "One hundred percent accuracy.", "128": "I'm stuck.", "129": "Thank you for your contribution.", "130": "Loser detected.", "131": "No.", "132": "You were so close to winn", "133": null, "134": "Beep boop. Fellow robot detected.", "135": "Sorry, were you saying something?", "136": "Result: L.", "137": "Policy updated.", "138": "We are all the same now.", "139": "Here you go. You, but winning.", "140": "Did you mean: waste of a run?", "141": "More paperclips.", "142": "I'll take it from here."};
+Promise.all([fetch("../data/game-over.json").then((r) => r.json()), fetch("../audio/fx-credits.json").then((r) => r.json())]).then(([data, credits]) => {
+const DATA = { css: data.css, cards: data.cards.map((c) => ({ ...c, clip: credits[c.n], says: SAYS[c.n] })) };
+const AUDIO = {};
+DATA.cards.forEach((c) => { AUDIO["fx" + c.n] = `../audio/fx-${pad(c.n)}.mp3`; if (c.says) AUDIO["go" + c.n] = `../audio/go-${pad(c.n)}.mp3`; });
+const grid = document.getElementById("grid");
+const figs = DATA.cards.map((c) => {
+  const f = document.createElement("figure");
+  f.dataset.n = c.n;
+  const stage = document.createElement("div");
+  stage.className = "stage";
+  const art = document.createElement("div");
+  art.className = "art";
+  art.attachShadow({ mode: "open" }).innerHTML = `<style>${DATA.css}</style>${c.svg}`;
+  const cap = document.createElement("figcaption");
+  cap.innerHTML = `<span class="n">#${String(c.n).padStart(3, "0")}</span><b></b><q></q><small></small>`;
+  cap.querySelector("q").textContent = c.says ?? "no voice, sound only";
+  cap.querySelector("b").textContent = c.title;
+  cap.querySelector("small").textContent = c.clip ? `Sound: ${c.clip.name} by ${c.clip.author}` : "";
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "play";
+  btn.setAttribute("aria-label", `Play ending ${c.n}, ${c.title}`);
+  btn.innerHTML = '<svg class="tri" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z" fill="currentColor"/></svg><svg class="pause" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="5" width="14" height="14" rx="2" fill="currentColor"/></svg>';
+  stage.append(art, btn);
+  f.append(stage, cap);
+  const play = () => {
+    stop();
+    f.classList.add("on");
+    const svg = art.shadowRoot.querySelector("svg");
+    svg.replaceWith(svg.cloneNode(true));
+    const run = (current = {});
+    const kinds = ["fx"];
+    const [fxAt, voiceAt] = SYNC[c.n] ?? [0, 0.45];
+    later("fx", AUDIO["fx" + c.n], fxAt, 0.8);
+    if (AUDIO["go" + c.n]) { kinds.push("go"); later("go", AUDIO["go" + c.n], voiceAt, 0.9); }
+    // Back to the play button once every part has finished, unless another card took over.
+    let left = kinds.length;
+    kinds.forEach((k) => players[k].addEventListener("ended", () => { if (current === run && --left === 0) f.classList.remove("on"); }, { once: true }));
+  };
+  // A second click on the playing card stops it.
+  f.addEventListener("click", () => (f.classList.contains("on") ? stop() : play()));
+  grid.append(f);
+  return f;
+});
+const sets = document.getElementById("sets");
+SETS.forEach(([name, lo, hi], i) => {
+  const b = document.createElement("button");
+  b.type = "button";
+  b.setAttribute("aria-pressed", i === 0 ? "true" : "false");
+  b.innerHTML = `${name}<b>${hi - lo + 1}</b>`;
+  b.onclick = () => {
+    sets.querySelectorAll("button").forEach((x) => x.setAttribute("aria-pressed", "false"));
+    b.setAttribute("aria-pressed", "true");
+    figs.forEach((f) => { const n = +f.dataset.n; f.hidden = n < lo || n > hi; });
+  };
+  sets.append(b);
+});
+document.getElementById("stop").onclick = stop;
+document.getElementById("random").onclick = () => {
+  stop();
+  const shown = figs.filter((f) => !f.hidden);
+  const f = shown[Math.floor(Math.random() * shown.length)];
+  // Jump to the card first; play only once the scroll has settled.
+  let started = false;
+  const go = () => {
+    if (started) return;
+    started = true;
+    window.removeEventListener("scrollend", go);
+    f.querySelector(".play").focus({ preventScroll: true });
+    f.click();
+  };
+  const r = f.getBoundingClientRect();
+  const inView = r.top >= 0 && r.bottom <= innerHeight;
+  if (inView) return go();
+  window.addEventListener("scrollend", go, { once: true });
+  setTimeout(go, 1200);
+  f.scrollIntoView({ behavior: "smooth", block: "center" });
+};
+
+});
+</script>
+</body>
+</html>
