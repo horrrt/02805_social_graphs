@@ -301,17 +301,17 @@ export function WhoseLineGame({ data, random = Math.random, level, clock = Date.
                     </button>
                   )}
                   <div className="cr-calls">
-                    <button id="cr-say-a" type="button" className="cr-call" data-side="a" onClick={() => say("a")}>
-                      1 · {A}
+                    <button id="cr-say-a" type="button" className="cr-call" aria-keyshortcuts="1" data-side="a" onClick={() => say("a")}>
+                      <span className="cr-call-name">{A}</span> <HelpKey k="1" />
                     </button>
-                    <button id="cr-say-both" type="button" className="cr-call" data-side="both" onClick={() => say("both")}>
-                      2 · Same
+                    <button id="cr-say-both" type="button" className="cr-call" aria-keyshortcuts="2" data-side="both" onClick={() => say("both")}>
+                      <span className="cr-call-name">Same</span> <HelpKey k="2" />
                     </button>
-                    <button id="cr-say-b" type="button" className="cr-call" data-side="b" onClick={() => say("b")}>
-                      3 · {B}
+                    <button id="cr-say-b" type="button" className="cr-call" aria-keyshortcuts="3" data-side="b" onClick={() => say("b")}>
+                      <span className="cr-call-name">{B}</span> <HelpKey k="3" />
                     </button>
-                    <button id="cr-say-fluke" type="button" className="cr-call" data-side="fluke" onClick={() => say("fluke")}>
-                      4 · Skip
+                    <button id="cr-say-fluke" type="button" className="cr-call" aria-keyshortcuts="4" data-side="fluke" onClick={() => say("fluke")}>
+                      <span className="cr-call-name">Skip</span> <HelpKey k="4" />
                     </button>
                   </div>
                 </>
