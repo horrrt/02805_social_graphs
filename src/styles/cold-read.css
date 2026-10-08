@@ -1403,6 +1403,26 @@ body.cold-read {
   color: var(--r-rare);
 }
 
+/* A long name truncates; the key badge on its right stays whole and takes the button's text colour. */
+.cr-call {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cr-call-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cr-call .cr-key-inline {
+  flex: none;
+  border-color: currentColor;
+  color: inherit;
+  opacity: 0.8;
+}
+
 .cr-verdict-box {
   display: flex;
   flex-direction: column;

@@ -14,7 +14,7 @@ import { json, noExamples, still, zero } from "./coldReadData";
 const data = json<WhoseLineData>("whose_line.json");
 const pair = data.pairs[shuffled(data.pairs.map((_, i) => i), zero)[0]];
 const hand = deal(pair, zero);
-const CALL: Record<Answer, RegExp> = { a: /^1 · /, b: /^3 · /, both: /^2 · Same/, fluke: /^4 · Skip/ };
+const CALL: Record<Answer, string> = { a: "cr-say-a", b: "cr-say-b", both: "cr-say-both", fluke: "cr-say-fluke" };
 
 beforeEach(() => {
   localStorage.clear();
@@ -28,7 +28,7 @@ async function started() {
   return user;
 }
 
-const call = (kind: Answer) => screen.getByRole("button", { name: CALL[kind] });
+const call = (kind: Answer) => document.getElementById(CALL[kind]) as HTMLButtonElement;
 const score = () => document.querySelector(".cr-score b")?.textContent;
 
 test("eight right calls fill the plot and pay the growing streak", async () => {
