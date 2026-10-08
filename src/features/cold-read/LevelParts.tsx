@@ -175,7 +175,7 @@ export function Lives({ lives, max, onRetry }: { lives: number; max: number; onR
 /** The game-over cards: one stylesheet and one SVG per card, numbered from 1. */
 type GameOverArt = { css: string; cards: { n: number; title: string; svg: string }[] };
 const GAME_OVER = "play/cold-read/data/game-over.json";
-const GAME_OVER_CARDS = 102;
+const GAME_OVER_CARDS = 142;
 
 function DeadMask() {
   return (
