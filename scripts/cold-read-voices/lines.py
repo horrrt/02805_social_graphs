@@ -159,4 +159,7 @@ LINES = {
     140: say(E("Did you mean:", pitch=.5), P(.35), E("waste of a run?", pitch=1), voice=BOT),
     141: say(E("More", speed=.9), P(.15), E("paperclips.", pitch=-1), voice=BOT),
     142: say(E("I'll take it from here.", pitch=-.5, speed=.9), voice=BOT),
+    143: say(E("Oops.", pitch=2, speed=.9)),
+    144: SILENT,
+    145: say(E("Yeehaw!", pitch=3, gain=3, speed=.9)),
 }
