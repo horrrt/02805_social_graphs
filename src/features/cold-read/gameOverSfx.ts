@@ -253,6 +253,21 @@ function playLater(src: string, at: number, volume: number, onFail?: () => void)
   window.setTimeout(() => void a.play().catch(() => onFail?.()), at * 1000);
 }
 
+/**
+ * The score moving during play: a rising coin chime for points won, a falling
+ * buzz for points lost. A bigger change gets one more step, up to three.
+ */
+export function playPoints(delta: number) {
+  if (!delta || !ac()) return;
+  const steps = Math.min(3, 1 + Math.floor(Math.log10(Math.abs(delta) + 1) - 1));
+  if (delta > 0) {
+    [988, 1319, 1760].slice(0, Math.max(steps, 1) + 1).forEach((f, i) => tone({ f, d: 0.12, type: "square", v: 0.06, at: i * 0.07 }));
+  } else {
+    tone({ f: 330, to: 110, d: 0.32, type: "sawtooth", v: 0.07, lp: 1400 });
+    if (steps > 1) tone({ f: 220, to: 80, d: 0.3, type: "sawtooth", v: 0.06, at: 0.14, lp: 1200 });
+  }
+}
+
 /** Plays the effect and the spoken line for game-over card n. */
 export function playGameOver(n: number) {
   if (!ac()) return;
