@@ -237,7 +237,10 @@ const R: Record<number, () => void> = {
 
 // Seconds from the effect to the spoken line, where a card needs its own beat:
 // after the slash, before the jumpscare, over the slow horror cards.
-const VOICE_AT: Record<number, number> = { 8: 1.6, 15: 0.9, 19: 1.2, 21: 0, 22: 1.2, 92: 0.1, 96: 0.4, 97: 0.6 };
+const VOICE_AT: Record<number, number> = { 8: 1.6, 15: 0.9, 96: 0.4 };
+
+// Cards with no spoken line: the drawing and the recording carry the joke.
+const SILENT = new Set([3, 5, 6, 7, 13, 19, 21, 22, 23, 24, 26, 27, 29, 37, 44, 48, 60, 63, 70, 71, 72, 75, 87, 92, 97, 98, 100, 133]);
 
 // Seconds to the recorded effect, where it should land on the animation's hit.
 const CLIP_AT: Record<number, number> = { 8: 0.9, 22: 0.5, 27: 0.75, 44: 1.9, 54: 1.9, 86: 0.7, 92: 2.3, 99: 1.2 };
@@ -261,5 +264,5 @@ export function playGameOver(n: number) {
     (R[n] ?? B.pop)();
   };
   playLater(audioFile("fx", n), CLIP_AT[n] ?? 0, 0.8, synth);
-  playLater(audioFile("go", n), VOICE_AT[n] ?? 0.45, 0.9);
+  if (!SILENT.has(n)) playLater(audioFile("go", n), VOICE_AT[n] ?? 0.45, 0.9);
 }

@@ -26,7 +26,12 @@ OUT = os.path.join("public", "play", "cold-read", "audio")
 os.makedirs(OUT, exist_ok=True)
 k = Kokoro(os.path.join(MODELS, "kokoro-v1.0.onnx"), os.path.join(MODELS, "voices-v1.0.bin"))
 t0 = time.time()
-todo = sorted((n, spec) for n, spec in LINES.items() if not ONLY or n in ONLY)
+# A silent card plays only its recorded effect: drop any old voice file for it.
+for n, spec in LINES.items():
+    old = os.path.join(OUT, f"go-{n:03d}.mp3")
+    if spec is None and os.path.exists(old):
+        os.remove(old)
+todo = sorted((n, spec) for n, spec in LINES.items() if spec is not None and (not ONLY or n in ONLY))
 total = len(todo)
 with tempfile.TemporaryDirectory() as tmp:
     for i, (n, spec) in enumerate(todo, 1):
