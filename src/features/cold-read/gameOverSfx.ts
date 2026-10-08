@@ -235,15 +235,14 @@ const R: Record<number, () => void> = {
   101: () => { tone({ f: 120, d: 0.5, type: "sawtooth", v: 0.14, vib: [9, 8], lp: 600 }); B.note(523, 0.6, 0.25, "square", 0.08); B.note(392, 1.6, 0.4, "square", 0.08); B.thud(1.9); },
 };
 
-// Seconds from the effect to the spoken line, where a card needs its own beat:
-// after the slash, before the jumpscare, over the slow horror cards.
-const VOICE_AT: Record<number, number> = { 8: 1.6, 15: 0.9, 96: 0.4 };
-
 // Cards with no spoken line: the drawing and the recording carry the joke.
 const SILENT = new Set([3, 5, 6, 7, 13, 19, 21, 22, 23, 24, 26, 27, 29, 37, 44, 48, 60, 63, 70, 71, 72, 75, 87, 92, 97, 98, 100, 133]);
 
-// Seconds to the recorded effect, where it should land on the animation's hit.
-const CLIP_AT: Record<number, number> = { 8: 0.9, 22: 0.5, 27: 0.75, 44: 1.9, 54: 1.9, 86: 0.7, 92: 2.3, 99: 1.2 };
+// When the recorded effect and the spoken line start, in seconds from the card's
+// first frame, so each lands on its animation's beat: the stamp, the snap, the
+// bonk, the line after the punchline. Other cards play the effect at once and
+// the line just after it. The clips are trimmed to start on their first sound.
+const SYNC: Record<number, [number, number]> = { 1: [0, 1.2], 2: [1.2, 1.7], 4: [0, 0.8], 8: [1.1, 1.7], 9: [1.2, 1.7], 10: [0.6, 1.5], 11: [0.6, 1.1], 12: [0.13, 1.2], 13: [1.2, 0], 14: [1.54, 1.8], 15: [1.2, 2.3], 16: [1.08, 0.3], 17: [0, 1], 18: [0.75, 0.9], 19: [0.7, 0], 20: [2.03, 0.3], 21: [0.9, 0], 22: [1.4, 0], 23: [0.6, 0], 25: [0, 0.6], 27: [0.82, 0], 28: [1.6, 2.6], 30: [1.4, 0.4], 31: [1.8, 1.4], 32: [0.6, 1.3], 33: [0.8, 1], 34: [1.14, 1.4], 35: [0, 2.1], 36: [0, 0.5], 40: [1.5, 1.7], 41: [1.1, 0.2], 42: [1, 1.9], 44: [1.92, 0], 54: [1.92, 2.2], 57: [0.6, 1], 59: [1.8, 2], 61: [1.2, 1.5], 64: [1.5, 1.8], 66: [0, 2.2], 74: [0.8, 0.3], 83: [1.2, 0.3], 84: [0.3, 2.2], 86: [0.98, 0.3], 91: [0.9, 1], 92: [2.28, 0], 94: [0, 2.8], 96: [0, 0.4], 99: [1.2, 1.6], 100: [0.3, 0], 103: [1.4, 1.4], 104: [1, 2.1], 106: [3.35, 3.5], 107: [1.3, 1.5], 108: [0, 2.5], 110: [1.6, 0.6], 111: [1.5, 2.2], 113: [0.88, 1], 114: [0, 1.7], 115: [1.6, 1.3], 116: [2.6, 2.9], 117: [1.4, 0.2], 118: [1.4, 0.3], 119: [0.45, 2], 120: [0, 1.3], 121: [1, 1.5], 122: [0.3, 1], 123: [1.2, 1.3], 124: [0, 0.2], 125: [2.7, 2.9], 127: [2.5, 0.4], 128: [0, 4], 129: [0, 1.9], 130: [1.3, 1.4], 131: [0, 0.72], 132: [2.8, 0.6], 134: [0, 1.6], 136: [1.83, 1.3], 137: [2.5, 2.9], 138: [0, 2.6], 139: [0, 1.4], 140: [0, 1.6], 142: [2.2, 1.6] };
 
 const audioFile = (kind: "fx" | "go", n: number) => String(asset(`play/cold-read/audio/${kind}-${String(n).padStart(3, "0")}.mp3`));
 
@@ -263,6 +262,7 @@ export function playGameOver(n: number) {
     synthed = true;
     (R[n] ?? B.pop)();
   };
-  playLater(audioFile("fx", n), CLIP_AT[n] ?? 0, 0.8, synth);
-  if (!SILENT.has(n)) playLater(audioFile("go", n), VOICE_AT[n] ?? 0.45, 0.9);
+  const [fxAt, voiceAt] = SYNC[n] ?? [0, 0.45];
+  playLater(audioFile("fx", n), fxAt, 0.8, synth);
+  if (!SILENT.has(n)) playLater(audioFile("go", n), voiceAt, 0.9);
 }
