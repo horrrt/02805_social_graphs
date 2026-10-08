@@ -1,7 +1,9 @@
-// Game-over sounds. playGameOver(n) plays card n's effect, synthesised with
-// the Web Audio API, and then its spoken line, an MP3 under
-// public/play/cold-read/audio/ made by scripts/cold-read-voices/. Silent where
-// the browser has no Web Audio, as in tests.
+// Game-over sounds. playGameOver(n) plays card n's effect, then its spoken
+// line. The effect is a CC0 recording from Freesound (fx-NNN.mp3, listed in
+// fx-credits.json) and falls back to the Web Audio synth below if it fails to
+// load; the line is go-NNN.mp3. Both are under public/play/cold-read/audio/,
+// made by scripts/cold-read-voices/. Silent where the browser has no Web Audio,
+// as in tests.
 import { asset } from "@/scripts/site.js";
 
 type ToneOpts = { f?: number; to?: number; d?: number; type?: OscillatorType; v?: number; at?: number; vib?: [number, number]; attack?: number; lp?: number };
@@ -237,15 +239,27 @@ const R: Record<number, () => void> = {
 // after the slash, before the jumpscare, over the slow horror cards.
 const VOICE_AT: Record<number, number> = { 8: 1.6, 15: 0.9, 19: 1.2, 21: 0, 22: 1.2, 92: 0.1, 96: 0.4, 97: 0.6 };
 
-function playVoice(n: number) {
-  const voice = new Audio(String(asset(`play/cold-read/audio/go-${String(n).padStart(3, "0")}.mp3`)));
-  voice.volume = 0.9;
-  window.setTimeout(() => void voice.play().catch(() => {}), (VOICE_AT[n] ?? 0.45) * 1000);
+// Seconds to the recorded effect, where it should land on the animation's hit.
+const CLIP_AT: Record<number, number> = { 8: 0.9, 22: 0.5, 27: 0.75, 44: 1.9, 54: 1.9, 86: 0.7, 92: 2.3, 99: 1.2 };
+
+const audioFile = (kind: "fx" | "go", n: number) => String(asset(`play/cold-read/audio/${kind}-${String(n).padStart(3, "0")}.mp3`));
+
+function playLater(src: string, at: number, volume: number, onFail?: () => void) {
+  const a = new Audio(src);
+  a.volume = volume;
+  a.addEventListener("error", () => onFail?.(), { once: true });
+  window.setTimeout(() => void a.play().catch(() => onFail?.()), at * 1000);
 }
 
 /** Plays the effect and the spoken line for game-over card n. */
 export function playGameOver(n: number) {
   if (!ac()) return;
-  (R[n] ?? B.pop)();
-  playVoice(n);
+  let synthed = false;
+  const synth = () => {
+    if (synthed) return;
+    synthed = true;
+    (R[n] ?? B.pop)();
+  };
+  playLater(audioFile("fx", n), CLIP_AT[n] ?? 0, 0.8, synth);
+  playLater(audioFile("go", n), VOICE_AT[n] ?? 0.45, 0.9);
 }
