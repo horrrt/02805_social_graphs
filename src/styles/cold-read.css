@@ -2873,7 +2873,21 @@ body.cold-read:has(> .cr-hit[data-dead="true"]) > :not(.cr-hit) {
   }
 }
 
-/* A game-over card: its drawing lives in a shadow root (ShadowArt). */
+/* A game-over card: its drawing lives in a shadow root (ShadowArt). A full
+   card fills the screen from inside its host, so the host takes no room and
+   the words and buttons sit above it. */
+.cr-dead-full {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.cr-dead > .cr-hit-text,
+.cr-dead > .cr-dead-actions {
+  position: relative;
+  z-index: 1;
+}
+
 .cr-dead-art {
   display: block;
   width: 240px;

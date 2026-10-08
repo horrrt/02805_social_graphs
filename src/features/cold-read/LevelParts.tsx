@@ -141,7 +141,7 @@ export function Lives({ lives, max, onRetry }: { lives: number; max: number; onR
             flash.dead ? (
               <div key={flash.n} className="cr-hit" data-dead="true" role="alertdialog" aria-modal="true" aria-label="Out of lives">
                 <div className="cr-dead">
-                  {card && art.data ? <ShadowArt className="cr-dead-art" css={art.data.css} html={card.svg} /> : <DeadMask />}
+                  {card && art.data ? <ShadowArt className={card.full ? "cr-dead-full" : "cr-dead-art"} css={art.data.css} html={card.svg} /> : <DeadMask />}
                   <span className="cr-hit-text">Out of lives</span>
                   <div className="cr-dead-actions">
                     {onRetry ? (
@@ -173,9 +173,10 @@ export function Lives({ lives, max, onRetry }: { lives: number; max: number; onR
 
 /** Game over: a red mercenary's mask, out cold, X for eyes. */
 /** The game-over cards: one stylesheet and one SVG per card, numbered from 1. */
-type GameOverArt = { css: string; cards: { n: number; title: string; svg: string }[] };
+/** A card marked full takes the whole screen behind the game-over text instead of sitting above it. */
+type GameOverArt = { css: string; cards: { n: number; title: string; svg: string; full?: boolean }[] };
 const GAME_OVER = "play/cold-read/data/game-over.json";
-const GAME_OVER_CARDS = 142;
+const GAME_OVER_CARDS = 145;
 
 function DeadMask() {
   return (
