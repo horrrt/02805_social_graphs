@@ -2120,6 +2120,24 @@ body.cold-read {
   color: var(--ink);
 }
 
+/* The sound switch: a speaker icon in the same pill as "Full screen". */
+.cr-sound {
+  display: inline-grid;
+  place-items: center;
+  padding: 5px 10px;
+  vertical-align: middle;
+}
+
+.cr-sound svg {
+  width: 18px;
+  height: 18px;
+}
+
+.cr-sound[aria-pressed="true"] {
+  color: var(--ink-soft);
+  opacity: 0.7;
+}
+
 /* In full screen the page keeps its own ground and scrolls. */
 :fullscreen body.cold-read,
 body.cold-read:fullscreen {

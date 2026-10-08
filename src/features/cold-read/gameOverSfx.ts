@@ -5,6 +5,7 @@
 // made by scripts/cold-read-voices/. Silent where the browser has no Web Audio,
 // as in tests.
 import { asset } from "@/scripts/site.js";
+import { soundOn, soundStore } from "./sound";
 
 type ToneOpts = { f?: number; to?: number; d?: number; type?: OscillatorType; v?: number; at?: number; vib?: [number, number]; attack?: number; lp?: number };
 type NoiseOpts = { d?: number; f?: number; to?: number; q?: number; type?: BiquadFilterType; v?: number; at?: number; attack?: number; am?: number };
@@ -14,6 +15,7 @@ let master: GainNode | null = null;
 let noiseBuf: AudioBuffer | null = null;
 
 function ac(): AudioContext | null {
+  if (!soundOn()) return null;
   if (!ctx) {
     const Ctor = window.AudioContext ?? (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
     if (!Ctor) return null;
@@ -246,11 +248,30 @@ const SYNC: Record<number, [number, number]> = { 1: [0, 1.2], 2: [1.2, 1.7], 4: 
 
 const audioFile = (kind: "fx" | "go", n: number) => String(asset(`play/cold-read/audio/${kind}-${String(n).padStart(3, "0")}.mp3`));
 
+// Recorded sounds playing or about to, so muting can cut them off.
+const live = new Set<HTMLAudioElement>();
+const waiting = new Set<number>();
+soundStore.subscribe((state: { on: boolean }) => {
+  if (state.on) return;
+  waiting.forEach((t) => window.clearTimeout(t));
+  waiting.clear();
+  live.forEach((a) => a.pause());
+  live.clear();
+  void ctx?.suspend();
+});
+
 function playLater(src: string, at: number, volume: number, onFail?: () => void) {
   const a = new Audio(src);
   a.volume = volume;
   a.addEventListener("error", () => onFail?.(), { once: true });
-  window.setTimeout(() => void a.play().catch(() => onFail?.()), at * 1000);
+  a.addEventListener("ended", () => live.delete(a), { once: true });
+  const t = window.setTimeout(() => {
+    waiting.delete(t);
+    if (!soundOn()) return;
+    live.add(a);
+    void a.play().catch(() => onFail?.());
+  }, at * 1000);
+  waiting.add(t);
 }
 
 /**
