@@ -146,7 +146,16 @@ export async function echart(host, option, { height = 360 } = {}) {
     axisLine: { lineStyle: { color: token("--line") } },
     splitLine: { lineStyle: { color: token("--line-soft") } },
   };
-  const series = [option.series ?? []].flat().map((s) => ({ labelLayout: { hideOverlap: true }, ...s }));
+  // ECharts draws series labels and legend text in its own dark grey, not textStyle's colour.
+  const series = [option.series ?? []].flat().map((s) => ({
+    labelLayout: { hideOverlap: true },
+    ...s,
+    ...(s.label ? { label: { color: token("--ink"), ...s.label } } : null),
+  }));
+  const legend =
+    option.legend === undefined
+      ? undefined
+      : [option.legend].flat().map((l) => ({ ...l, textStyle: { color: token("--ink"), ...l.textStyle } }));
   const withAxis = (a) => (a === undefined ? a : [a].flat().map((x) => ({ ...axis, ...x })));
   const chart = echarts.init(el, null, { renderer: "svg" });
   chart.setOption({
@@ -154,6 +163,7 @@ export async function echart(host, option, { height = 360 } = {}) {
     textStyle: text,
     tooltip: { trigger: "item", textStyle: text, ...option.tooltip },
     ...option,
+    ...(legend ? { legend } : null),
     xAxis: withAxis(option.xAxis),
     yAxis: withAxis(option.yAxis),
     series,

@@ -43,7 +43,16 @@ function themed(option: Option, scale: TypeScale, tokens: Record<string, string>
     axisLine: { lineStyle: { color: tokens["--line"] } },
     splitLine: { lineStyle: { color: tokens["--line-soft"] } },
   };
-  const series = ([option.series ?? []].flat() as Option[]).map((s) => ({ labelLayout: { hideOverlap: true }, ...s }));
+  // ECharts draws series labels and legend text in its own dark grey, not textStyle's colour.
+  const series = ([option.series ?? []].flat() as Option[]).map((s) => ({
+    labelLayout: { hideOverlap: true },
+    ...s,
+    ...(s.label ? { label: { color: tokens["--ink"], ...s.label } } : null),
+  }));
+  const legend =
+    option.legend === undefined
+      ? undefined
+      : ([option.legend].flat() as Option[]).map((l) => ({ ...l, textStyle: { color: tokens["--ink"], ...l.textStyle } }));
   const withAxis = (a: unknown) => (a === undefined ? a : ([a].flat() as Option[]).map((x) => ({ ...axis, ...x })));
   const wrapped = (a: unknown) =>
     labelWidth === null
@@ -59,6 +68,7 @@ function themed(option: Option, scale: TypeScale, tokens: Record<string, string>
     tooltip: { trigger: "item", textStyle: text, ...option.tooltip },
     ...(empty ? { graphic: noData } : null),
     ...option,
+    ...(legend ? { legend } : null),
     xAxis: withAxis(wrapped(option.xAxis)),
     yAxis: withAxis(option.yAxis),
     series,
