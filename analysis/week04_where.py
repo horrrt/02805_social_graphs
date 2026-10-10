@@ -221,9 +221,9 @@ def worksite_metros(lookup, town_lookup, year=YEAR):
     lca = lca.assign(employer=[resolver().employer(n, f) for n, f in zip(lca["EMPLOYER_NAME"], lca["EMPLOYER_FEIN"])])
     sites = load(f"worksites_fy{year}")
     sites = sites[sites["CASE_NUMBER"].isin(lca["CASE_NUMBER"])].copy()
-    sites["workers"] = pd.to_numeric(sites["WORKSITE_WORKERS"], errors="coerce").fillna(1)
+    sites["workers"] = sites["WORKSITE_WORKERS"].fillna(1)
     stats = locate(sites, lookup, town_lookup)
-    lca = lca.assign(total=pd.to_numeric(lca["TOTAL_WORKER_POSITIONS"], errors="coerce").fillna(1))
+    lca = lca.assign(total=lca["TOTAL_WORKER_POSITIONS"].fillna(1))
     sites = sites.merge(lca[["CASE_NUMBER", "employer", "total"]], on="CASE_NUMBER")
     return sites.dropna(subset=["metro"]), lca, stats
 
@@ -305,7 +305,7 @@ def main():
               "filings": int(per_case["CASE_NUMBER"].nunique()),
               "top_metros_filing_share": round(float(filings.head(TOP).sum() / filings.sum()), 4)}
 
-    placed = lca[lca["SECONDARY_ENTITY"].str.upper().str.startswith("Y")]
+    placed = lca[lca["SECONDARY_ENTITY"].fillna(False)]
     shortlist = list(placed["employer"].value_counts().head(SHORTLIST).index)
 
     cities, unplaced = [], []

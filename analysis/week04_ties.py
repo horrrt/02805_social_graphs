@@ -101,7 +101,7 @@ def perm_employers(year):
 def h1b_employers(lca):
     """One row per employer: certified H-1B filings, the placed share, and its
     kind (placing/direct) -- the same rule as week04_staffing.uscis_outcomes()."""
-    placed = lca["SECONDARY_ENTITY"].str.upper().str.startswith("Y")
+    placed = lca["SECONDARY_ENTITY"].fillna(False)
     firms = lca.assign(placed=placed).groupby("employer").agg(filings=("placed", "size"), placed=("placed", "sum"))
     firms["kind"] = np.where(firms["placed"] / firms["filings"] >= 0.5, "placing", "direct")
     firms["label"] = [resolver().label(k) for k in firms.index]

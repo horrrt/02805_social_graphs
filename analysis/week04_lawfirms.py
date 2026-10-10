@@ -371,7 +371,7 @@ def communities(g, named, rng, full=True):
 def employer_kind(lca):
     """'placing' (>= 50% of an employer's filings show a client) against
     'direct', among employers with MIN_FILINGS or more certified filings."""
-    lca = lca.assign(placed=lca["SECONDARY_ENTITY"].str.upper().str.startswith("Y"))
+    lca = lca.assign(placed=lca["SECONDARY_ENTITY"].fillna(False))
     totals = lca.groupby("employer").size()
     placed_share = lca.groupby("employer")["placed"].mean()
     big = totals[totals >= MIN_FILINGS].index

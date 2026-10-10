@@ -90,7 +90,7 @@ def client_names():
         lca = load(f"lca_fy{year}")
         ok = lca[(lca["CASE_STATUS"] == "Certified") & (lca["VISA_CLASS"] == "H-1B")]["CASE_NUMBER"]
         sites = load(f"worksites_fy{year}")
-        sites = sites[sites["SECONDARY_ENTITY"].str.upper().str.startswith("Y") & sites["CASE_NUMBER"].isin(ok)]
+        sites = sites[sites["SECONDARY_ENTITY"].fillna(False) & sites["CASE_NUMBER"].isin(ok)]
         rows.append(sites.drop_duplicates(["CASE_NUMBER", "SECONDARY_ENTITY_BUSINESS_NAME"])
                     ["SECONDARY_ENTITY_BUSINESS_NAME"])
     return pd.concat(rows)

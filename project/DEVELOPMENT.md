@@ -52,8 +52,10 @@ platforms may need a compatible resolution from `requirements.txt`.
 ### Data formats
 
 - Downloads in `build/raw/` stay in the format the publisher ships (xlsx, zip, csv). They are the provenance record.
-- Tables the scripts derive into `build/` are Parquet. `week04_data.save()` writes them and `load()` reads them back as all-string pandas tables, with `""` for an empty cell.
-- An older checkout's `build/week04/*.csv.gz` converts in seconds with `python analysis/week04_data.py --convert --no-tables`. No 14-minute rebuild is needed.
+- Tables the scripts derive into `build/` are Parquet. `week04_data.save()` writes them and `load()` reads them back.
+- Counts, wages, dates and yes/no flags in the DOL and USCIS tables are stored as numbers, dates and booleans; `save()` stops on a value that does not parse. Use `frame[col].fillna(False)` for "the filing said yes".
+- Identifiers that look like numbers (FEIN, NAICS, SOC, ZIP, tax ID) stay text, so their leading zeros survive. The lottery tables stay text because their numbers sit beside redaction markers.
+- An older checkout's `build/week04/*.csv.gz` converts, and gains its types, in seconds with `python analysis/week04_data.py --convert --no-tables`. No 14-minute rebuild is needed.
 - The committed rosters in `data/` stay TSV. They are small, diff cleanly, and carry `#` provenance headers.
 - Everything in `public/` stays JSON or CSV, because the browser fetches it.
 

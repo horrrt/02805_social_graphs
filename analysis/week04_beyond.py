@@ -340,7 +340,7 @@ def question2(rng, lca, staffing_giant, staffing_member, out):
 
     # Sensitivity: the uscis_outcomes rule (share of a firm's own filings that
     # are placed at least half the time), instead of an absolute filing count.
-    lca_placed = lca["SECONDARY_ENTITY"].str.upper().str.startswith("Y")
+    lca_placed = lca["SECONDARY_ENTITY"].fillna(False)
     by_employer = lca.assign(placed=lca_placed).groupby("employer").agg(filings=("placed", "size"), placed=("placed", "sum"))
     by_employer = by_employer[by_employer["filings"] >= MIN_FILINGS]
     share_placing = set(by_employer[(by_employer["placed"] / by_employer["filings"]) >= 0.5].index)
@@ -458,7 +458,7 @@ def question3(rng, lca, out):
     started = time.time()
     valid_level = lca["PW_WAGE_LEVEL"].isin(["I", "II", "III", "IV"])
     coverage = float(valid_level.mean())
-    placed = lca["SECONDARY_ENTITY"].str.upper().str.startswith("Y")
+    placed = lca["SECONDARY_ENTITY"].fillna(False)
     blank = ~valid_level
     blank_by_group = {
         "placed": round(float(blank[placed].mean()), 4),
@@ -592,8 +592,8 @@ def question3(rng, lca, out):
 
     # Secondary check: offered wage against prevailing wage, same units only.
     same_units = lca["WAGE_UNIT_OF_PAY"] == lca["PW_UNIT_OF_PAY"]
-    wage_from = pd.to_numeric(lca["WAGE_RATE_OF_PAY_FROM"], errors="coerce")
-    pw = pd.to_numeric(lca["PREVAILING_WAGE"], errors="coerce")
+    wage_from = lca["WAGE_RATE_OF_PAY_FROM"]
+    pw = lca["PREVAILING_WAGE"]
     usable = same_units & wage_from.notna() & pw.notna() & (pw > 0)
     wage_coverage = float(usable.mean())
     wdf = lca.loc[usable, ["SOC_CODE"]].copy()

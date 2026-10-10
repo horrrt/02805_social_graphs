@@ -178,7 +178,7 @@ def q1_who_hires(net, community_of, run_labels, rng):
     per_case, top, gaz, lca = net["per_case"], net["top"], net["gaz"], net["lca"]
     pc = (per_case[per_case["metro"].isin(top)][["CASE_NUMBER", "metro"]]
           .merge(lca[["CASE_NUMBER", "SECONDARY_ENTITY", "NAICS_CODE"]], on="CASE_NUMBER", how="left"))
-    pc["placed"] = pc["SECONDARY_ENTITY"].astype(str).str.upper().str.startswith("Y")
+    pc["placed"] = pc["SECONDARY_ENTITY"].fillna(False).astype(bool)
     naics = pc["NAICS_CODE"].astype(str).str.strip()
     blank_naics = int(((naics == "") | naics.isna() | (naics == "nan")).sum())
     pc["naics2"] = naics.str[:2]
@@ -260,7 +260,7 @@ def q2_backbone_break(net, by_name):
     n_distinct = len(set(p.values()))
 
     lca = net["lca"]
-    placed = lca[lca["SECONDARY_ENTITY"].str.upper().str.startswith("Y")]
+    placed = lca[lca["SECONDARY_ENTITY"].fillna(False)]
     shortlist = list(placed["employer"].value_counts().head(where.SHORTLIST).index)
     grouped = net["pairs"][net["pairs"]["metro"].isin(top)].set_index(["employer", "metro"])["filings"]
     per_employer = {e: grp.droplevel(0).to_dict() for e, grp in grouped.groupby(level=0)}

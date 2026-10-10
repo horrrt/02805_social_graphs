@@ -105,7 +105,7 @@ def registrations(year):
 def kinds(lca_year):
     """employer -> placing / direct, from the year's certified H-1B filings."""
     lca = certified(lca_year)
-    lca["placed"] = lca["SECONDARY_ENTITY"].str.upper().str.startswith("Y")
+    lca["placed"] = lca["SECONDARY_ENTITY"].fillna(False)
     firms = lca.groupby("employer").agg(filings=("placed", "size"), placed=("placed", "sum"))
     firms = firms[firms["filings"] >= MIN_FILINGS]
     return pd.Series(np.where(firms["placed"] / firms["filings"] >= 0.5, "placing", "direct"), index=firms.index)
