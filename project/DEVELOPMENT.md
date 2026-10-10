@@ -40,7 +40,7 @@ from `requirements.txt`.
 - Every committed table is Parquet too: the rosters and migration tables in `data/`, and the tables in `analysis/`, including the ones people review by hand. They go through `analysis/tables.py`: `frame()` for pandas, `rows()` for dicts of strings, `write()` to save. Each keeps its old `#` notes as Parquet metadata.
 - A column takes a number type only when every value prints back as the text it was, so nothing is lost. `tables.text()` rebuilds the old CSV or TSV byte for byte, and `tables.digest()` hashes it, which is why the snapshot hashes recorded before the move still hold.
 - To read or edit a table by hand: `python analysis/tables.py show <table>` prints it as CSV, and `python analysis/tables.py edit <table>` opens it in `$EDITOR` and saves your changes back. `to-csv` and `from-csv` do the same in two steps.
-- To see table changes in `git diff` and `git log -p` as CSV rows, run once per clone: `git config diff.parquet.textconv "python analysis/tables.py show"` (with `.venv-course` active).
+- To see table changes in `git diff` and `git log -p` as CSV rows, run once per clone, from its root: `git config diff.parquet.textconv "$PWD/.venv-course/bin/python analysis/tables.py show"`. Git does not see an activated environment, so the path names the interpreter.
 - Everything in `public/` stays JSON or CSV, because the browser fetches it. Measured on the Week 4 map data, gzipped JSON is 20–30% smaller in transit than Parquet and decodes 3–7× faster.
 
 To regenerate the analysis and figures:
