@@ -13,7 +13,7 @@
    2024,
    2025
   ],
-  "pairs_file": "build/week04/skills_similarity.csv.gz"
+  "pairs_file": "build/week04/skills_similarity.parquet"
  },
  "profiles": 913,
  "codes": 788,

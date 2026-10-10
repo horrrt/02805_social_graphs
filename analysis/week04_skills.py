@@ -63,7 +63,7 @@ Deep-dive box (public/weeks/week04/data/skills.json)
 - The drawn-edge means (direct_ties) stay in the JSON beside the tests.
 
 Outputs
-- build/week04/skills_similarity.csv.gz: every pair of codes with a profile.
+- build/week04/skills_similarity.parquet: every pair of codes with a profile.
 - analysis/week04_skills.json: coverage, the mixed codes and their weights,
   the similarity spread, the smoke test and each large H-1B occupation's
   nearest neighbours.
@@ -86,7 +86,7 @@ from week04_schemas import check
 
 ONET_DIR = RAW / "onet"
 ARCHIVE = ONET_DIR / "db_25_0_text.zip"
-PAIRS = BUILD / "skills_similarity.csv.gz"
+PAIRS = BUILD / "skills_similarity.parquet"
 OUT = ROOT / "analysis" / "week04_skills.json"
 JOBS_PAGE = ROOT / "public" / "weeks" / "week04" / "data" / "jobs.json"
 PAGE = ROOT / "public" / "weeks" / "week04" / "data" / "skills.json"
@@ -388,7 +388,7 @@ def main():
     i, j = np.triu_indices(len(sim), k=1)
     labels = sim.index.to_numpy()
     BUILD.mkdir(parents=True, exist_ok=True)
-    pd.DataFrame({"a": labels[i], "b": labels[j], "similarity": sim.values[i, j].round(4)}).to_csv(PAIRS, index=False)
+    pd.DataFrame({"a": labels[i], "b": labels[j], "similarity": sim.values[i, j].round(4)}).to_parquet(PAIRS, index=False)
 
     result = {
         "meta": {"source": "O*NET 31.0 Database, U.S. Department of Labor, CC BY 4.0; "

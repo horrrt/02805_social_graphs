@@ -123,14 +123,14 @@ Layout differences the loader already handles:
   sector (`analysis/week04_sec_sectors.csv`, 1,640 companies). A name the SEC spells differently stays
   unlabelled.
 - **Approvals come from USCIS.** `week04_data.py --refs` also fetches the USCIS H-1B Employer Data Hub
-  for FY2022 (complete) and FY2023 (partial) into `build/week04/uscis_fy{year}.csv.gz`. The hub gives
+  for FY2022 (complete) and FY2023 (partial) into `build/week04/uscis_fy{year}.parquet`. The hub gives
   only the last four digits of the tax number and abbreviates names ("SVCS"), so
   `week04_staffing.uscis_outcomes()` matches on those four digits plus a fuzzy name score of 85. In
   FY2022, firms that place most of their filings at clients had 2.73% of first-time petitions denied,
   against 1.27% for firms that hire directly.
 - **Later years come from the hub's Tableau view.** The hub's CSV files stop at FY2023, but the Tableau
   view behind the hub page covers FY2009 to June 2026. `week04_data.py --hub` exports FY2022 to FY2026
-  into `build/week04/uscis_hub_fy{year}.csv.gz`, with six petition types each approved or denied.
+  into `build/week04/uscis_hub_fy{year}.parquet`, with six petition types each approved or denied.
   Initial means new employment plus new concurrent employment; Continuing is the other four (checked
   against the old FY2022 file: Infosys and Cognizant agree to within one petition). The view counts
   about 5% fewer FY2022 petitions than the old file, so `uscis_outcomes(year, "uscis_hub")` builds the
@@ -139,7 +139,7 @@ Layout differences the loader already handles:
   without them it silently returns FY2026. FY2026 is nine months, so compare rates, not counts.
 - **Lottery registrations come from a FOIA release.** USCIS gave Bloomberg News every H-1B lottery
   registration, selection and petition for the FY2021 to FY2024 lotteries; `week04_data.py --lottery`
-  keeps FY2022 to FY2024 in `build/week04/lottery_fy{year}.csv.gz`, with an explicit allow-list of 34
+  keeps FY2022 to FY2024 in `build/week04/lottery_fy{year}.parquet`, with an explicit allow-list of 34
   columns. Since 29 September 2026 it keeps the petition's cap type (`S3Q1`), whether the worker was
   abroad (`REQUESTED_ACTION`) and the employer's US staff (`NUM_OF_EMP_IN_US`, usable from FY2023), and
   some personal columns on purpose (`LOTTERY_PERSONAL`): the worker's country of birth and nationality,

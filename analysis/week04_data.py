@@ -2,8 +2,8 @@
 
 Downloads the Department of Labor disclosure files for FY2022 to FY2026 (the
 last up to June 2026), keeps only the columns on the allow-lists below, and
-writes one gzipped CSV per table and year to build/week04/ (gitignored). Every
-week 4 script reads those CSVs through load(); nobody opens the workbooks.
+writes one Parquet file per table and year to build/week04/ (gitignored). Every
+week 4 script reads those files through load(); nobody opens the workbooks.
 
 A US fiscal year runs from 1 October to 30 September: FY2025 is October 2024
 to September 2025.
@@ -28,6 +28,7 @@ Never commit anything under build/.
     python analysis/week04_data.py --refs             # also the Census, USCIS and BLS reference files
     python analysis/week04_data.py --hub --no-tables  # USCIS approvals per employer, FY2022 to FY2026
     python analysis/week04_data.py --lottery --no-tables  # H-1B lottery registrations, FY2022 to FY2024
+    python analysis/week04_data.py --convert --no-tables  # turn an older build's .csv.gz tables into Parquet
 
 Two more tables come from outside DOL:
 
@@ -433,27 +434,24 @@ def build(name, local):
         table = table.drop_duplicates("CASE_NUMBER", keep="last")
         if len(table) < before:
             print(f"{name}: dropped {before - len(table):,} repeated cases")
-    OUT.mkdir(parents=True, exist_ok=True)
-    target = OUT / f"{name}.csv.gz"
-    table.to_csv(target, index=False)
+    target = save(table, name)
     print(f"{name}: {len(table):,} rows from {len(parts)} file(s) -> {target.relative_to(ROOT)}", flush=True)
 
 
 def uscis(year, local=()):
-    """The USCIS Employer Data Hub for one fiscal year, as build/week04/uscis_fy<year>.csv.gz.
+    """The USCIS Employer Data Hub for one fiscal year, as build/week04/uscis_fy<year>.parquet.
     Its "Tax ID" holds only the last four digits of the employer's tax number."""
-    name = f"uscis_fy{year}.csv"
-    source = find(f"h1b_datahubexport-{year}.csv", REFS[name], [*local, *(Path(d) / "uscis-hub" for d in local)])
+    name = f"uscis_fy{year}"
+    source = find(f"h1b_datahubexport-{year}.csv", REFS[f"{name}.csv"], [*local, *(Path(d) / "uscis-hub" for d in local)])
     frame = pd.read_csv(source, dtype=str, keep_default_na=False)
     frame.columns = [c.strip().upper().replace(" ", "_") for c in frame.columns]
-    OUT.mkdir(parents=True, exist_ok=True)
-    frame.to_csv(OUT / f"{name}.gz", index=False)
-    print(f"uscis_fy{year}: {len(frame):,} employers -> build/week04/{name}.gz")
+    save(frame, name)
+    print(f"{name}: {len(frame):,} employers -> build/week04/{name}.parquet")
 
 
 def uscis_hub(year, local=()):
     """The Employer Data Hub for one fiscal year from its Tableau view, as
-    build/week04/uscis_hub_fy<year>.csv.gz: one row per employer line, one column
+    build/week04/uscis_hub_fy<year>.parquet: one row per employer line, one column
     per petition type and outcome, plus the old files' four totals. Its "Tax ID"
     holds only the last four digits of the employer's tax number."""
     # The filter is the column's header, three trailing spaces included. Without
@@ -476,14 +474,13 @@ def uscis_hub(year, local=()):
         wide[f"INITIAL_{outcome}"] = wide[[f"{t}_{outcome}" for t in HUB_INITIAL]].sum(axis=1)
         wide[f"CONTINUING_{outcome}"] = wide[[f"{t}_{outcome}" for t in HUB_CONTINUING]].sum(axis=1)
     wide.insert(0, "FISCAL_YEAR", year)
-    OUT.mkdir(parents=True, exist_ok=True)
-    wide.drop(columns="LINE").to_csv(OUT / f"uscis_hub_fy{year}.csv.gz", index=False)
+    save(wide.drop(columns="LINE"), f"uscis_hub_fy{year}")
     print(f"uscis_hub_fy{year}: {len(wide):,} employer lines, "
-          f"{int(wide['INITIAL_APPROVAL'].sum()):,} initial approvals -> build/week04/uscis_hub_fy{year}.csv.gz")
+          f"{int(wide['INITIAL_APPROVAL'].sum()):,} initial approvals -> build/week04/uscis_hub_fy{year}.parquet")
 
 
 def lottery(year, local=()):
-    """H-1B lottery registrations for one fiscal year, as build/week04/lottery_fy<year>.csv.gz,
+    """H-1B lottery registrations for one fiscal year, as build/week04/lottery_fy<year>.parquet,
     with only the LOTTERY_COLUMNS: who registered, whether the draw picked the
     registration, and the petition and LCA that followed."""
     check_columns(LOTTERY_COLUMNS, LOTTERY_PERSONAL)
@@ -509,19 +506,41 @@ def lottery(year, local=()):
     # Keep a tax number's leading zero if a spreadsheet ever dropped it.
     digits = table["FEIN"].str.fullmatch(r"\d{8}")
     table.loc[digits, "FEIN"] = table.loc[digits, "FEIN"].str.zfill(9)
-    OUT.mkdir(parents=True, exist_ok=True)
-    table.to_csv(OUT / f"lottery_fy{year}.csv.gz", index=False)
-    print(f"lottery_fy{year}: {len(table):,} registrations -> build/week04/lottery_fy{year}.csv.gz")
+    save(table, f"lottery_fy{year}")
+    print(f"lottery_fy{year}: {len(table):,} registrations -> build/week04/lottery_fy{year}.parquet")
 
 
-def load(name):
+def save(frame, name, folder=OUT):
+    """Write a table as build/week04/<name>.parquet, every column a string and
+    every empty cell "", the shape load() promises. Numbers keep the text a CSV
+    would have held ("3.0", "2022")."""
+    folder.mkdir(parents=True, exist_ok=True)
+    target = folder / f"{name}.parquet"
+    text = pl.from_pandas(frame.fillna("").astype(str))
+    part = target.with_suffix(".parquet.part")
+    text.write_parquet(part, compression="zstd")
+    part.rename(target)
+    return target
+
+
+def load(name, folder=OUT):
     """The trimmed table as strings; convert the columns you use yourself."""
-    path = OUT / f"{name}.csv.gz"
+    path = folder / f"{name}.parquet"
     if not path.exists():
-        raise SystemExit(f"{path.relative_to(ROOT)} is missing: run python analysis/week04_data.py")
-    # polars reads the gzip about three times faster than pandas; the result is
-    # the same pandas table of strings, with empty cells as "".
-    return pl.read_csv(path, infer_schema=False, missing_utf8_is_empty_string=True).to_pandas()
+        raise SystemExit(f"{path.relative_to(ROOT)} is missing: run python analysis/week04_data.py"
+                         + (" --convert --no-tables" if path.with_suffix(".csv.gz").exists() else ""))
+    return pl.read_parquet(path).to_pandas()
+
+
+def convert(folder=OUT):
+    """Turn every <name>.csv.gz an older build left in folder into <name>.parquet,
+    read exactly as load() used to read it. The .csv.gz files stay; delete them
+    once the Parquet copies check out."""
+    for old in sorted(folder.glob("*.csv.gz")):
+        name = old.name.removesuffix(".csv.gz")
+        frame = pl.read_csv(old, infer_schema=False, empty_string_is_null=False).to_pandas()
+        target = save(frame, name, folder)
+        print(f"{name}: {len(frame):,} rows -> {target.relative_to(ROOT)}", flush=True)
 
 
 def main():
@@ -533,8 +552,13 @@ def main():
     parser.add_argument("--refs", action="store_true", help="also fetch the Census, BLS and O*NET tables")
     parser.add_argument("--hub", action="store_true", help="also fetch the USCIS hub for FY2022 to FY2026")
     parser.add_argument("--lottery", action="store_true", help="also fetch the H-1B lottery registrations")
-    parser.add_argument("--no-tables", action="store_true", help="skip the DOL tables (with --refs, --hub or --lottery)")
+    parser.add_argument("--convert", action="store_true", help="turn an older build's .csv.gz tables into Parquet")
+    parser.add_argument("--no-tables", action="store_true",
+                        help="skip the DOL tables (with --refs, --hub, --lottery or --convert)")
     args = parser.parse_args()
+
+    if args.convert:
+        convert()
 
     if not args.no_tables:
         for kind in args.kinds:

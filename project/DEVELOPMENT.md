@@ -49,6 +49,14 @@ JupyterLab, select **Social Graphs (Python 3.13)**, and choose
 root. The lock records the Python 3.13 environment tested on macOS; other
 platforms may need a compatible resolution from `requirements.txt`.
 
+### Data formats
+
+- Downloads in `build/raw/` stay in the format the publisher ships (xlsx, zip, csv). They are the provenance record.
+- Tables the scripts derive into `build/` are Parquet. `week04_data.save()` writes them and `load()` reads them back as all-string pandas tables, with `""` for an empty cell.
+- An older checkout's `build/week04/*.csv.gz` converts in seconds with `python analysis/week04_data.py --convert --no-tables`. No 14-minute rebuild is needed.
+- The committed rosters in `data/` stay TSV. They are small, diff cleanly, and carry `#` provenance headers.
+- Everything in `public/` stays JSON or CSV, because the browser fetches it.
+
 To regenerate the analysis and figures:
 
 ```bash
