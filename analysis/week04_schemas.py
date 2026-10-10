@@ -1554,8 +1554,7 @@ class EntityCommunity(Model):
 
 
 class EntityItems(Model):
-    profile: list[int]
-    workers: list[int]
+    """Item k is profile k, so profiles carry its counts; items add the name."""
     name: list[str]
 
 
@@ -1587,8 +1586,7 @@ class EntityPage(Model):
         assert all(0 <= v < 4 for v in p.level), "a wage level outside I to IV"
         if self.dots == "items":
             assert self.items is not None, "dots per item need the items"
-            assert len(self.items.profile) == len(self.items.workers) == len(self.items.name)
-            assert all(0 <= i < n for i in self.items.profile), "an item on a missing profile"
+            assert len(self.items.name) == n, "items and profiles differ in length"
         return self
 
 

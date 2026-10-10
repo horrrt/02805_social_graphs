@@ -862,6 +862,15 @@ def page_file(ent, result, member, pagerank):
     codes = {col: sorted(set(prof[col].astype(str))) for col in ("occupation", "place", "sector")}
     index = {col: {c: i for i, c in enumerate(v)} for col, v in codes.items()}
     rank = np.argsort(np.argsort(-pagerank, kind="stable"), kind="stable")  # 0 = most central
+    member = np.asarray(member)
+    if ent.dots == "items":
+        # One item per profile: write the profiles in the items' order (largest
+        # first), so item k is profile k and the page needs no index between them.
+        items = ent.items.sort_values("weight", ascending=False, kind="stable")
+        order = items["profile"].to_numpy()
+        assert sorted(order) == list(range(len(prof))), "companies need exactly one item per profile"
+        assert (items["weight"].to_numpy() == (prof["h1b"] + prof["perm"]).to_numpy()[order]).all()
+        prof, member, rank = prof.iloc[order].reset_index(drop=True), member[order], rank[order]
     data = {
         "generated_by": "analysis/week04_entities.py", "entity": ent.name, "unit": ent.unit, "year": YEAR,
         "dots": ent.dots, "top": TOP, "spacing": round(result["spacing"], 6),
@@ -888,9 +897,8 @@ def page_file(ent, result, member, pagerank):
         "notes": result["notes"],
     }
     if ent.dots == "items":
-        items = ent.items.sort_values("weight", ascending=False, kind="stable")
-        data["items"] = {"profile": [int(p) for p in items["profile"]], "workers": [int(w) for w in items["weight"]],
-                         "name": [str(n) for n in items["label"]]}
+        # A company's workers are its profile's h1b + perm.
+        data["items"] = {"name": [str(n) for n in items["label"]]}
     return data
 
 

@@ -96,17 +96,16 @@ export function layoutDots(d) {
     });
     return { length: k, pos, profile, visa, radius: new Float32Array(k).fill(s * 0.5) };
   }
-  // Companies: the items come sorted by workers, largest first.
-  const it = d.items;
-  const total = it.profile.length;
+  // Companies: item k is profile k, sorted by workers, largest first.
+  const total = n;
   const pos = new Float32Array(total * 2);
   const radius = new Float32Array(total);
   const used = new Float64Array(d.communities.length);
   const slot = new Int32Array(d.communities.length);
   for (let k = 0; k < total; k++) {
-    const ci = p.community[it.profile[k]];
+    const ci = p.community[k];
     const c = d.communities[ci];
-    const area = it.workers[k];
+    const area = p.h1b[k] + p.perm[k];
     const r = s * Math.sqrt(used[ci] + area / 2);
     pos[2 * k] = c.x + r * Math.cos(slot[ci] * GOLDEN);
     pos[2 * k + 1] = c.y + r * Math.sin(slot[ci] * GOLDEN);
@@ -114,7 +113,7 @@ export function layoutDots(d) {
     used[ci] += area;
     slot[ci] += 1;
   }
-  return { length: total, pos, profile: Int32Array.from(it.profile), radius };
+  return { length: total, pos, profile: Int32Array.from({ length: total }, (_, k) => k), radius };
 }
 
 /** The colouring `by` ("community", "sector", "level" or "pagerank"): of(i), legend and key(i) per profile. */
@@ -278,7 +277,7 @@ export function entityView(deck, d, dots, state, rgb, T) {
       body = `${level} · ${sector}<br>${place}<br>${fmt(count)} workers share this profile (${fmt(p.h1b[i])} H-1B, ${fmt(p.perm[i])} PERM)`;
     } else {
       head = d.items.name[index];
-      body = `${fmt(d.items.workers[index])} workers, mostly ${occ}<br>${level} · ${sector}<br>Most workers in ${place}`;
+      body = `${fmt(count)} workers, mostly ${occ}<br>${level} · ${sector}<br>Most workers in ${place}`;
     }
     return {
       html: `<b>${esc(head)}</b>${body}<br>Community ${c >= 0 ? c + 1 : "–"}: ${esc(group)}`,
