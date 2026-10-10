@@ -24,6 +24,7 @@ Edit a table by hand through its CSV:
     python analysis/tables.py to-csv analysis/week06_pairs_read.parquet pairs.csv
     python analysis/tables.py from-csv pairs.csv analysis/week06_pairs_read.parquet
     python analysis/tables.py edit analysis/week06_pairs_read.parquet   # opens $EDITOR
+    python analysis/tables.py text data/week1_nodes.parquet | shasum -a 256   # the snapshot hash
 
 from-csv keeps the notes and layout of the table it replaces. convert turns an
 old CSV or TSV into a table next to it, and refuses unless text() rebuilds the
@@ -157,6 +158,11 @@ def write(path, df, notes=None, keep_layout=True):
     layout of the table already at path carry over unless notes is given."""
     path = Path(path)
     layout = _layout(path) if keep_layout and path.exists() else {"delimiter": ",", "header": True}
+    # A rewritten table is no longer the file it was converted from.
+    layout.pop("source_sha256", None)
+    layout.pop("converted_from", None)
+    lines = len(df) + (1 if layout.get("header", True) else 0)
+    layout["inline_notes"] = [n for n in layout.get("inline_notes", []) if n[0] <= lines]
     if notes is not None:
         layout["notes"] = list(notes)
         layout["notes_raw"] = [f"# {n}" if n else "#" for n in notes]
@@ -248,6 +254,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
     sub.add_parser("show").add_argument("table")
+    sub.add_parser("text").add_argument("table")
     p = sub.add_parser("to-csv"); p.add_argument("table"); p.add_argument("csv")
     p = sub.add_parser("from-csv"); p.add_argument("csv"); p.add_argument("table")
     sub.add_parser("edit").add_argument("table")
@@ -255,6 +262,8 @@ def main():
     a = ap.parse_args()
     if a.cmd == "show":
         sys.stdout.write(_as_csv(a.table))
+    elif a.cmd == "text":
+        sys.stdout.write(text(a.table))
     elif a.cmd == "to-csv":
         Path(a.csv).write_text(_as_csv(a.table), encoding="utf-8")
     elif a.cmd == "from-csv":
