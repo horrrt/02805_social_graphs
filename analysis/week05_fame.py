@@ -6,8 +6,7 @@ from that relationship sit where they do?
 Owner: Niklas
 
 Page section: src/app/(week05)/weeks/week05/page.tsx#fame
-Output: public/weeks/week05/data/fame.json (and the same file beside this script),
-every number the section quotes, validated with check() before it is written.
+Output: public/weeks/week05/data/fame.json, every number the section quotes, validated with check() before it is written.
 
 Method
 - Length: the number of words on a page under week05_text.words() (WORD_RULE,
@@ -61,7 +60,6 @@ from check_pages import check
 from week05_relations import is_heading, name_table
 from week05_text import SHARED_NAME_RULE, WORD_RULE, graph, nodes, pages, shared_name, words
 
-OUT = Path(__file__).with_suffix(".json")
 PAGE_OUT = Path(__file__).resolve().parents[1] / "public/weeks/week05/data/fame.json"
 SEED = 2805
 SHUFFLES = 1000
@@ -373,10 +371,8 @@ def main():
         ],
         "outliers": outliers,
     }
-    check(OUT, payload)
     check(PAGE_OUT, payload)
     encoded = json.dumps(payload, indent=2, ensure_ascii=False) + "\n"
-    OUT.write_text(encoded, encoding="utf-8")
     PAGE_OUT.parent.mkdir(parents=True, exist_ok=True)
     PAGE_OUT.write_text(encoded, encoding="utf-8")
     f, pm, ph = payload["fit"], payload["patterns"]["mentions"], payload["patterns"]["hubs"]
