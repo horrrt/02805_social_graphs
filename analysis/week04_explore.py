@@ -132,7 +132,7 @@ def girvan_newman(backbone):
                      "components": new_components, "split": split})
         if split:
             comps = sorted(nx.connected_components(g), key=lambda c: (-len(c), min(c)))
-            partition = {m: i for i, c in enumerate(comps) for m in c}
+            partition = {m: i for i, c in enumerate(comps) for m in sorted(c)}
             q = nx.community.modularity(backbone, comps, weight=None)
             levels.append({"step": step, "components": new_components,
                             "partition": partition, "Q": round(q, 4)})
@@ -238,7 +238,7 @@ def run_louvain(g_full, seed, m, record=False):
         comm, sweeps, moves_raw = phase1(graph, seed, m, start_label)
         n_communities = len(set(comm.values()))
         if record:
-            partition_start = {mm: start_label[n] for n in nodes for mm in members[n]}
+            partition_start = {mm: start_label[n] for n in nodes for mm in sorted(members[n])}
             level_members = {n: sorted(members[n]) for n in nodes}
             # Replay the moves in order to get the exact Q after each one,
             # mapping the running per-node comm back to the original metros.
@@ -274,7 +274,7 @@ def run_louvain(g_full, seed, m, record=False):
         final_parts.setdefault(c, set()).update(members[n])
     renumber = {old: new for new, old in enumerate(
         sorted(final_parts, key=lambda c: (-len(final_parts[c]), min(final_parts[c]))))}
-    final_partition = {mm: renumber[c] for c, mms in final_parts.items() for mm in mms}
+    final_partition = {mm: renumber[c] for c, mms in final_parts.items() for mm in sorted(mms)}
     final_q = nx.community.modularity(g_full, list(final_parts.values()), weight="weight")
     return final_partition, final_q, levels
 
