@@ -18,7 +18,9 @@ import sys
 import tempfile
 import time
 import urllib.parse
-import urllib.request
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "analysis"))
+import fetch as web  # noqa: E402
 
 # Card number -> Freesound search text. Shorter, punchier clips are preferred.
 QUERIES = {
@@ -84,9 +86,7 @@ def key():
 
 
 def get(url, token):
-    req = urllib.request.Request(url, headers={"Authorization": f"Token {token}", "User-Agent": "cold-read-clips"})
-    with urllib.request.urlopen(req, timeout=30) as r:
-        return r.read()
+    return web.content(web.session("cold-read-clips", headers={"Authorization": f"Token {token}"}), url, timeout=30)
 
 
 def search(text, token):

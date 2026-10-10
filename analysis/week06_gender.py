@@ -13,12 +13,8 @@ the committed CSV and never the API. Rerun this only to refresh the labels:
     python analysis/week06_gender.py
 """
 
-import json
 import sys
 import time
-import urllib.error
-import urllib.parse
-import urllib.request
 from datetime import date
 from pathlib import Path
 
@@ -28,6 +24,7 @@ import tables
 
 sys.path.insert(0, str(Path(__file__).parent))
 import week05_text as t  # noqa: E402
+import fetch as web
 
 OUT = Path(__file__).with_suffix(".parquet")
 API = "https://www.wikidata.org/w/api.php"
@@ -39,17 +36,8 @@ LABELS = {"Q6581097": "male", "Q6581072": "female", "Q48270": "non-binary", "Q10
 
 
 def fetch(qids):
-    query = urllib.parse.urlencode({"action": "wbgetentities", "ids": "|".join(qids), "props": "claims",
-                                    "format": "json"})
-    req = urllib.request.Request(f"{API}?{query}", headers={"User-Agent": UA})
-    for attempt in range(6):
-        try:
-            with urllib.request.urlopen(req, timeout=60) as r:
-                return json.load(r)["entities"]
-        except urllib.error.HTTPError as e:
-            if e.code != 429 or attempt == 5:
-                raise
-            time.sleep(int(e.headers.get("Retry-After") or 10))
+    params = {"action": "wbgetentities", "ids": "|".join(qids), "props": "claims", "format": "json"}
+    return web.json(web.session(UA), API, params=params, timeout=60)["entities"]
 
 
 def main():
