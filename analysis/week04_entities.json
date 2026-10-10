@@ -6,10 +6,10 @@
   "year": 2025,
   "notes": {
    "h1b_filings": 537796,
-   "h1b_positions": 873986,
+   "h1b_positions_requested": 873986,
    "perm_cases": 137701,
    "perm_dropped_unreadable_soc": 0,
-   "workers": 1011687,
+   "workers": 675497,
    "worksites": {
     "worksite_rows": 800922,
     "blank_county_rows": 137609,
@@ -24,145 +24,145 @@
     "new_england_rows_by_town": 4914,
     "rows_in_a_metro": 115065
    },
-   "workers_outside_metros": 28296,
-   "workers_place_unknown": 7555,
-   "workers_level_imputed": 231332,
+   "workers_outside_metros": 19922,
+   "workers_place_unknown": 7432,
+   "workers_level_imputed": 180458,
    "perm_level_imputed_share": 1.0,
-   "workers_sector_unknown": 79
+   "workers_sector_unknown": 78
   },
-  "profiles": 90941,
+  "profiles": 90861,
   "attribute_nodes": 1682,
-  "links": 363764,
-  "workers": 1011687,
+  "links": 363444,
+  "workers": 675497,
   "components": 1,
   "louvain": {
    "runs": 100,
    "communities_best": 18,
-   "communities_median": 17,
-   "Q_best": 0.3982,
-   "Q_mean": 0.3856,
-   "Q_sd": 0.0048,
-   "nmi_between_seeds_median": 0.645,
+   "communities_median": 20,
+   "Q_best": 0.354,
+   "Q_mean": 0.3475,
+   "Q_sd": 0.0029,
+   "nmi_between_seeds_median": 0.6014,
    "best_partition_recurs": 0.01
   },
   "null": {
    "draws": 20,
-   "Q_mean": 0.8375,
-   "Q_sd": 0.0012,
-   "z": -356.93,
+   "Q_mean": 0.7895,
+   "Q_sd": 0.0013,
+   "z": -331.33,
    "at_or_above_real": 20,
    "wiring_only": {
-    "real": 0.3258,
-    "null": 0.2561,
+    "real": 0.3269,
+    "null": 0.2562,
     "null_sd": 0.0003,
-    "z": 203.3,
+    "z": 213.93,
     "at_or_above_real": 0
    }
   },
   "robustness": {
    "without occupation": {
-    "nmi_with_main": 0.2313,
-    "communities": 23,
-    "Q": 0.4137
+    "nmi_with_main": 0.2141,
+    "communities": 31,
+    "Q": 0.3777
    },
    "without metro": {
-    "nmi_with_main": 0.2655,
+    "nmi_with_main": 0.278,
     "communities": 23,
-    "Q": 0.454
+    "Q": 0.4253
    },
    "without wage level": {
-    "nmi_with_main": 0.5834,
-    "communities": 21,
-    "Q": 0.4772
+    "nmi_with_main": 0.5338,
+    "communities": 26,
+    "Q": 0.4464
    },
    "without sector": {
-    "nmi_with_main": 0.2674,
-    "communities": 34,
-    "Q": 0.4086
+    "nmi_with_main": 0.3744,
+    "communities": 41,
+    "Q": 0.393
    },
    "without weights": {
-    "nmi_with_main": 0.239,
+    "nmi_with_main": 0.2818,
     "communities": 26,
-    "Q": 0.3258
+    "Q": 0.3269
    }
   },
   "labels": {
    "major_group": {
-    "nmi": 0.299,
+    "nmi": 0.2515,
     "p": 0.0099,
     "shuffles": 100,
     "nmi_shuffled_mean": 0.0001,
     "nmi_shuffled_sd": 0.0,
     "values": 22,
-    "items_weighted": 1011687,
-    "ami": 0.2989
+    "items_weighted": 675497,
+    "ami": 0.2514
    },
    "place": {
-    "nmi": 0.2949,
+    "nmi": 0.2981,
     "p": 0.0099,
     "shuffles": 100,
-    "nmi_shuffled_mean": 0.0021,
+    "nmi_shuffled_mean": 0.0032,
     "nmi_shuffled_sd": 0.0,
     "values": 945,
-    "items_weighted": 1011687,
-    "ami": 0.2934
+    "items_weighted": 675497,
+    "ami": 0.2959
    },
    "level": {
-    "nmi": 0.0947,
+    "nmi": 0.0539,
     "p": 0.0099,
     "shuffles": 100,
     "nmi_shuffled_mean": 0.0,
     "nmi_shuffled_sd": 0.0,
     "values": 4,
-    "items_weighted": 1011687,
-    "ami": 0.0947
+    "items_weighted": 675497,
+    "ami": 0.0539
    },
    "sector": {
-    "nmi": 0.3605,
+    "nmi": 0.2398,
     "p": 0.0099,
     "shuffles": 100,
     "nmi_shuffled_mean": 0.0001,
     "nmi_shuffled_sd": 0.0,
     "values": 21,
-    "items_weighted": 1011687,
-    "ami": 0.3604
+    "items_weighted": 675497,
+    "ami": 0.2397
    },
    "employer": {
-    "nmi": 0.2968,
+    "nmi": 0.2523,
     "p": 0.0099,
     "shuffles": 100,
-    "nmi_shuffled_mean": 0.054,
+    "nmi_shuffled_mean": 0.077,
     "nmi_shuffled_sd": 0.0001,
     "values": 77590,
-    "items_weighted": 1011687,
+    "items_weighted": 675497,
     "ami": null
    },
    "placed": {
-    "nmi": 0.105,
+    "nmi": 0.0396,
     "p": 0.0099,
     "shuffles": 100,
     "nmi_shuffled_mean": 0.0,
     "nmi_shuffled_sd": 0.0,
     "values": 2,
-    "items_weighted": 873986,
-    "ami": 0.105
+    "items_weighted": 537796,
+    "ami": 0.0396
    },
    "visa": {
-    "nmi": 0.0307,
+    "nmi": 0.0214,
     "p": 0.0099,
     "shuffles": 100,
     "nmi_shuffled_mean": 0.0,
     "nmi_shuffled_sd": 0.0,
     "values": 2,
-    "items_weighted": 1011687,
-    "ami": 0.0307
+    "items_weighted": 675497,
+    "ami": 0.0214
    }
   },
   "facts": {
    "week1": {
-    "profiles": 90941,
+    "profiles": 90861,
     "attribute_nodes": 1682,
-    "links": 363764,
+    "links": 363444,
     "attribute_nodes_by_kind": {
      "occupation": 712,
      "place": 945,
@@ -170,7 +170,7 @@
      "sector": 21
     },
     "profile_degree_mean": 4.0,
-    "attribute_degree_max": 31951,
+    "attribute_degree_max": 32353,
     "attribute_hub": "Level II",
     "ccdf": {
      "attribute_degree": [
@@ -179,239 +179,239 @@
        1.0
       ],
       [
-       1.1922,
+       1.1924,
        0.951843
       ],
       [
-       1.4213,
+       1.4219,
        0.951843
       ],
       [
-       1.6945,
+       1.6956,
        0.951843
       ],
       [
-       2.0202,
+       2.0219,
        0.890012
       ],
       [
-       2.4084,
+       2.411,
        0.890012
       ],
       [
-       2.8713,
+       2.875,
        0.890012
       ],
       [
-       3.4232,
+       3.4283,
        0.833532
       ],
       [
-       4.0811,
+       4.088,
        0.793698
       ],
       [
-       4.8655,
+       4.8748,
        0.793698
       ],
       [
-       5.8006,
+       5.8129,
        0.758026
       ],
       [
-       6.9154,
+       6.9316,
        0.730678
       ],
       [
-       8.2445,
+       8.2655,
        0.666468
       ],
       [
-       9.8291,
+       9.8562,
        0.643282
       ],
       [
-       11.7182,
+       11.753,
        0.60107
       ],
       [
-       13.9704,
-       0.561237
+       14.0148,
+       0.53805
       ],
       [
-       16.6554,
+       16.712,
        0.505945
       ],
       [
-       19.8565,
+       19.9281,
        0.47503
       ],
       [
-       23.6728,
+       23.7633,
        0.442331
       ],
       [
-       28.2226,
+       28.3364,
        0.40547
       ],
       [
-       33.6468,
+       33.7897,
        0.381688
       ],
       [
-       40.1135,
+       40.2925,
        0.350773
       ],
       [
-       47.8232,
-       0.331748
+       48.0466,
+       0.328775
       ],
       [
-       57.0145,
+       57.2931,
        0.290725
       ],
       [
-       67.9724,
-       0.265755
+       68.319,
+       0.264566
       ],
       [
-       81.0363,
+       81.4668,
        0.229489
       ],
       [
-       96.6111,
-       0.205707
+       97.1449,
+       0.204518
       ],
       [
-       115.1792,
+       115.8402,
        0.180737
       ],
       [
-       137.3161,
-       0.165279
+       138.1333,
+       0.164685
       ],
       [
-       163.7075,
-       0.148633
+       164.7167,
+       0.148038
       ],
       [
-       195.1712,
-       0.13258
+       196.416,
+       0.130797
       ],
       [
-       232.6821,
-       0.115339
+       234.2158,
+       0.114744
       ],
       [
-       277.4024,
+       279.29,
        0.102854
       ],
       [
-       330.7177,
-       0.08799
+       333.0386,
+       0.087396
       ],
       [
-       394.2799,
-       0.078478
+       397.131,
+       0.077883
       ],
       [
-       470.0584,
+       473.5579,
        0.065993
       ],
       [
-       560.4011,
+       564.6928,
        0.058264
       ],
       [
-       668.1072,
+       673.3665,
        0.048751
       ],
       [
-       796.5139,
+       802.9541,
        0.043401
       ],
       [
-       949.5997,
-       0.035672
+       957.4806,
+       0.033888
       ],
       [
-       1132.1078,
+       1141.7452,
        0.03151
       ],
       [
-       1349.6929,
+       1361.4711,
        0.025565
       ],
       [
-       1609.0967,
+       1623.4826,
        0.021998
       ],
       [
-       1918.3566,
+       1935.9177,
        0.01843
       ],
       [
-       2287.0547,
+       2308.48,
        0.011891
       ],
       [
-       2726.6145,
+       2752.7409,
        0.010107
       ],
       [
-       3250.6554,
+       3282.4988,
        0.008323
       ],
       [
-       3875.4142,
+       3914.2071,
        0.007134
       ],
       [
-       4620.2483,
-       0.007134
+       4667.4861,
+       0.00654
       ],
       [
-       5508.2357,
+       5565.7316,
        0.004756
       ],
       [
-       6566.8895,
+       6636.8422,
        0.004756
       ],
       [
-       7829.011,
+       7914.0852,
        0.004756
       ],
       [
-       9333.7056,
+       9437.1303,
        0.004756
       ],
       [
-       11127.5945,
+       11253.2814,
        0.004162
       ],
       [
-       13266.2594,
+       13418.9461,
        0.003567
       ],
       [
-       15815.9644,
-       0.002378
+       16001.3874,
+       0.001784
       ],
       [
-       18855.7092,
+       19080.8127,
        0.001189
       ],
       [
-       22479.677,
+       22752.8654,
        0.001189
       ],
       [
-       26800.1522,
+       27131.5951,
        0.001189
       ],
       [
-       31951.0,
+       32353.0,
        0.000595
       ]
      ],
@@ -421,239 +421,239 @@
        1.0
       ],
       [
-       1.2477,
-       0.964923
+       1.2409,
+       0.963139
       ],
       [
-       1.5568,
-       0.964923
+       1.5398,
+       0.963139
       ],
       [
-       1.9424,
-       0.964923
+       1.9108,
+       0.963139
       ],
       [
-       2.4235,
-       0.925089
+       2.3711,
+       0.9239
       ],
       [
-       3.0238,
-       0.884067
+       2.9423,
+       0.9239
       ],
       [
-       3.7728,
-       0.884067
+       3.6511,
+       0.881094
       ],
       [
-       4.7074,
-       0.853151
+       4.5307,
+       0.848395
       ],
       [
-       5.8734,
-       0.828181
+       5.6221,
+       0.82283
       ],
       [
-       7.3283,
-       0.781807
+       6.9765,
+       0.801427
       ],
       [
-       9.1435,
-       0.740785
+       8.6572,
+       0.749108
       ],
       [
-       11.4084,
-       0.710464
+       10.7427,
+       0.714031
       ],
       [
-       14.2342,
-       0.674197
+       13.3307,
+       0.668847
       ],
       [
-       17.7601,
-       0.646254
+       16.5421,
+       0.634364
       ],
       [
-       22.1593,
-       0.602854
+       20.5271,
+       0.592152
       ],
       [
-       27.6483,
-       0.573127
+       25.4721,
+       0.551724
       ],
       [
-       34.4968,
-       0.534483
+       31.6084,
+       0.51308
       ],
       [
-       43.0418,
-       0.489298
-      ],
-      [
-       53.7033,
+       39.223,
        0.46849
       ],
       [
-       67.0058,
-       0.429251
+       48.6719,
+       0.433413
       ],
       [
-       83.6033,
-       0.397741
+       60.3971,
+       0.39893
       ],
       [
-       104.3121,
-       0.357313
+       74.9469,
+       0.370392
       ],
       [
-       130.1505,
-       0.322235
+       93.0018,
+       0.337099
       ],
       [
-       162.3892,
-       0.292509
+       115.4062,
+       0.30321
       ],
       [
-       202.6134,
-       0.261593
+       143.2079,
+       0.26635
       ],
       [
-       252.8014,
-       0.230678
+       177.707,
+       0.24019
       ],
       [
-       315.421,
-       0.205113
+       220.5171,
+       0.219976
       ],
       [
-       393.5517,
-       0.176576
+       273.6402,
+       0.197979
       ],
       [
-       491.0355,
-       0.152794
+       339.5609,
+       0.175386
       ],
       [
-       612.6665,
-       0.135553
+       421.3619,
+       0.1522
       ],
       [
-       764.4257,
-       0.123662
+       522.8691,
+       0.136742
       ],
       [
-       953.7762,
-       0.111177
+       648.8297,
+       0.121879
       ],
       [
-       1190.0293,
-       0.10107
+       805.1344,
+       0.109988
       ],
       [
-       1484.8029,
-       0.088585
+       999.0934,
+       0.096908
       ],
       [
-       1852.5929,
-       0.080856
+       1239.7775,
+       0.087396
       ],
       [
-       2311.4855,
-       0.073722
+       1538.4432,
+       0.079073
       ],
       [
-       2884.0471,
-       0.065398
+       1909.0581,
+       0.071938
       ],
       [
-       3598.4338,
-       0.058264
+       2368.9551,
+       0.061831
       ],
       [
-       4489.7762,
-       0.053508
+       2939.6425,
+       0.054102
       ],
       [
-       5601.9067,
-       0.046373
+       3647.81,
+       0.048157
       ],
       [
-       6989.5151,
-       0.039834
+       4526.5769,
+       0.043401
       ],
       [
-       8720.8381,
-       0.032699
+       5617.041,
+       0.036861
       ],
       [
-       10881.0148,
-       0.027348
+       6970.2007,
+       0.030916
       ],
       [
-       13576.2735,
-       0.023781
+       8649.34,
+       0.02497
       ],
       [
-       16939.1555,
-       0.019025
+       10732.9884,
+       0.021998
       ],
       [
-       21135.033,
-       0.019025
+       13318.5931,
+       0.01843
       ],
       [
-       26370.2414,
-       0.017241
+       16527.0766,
+       0.016052
       ],
       [
-       32902.2261,
-       0.013674
+       20508.4921,
+       0.014269
       ],
       [
-       41052.2021,
+       25449.0409,
        0.011296
       ],
       [
-       51220.9507,
-       0.010107
+       31579.7807,
+       0.011296
       ],
       [
-       63908.5275,
-       0.009512
+       39187.4315,
+       0.008323
       ],
       [
-       79738.8535,
-       0.007729
+       48627.7851,
+       0.00654
       ],
       [
-       99490.3969,
-       0.005945
+       60342.3443,
+       0.005351
       ],
       [
-       124134.4544,
+       74878.9711,
        0.004162
       ],
       [
-       154882.9158,
-       0.003567
+       92917.5089,
+       0.002973
       ],
       [
-       193247.8595,
+       115301.5772,
        0.002378
       ],
       [
-       241115.9101,
+       143078.0253,
        0.001784
       ],
       [
-       300841.0145,
+       177545.8917,
        0.001784
       ],
       [
-       375360.1991,
-       0.000595
+       220317.1562,
+       0.001189
       ],
       [
-       468338.0,
+       273392.129,
+       0.001189
+      ],
+      [
+       339253.0,
        0.000595
       ]
      ],
@@ -663,239 +663,239 @@
        1.0
       ],
       [
-       4.7045,
-       0.46926
+       4.6853,
+       0.461903
       ],
       [
-       5.5331,
-       0.46926
+       5.4881,
+       0.461903
       ],
       [
-       6.5076,
-       0.46926
+       6.4284,
+       0.461903
       ],
       [
-       7.6537,
-       0.46926
+       7.5299,
+       0.461903
       ],
       [
-       9.0017,
-       0.308068
+       8.82,
+       0.297807
       ],
       [
-       10.5871,
-       0.308068
+       10.3312,
+       0.297807
       ],
       [
-       12.4517,
-       0.235372
+       12.1013,
+       0.223176
       ],
       [
-       14.6447,
-       0.235372
+       14.1747,
+       0.223176
       ],
       [
-       17.224,
-       0.193807
+       16.6034,
+       0.179703
       ],
       [
-       20.2575,
-       0.165668
+       19.4482,
+       0.179703
       ],
       [
-       23.8253,
-       0.165668
+       22.7804,
+       0.150791
       ],
       [
-       28.0215,
-       0.131349
+       26.6835,
+       0.130276
       ],
       [
-       32.9567,
-       0.120221
+       31.2554,
+       0.114736
       ],
       [
-       38.7611,
-       0.111325
+       36.6106,
+       0.093208
       ],
       [
-       45.5878,
-       0.093896
+       42.8833,
+       0.085009
       ],
       [
-       53.6168,
-       0.082581
+       50.2308,
+       0.072793
       ],
       [
-       63.0599,
-       0.074653
+       58.8372,
+       0.063504
       ],
       [
-       74.1662,
-       0.065141
+       68.9182,
+       0.053103
       ],
       [
-       87.2285,
-       0.057631
+       80.7265,
+       0.045531
       ],
       [
-       102.5914,
-       0.050362
+       94.5579,
+       0.040149
       ],
       [
-       120.6601,
-       0.04393
+       110.7592,
+       0.034756
       ],
       [
-       141.911,
-       0.038827
+       129.7364,
+       0.029309
       ],
       [
-       166.9047,
-       0.033307
+       151.965,
+       0.025346
       ],
       [
-       196.3004,
-       0.028898
+       178.0023,
+       0.021494
       ],
       [
-       230.8733,
-       0.025445
+       208.5007,
+       0.018138
       ],
       [
-       271.5353,
-       0.02208
+       244.2246,
+       0.015408
       ],
       [
-       319.3588,
-       0.019419
+       286.0693,
+       0.013372
       ],
       [
-       375.6051,
-       0.016252
+       335.0836,
+       0.011116
       ],
       [
-       441.7576,
-       0.014284
+       392.4959,
+       0.009531
       ],
       [
-       519.561,
-       0.012459
+       459.745,
+       0.008133
       ],
       [
-       611.0674,
-       0.010798
+       538.5163,
+       0.006802
       ],
       [
-       718.6901,
-       0.009039
+       630.7842,
+       0.005712
       ],
       [
-       845.2676,
-       0.007664
+       738.8609,
+       0.004832
       ],
       [
-       994.1382,
-       0.006521
+       865.4552,
+       0.003973
       ],
       [
-       1169.2283,
-       0.005564
+       1013.7398,
+       0.00339
       ],
       [
-       1375.1556,
-       0.00442
+       1187.431,
+       0.00284
       ],
       [
-       1617.3515,
-       0.003464
+       1390.882,
+       0.002399
       ],
       [
-       1902.2034,
-       0.002914
+       1629.1917,
+       0.002003
       ],
       [
-       2237.2242,
-       0.002441
+       1908.3327,
+       0.001563
       ],
       [
-       2631.2497,
-       0.002001
+       2235.3009,
+       0.001211
       ],
       [
-       3094.6719,
-       0.001616
+       2618.2908,
+       0.001002
       ],
       [
-       3639.7132,
-       0.001276
+       3066.9012,
+       0.000748
       ],
       [
-       4280.7485,
-       0.001001
+       3592.3752,
+       0.000627
       ],
       [
-       5034.6846,
-       0.000836
+       4207.8823,
+       0.000539
       ],
       [
-       5921.4057,
-       0.000693
+       4928.8487,
+       0.000429
       ],
       [
-       6964.2984,
-       0.00055
+       5773.3433,
+       0.00033
       ],
       [
-       8190.8679,
-       0.000462
+       6762.5312,
+       0.000286
       ],
       [
-       9633.4639,
-       0.000341
+       7921.2037,
+       0.00022
       ],
       [
-       11330.1335,
-       0.000242
-      ],
-      [
-       13325.6247,
-       0.000187
-      ],
-      [
-       15672.5668,
+       9278.3998,
        0.000154
       ],
       [
-       18432.8582,
-       0.000121
+       10868.134,
+       0.00011
       ],
       [
-       21679.2989,
-       7.7e-05
+       12730.2485,
+       8.8e-05
       ],
       [
-       25497.5108,
-       5.5e-05
+       14911.4124,
+       6.6e-05
       ],
       [
-       29988.1957,
-       5.5e-05
-      ],
-      [
-       35269.7912,
-       5.5e-05
-      ],
-      [
-       41481.5944,
+       17466.2906,
        4.4e-05
       ],
       [
-       48787.4357,
-       3.3e-05
+       20458.9143,
+       4.4e-05
       ],
       [
-       57380.0,
+       23964.2854,
+       2.2e-05
+      ],
+      [
+       28070.2566,
+       1.1e-05
+      ],
+      [
+       32879.733,
+       1.1e-05
+      ],
+      [
+       38513.2511,
+       1.1e-05
+      ],
+      [
+       45112.0,
        1.1e-05
       ]
      ]
@@ -903,39 +903,39 @@
    },
    "week2": {
     "projection_nodes": 1682,
-    "projection_links": 49977,
-    "density": 0.0354,
+    "projection_links": 49968,
+    "density": 0.0353,
     "mean_path": 1.983,
-    "mean_path_random": 2.083,
+    "mean_path_random": 2.082,
     "transitivity": 0.0984,
-    "transitivity_random": 0.0351,
+    "transitivity_random": 0.0356,
     "transitivity_rewired": {
-     "mean": 0.304,
-     "sd": 0.0005
+     "mean": 0.3034,
+     "sd": 0.0006
     },
     "friendship_paradox": {
-     "mean_degree": 59.426,
-     "mean_neighbour_degree": 489.697,
+     "mean_degree": 59.415,
+     "mean_neighbour_degree": 489.661,
      "share_with_better_connected_neighbours": 0.9334
     }
    },
    "week3": {
     "spearman": {
-     "degree~strength": 0.929,
+     "degree~strength": 0.954,
      "degree~closeness": 0.956,
-     "degree~betweenness": 0.967,
-     "degree~eigenvector": 0.918,
-     "degree~pagerank": 0.923,
-     "strength~closeness": 0.879,
-     "strength~betweenness": 0.907,
-     "strength~eigenvector": 0.982,
-     "strength~pagerank": 0.985,
-     "closeness~betweenness": 0.918,
-     "closeness~eigenvector": 0.877,
-     "closeness~pagerank": 0.873,
-     "betweenness~eigenvector": 0.895,
-     "betweenness~pagerank": 0.93,
-     "eigenvector~pagerank": 0.962
+     "degree~betweenness": 0.968,
+     "degree~eigenvector": 0.931,
+     "degree~pagerank": 0.944,
+     "strength~closeness": 0.896,
+     "strength~betweenness": 0.936,
+     "strength~eigenvector": 0.983,
+     "strength~pagerank": 0.987,
+     "closeness~betweenness": 0.919,
+     "closeness~eigenvector": 0.886,
+     "closeness~pagerank": 0.887,
+     "betweenness~eigenvector": 0.91,
+     "betweenness~pagerank": 0.953,
+     "eigenvector~pagerank": 0.965
     },
     "top": {
      "degree": [
@@ -945,8 +945,8 @@
       "Health care",
       "Education",
       "Professional services",
-      "Level IV",
       "Manufacturing",
+      "Level IV",
       "Business support",
       "Retail"
      ],
@@ -956,11 +956,11 @@
       "Software Developers",
       "Level I",
       "Level III",
-      "Manufacturing",
       "Level IV",
-      "San Jose-Sunnyvale-Santa Clara, CA",
+      "Manufacturing",
+      "New York-Newark-Jersey City, NY-NJ",
       "Information and telecoms",
-      "New York-Newark-Jersey City, NY-NJ"
+      "Dallas-Fort Worth-Arlington, TX"
      ],
      "closeness": [
       "Level II",
@@ -969,8 +969,8 @@
       "Health care",
       "Education",
       "Professional services",
-      "Level IV",
       "Manufacturing",
+      "Level IV",
       "Business support",
       "Retail"
      ],
@@ -990,12 +990,12 @@
       "Level II",
       "Professional services",
       "Software Developers",
-      "San Jose-Sunnyvale-Santa Clara, CA",
-      "Manufacturing",
       "Level III",
-      "Information and telecoms",
       "New York-Newark-Jersey City, NY-NJ",
       "Dallas-Fort Worth-Arlington, TX",
+      "Level I",
+      "Information and telecoms",
+      "Manufacturing",
       "Level IV"
      ],
      "pagerank": [
@@ -1007,26 +1007,26 @@
       "Manufacturing",
       "Level IV",
       "New York-Newark-Jersey City, NY-NJ",
-      "San Jose-Sunnyvale-Santa Clara, CA",
-      "Business support"
+      "Education",
+      "Health care"
      ]
     },
     "assortativity": {
-     "degree": -0.3243,
+     "degree": -0.3241,
      "degree_rewired": {
-      "mean": -0.3933,
-      "sd": 0.0012
+      "mean": -0.3934,
+      "sd": 0.0013
      },
      "kind": {
-      "real": -0.5827,
+      "real": -0.5828,
       "shuffled_mean": -0.0022,
-      "shuffled_sd": 0.003704
+      "shuffled_sd": 0.003687
      }
     },
     "max_core": 78,
     "nodes_in_max_core": 203,
     "attributes_per_community": {
-     "occupation": 16,
+     "occupation": 17,
      "place": 18,
      "level": 4,
      "sector": 12
@@ -1034,66 +1034,66 @@
    },
    "week4": {
     "greedy": {
-     "communities": 17,
-     "Q": 0.4111,
-     "nmi_louvain": 0.2394
+     "communities": 24,
+     "Q": 0.3718,
+     "nmi_louvain": 0.2212
     },
     "infomap": {
-     "communities": 1307,
-     "codelength": 9.4525,
-     "nmi_louvain": 0.4078
+     "communities": 1403,
+     "codelength": 9.9007,
+     "nmi_louvain": 0.4044
     },
-    "strength_vs_degree_spearman": 0.9291,
+    "strength_vs_degree_spearman": 0.9543,
     "weight_range": [
      1,
-     208869
+     166005
     ],
     "backbone": {
      "alpha": 0.2,
-     "links": 9121,
-     "link_share": 0.1825,
-     "nodes_with_a_link": 1522,
-     "giant_nodes": 1522,
+     "links": 9206,
+     "link_share": 0.1842,
+     "nodes_with_a_link": 1516,
+     "giant_nodes": 1516,
      "strongest": [
       [
        "Level II",
        "Professional services",
-       208869
+       166005
       ],
       [
        "Level II",
        "Software Developers",
-       176996
+       118254
       ],
       [
        "Software Developers",
        "Professional services",
-       124056
-      ],
-      [
-       "San Jose-Sunnyvale-Santa Clara, CA",
-       "Manufacturing",
-       65412
-      ],
-      [
-       "Software Developers",
-       "Information and telecoms",
-       65319
-      ],
-      [
-       "Level I",
-       "Business support",
-       64821
-      ],
-      [
-       "Level II",
-       "Manufacturing",
-       64775
+       100409
       ],
       [
        "Level III",
        "Professional services",
-       60298
+       46859
+      ],
+      [
+       "Level I",
+       "Professional services",
+       46081
+      ],
+      [
+       "Level II",
+       "Manufacturing",
+       41382
+      ],
+      [
+       "Dallas-Fort Worth-Arlington, TX",
+       "Professional services",
+       36576
+      ],
+      [
+       "Level II",
+       "New York-Newark-Jersey City, NY-NJ",
+       36409
       ]
      ]
     },
@@ -1115,683 +1115,688 @@
   "communities": [
    {
     "id": 0,
-    "name": "Level II Computer jobs \u00b7 Professional services \u00b7 several metros",
-    "profiles": 9707,
-    "workers": 235985,
-    "x": 647.97,
-    "y": 433.82,
-    "r": 187.87,
-    "h1b": 212244,
-    "perm": 23741,
+    "name": "Level II Computer jobs \u00b7 Professional services \u00b7 several metros \u00b7 led by Computer Occupations, All Other",
+    "profiles": 6513,
+    "workers": 115193,
+    "x": 569.76,
+    "y": 345.28,
+    "r": 173.03,
+    "h1b": 105525,
+    "perm": 9668,
     "fields": {
      "occupation": {
-      "value": "15-1252",
-      "name": "Software Developers",
-      "share": 0.313,
+      "value": "15-1299",
+      "name": "Computer Occupations, All Other",
+      "share": 0.318,
       "top": [
        [
-        "Software Developers",
-        0.313
+        "Computer Occupations, All Other",
+        0.318
        ],
        [
-        "Computer Occupations, All Other",
-        0.21
+        "Software Developers",
+        0.253
        ],
        [
         "Software Quality Assurance Analysts and Testers",
-        0.079
+        0.104
        ]
       ]
      },
      "place": {
       "value": "19100",
       "name": "Dallas-Fort Worth-Arlington, TX",
-      "share": 0.221,
+      "share": 0.088,
       "top": [
        [
         "Dallas-Fort Worth-Arlington, TX",
-        0.221
+        0.088
        ],
        [
-        "San Jose-Sunnyvale-Santa Clara, CA",
-        0.08
+        "New York-Newark-Jersey City, NY-NJ",
+        0.087
        ],
        [
-        "Atlanta-Sandy Springs-Roswell, GA",
-        0.078
+        "Charlotte-Concord-Gastonia, NC-SC",
+        0.076
        ]
       ]
      },
      "level": {
       "value": "1",
       "name": "Level II",
-      "share": 0.654,
+      "share": 0.523,
       "top": [
        [
         "Level II",
-        0.654
+        0.523
        ],
        [
         "Level III",
-        0.163
+        0.239
        ],
        [
         "Level IV",
-        0.098
+        0.129
        ]
       ]
      },
      "sector": {
       "value": "54",
       "name": "Professional services",
-      "share": 0.763,
+      "share": 0.798,
       "top": [
        [
         "Professional services",
-        0.763
+        0.798
        ],
        [
         "Finance and insurance",
-        0.082
+        0.066
        ],
        [
         "Information and telecoms",
-        0.044
+        0.041
        ]
       ]
      }
     },
-    "attribute_nodes": 77,
+    "attribute_nodes": 43,
     "attributes": [
-     "Level II",
+     "Level III",
      "Management Analysts",
-     "Computer Systems Analysts",
-     "Computer Network Support Specialists",
+     "Tax Examiners and Collectors, and Revenue Agents",
      "Database Administrators",
-     "Database Architects",
-     "Network and Computer Systems Administrators",
      "Computer Programmers",
      "Software Quality Assurance Analysts and Testers",
-     "Web Developers",
-     "Web and Digital Interface Designers",
-     "Computer Occupations, All Other"
+     "Computer Occupations, All Other",
+     "Landscape Architects",
+     "Cartographers and Photogrammetrists",
+     "Surveyors",
+     "Architectural and Civil Drafters",
+     "Geological Technicians, Except Hydrologic Technicians"
     ],
     "top_employers": [
      [
-      "Infosys",
-      14935
-     ],
-     [
       "Cognizant",
-      10193
+      9594
      ],
      [
-      "Amazon",
-      8006
+      "Tata Consultancy Services",
+      5244
+     ],
+     [
+      "Infosys",
+      4736
      ]
-    ]
+    ],
+    "holds_together": 0.515
    },
    {
     "id": 1,
-    "name": "Level II Software Developers \u00b7 several metros",
-    "profiles": 6565,
-    "workers": 201831,
-    "x": 173.74,
-    "y": 535.63,
-    "r": 173.74,
-    "h1b": 182204,
-    "perm": 19627,
-    "fields": {
-     "occupation": {
-      "value": "15-1252",
-      "name": "Software Developers",
-      "share": 0.614,
-      "top": [
-       [
-        "Software Developers",
-        0.614
-       ],
-       [
-        "Computer and Information Systems Managers",
-        0.074
-       ],
-       [
-        "Data Scientists",
-        0.053
-       ]
-      ]
-     },
-     "place": {
-      "value": "42660",
-      "name": "Seattle-Tacoma-Bellevue, WA",
-      "share": 0.284,
-      "top": [
-       [
-        "Seattle-Tacoma-Bellevue, WA",
-        0.284
-       ],
-       [
-        "San Francisco-Oakland-Fremont, CA",
-        0.145
-       ],
-       [
-        "Austin-Round Rock-San Marcos, TX",
-        0.098
-       ]
-      ]
-     },
-     "level": {
-      "value": "1",
-      "name": "Level II",
-      "share": 0.508,
-      "top": [
-       [
-        "Level II",
-        0.508
-       ],
-       [
-        "Level III",
-        0.261
-       ],
-       [
-        "Level IV",
-        0.12
-       ]
-      ]
-     },
-     "sector": {
-      "value": "51",
-      "name": "Information and telecoms",
-      "share": 0.424,
-      "top": [
-       [
-        "Information and telecoms",
-        0.424
-       ],
-       [
-        "Retail",
-        0.232
-       ],
-       [
-        "Professional services",
-        0.22
-       ]
-      ]
-     }
-    },
-    "attribute_nodes": 47,
-    "attributes": [
-     "Level III",
-     "Facilities Managers",
-     "Computer and Information Systems Managers",
-     "Purchasing Managers",
-     "Transportation, Storage, and Distribution Managers",
-     "Human Resources Specialists",
-     "Logisticians",
-     "Project Management Specialists",
-     "Compensation, Benefits, and Job Analysis Specialists",
-     "Computer and Information Research Scientists",
-     "Computer Network Architects",
-     "Software Developers"
-    ],
-    "top_employers": [
-     [
-      "Amazon",
-      60310
-     ],
-     [
-      "Oracle America",
-      15369
-     ],
-     [
-      "Microsoft",
-      12902
-     ]
-    ]
-   },
-   {
-    "id": 2,
-    "name": "Software Developers / Electronics Engineers, Except Computer \u00b7 Manufacturing \u00b7 San Jose-Sunnyvale-Santa Clara, CA",
-    "profiles": 9233,
-    "workers": 150575,
-    "x": 254.74,
-    "y": 219.19,
-    "r": 150.07,
-    "h1b": 137078,
-    "perm": 13497,
-    "fields": {
-     "occupation": {
-      "value": "15-1252",
-      "name": "Software Developers",
-      "share": 0.254,
-      "top": [
-       [
-        "Software Developers",
-        0.254
-       ],
-       [
-        "Electronics Engineers, Except Computer",
-        0.22
-       ],
-       [
-        "Industrial Engineers",
-        0.068
-       ]
-      ]
-     },
-     "place": {
-      "value": "41940",
-      "name": "San Jose-Sunnyvale-Santa Clara, CA",
-      "share": 0.501,
-      "top": [
-       [
-        "San Jose-Sunnyvale-Santa Clara, CA",
-        0.501
-       ],
-       [
-        "Detroit-Warren-Dearborn, MI",
-        0.07
-       ],
-       [
-        "Austin-Round Rock-San Marcos, TX",
-        0.057
-       ]
-      ]
-     },
-     "level": {
-      "value": "3",
-      "name": "Level IV",
-      "share": 0.404,
-      "top": [
-       [
-        "Level IV",
-        0.404
-       ],
-       [
-        "Level II",
-        0.337
-       ],
-       [
-        "Level III",
-        0.186
-       ]
-      ]
-     },
-     "sector": {
-      "value": "31-33",
-      "name": "Manufacturing",
-      "share": 0.751,
-      "top": [
-       [
-        "Manufacturing",
-        0.751
-       ],
-       [
-        "Professional services",
-        0.173
-       ],
-       [
-        "Information and telecoms",
-        0.031
-       ]
-      ]
-     }
-    },
-    "attribute_nodes": 113,
-    "attributes": [
-     "Level IV",
-     "Industrial Production Managers",
-     "Architectural and Engineering Managers",
-     "Chemical Engineers",
-     "Electrical Engineers",
-     "Electronics Engineers, Except Computer",
-     "Industrial Engineers",
-     "Materials Engineers",
-     "Mechanical Engineers",
-     "Engineers, All Other",
-     "Industrial Engineering Technologists and Technicians",
-     "Calibration Technologists and Technicians"
-    ],
-    "top_employers": [
-     [
-      "Nvidia",
-      43373
-     ],
-     [
-      "Apple",
-      13885
-     ],
-     [
-      "Cisco",
-      6465
-     ]
-    ]
-   },
-   {
-    "id": 3,
-    "name": "Level I Healthcare jobs \u00b7 Business support \u00b7 several metros",
-    "profiles": 7986,
-    "workers": 104513,
-    "x": 874.97,
-    "y": 229.55,
-    "r": 125.03,
-    "h1b": 89156,
-    "perm": 15357,
-    "fields": {
-     "occupation": {
-      "value": "29-1123",
-      "name": "Physical Therapists",
-      "share": 0.308,
-      "top": [
-       [
-        "Physical Therapists",
-        0.308
-       ],
-       [
-        "Occupational Therapists",
-        0.254
-       ],
-       [
-        "Software Developers",
-        0.147
-       ]
-      ]
-     },
-     "place": {
-      "value": "16980",
-      "name": "Chicago-Naperville-Elgin, IL-IN",
-      "share": 0.186,
-      "top": [
-       [
-        "Chicago-Naperville-Elgin, IL-IN",
-        0.186
-       ],
-       [
-        "New York-Newark-Jersey City, NY-NJ",
-        0.067
-       ],
-       [
-        "St. Louis, MO-IL",
-        0.052
-       ]
-      ]
-     },
-     "level": {
-      "value": "0",
-      "name": "Level I",
-      "share": 0.776,
-      "top": [
-       [
-        "Level I",
-        0.776
-       ],
-       [
-        "Level II",
-        0.15
-       ],
-       [
-        "Level III",
-        0.047
-       ]
-      ]
-     },
-     "sector": {
-      "value": "56",
-      "name": "Business support",
-      "share": 0.635,
-      "top": [
-       [
-        "Business support",
-        0.635
-       ],
-       [
-        "Professional services",
-        0.188
-       ],
-       [
-        "Health care",
-        0.05
-       ]
-      ]
-     }
-    },
-    "attribute_nodes": 208,
-    "attributes": [
-     "Level I",
-     "Administrative Services Managers",
-     "Buyers and Purchasing Agents, Farm Products",
-     "Appraisers of Personal and Business Property",
-     "Tax Examiners and Collectors, and Revenue Agents",
-     "Tax Preparers",
-     "Architects, Except Landscape and Naval",
-     "Surveyors",
-     "Health and Safety Engineers, Except Mining Safety Engineers and Inspectors",
-     "Electrical and Electronics Drafters",
-     "Electro-Mechanical and Mechatronics Technologists and Technicians",
-     "Surveying and Mapping Technicians"
-    ],
-    "top_employers": [
-     [
-      "Grandison Management",
-      57843
-     ],
-     [
-      "Management Health Systems",
-      1432
-     ],
-     [
-      "Mastercard",
-      579
-     ]
-    ]
-   },
-   {
-    "id": 4,
     "name": "Mixed: mostly healthcare and education jobs \u00b7 several metros",
-    "profiles": 30064,
-    "workers": 92009,
-    "x": 655.86,
-    "y": 117.31,
-    "r": 117.31,
-    "h1b": 78265,
-    "perm": 13744,
+    "profiles": 35711,
+    "workers": 111760,
+    "x": 829.57,
+    "y": 616.96,
+    "r": 170.43,
+    "h1b": 86354,
+    "perm": 25406,
     "fields": {
      "occupation": {
       "value": "15-1252",
       "name": "Software Developers",
-      "share": 0.076,
+      "share": 0.093,
       "top": [
        [
         "Software Developers",
-        0.076
+        0.093
        ],
        [
         "Physicians, All Other",
-        0.074
+        0.05
        ],
        [
         "Medical Scientists, Except Epidemiologists",
-        0.042
+        0.034
        ]
       ]
      },
      "place": {
       "value": "35620",
       "name": "New York-Newark-Jersey City, NY-NJ",
-      "share": 0.078,
+      "share": 0.075,
       "top": [
        [
         "New York-Newark-Jersey City, NY-NJ",
-        0.078
+        0.075
        ],
        [
-        "Boston-Cambridge-Newton, MA-NH",
-        0.031
+        "Place unknown",
+        0.046
        ],
        [
-        "Cleveland, OH",
-        0.028
+        "Dallas-Fort Worth-Arlington, TX",
+        0.044
        ]
       ]
      },
      "level": {
       "value": "0",
       "name": "Level I",
-      "share": 0.425,
+      "share": 0.52,
       "top": [
        [
         "Level I",
-        0.425
+        0.52
        ],
        [
         "Level II",
-        0.362
+        0.311
        ],
        [
         "Level III",
-        0.124
+        0.096
        ]
       ]
      },
      "sector": {
       "value": "61",
       "name": "Education",
-      "share": 0.371,
+      "share": 0.311,
       "top": [
        [
         "Education",
-        0.371
+        0.311
        ],
        [
         "Health care",
-        0.269
+        0.231
        ],
        [
         "Professional services",
-        0.176
+        0.206
        ]
       ]
      }
     },
-    "attribute_nodes": 734,
+    "attribute_nodes": 875,
     "attributes": [
+     "Level I",
+     "Advertising and Promotions Managers",
+     "Administrative Services Managers",
+     "Facilities Managers",
+     "Farmers, Ranchers, and Other Agricultural Managers",
      "Education and Childcare Administrators, Preschool and Daycare",
      "Education Administrators, Kindergarten through Secondary",
      "Education Administrators, Postsecondary",
      "Education Administrators, All Other",
+     "Entertainment and Recreation Managers, Except Gambling",
      "Medical and Health Services Managers",
-     "Natural Sciences Managers",
-     "Social and Community Service Managers",
-     "Emergency Management Directors",
-     "Mathematical Science Occupations, All Other",
-     "Aerospace Engineers",
-     "Agricultural Engineers",
-     "Bioengineers and Biomedical Engineers"
+     "Natural Sciences Managers"
     ],
     "top_employers": [
      [
-      "CGI Technologies and Solutions",
-      616
+      "Grandison Management",
+      1449
      ],
      [
-      "Amazon",
-      603
+      "Management Health Systems",
+      1341
      ],
      [
-      "Mayo Clinic",
-      602
+      "University of Michigan",
+      549
      ]
-    ]
+    ],
+    "holds_together": 0.807
    },
    {
-    "id": 5,
-    "name": "Computer jobs \u00b7 Finance and insurance \u00b7 several metros",
-    "profiles": 3760,
-    "workers": 90173,
-    "x": 506.88,
-    "y": 726.05,
-    "r": 116.13,
-    "h1b": 81458,
-    "perm": 8715,
+    "id": 2,
+    "name": "Level II Software Developers \u00b7 several metros",
+    "profiles": 1463,
+    "workers": 94899,
+    "x": 287.86,
+    "y": 157.05,
+    "r": 157.05,
+    "h1b": 80886,
+    "perm": 14013,
     "fields": {
      "occupation": {
       "value": "15-1252",
       "name": "Software Developers",
-      "share": 0.295,
+      "share": 0.724,
       "top": [
        [
         "Software Developers",
-        0.295
+        0.724
+       ],
+       [
+        "Computer and Information Systems Managers",
+        0.091
        ],
        [
         "Data Scientists",
-        0.205
-       ],
-       [
-        "Financial and Investment Analysts",
-        0.106
+        0.067
        ]
       ]
      },
      "place": {
-      "value": "35620",
-      "name": "New York-Newark-Jersey City, NY-NJ",
-      "share": 0.465,
+      "value": "42660",
+      "name": "Seattle-Tacoma-Bellevue, WA",
+      "share": 0.257,
       "top": [
        [
-        "New York-Newark-Jersey City, NY-NJ",
-        0.465
+        "Seattle-Tacoma-Bellevue, WA",
+        0.257
        ],
        [
-        "Salt Lake City-Murray, UT",
-        0.114
+        "San Jose-Sunnyvale-Santa Clara, CA",
+        0.233
        ],
        [
-        "Dallas-Fort Worth-Arlington, TX",
-        0.113
+        "San Francisco-Oakland-Fremont, CA",
+        0.169
        ]
       ]
      },
      "level": {
       "value": "1",
       "name": "Level II",
-      "share": 0.439,
+      "share": 0.58,
       "top": [
        [
         "Level II",
-        0.439
+        0.58
        ],
        [
         "Level III",
-        0.235
+        0.195
        ],
        [
-        "Level I",
-        0.213
+        "Level IV",
+        0.127
        ]
       ]
      },
      "sector": {
-      "value": "52",
-      "name": "Finance and insurance",
-      "share": 0.51,
+      "value": "54",
+      "name": "Professional services",
+      "share": 0.349,
       "top": [
        [
-        "Finance and insurance",
-        0.51
+        "Professional services",
+        0.349
        ],
        [
-        "Professional services",
-        0.27
+        "Information and telecoms",
+        0.328
        ],
        [
         "Retail",
-        0.08
+        0.177
        ]
       ]
      }
     },
-    "attribute_nodes": 36,
+    "attribute_nodes": 13,
+    "attributes": [
+     "Computer and Information Systems Managers",
+     "Computer and Information Research Scientists",
+     "Software Developers",
+     "Computer Hardware Engineers",
+     "Administrative Law Judges, Adjudicators, and Hearing Officers",
+     "Atlanta-Sandy Springs-Roswell, GA",
+     "Austin-Round Rock-San Marcos, TX",
+     "Fayetteville-Springdale-Rogers, AR",
+     "San Francisco-Oakland-Fremont, CA",
+     "San Jose-Sunnyvale-Santa Clara, CA",
+     "Seattle-Tacoma-Bellevue, WA",
+     "Retail"
+    ],
+    "top_employers": [
+     [
+      "Amazon",
+      12899
+     ],
+     [
+      "Microsoft",
+      9998
+     ],
+     [
+      "Google",
+      5511
+     ]
+    ],
+    "holds_together": 0.627
+   },
+   {
+    "id": 3,
+    "name": "Mixed: mostly engineering and computer jobs \u00b7 Manufacturing \u00b7 several metros",
+    "profiles": 12240,
+    "workers": 81426,
+    "x": 145.47,
+    "y": 450.92,
+    "r": 145.47,
+    "h1b": 61616,
+    "perm": 19810,
+    "fields": {
+     "occupation": {
+      "value": "15-1252",
+      "name": "Software Developers",
+      "share": 0.158,
+      "top": [
+       [
+        "Software Developers",
+        0.158
+       ],
+       [
+        "Electronics Engineers, Except Computer",
+        0.109
+       ],
+       [
+        "Mechanical Engineers",
+        0.101
+       ]
+      ]
+     },
+     "place": {
+      "value": "41940",
+      "name": "San Jose-Sunnyvale-Santa Clara, CA",
+      "share": 0.13,
+      "top": [
+       [
+        "San Jose-Sunnyvale-Santa Clara, CA",
+        0.13
+       ],
+       [
+        "Detroit-Warren-Dearborn, MI",
+        0.119
+       ],
+       [
+        "San Diego-Chula Vista-Carlsbad, CA",
+        0.06
+       ]
+      ]
+     },
+     "level": {
+      "value": "1",
+      "name": "Level II",
+      "share": 0.401,
+      "top": [
+       [
+        "Level II",
+        0.401
+       ],
+       [
+        "Level IV",
+        0.305
+       ],
+       [
+        "Level III",
+        0.182
+       ]
+      ]
+     },
+     "sector": {
+      "value": "31-33",
+      "name": "Manufacturing",
+      "share": 0.625,
+      "top": [
+       [
+        "Manufacturing",
+        0.625
+       ],
+       [
+        "Professional services",
+        0.243
+       ],
+       [
+        "Information and telecoms",
+        0.029
+       ]
+      ]
+     }
+    },
+    "attribute_nodes": 181,
+    "attributes": [
+     "Level IV",
+     "Industrial Production Managers",
+     "Architectural and Engineering Managers",
+     "Purchasing Agents, Except Wholesale, Retail, and Farm Products",
+     "Computer User Support Specialists",
+     "Aerospace Engineers",
+     "Chemical Engineers",
+     "Electrical Engineers",
+     "Electronics Engineers, Except Computer",
+     "Industrial Engineers",
+     "Materials Engineers",
+     "Mechanical Engineers"
+    ],
+    "top_employers": [
+     [
+      "Apple",
+      4718
+     ],
+     [
+      "Intel",
+      2795
+     ],
+     [
+      "FPL Food",
+      2258
+     ]
+    ],
+    "holds_together": 0.662
+   },
+   {
+    "id": 4,
+    "name": "Level II Computer jobs \u00b7 Professional services \u00b7 mostly Dallas-Fort Worth-Arlington, TX",
+    "profiles": 5604,
+    "workers": 62901,
+    "x": 286.75,
+    "y": 759.88,
+    "r": 127.86,
+    "h1b": 44099,
+    "perm": 18802,
+    "fields": {
+     "occupation": {
+      "value": "15-1252",
+      "name": "Software Developers",
+      "share": 0.297,
+      "top": [
+       [
+        "Software Developers",
+        0.297
+       ],
+       [
+        "Computer Systems Analysts",
+        0.158
+       ],
+       [
+        "Database Architects",
+        0.071
+       ]
+      ]
+     },
+     "place": {
+      "value": "19100",
+      "name": "Dallas-Fort Worth-Arlington, TX",
+      "share": 0.483,
+      "top": [
+       [
+        "Dallas-Fort Worth-Arlington, TX",
+        0.483
+       ],
+       [
+        "New York-Newark-Jersey City, NY-NJ",
+        0.068
+       ],
+       [
+        "Durham-Chapel Hill, NC",
+        0.046
+       ]
+      ]
+     },
+     "level": {
+      "value": "1",
+      "name": "Level II",
+      "share": 0.831,
+      "top": [
+       [
+        "Level II",
+        0.831
+       ],
+       [
+        "Level III",
+        0.07
+       ],
+       [
+        "Level IV",
+        0.049
+       ]
+      ]
+     },
+     "sector": {
+      "value": "54",
+      "name": "Professional services",
+      "share": 0.607,
+      "top": [
+       [
+        "Professional services",
+        0.607
+       ],
+       [
+        "Finance and insurance",
+        0.093
+       ],
+       [
+        "Information and telecoms",
+        0.066
+       ]
+      ]
+     }
+    },
+    "attribute_nodes": 130,
+    "attributes": [
+     "Level II",
+     "Compensation and Benefits Managers",
+     "Farm Labor Contractors",
+     "Computer Systems Analysts",
+     "Computer Network Support Specialists",
+     "Computer Network Architects",
+     "Database Architects",
+     "Network and Computer Systems Administrators",
+     "Web Developers",
+     "Web and Digital Interface Designers",
+     "Electrical and Electronic Engineering Technologists and Technicians",
+     "Environmental Engineering Technologists and Technicians"
+    ],
+    "top_employers": [
+     [
+      "Tata Consultancy Services",
+      1756
+     ],
+     [
+      "South Georgia Pecan",
+      1386
+     ],
+     [
+      "Fidelity Investments",
+      1292
+     ]
+    ],
+    "holds_together": 0.39
+   },
+   {
+    "id": 5,
+    "name": "Computer jobs \u00b7 New York-Newark-Jersey City, NY-NJ",
+    "profiles": 4419,
+    "workers": 62712,
+    "x": 806.02,
+    "y": 173.51,
+    "r": 127.67,
+    "h1b": 52396,
+    "perm": 10316,
+    "fields": {
+     "occupation": {
+      "value": "15-1252",
+      "name": "Software Developers",
+      "share": 0.386,
+      "top": [
+       [
+        "Software Developers",
+        0.386
+       ],
+       [
+        "Data Scientists",
+        0.177
+       ],
+       [
+        "Financial and Investment Analysts",
+        0.108
+       ]
+      ]
+     },
+     "place": {
+      "value": "35620",
+      "name": "New York-Newark-Jersey City, NY-NJ",
+      "share": 0.505,
+      "top": [
+       [
+        "New York-Newark-Jersey City, NY-NJ",
+        0.505
+       ],
+       [
+        "San Francisco-Oakland-Fremont, CA",
+        0.079
+       ],
+       [
+        "Dallas-Fort Worth-Arlington, TX",
+        0.07
+       ]
+      ]
+     },
+     "level": {
+      "value": "1",
+      "name": "Level II",
+      "share": 0.483,
+      "top": [
+       [
+        "Level II",
+        0.483
+       ],
+       [
+        "Level III",
+        0.197
+       ],
+       [
+        "Level IV",
+        0.17
+       ]
+      ]
+     },
+     "sector": {
+      "value": "54",
+      "name": "Professional services",
+      "share": 0.371,
+      "top": [
+       [
+        "Professional services",
+        0.371
+       ],
+       [
+        "Finance and insurance",
+        0.366
+       ],
+       [
+        "Information and telecoms",
+        0.111
+       ]
+      ]
+     }
+    },
+    "attribute_nodes": 40,
     "attributes": [
      "Financial Managers",
      "Credit Analysts",
@@ -1803,187 +1808,304 @@
      "Credit Counselors",
      "Loan Officers",
      "Financial Specialists, All Other",
-     "Information Security Analysts",
-     "Actuaries"
+     "Actuaries",
+     "Mathematicians"
     ],
     "top_employers": [
      [
-      "Goldman Sachs",
-      24767
-     ],
-     [
-      "Amazon",
-      6840
-     ],
-     [
       "JPMorgan Chase",
-      3419
+      3074
+     ],
+     [
+      "Goldman Sachs",
+      1906
+     ],
+     [
+      "EY",
+      1879
      ]
-    ]
+    ],
+    "holds_together": 0.616
    },
    {
     "id": 6,
-    "name": "Accountants and Auditors / Software Developers \u00b7 several metros",
-    "profiles": 5435,
-    "workers": 35227,
-    "x": 464.07,
-    "y": 141.67,
-    "r": 72.59,
-    "h1b": 29986,
-    "perm": 5241,
+    "name": "Mixed: mostly business and computer jobs \u00b7 several metros",
+    "profiles": 6874,
+    "workers": 36883,
+    "x": 445.67,
+    "y": 604.49,
+    "r": 97.91,
+    "h1b": 29660,
+    "perm": 7223,
     "fields": {
      "occupation": {
       "value": "13-2011",
       "name": "Accountants and Auditors",
-      "share": 0.26,
+      "share": 0.202,
       "top": [
        [
         "Accountants and Auditors",
-        0.26
+        0.202
        ],
        [
         "Software Developers",
-        0.172
+        0.166
        ],
        [
         "Market Research Analysts and Marketing Specialists",
-        0.157
+        0.123
        ]
       ]
      },
      "place": {
       "value": "31080",
       "name": "Los Angeles-Long Beach-Anaheim, CA",
-      "share": 0.297,
+      "share": 0.243,
       "top": [
        [
         "Los Angeles-Long Beach-Anaheim, CA",
-        0.297
+        0.243
        ],
        [
         "New York-Newark-Jersey City, NY-NJ",
-        0.183
+        0.175
        ],
        [
-        "San Jose-Sunnyvale-Santa Clara, CA",
-        0.06
+        "Miami-Fort Lauderdale-West Palm Beach, FL",
+        0.108
        ]
       ]
      },
      "level": {
       "value": "1",
       "name": "Level II",
-      "share": 0.441,
+      "share": 0.446,
       "top": [
        [
         "Level II",
-        0.441
+        0.446
        ],
        [
         "Level I",
-        0.247
+        0.255
        ],
        [
         "Level III",
-        0.195
+        0.166
        ]
       ]
      },
      "sector": {
       "value": "54",
       "name": "Professional services",
-      "share": 0.405,
+      "share": 0.428,
       "top": [
        [
         "Professional services",
-        0.405
+        0.428
        ],
        [
         "Wholesale",
-        0.163
+        0.137
        ],
        [
-        "Retail",
-        0.134
+        "Information and telecoms",
+        0.094
        ]
       ]
      }
     },
-    "attribute_nodes": 58,
+    "attribute_nodes": 85,
     "attributes": [
-     "Advertising and Promotions Managers",
+     "Chief Executives",
+     "General and Operations Managers",
+     "Marketing Managers",
      "Sales Managers",
+     "Purchasing Managers",
+     "Human Resources Managers",
      "Property, Real Estate, and Community Association Managers",
      "Wholesale and Retail Buyers, Except Farm Products",
+     "Claims Adjusters, Examiners, and Investigators",
      "Market Research Analysts and Marketing Specialists",
      "Business Operations Specialists, All Other",
-     "Accountants and Auditors",
-     "Appraisers and Assessors of Real Estate",
-     "Budget Analysts",
-     "Judicial Law Clerks",
-     "Arbitrators, Mediators, and Conciliators",
-     "Title Examiners, Abstractors, and Searchers"
+     "Accountants and Auditors"
     ],
     "top_employers": [
      [
-      "Amazon",
-      3919
+      "EY",
+      2274
      ],
      [
-      "EY",
-      2160
+      "Amazon",
+      1308
      ],
      [
       "Deloitte",
-      2125
+      1298
      ]
-    ]
+    ],
+    "holds_together": 0.454
    },
    {
     "id": 7,
-    "name": "Mixed: mostly engineering and computer jobs \u00b7 several metros",
-    "profiles": 4230,
-    "workers": 20462,
-    "x": 367.41,
-    "y": 393.96,
-    "r": 55.32,
-    "h1b": 14916,
-    "perm": 5546,
+    "name": "Computer jobs \u00b7 several metros",
+    "profiles": 1664,
+    "workers": 17761,
+    "x": 803.44,
+    "y": 374.39,
+    "r": 67.94,
+    "h1b": 15482,
+    "perm": 2279,
     "fields": {
      "occupation": {
-      "value": "17-2051",
-      "name": "Civil Engineers",
-      "share": 0.256,
+      "value": "15-1252",
+      "name": "Software Developers",
+      "share": 0.353,
       "top": [
        [
-        "Civil Engineers",
-        0.256
-       ],
-       [
         "Software Developers",
-        0.124
+        0.353
        ],
        [
-        "Construction Managers",
-        0.065
+        "Operations Research Analysts",
+        0.31
+       ],
+       [
+        "Data Scientists",
+        0.09
        ]
       ]
      },
      "place": {
-      "value": "33100",
-      "name": "Miami-Fort Lauderdale-West Palm Beach, FL",
-      "share": 0.235,
+      "value": "14460",
+      "name": "Boston-Cambridge-Newton, MA-NH",
+      "share": 0.441,
       "top": [
        [
-        "Miami-Fort Lauderdale-West Palm Beach, FL",
-        0.235
+        "Boston-Cambridge-Newton, MA-NH",
+        0.441
        ],
        [
-        "Orlando-Kissimmee-Sanford, FL",
-        0.145
+        "Nashville-Davidson--Murfreesboro--Franklin, TN",
+        0.14
        ],
        [
         "New York-Newark-Jersey City, NY-NJ",
+        0.095
+       ]
+      ]
+     },
+     "level": {
+      "value": "1",
+      "name": "Level II",
+      "share": 0.479,
+      "top": [
+       [
+        "Level II",
+        0.479
+       ],
+       [
+        "Level III",
+        0.229
+       ],
+       [
+        "Level IV",
+        0.15
+       ]
+      ]
+     },
+     "sector": {
+      "value": "54",
+      "name": "Professional services",
+      "share": 0.429,
+      "top": [
+       [
+        "Professional services",
+        0.429
+       ],
+       [
+        "Finance and insurance",
+        0.144
+       ],
+       [
+        "Information and telecoms",
+        0.135
+       ]
+      ]
+     }
+    },
+    "attribute_nodes": 8,
+    "attributes": [
+     "Managers, All Other",
+     "Compliance Officers",
+     "Operations Research Analysts",
+     "Financial Clerks, All Other",
+     "Extruding, Forming, Pressing, and Compacting Machine Setters, Operators, and Tenders",
+     "Boston-Cambridge-Newton, MA-NH",
+     "Nashville-Davidson--Murfreesboro--Franklin, TN",
+     "Omaha, NE-IA"
+    ],
+    "top_employers": [
+     [
+      "Amazon",
+      1343
+     ],
+     [
+      "Deloitte",
+      523
+     ],
+     [
+      "Mathworks",
+      371
+     ]
+    ],
+    "holds_together": 0.368
+   },
+   {
+    "id": 8,
+    "name": "Mixed: mostly computer and business jobs \u00b7 several metros",
+    "profiles": 3259,
+    "workers": 14353,
+    "x": 603.78,
+    "y": 660.75,
+    "r": 61.08,
+    "h1b": 10688,
+    "perm": 3665,
+    "fields": {
+     "occupation": {
+      "value": "15-1252",
+      "name": "Software Developers",
+      "share": 0.226,
+      "top": [
+       [
+        "Software Developers",
+        0.226
+       ],
+       [
+        "Logisticians",
+        0.155
+       ],
+       [
+        "Transportation, Storage, and Distribution Managers",
+        0.092
+       ]
+      ]
+     },
+     "place": {
+      "value": "38300",
+      "name": "Pittsburgh, PA",
+      "share": 0.187,
+      "top": [
+       [
+        "Pittsburgh, PA",
+        0.187
+       ],
+       [
+        "Memphis, TN-MS-AR",
+        0.128
+       ],
+       [
+        "Riverside-San Bernardino-Ontario, CA",
         0.096
        ]
       ]
@@ -1991,174 +2113,175 @@
      "level": {
       "value": "1",
       "name": "Level II",
-      "share": 0.411,
+      "share": 0.498,
       "top": [
        [
         "Level II",
-        0.411
-       ],
-       [
-        "Level I",
-        0.307
+        0.498
        ],
        [
         "Level III",
-        0.173
+        0.192
+       ],
+       [
+        "Level I",
+        0.185
        ]
       ]
      },
      "sector": {
-      "value": "54",
-      "name": "Professional services",
-      "share": 0.459,
+      "value": "48-49",
+      "name": "Transport",
+      "share": 0.308,
       "top": [
        [
+        "Transport",
+        0.308
+       ],
+       [
         "Professional services",
-        0.459
+        0.254
        ],
        [
-        "Construction",
-        0.284
-       ],
-       [
-        "Information and telecoms",
-        0.053
+        "Manufacturing",
+        0.116
        ]
       ]
      }
     },
-    "attribute_nodes": 120,
+    "attribute_nodes": 33,
     "attributes": [
-     "Chief Executives",
-     "Construction Managers",
-     "Personal Service Managers, All Other",
-     "Claims Adjusters, Examiners, and Investigators",
-     "Cost Estimators",
-     "Computer User Support Specialists",
-     "Civil Engineers",
-     "Marine Engineers and Naval Architects",
-     "Architectural and Civil Drafters",
-     "Mechanical Drafters",
-     "Drafters, All Other",
-     "Civil Engineering Technologists and Technicians"
+     "Transportation, Storage, and Distribution Managers",
+     "Logisticians",
+     "Aerospace Engineering and Operations Technologists and Technicians",
+     "Veterinary Technologists and Technicians",
+     "Cargo and Freight Agents",
+     "Dispatchers, Except Police, Fire, and Ambulance",
+     "Avionics Technicians",
+     "Electrical Power-Line Installers and Repairers",
+     "Metal Workers and Plastic Workers, All Other",
+     "Aircraft Cargo Handling Supervisors",
+     "First-Line Supervisors of Material-Moving Machine and Vehicle Operators",
+     "Commercial Pilots"
     ],
     "top_employers": [
      [
-      "Deloitte",
-      846
+      "FedEx",
+      909
      ],
      [
       "Amazon",
-      615
+      831
      ],
      [
-      "Kforce",
-      330
+      "ST Jude Children S Research Hospital",
+      310
      ]
-    ]
+    ],
+    "holds_together": 0.599
    },
    {
-    "id": 8,
-    "name": "Mixed: mostly food service and management jobs \u00b7 several metros",
-    "profiles": 4511,
-    "workers": 18050,
-    "x": 394.07,
-    "y": 596.5,
-    "r": 51.96,
-    "h1b": 6891,
-    "perm": 11159,
+    "id": 9,
+    "name": "Mixed: mostly food service and computer jobs \u00b7 Hospitality \u00b7 several metros",
+    "profiles": 3697,
+    "workers": 14116,
+    "x": 508.53,
+    "y": 126.37,
+    "r": 60.57,
+    "h1b": 3852,
+    "perm": 10264,
     "fields": {
      "occupation": {
       "value": "35-3023",
       "name": "Fast Food and Counter Workers",
-      "share": 0.221,
+      "share": 0.282,
       "top": [
        [
         "Fast Food and Counter Workers",
-        0.221
+        0.282
        ],
        [
-        "Marketing Managers",
-        0.147
+        "Software Developers",
+        0.087
        ],
        [
-        "General and Operations Managers",
-        0.091
+        "Maids and Housekeeping Cleaners",
+        0.069
        ]
       ]
      },
      "place": {
-      "value": "35620",
-      "name": "New York-Newark-Jersey City, NY-NJ",
-      "share": 0.086,
+      "value": "unknown",
+      "name": "Place unknown",
+      "share": 0.091,
       "top": [
        [
-        "New York-Newark-Jersey City, NY-NJ",
-        0.086
-       ],
-       [
         "Place unknown",
-        0.075
+        0.091
        ],
        [
         "Las Vegas-Henderson-North Las Vegas, NV",
-        0.061
+        0.073
+       ],
+       [
+        "New York-Newark-Jersey City, NY-NJ",
+        0.048
        ]
       ]
      },
      "level": {
       "value": "1",
       "name": "Level II",
-      "share": 0.642,
+      "share": 0.677,
       "top": [
        [
         "Level II",
-        0.642
+        0.677
        ],
        [
         "Level I",
-        0.185
+        0.174
        ],
        [
-        "Level III",
-        0.088
+        "Level IV",
+        0.08
        ]
       ]
      },
      "sector": {
       "value": "72",
       "name": "Hospitality",
-      "share": 0.483,
+      "share": 0.591,
       "top": [
        [
         "Hospitality",
-        0.483
+        0.591
        ],
        [
         "Professional services",
-        0.15
+        0.121
        ],
        [
-        "Retail",
-        0.068
+        "Arts and recreation",
+        0.069
        ]
       ]
      }
     },
-    "attribute_nodes": 115,
+    "attribute_nodes": 109,
     "attributes": [
-     "General and Operations Managers",
-     "Marketing Managers",
      "Training and Development Managers",
      "Food Service Managers",
-     "Entertainment and Recreation Managers, Except Gambling",
      "Lodging Managers",
      "Agents and Business Managers of Artists, Performers, and Athletes",
-     "Meeting, Convention, and Event Planners",
-     "Archivists",
      "Curators",
      "Museum Technicians and Conservators",
-     "Set and Exhibit Designers"
+     "Set and Exhibit Designers",
+     "Actors",
+     "Umpires, Referees, and Other Sports Officials",
+     "Dancers",
+     "Choreographers",
+     "Disc Jockeys, Except Radio"
     ],
     "top_employers": [
      [
@@ -2166,427 +2289,545 @@
       833
      ],
      [
-      "Amazon",
-      784
-     ],
-     [
       "Concord Hospitality Enterprises",
       348
+     ],
+     [
+      "Phase Three Star",
+      316
      ]
-    ]
+    ],
+    "holds_together": 0.675
    },
    {
-    "id": 9,
-    "name": "Level II Computer jobs \u00b7 Boston-Cambridge-Newton, MA-NH",
-    "profiles": 1405,
-    "workers": 14582,
-    "x": 409.32,
-    "y": 496.51,
-    "r": 46.7,
-    "h1b": 12939,
-    "perm": 1643,
+    "id": 10,
+    "name": "Level II Software Developers \u00b7 Washington-Arlington-Alexandria, DC-VA-MD-WV",
+    "profiles": 2676,
+    "workers": 13786,
+    "x": 350.5,
+    "y": 486.74,
+    "r": 59.86,
+    "h1b": 10192,
+    "perm": 3594,
     "fields": {
      "occupation": {
       "value": "15-1252",
       "name": "Software Developers",
-      "share": 0.343,
+      "share": 0.408,
       "top": [
        [
         "Software Developers",
-        0.343
-       ],
-       [
-        "Biological Scientists, All Other",
-        0.221
+        0.408
        ],
        [
         "Data Scientists",
-        0.11
+        0.099
+       ],
+       [
+        "Economists",
+        0.067
        ]
       ]
      },
      "place": {
-      "value": "14460",
-      "name": "Boston-Cambridge-Newton, MA-NH",
-      "share": 0.691,
+      "value": "47900",
+      "name": "Washington-Arlington-Alexandria, DC-VA-MD-WV",
+      "share": 0.612,
       "top": [
        [
-        "Boston-Cambridge-Newton, MA-NH",
-        0.691
+        "Washington-Arlington-Alexandria, DC-VA-MD-WV",
+        0.612
        ],
        [
         "New York-Newark-Jersey City, NY-NJ",
-        0.058
+        0.071
        ],
        [
-        "San Francisco-Oakland-Fremont, CA",
-        0.053
+        "Chicago-Naperville-Elgin, IL-IN",
+        0.032
        ]
       ]
      },
      "level": {
       "value": "1",
       "name": "Level II",
-      "share": 0.509,
+      "share": 0.559,
       "top": [
        [
         "Level II",
-        0.509
+        0.559
        ],
        [
         "Level I",
-        0.21
+        0.218
        ],
        [
         "Level III",
-        0.184
+        0.131
        ]
       ]
      },
      "sector": {
       "value": "54",
       "name": "Professional services",
-      "share": 0.452,
+      "share": 0.436,
       "top": [
        [
         "Professional services",
-        0.452
+        0.436
        ],
        [
-        "Retail",
-        0.132
+        "Other services",
+        0.205
        ],
        [
-        "Manufacturing",
-        0.121
+        "Finance and insurance",
+        0.107
        ]
       ]
      }
     },
-    "attribute_nodes": 9,
+    "attribute_nodes": 48,
     "attributes": [
-     "Managers, All Other",
-     "Purchasing Agents, Except Wholesale, Retail, and Farm Products",
-     "Compliance Officers",
-     "Biological Scientists, All Other",
-     "Technical Writers",
-     "Sales Representatives, Wholesale and Manufacturing, Technical and Scientific Products",
-     "Financial Clerks, All Other",
-     "Boston-Cambridge-Newton, MA-NH",
-     "Fayetteville, TN"
+     "Public Relations Managers",
+     "Fundraising Managers",
+     "Social and Community Service Managers",
+     "Emergency Management Directors",
+     "Personal Service Managers, All Other",
+     "Insurance Appraisers, Auto Damage",
+     "Human Resources Specialists",
+     "Labor Relations Specialists",
+     "Training and Development Specialists",
+     "Economists",
+     "Forensic Science Technicians",
+     "Clergy"
     ],
     "top_employers": [
      [
       "Amazon",
-      1397
+      838
      ],
      [
-      "Gilead Sciences",
-      289
+      "Capital One",
+      547
      ],
      [
-      "Cisco",
-      273
+      "CGI Technologies and Solutions",
+      145
      ]
-    ]
-   },
-   {
-    "id": 10,
-    "name": "Mixed: mostly computer and transport jobs \u00b7 several metros",
-    "profiles": 4107,
-    "workers": 12955,
-    "x": 455.55,
-    "y": 263.62,
-    "r": 44.02,
-    "h1b": 7825,
-    "perm": 5130,
-    "fields": {
-     "occupation": {
-      "value": "15-1252",
-      "name": "Software Developers",
-      "share": 0.174,
-      "top": [
-       [
-        "Software Developers",
-        0.174
-       ],
-       [
-        "Heavy and Tractor-Trailer Truck Drivers",
-        0.059
-       ],
-       [
-        "Data Scientists",
-        0.057
-       ]
-      ]
-     },
-     "place": {
-      "value": "32820",
-      "name": "Memphis, TN-MS-AR",
-      "share": 0.151,
-      "top": [
-       [
-        "Memphis, TN-MS-AR",
-        0.151
-       ],
-       [
-        "Worcester, MA",
-        0.087
-       ],
-       [
-        "Chicago-Naperville-Elgin, IL-IN",
-        0.061
-       ]
-      ]
-     },
-     "level": {
-      "value": "1",
-      "name": "Level II",
-      "share": 0.548,
-      "top": [
-       [
-        "Level II",
-        0.548
-       ],
-       [
-        "Level I",
-        0.176
-       ],
-       [
-        "Level III",
-        0.167
-       ]
-      ]
-     },
-     "sector": {
-      "value": "48-49",
-      "name": "Transport",
-      "share": 0.346,
-      "top": [
-       [
-        "Transport",
-        0.346
-       ],
-       [
-        "Other services",
-        0.232
-       ],
-       [
-        "Professional services",
-        0.156
-       ]
-      ]
-     }
-    },
-    "attribute_nodes": 85,
-    "attributes": [
-     "Public Relations Managers",
-     "Fundraising Managers",
-     "Insurance Appraisers, Auto Damage",
-     "Labor Relations Specialists",
-     "Fundraisers",
-     "Training and Development Specialists",
-     "Aerospace Engineering and Operations Technologists and Technicians",
-     "Electrical and Electronic Engineering Technologists and Technicians",
-     "Mechanical Engineering Technologists and Technicians",
-     "Life, Physical, and Social Science Technicians, All Other",
-     "Clergy",
-     "Directors, Religious Activities and Education"
     ],
-    "top_employers": [
-     [
-      "FedEx",
-      901
-     ],
-     [
-      "ST Jude Children S Research Hospital",
-      310
-     ],
-     [
-      "AA Transportation",
-      211
-     ]
-    ]
+    "holds_together": 0.589
    },
    {
     "id": 11,
-    "name": "Level II Meat, Poultry, and Fish Cutters and Trimmers \u00b7 Manufacturing \u00b7 Outside metro areas, Georgia",
-    "profiles": 778,
-    "workers": 10412,
-    "x": 540.17,
-    "y": 235.42,
-    "r": 39.46,
-    "h1b": 484,
-    "perm": 9928,
+    "name": "Civil Engineers / Software Developers \u00b7 several metros",
+    "profiles": 3070,
+    "workers": 13421,
+    "x": 512.92,
+    "y": 751.52,
+    "r": 59.06,
+    "h1b": 10079,
+    "perm": 3342,
     "fields": {
      "occupation": {
-      "value": "51-3022",
-      "name": "Meat, Poultry, and Fish Cutters and Trimmers",
-      "share": 0.59,
+      "value": "17-2051",
+      "name": "Civil Engineers",
+      "share": 0.345,
       "top": [
        [
-        "Meat, Poultry, and Fish Cutters and Trimmers",
-        0.59
+        "Civil Engineers",
+        0.345
        ],
        [
-        "Packers and Packagers, Hand",
-        0.188
+        "Software Developers",
+        0.141
        ],
        [
-        "Graders and Sorters, Agricultural Products",
-        0.031
+        "Construction Managers",
+        0.096
        ]
       ]
      },
      "place": {
-      "value": "N-GA",
-      "name": "Outside metro areas, Georgia",
-      "share": 0.544,
+      "value": "40900",
+      "name": "Sacramento-Roseville-Folsom, CA",
+      "share": 0.131,
       "top": [
        [
-        "Outside metro areas, Georgia",
-        0.544
+        "Sacramento-Roseville-Folsom, CA",
+        0.131
        ],
        [
-        "Outside metro areas, Alabama",
-        0.169
+        "Kansas City, MO-KS",
+        0.127
        ],
        [
-        "Charlotte-Concord-Gastonia, NC-SC",
-        0.033
+        "New York-Newark-Jersey City, NY-NJ",
+        0.108
        ]
       ]
      },
      "level": {
       "value": "1",
       "name": "Level II",
-      "share": 0.917,
+      "share": 0.409,
       "top": [
        [
         "Level II",
-        0.917
+        0.409
        ],
        [
         "Level I",
-        0.06
+        0.333
        ],
        [
         "Level III",
-        0.02
+        0.151
        ]
       ]
      },
      "sector": {
-      "value": "31-33",
-      "name": "Manufacturing",
-      "share": 0.67,
+      "value": "54",
+      "name": "Professional services",
+      "share": 0.445,
       "top": [
        [
+        "Professional services",
+        0.445
+       ],
+       [
+        "Construction",
+        0.367
+       ],
+       [
         "Manufacturing",
-        0.67
-       ],
-       [
-        "Agriculture",
-        0.236
-       ],
-       [
-        "Business support",
-        0.025
+        0.053
        ]
       ]
      }
     },
-    "attribute_nodes": 47,
+    "attribute_nodes": 77,
     "attributes": [
-     "Farmers, Ranchers, and Other Agricultural Managers",
-     "Farm Labor Contractors",
-     "Animal Scientists",
-     "Animal Trainers",
-     "First-Line Supervisors of Farming, Fishing, and Forestry Workers",
-     "Animal Breeders",
-     "Graders and Sorters, Agricultural Products",
-     "Agricultural Equipment Operators",
-     "Farmworkers and Laborers, Crop, Nursery, and Greenhouse",
-     "Farmworkers, Farm, Ranch, and Aquacultural Animals",
-     "Insulation Workers, Mechanical",
-     "Farm Equipment Mechanics and Service Technicians"
+     "Construction Managers",
+     "Cost Estimators",
+     "Civil Engineers",
+     "Health and Safety Engineers, Except Mining Safety Engineers and Inspectors",
+     "Mechanical Drafters",
+     "Drafters, All Other",
+     "Civil Engineering Technologists and Technicians",
+     "Occupational Health and Safety Technicians",
+     "Sales and Related Workers, All Other",
+     "First-Line Supervisors of Construction Trades and Extraction Workers",
+     "Brickmasons and Blockmasons",
+     "Stonemasons"
     ],
     "top_employers": [
      [
-      "FPL Food",
-      2258
+      "Amazon",
+      166
      ],
      [
-      "Consolidated Catfish Producers",
-      1717
+      "WSP",
+      139
      ],
      [
-      "South Georgia Pecan",
-      1386
+      "Oracle America",
+      128
      ]
-    ]
+    ],
+    "holds_together": 0.692
    },
    {
     "id": 12,
-    "name": "Level II Software Developers \u00b7 Phoenix-Mesa-Chandler, AZ",
-    "profiles": 595,
-    "workers": 8537,
-    "x": 652.17,
-    "y": 668.1,
-    "r": 35.73,
-    "h1b": 6488,
-    "perm": 2049,
+    "name": "Level II Software Developers \u00b7 Professional services \u00b7 Chicago-Naperville-Elgin, IL-IN",
+    "profiles": 516,
+    "workers": 11537,
+    "x": 325.66,
+    "y": 363.13,
+    "r": 54.76,
+    "h1b": 9674,
+    "perm": 1863,
     "fields": {
      "occupation": {
       "value": "15-1252",
       "name": "Software Developers",
-      "share": 0.434,
+      "share": 0.523,
       "top": [
        [
         "Software Developers",
-        0.434
+        0.523
        ],
        [
-        "Helpers--Production Workers",
-        0.162
+        "Information Security Analysts",
+        0.306
        ],
        [
         "Data Scientists",
-        0.056
+        0.127
+       ]
+      ]
+     },
+     "place": {
+      "value": "16980",
+      "name": "Chicago-Naperville-Elgin, IL-IN",
+      "share": 0.712,
+      "top": [
+       [
+        "Chicago-Naperville-Elgin, IL-IN",
+        0.712
+       ],
+       [
+        "New York-Newark-Jersey City, NY-NJ",
+        0.052
+       ],
+       [
+        "Dallas-Fort Worth-Arlington, TX",
+        0.028
+       ]
+      ]
+     },
+     "level": {
+      "value": "1",
+      "name": "Level II",
+      "share": 0.528,
+      "top": [
+       [
+        "Level II",
+        0.528
+       ],
+       [
+        "Level III",
+        0.191
+       ],
+       [
+        "Level IV",
+        0.161
+       ]
+      ]
+     },
+     "sector": {
+      "value": "54",
+      "name": "Professional services",
+      "share": 0.553,
+      "top": [
+       [
+        "Professional services",
+        0.553
+       ],
+       [
+        "Finance and insurance",
+        0.202
+       ],
+       [
+        "Information and telecoms",
+        0.09
+       ]
+      ]
+     }
+    },
+    "attribute_nodes": 5,
+    "attributes": [
+     "Appraisers of Personal and Business Property",
+     "Information Security Analysts",
+     "Makeup Artists, Theatrical and Performance",
+     "Food Batchmakers",
+     "Chicago-Naperville-Elgin, IL-IN"
+    ],
+    "top_employers": [
+     [
+      "EY",
+      487
+     ],
+     [
+      "Deloitte",
+      435
+     ],
+     [
+      "DFS Corporate Services",
+      376
+     ]
+    ],
+    "holds_together": 0.593
+   },
+   {
+    "id": 13,
+    "name": "Project Management Specialists \u00b7 several metros",
+    "profiles": 1046,
+    "workers": 9807,
+    "x": 624.53,
+    "y": 135.44,
+    "r": 50.49,
+    "h1b": 5504,
+    "perm": 4303,
+    "fields": {
+     "occupation": {
+      "value": "13-1082",
+      "name": "Project Management Specialists",
+      "share": 0.419,
+      "top": [
+       [
+        "Project Management Specialists",
+        0.419
+       ],
+       [
+        "Software Developers",
+        0.215
+       ],
+       [
+        "Team Assemblers",
+        0.099
+       ]
+      ]
+     },
+     "place": {
+      "value": "33460",
+      "name": "Minneapolis-St. Paul-Bloomington, MN-WI",
+      "share": 0.398,
+      "top": [
+       [
+        "Minneapolis-St. Paul-Bloomington, MN-WI",
+        0.398
+       ],
+       [
+        "Madison, WI",
+        0.148
+       ],
+       [
+        "New York-Newark-Jersey City, NY-NJ",
+        0.101
+       ]
+      ]
+     },
+     "level": {
+      "value": "1",
+      "name": "Level II",
+      "share": 0.452,
+      "top": [
+       [
+        "Level II",
+        0.452
+       ],
+       [
+        "Level IV",
+        0.213
+       ],
+       [
+        "Level I",
+        0.195
+       ]
+      ]
+     },
+     "sector": {
+      "value": "54",
+      "name": "Professional services",
+      "share": 0.488,
+      "top": [
+       [
+        "Professional services",
+        0.488
+       ],
+       [
+        "Manufacturing",
+        0.169
+       ],
+       [
+        "Finance and insurance",
+        0.105
+       ]
+      ]
+     }
+    },
+    "attribute_nodes": 11,
+    "attributes": [
+     "Project Management Specialists",
+     "Highway Maintenance Workers",
+     "Team Assemblers",
+     "Refuse and Recyclable Material Collectors",
+     "Douglas, GA",
+     "Lancaster, PA",
+     "Madison, WI",
+     "Minneapolis-St. Paul-Bloomington, MN-WI",
+     "Winchester, VA-WV",
+     "Yankton, SD",
+     "Outside metro areas, Tennessee"
+    ],
+    "top_employers": [
+     [
+      "Stoughton Trailers",
+      647
+     ],
+     [
+      "Tata Consultancy Services",
+      282
+     ],
+     [
+      "Amazon",
+      271
+     ]
+    ],
+    "holds_together": 0.631
+   },
+   {
+    "id": 14,
+    "name": "Level II Software Developers \u00b7 Phoenix-Mesa-Chandler, AZ",
+    "profiles": 856,
+    "workers": 9370,
+    "x": 299.09,
+    "y": 578.1,
+    "r": 49.35,
+    "h1b": 6989,
+    "perm": 2381,
+    "fields": {
+     "occupation": {
+      "value": "15-1252",
+      "name": "Software Developers",
+      "share": 0.416,
+      "top": [
+       [
+        "Software Developers",
+        0.416
+       ],
+       [
+        "Helpers--Production Workers",
+        0.152
+       ],
+       [
+        "Data Scientists",
+        0.053
        ]
       ]
      },
      "place": {
       "value": "38060",
       "name": "Phoenix-Mesa-Chandler, AZ",
-      "share": 0.739,
+      "share": 0.58,
       "top": [
        [
         "Phoenix-Mesa-Chandler, AZ",
-        0.739
+        0.58
+       ],
+       [
+        "Indianapolis-Carmel-Greenwood, IN",
+        0.218
        ],
        [
         "Allentown-Bethlehem-Easton, PA-NJ",
-        0.11
-       ],
-       [
-        "Topeka, KS",
-        0.027
+        0.09
        ]
       ]
      },
      "level": {
       "value": "1",
       "name": "Level II",
-      "share": 0.636,
+      "share": 0.615,
       "top": [
        [
         "Level II",
-        0.636
+        0.615
        ],
        [
         "Level III",
-        0.14
+        0.16
        ],
        [
         "Level I",
@@ -2597,29 +2838,29 @@
      "sector": {
       "value": "54",
       "name": "Professional services",
-      "share": 0.416,
+      "share": 0.44,
       "top": [
        [
         "Professional services",
-        0.416
+        0.44
        ],
        [
         "Manufacturing",
-        0.166
+        0.182
        ],
        [
         "Finance and insurance",
-        0.139
+        0.115
        ]
       ]
      }
     },
     "attribute_nodes": 8,
     "attributes": [
-     "Industrial-Organizational Psychologists",
      "Helpers--Production Workers",
      "Allentown-Bethlehem-Easton, PA-NJ",
      "Gaffney, SC",
+     "Indianapolis-Carmel-Greenwood, IN",
      "Phoenix-Mesa-Chandler, AZ",
      "Salem, OR",
      "Tifton, GA",
@@ -2632,491 +2873,280 @@
      ],
      [
       "American Express",
-      645
+      430
      ],
      [
       "Amazon",
-      637
+      206
      ]
-    ]
+    ],
+    "holds_together": 0.569
    },
    {
-    "id": 13,
-    "name": "Operations Research Analysts \u00b7 several metros",
-    "profiles": 319,
-    "workers": 7575,
-    "x": 440.67,
-    "y": 342.71,
-    "r": 33.66,
-    "h1b": 7245,
-    "perm": 330,
+    "id": 15,
+    "name": "Level II Computer jobs \u00b7 Denver-Aurora-Centennial, CO",
+    "profiles": 830,
+    "workers": 4289,
+    "x": 585.73,
+    "y": 564.69,
+    "r": 33.39,
+    "h1b": 3650,
+    "perm": 639,
     "fields": {
      "occupation": {
-      "value": "15-2031",
-      "name": "Operations Research Analysts",
-      "share": 1.0,
+      "value": "15-1252",
+      "name": "Software Developers",
+      "share": 0.349,
       "top": [
        [
-        "Operations Research Analysts",
-        1.0
+        "Software Developers",
+        0.349
        ],
        [
-        "Market Research Analysts and Marketing Specialists",
-        0.0
+        "Software Quality Assurance Analysts and Testers",
+        0.071
        ],
        [
-        "Electrical Engineers",
-        0.0
+        "Data Scientists",
+        0.066
        ]
       ]
      },
      "place": {
-      "value": "35620",
-      "name": "New York-Newark-Jersey City, NY-NJ",
-      "share": 0.22,
+      "value": "19740",
+      "name": "Denver-Aurora-Centennial, CO",
+      "share": 0.767,
       "top": [
        [
-        "New York-Newark-Jersey City, NY-NJ",
-        0.22
+        "Denver-Aurora-Centennial, CO",
+        0.767
        ],
        [
-        "Seattle-Tacoma-Bellevue, WA",
-        0.136
+        "Houston-Pasadena-The Woodlands, TX",
+        0.114
        ],
        [
-        "San Francisco-Oakland-Fremont, CA",
-        0.115
+        "Midland, TX",
+        0.03
        ]
       ]
      },
      "level": {
       "value": "1",
       "name": "Level II",
-      "share": 0.375,
+      "share": 0.51,
       "top": [
        [
         "Level II",
-        0.375
+        0.51
+       ],
+       [
+        "Level I",
+        0.179
        ],
        [
         "Level III",
-        0.373
-       ],
-       [
-        "Level IV",
-        0.142
+        0.16
        ]
       ]
      },
      "sector": {
       "value": "54",
       "name": "Professional services",
-      "share": 0.486,
+      "share": 0.353,
       "top": [
        [
         "Professional services",
-        0.486
-       ],
-       [
-        "Retail",
-        0.215
+        0.353
        ],
        [
         "Information and telecoms",
-        0.123
+        0.228
+       ],
+       [
+        "Mining and energy",
+        0.187
+       ]
+      ]
+     }
+    },
+    "attribute_nodes": 13,
+    "attributes": [
+     "Mining and Geological Engineers, Including Mining Safety Engineers",
+     "Petroleum Engineers",
+     "Derrick Operators, Oil and Gas",
+     "Service Unit Operators, Oil and Gas",
+     "Helpers--Extraction Workers",
+     "Denver-Aurora-Centennial, CO",
+     "Elko, NV",
+     "Grand Rapids, MN",
+     "Midland, TX",
+     "Payson, AZ",
+     "Safford, AZ",
+     "Winnemucca, NV"
+    ],
+    "top_employers": [
+     [
+      "Charter Communications",
+      296
+     ],
+     [
+      "Dish Wireless",
+      152
+     ],
+     [
+      "DISH Network",
+      148
+     ]
+    ],
+    "holds_together": 0.724
+   },
+   {
+    "id": 16,
+    "name": "Software Developers / Compensation, Benefits, and Job Analysis Specialists \u00b7 Dayton-Kettering-Beavercreek, OH",
+    "profiles": 253,
+    "workers": 727,
+    "x": 706.07,
+    "y": 472.74,
+    "r": 13.75,
+    "h1b": 639,
+    "perm": 88,
+    "fields": {
+     "occupation": {
+      "value": "15-1252",
+      "name": "Software Developers",
+      "share": 0.293,
+      "top": [
+       [
+        "Software Developers",
+        0.293
+       ],
+       [
+        "Compensation, Benefits, and Job Analysis Specialists",
+        0.168
+       ],
+       [
+        "Software Quality Assurance Analysts and Testers",
+        0.054
+       ]
+      ]
+     },
+     "place": {
+      "value": "19430",
+      "name": "Dayton-Kettering-Beavercreek, OH",
+      "share": 0.832,
+      "top": [
+       [
+        "Dayton-Kettering-Beavercreek, OH",
+        0.832
+       ],
+       [
+        "New York-Newark-Jersey City, NY-NJ",
+        0.032
+       ],
+       [
+        "San Francisco-Oakland-Fremont, CA",
+        0.014
+       ]
+      ]
+     },
+     "level": {
+      "value": "1",
+      "name": "Level II",
+      "share": 0.475,
+      "top": [
+       [
+        "Level II",
+        0.475
+       ],
+       [
+        "Level I",
+        0.286
+       ],
+       [
+        "Level III",
+        0.168
+       ]
+      ]
+     },
+     "sector": {
+      "value": "54",
+      "name": "Professional services",
+      "share": 0.44,
+      "top": [
+       [
+        "Professional services",
+        0.44
+       ],
+       [
+        "Manufacturing",
+        0.243
+       ],
+       [
+        "Health care",
+        0.085
        ]
       ]
      }
     },
     "attribute_nodes": 2,
     "attributes": [
-     "Operations Research Analysts",
-     "Beatrice, NE"
+     "Compensation, Benefits, and Job Analysis Specialists",
+     "Dayton-Kettering-Beavercreek, OH"
     ],
     "top_employers": [
      [
-      "Amazon",
-      1600
+      "Fuyao Glass America",
+      79
      ],
      [
-      "Deloitte",
-      690
-     ],
-     [
-      "Kforce",
-      600
-     ]
-    ]
-   },
-   {
-    "id": 14,
-    "name": "Computer jobs \u00b7 Sacramento-Roseville-Folsom, CA",
-    "profiles": 1248,
-    "workers": 3934,
-    "x": 455.89,
-    "y": 554.76,
-    "r": 24.26,
-    "h1b": 3498,
-    "perm": 436,
-    "fields": {
-     "occupation": {
-      "value": "15-1252",
-      "name": "Software Developers",
-      "share": 0.298,
-      "top": [
-       [
-        "Software Developers",
-        0.298
-       ],
-       [
-        "Electrical Engineers",
-        0.101
-       ],
-       [
-        "Data Scientists",
-        0.064
-       ]
-      ]
-     },
-     "place": {
-      "value": "40900",
-      "name": "Sacramento-Roseville-Folsom, CA",
-      "share": 0.537,
-      "top": [
-       [
-        "Sacramento-Roseville-Folsom, CA",
-        0.537
-       ],
-       [
-        "Houston-Pasadena-The Woodlands, TX",
-        0.052
-       ],
-       [
-        "Chicago-Naperville-Elgin, IL-IN",
-        0.034
-       ]
-      ]
-     },
-     "level": {
-      "value": "1",
-      "name": "Level II",
-      "share": 0.445,
-      "top": [
-       [
-        "Level II",
-        0.445
-       ],
-       [
-        "Level III",
-        0.198
-       ],
-       [
-        "Level IV",
-        0.188
-       ]
-      ]
-     },
-     "sector": {
-      "value": "22",
-      "name": "Utilities",
-      "share": 0.445,
-      "top": [
-       [
-        "Utilities",
-        0.445
-       ],
-       [
-        "Professional services",
-        0.315
-       ],
-       [
-        "Manufacturing",
-        0.099
-       ]
-      ]
-     }
-    },
-    "attribute_nodes": 11,
-    "attributes": [
-     "Compensation and Benefits Managers",
-     "Nuclear Engineers",
-     "Morticians, Undertakers, and Funeral Arrangers",
-     "Earth Drillers, Except Oil and Gas",
-     "Electrical Power-Line Installers and Repairers",
-     "Wind Turbine Service Technicians",
-     "Nuclear Power Reactor Operators",
-     "Idaho Falls, ID",
-     "Lexington, NE",
-     "Sacramento-Roseville-Folsom, CA",
-     "Utilities"
-    ],
-    "top_employers": [
-     [
-      "Intel",
-      256
-     ],
-     [
-      "Deloitte",
-      125
-     ],
-     [
-      "Oracle America",
-      64
-     ]
-    ]
-   },
-   {
-    "id": 15,
-    "name": "Team Assemblers / Software Developers \u00b7 several metros",
-    "profiles": 715,
-    "workers": 3052,
-    "x": 721.66,
-    "y": 245.16,
-    "r": 21.37,
-    "h1b": 1670,
-    "perm": 1382,
-    "fields": {
-     "occupation": {
-      "value": "51-2092",
-      "name": "Team Assemblers",
-      "share": 0.331,
-      "top": [
-       [
-        "Team Assemblers",
-        0.331
-       ],
-       [
-        "Software Developers",
-        0.179
-       ],
-       [
-        "Human Resources Managers",
-        0.119
-       ]
-      ]
-     },
-     "place": {
-      "value": "31540",
-      "name": "Madison, WI",
-      "share": 0.484,
-      "top": [
-       [
-        "Madison, WI",
-        0.484
-       ],
-       [
-        "Akron, OH",
-        0.192
-       ],
-       [
-        "Outside metro areas, Tennessee",
-        0.057
-       ]
-      ]
-     },
-     "level": {
-      "value": "1",
-      "name": "Level II",
-      "share": 0.656,
-      "top": [
-       [
-        "Level II",
-        0.656
-       ],
-       [
-        "Level I",
-        0.166
-       ],
-       [
-        "Level III",
-        0.113
-       ]
-      ]
-     },
-     "sector": {
-      "value": "31-33",
-      "name": "Manufacturing",
-      "share": 0.369,
-      "top": [
-       [
-        "Manufacturing",
-        0.369
-       ],
-       [
-        "Professional services",
-        0.334
-       ],
-       [
-        "Business support",
-        0.07
-       ]
-      ]
-     }
-    },
-    "attribute_nodes": 10,
-    "attributes": [
-     "Human Resources Managers",
-     "Highway Maintenance Workers",
-     "Riggers",
-     "Team Assemblers",
-     "Akron, OH",
-     "Lancaster, PA",
-     "Madison, WI",
-     "Winchester, VA-WV",
-     "Yankton, SD",
-     "Outside metro areas, Tennessee"
-    ],
-    "top_employers": [
-     [
-      "Stoughton Trailers",
-      647
-     ],
-     [
-      "Veenus Infotechs",
-      108
-     ],
-     [
-      "GDI Services",
-      81
-     ]
-    ]
-   },
-   {
-    "id": 16,
-    "name": "Software Developers \u00b7 Stockton-Lodi, CA",
-    "profiles": 180,
-    "workers": 954,
-    "x": 353.33,
-    "y": 467.42,
-    "r": 11.95,
-    "h1b": 884,
-    "perm": 70,
-    "fields": {
-     "occupation": {
-      "value": "15-1252",
-      "name": "Software Developers",
-      "share": 0.403,
-      "top": [
-       [
-        "Software Developers",
-        0.403
-       ],
-       [
-        "Industrial Engineers",
-        0.133
-       ],
-       [
-        "Software Quality Assurance Analysts and Testers",
-        0.066
-       ]
-      ]
-     },
-     "place": {
-      "value": "44700",
-      "name": "Stockton-Lodi, CA",
-      "share": 1.0,
-      "top": [
-       [
-        "Stockton-Lodi, CA",
-        1.0
-       ]
-      ]
-     },
-     "level": {
-      "value": "1",
-      "name": "Level II",
-      "share": 0.382,
-      "top": [
-       [
-        "Level II",
-        0.382
-       ],
-       [
-        "Level III",
-        0.324
-       ],
-       [
-        "Level IV",
-        0.17
-       ]
-      ]
-     },
-     "sector": {
-      "value": "54",
-      "name": "Professional services",
-      "share": 0.431,
-      "top": [
-       [
-        "Professional services",
-        0.431
-       ],
-       [
-        "Manufacturing",
-        0.26
-       ],
-       [
-        "Retail",
-        0.179
-       ]
-      ]
-     }
-    },
-    "attribute_nodes": 1,
-    "attributes": [
-     "Stockton-Lodi, CA"
-    ],
-    "top_employers": [
-     [
-      "Tesla",
-      146
-     ],
-     [
-      "Walmart",
-      89
+      "Birlasoft",
+      25
      ],
      [
       "Amazon",
-      64
+      21
      ]
-    ]
+    ],
+    "holds_together": 0.708
    },
    {
     "id": 17,
-    "name": "Computer jobs \u00b7 Professional services \u00b7 Bloomington, IL",
-    "profiles": 103,
-    "workers": 861,
-    "x": 810.62,
-    "y": 547.93,
-    "r": 11.35,
-    "h1b": 755,
-    "perm": 106,
+    "name": "Level II Software Developers \u00b7 Professional services \u00b7 Manchester-Nashua, NH",
+    "profiles": 170,
+    "workers": 556,
+    "x": 381.65,
+    "y": 413.33,
+    "r": 12.02,
+    "h1b": 511,
+    "perm": 45,
     "fields": {
      "occupation": {
       "value": "15-1252",
       "name": "Software Developers",
-      "share": 0.325,
+      "share": 0.493,
       "top": [
        [
         "Software Developers",
-        0.325
+        0.493
        ],
        [
-        "Industrial Engineers",
-        0.163
+        "Data Scientists",
+        0.065
        ],
        [
-        "Computer Programmers",
-        0.161
+        "Software Quality Assurance Analysts and Testers",
+        0.058
        ]
       ]
      },
      "place": {
-      "value": "14010",
-      "name": "Bloomington, IL",
+      "value": "31700",
+      "name": "Manchester-Nashua, NH",
       "share": 1.0,
       "top": [
        [
-        "Bloomington, IL",
+        "Manchester-Nashua, NH",
         1.0
        ]
       ]
@@ -3124,64 +3154,65 @@
      "level": {
       "value": "1",
       "name": "Level II",
-      "share": 0.467,
+      "share": 0.522,
       "top": [
        [
         "Level II",
-        0.467
-       ],
-       [
-        "Level III",
-        0.376
+        0.522
        ],
        [
         "Level I",
-        0.099
+        0.219
+       ],
+       [
+        "Level IV",
+        0.147
        ]
       ]
      },
      "sector": {
       "value": "54",
       "name": "Professional services",
-      "share": 0.621,
+      "share": 0.588,
       "top": [
        [
         "Professional services",
-        0.621
-       ],
-       [
-        "Manufacturing",
-        0.271
+        0.588
        ],
        [
         "Finance and insurance",
-        0.055
+        0.11
+       ],
+       [
+        "Information and telecoms",
+        0.092
        ]
       ]
      }
     },
     "attribute_nodes": 1,
     "attributes": [
-     "Bloomington, IL"
+     "Manchester-Nashua, NH"
     ],
     "top_employers": [
      [
-      "Rivian",
-      221
+      "Fidelity Investments",
+      40
      ],
      [
-      "HTC Global Services",
-      88
+      "Arista Networks",
+      32
      ],
      [
-      "Capgemini",
-      42
+      "Forthright Soft",
+      31
      ]
-    ]
+    ],
+    "holds_together": 0.969
    }
   ],
-  "spacing": 0.38673634708491356,
-  "seconds": 156
+  "spacing": 0.5098037040672802,
+  "seconds": 160
  },
  "companies": {
   "entity": "companies",
@@ -3192,107 +3223,107 @@
   },
   "profiles": 77590,
   "attribute_nodes": 1682,
-  "links": 499020,
-  "workers": 1011687,
+  "links": 498975,
+  "workers": 675497,
   "components": 1,
   "louvain": {
    "runs": 100,
-   "communities_best": 13,
-   "communities_median": 11,
-   "Q_best": 0.3975,
-   "Q_mean": 0.3959,
-   "Q_sd": 0.0012,
-   "nmi_between_seeds_median": 0.7282,
+   "communities_best": 10,
+   "communities_median": 10,
+   "Q_best": 0.3523,
+   "Q_mean": 0.3485,
+   "Q_sd": 0.0027,
+   "nmi_between_seeds_median": 0.6143,
    "best_partition_recurs": 0.01
   },
   "null": {
    "draws": 20,
-   "Q_mean": 0.7692,
-   "Q_sd": 0.0022,
-   "z": -168.38,
+   "Q_mean": 0.6777,
+   "Q_sd": 0.0011,
+   "z": -303.92,
    "at_or_above_real": 20,
    "wiring_only": {
-    "real": 0.2883,
+    "real": 0.2884,
     "null": 0.1628,
-    "null_sd": 0.0003,
-    "z": 378.41,
+    "null_sd": 0.0005,
+    "z": 270.06,
     "at_or_above_real": 0
    }
   },
   "robustness": {
    "without occupation": {
-    "nmi_with_main": 0.3598,
-    "communities": 12,
-    "Q": 0.4063
+    "nmi_with_main": 0.2965,
+    "communities": 13,
+    "Q": 0.356
    },
    "without metro": {
-    "nmi_with_main": 0.4408,
-    "communities": 12,
-    "Q": 0.431
+    "nmi_with_main": 0.4414,
+    "communities": 11,
+    "Q": 0.3941
    },
    "without wage level": {
-    "nmi_with_main": 0.5774,
+    "nmi_with_main": 0.5655,
     "communities": 12,
-    "Q": 0.4817
+    "Q": 0.4339
    },
    "without sector": {
-    "nmi_with_main": 0.219,
-    "communities": 17,
-    "Q": 0.3295
+    "nmi_with_main": 0.1964,
+    "communities": 19,
+    "Q": 0.2967
    },
    "without weights": {
-    "nmi_with_main": 0.1825,
-    "communities": 13,
-    "Q": 0.2883
+    "nmi_with_main": 0.2235,
+    "communities": 14,
+    "Q": 0.2884
    }
   },
   "labels": {
    "sector": {
-    "nmi": 0.6781,
+    "nmi": 0.604,
     "p": 0.0099,
     "shuffles": 100,
     "nmi_shuffled_mean": 0.0001,
     "nmi_shuffled_sd": 0.0,
     "values": 21,
-    "items_weighted": 1011687,
-    "ami": 0.678
+    "items_weighted": 675497,
+    "ami": 0.6039
    },
    "placing_firm": {
-    "nmi": 0.175,
+    "nmi": 0.1681,
     "p": 0.0099,
     "shuffles": 100,
     "nmi_shuffled_mean": 0.0,
     "nmi_shuffled_sd": 0.0,
     "values": 2,
-    "items_weighted": 1011687,
-    "ami": 0.175
+    "items_weighted": 675497,
+    "ami": 0.1681
    },
    "staffing_community": {
-    "nmi": 0.4232,
+    "nmi": 0.2391,
     "p": 0.0099,
     "shuffles": 100,
-    "nmi_shuffled_mean": 0.0003,
+    "nmi_shuffled_mean": 0.0005,
     "nmi_shuffled_sd": 0.0,
     "values": 69,
-    "items_weighted": 424368,
-    "ami": 0.4231
+    "items_weighted": 237630,
+    "ami": 0.2387
    },
    "hq_state": {
-    "nmi": 0.2293,
+    "nmi": 0.1469,
     "p": 0.0099,
     "shuffles": 100,
-    "nmi_shuffled_mean": 0.0001,
+    "nmi_shuffled_mean": 0.0002,
     "nmi_shuffled_sd": 0.0,
     "values": 56,
-    "items_weighted": 1011687,
-    "ami": 0.2292
+    "items_weighted": 675497,
+    "ami": 0.1467
    }
   },
   "facts": {
    "week1": {
     "profiles": 77590,
     "attribute_nodes": 1682,
-    "links": 499020,
+    "links": 498975,
     "attribute_nodes_by_kind": {
      "occupation": 712,
      "place": 945,
@@ -3300,7 +3331,7 @@
      "sector": 21
     },
     "profile_degree_mean": 6.431,
-    "attribute_degree_max": 43971,
+    "attribute_degree_max": 44017,
     "attribute_hub": "Level II",
     "ccdf": {
      "attribute_degree": [
@@ -3317,231 +3348,231 @@
        0.940547
       ],
       [
-       1.7222,
+       1.7223,
        0.940547
       ],
       [
-       2.0644,
+       2.0645,
        0.871581
       ],
       [
-       2.4745,
+       2.4747,
        0.871581
       ],
       [
-       2.9661,
+       2.9664,
        0.871581
       ],
       [
-       3.5554,
+       3.5558,
        0.804994
       ],
       [
-       4.2617,
+       4.2623,
        0.75981
       ],
       [
-       5.1083,
+       5.1092,
        0.711653
       ],
       [
-       6.1232,
+       6.1243,
        0.671225
       ],
       [
-       7.3396,
+       7.3411,
        0.639715
       ],
       [
-       8.7978,
+       8.7996,
        0.608205
       ],
       [
-       10.5456,
+       10.548,
        0.558264
       ],
       [
-       12.6406,
+       12.6438,
        0.523781
       ],
       [
-       15.1519,
+       15.1559,
        0.479786
       ],
       [
-       18.162,
+       18.1672,
        0.447681
       ],
       [
-       21.7702,
+       21.7767,
        0.426278
       ],
       [
-       26.0951,
+       26.1034,
        0.392985
       ],
       [
-       31.2793,
+       31.2898,
        0.364447
       ],
       [
-       37.4934,
+       37.5067,
        0.337099
       ],
       [
-       44.942,
+       44.9587,
        0.316885
       ],
       [
-       53.8704,
+       53.8914,
        0.294887
       ],
       [
-       64.5725,
+       64.5989,
        0.26635
       ],
       [
-       77.4008,
+       77.4338,
        0.234245
       ],
       [
-       92.7776,
+       92.8188,
        0.211653
       ],
       [
-       111.2093,
+       111.2606,
        0.187277
       ],
       [
-       133.3027,
+       133.3665,
        0.168252
       ],
       [
-       159.7852,
+       159.8645,
        0.152794
       ],
       [
-       191.5289,
+       191.6274,
        0.13912
       ],
       [
-       229.5789,
+       229.701,
        0.127824
       ],
       [
-       275.1882,
+       275.3394,
        0.110583
       ],
       [
-       329.8584,
+       330.0455,
        0.097503
       ],
       [
-       395.3896,
+       395.6209,
        0.089774
       ],
       [
-       473.9396,
+       474.2252,
        0.081451
       ],
       [
-       568.0947,
+       568.4471,
        0.072533
       ],
       [
-       680.9551,
+       681.3896,
        0.064804
       ],
       [
-       816.2368,
+       816.7722,
        0.055886
       ],
       [
-       978.3943,
-       0.045779
+       979.0534,
+       0.045184
       ],
       [
-       1172.7668,
+       1173.5776,
        0.042212
       ],
       [
-       1405.7542,
+       1406.751,
        0.036861
       ],
       [
-       1685.028,
+       1686.2528,
        0.032105
       ],
       [
-       2019.7837,
+       2021.2876,
        0.030916
       ],
       [
-       2421.0435,
+       2422.8891,
        0.025565
       ],
       [
-       2902.0195,
+       2904.2833,
        0.022592
       ],
       [
-       3478.5485,
+       3481.3237,
        0.017241
       ],
       [
-       4169.6134,
+       4173.0139,
        0.013674
       ],
       [
-       4997.9686,
+       5002.1334,
        0.009512
       ],
       [
-       5990.8888,
+       5995.9872,
        0.008323
       ],
       [
-       7181.0673,
+       7187.3059,
        0.00654
       ],
       [
-       8607.6922,
+       8615.3229,
        0.005945
       ],
       [
-       10317.7373,
+       10327.0669,
        0.004162
       ],
       [
-       12367.508,
+       12378.9105,
        0.004162
       ],
       [
-       14824.4959,
+       14838.4266,
        0.003567
       ],
       [
-       17769.6007,
+       17786.6141,
        0.002973
       ],
       [
-       21299.794,
+       21320.5653,
        0.001784
       ],
       [
-       25531.3123,
+       25556.663,
        0.001784
       ],
       [
-       30603.4842,
+       30634.414,
        0.001189
       ],
       [
-       36683.3178,
+       36721.043,
        0.000595
       ],
       [
-       43971.0,
+       44017.0,
        0.000595
       ]
      ],
@@ -3551,239 +3582,239 @@
        1.0
       ],
       [
-       1.2477,
-       0.964923
+       1.2409,
+       0.963139
       ],
       [
-       1.5568,
-       0.964923
+       1.5398,
+       0.963139
       ],
       [
-       1.9424,
-       0.964923
+       1.9108,
+       0.963139
       ],
       [
-       2.4235,
-       0.925089
+       2.3711,
+       0.9239
       ],
       [
-       3.0238,
-       0.884067
+       2.9423,
+       0.9239
       ],
       [
-       3.7728,
-       0.884067
+       3.6511,
+       0.881094
       ],
       [
-       4.7074,
-       0.853151
+       4.5307,
+       0.848395
       ],
       [
-       5.8734,
-       0.828181
+       5.6221,
+       0.82283
       ],
       [
-       7.3283,
-       0.781807
+       6.9765,
+       0.801427
       ],
       [
-       9.1435,
-       0.740785
+       8.6572,
+       0.749108
       ],
       [
-       11.4084,
-       0.710464
+       10.7427,
+       0.714031
       ],
       [
-       14.2342,
-       0.674197
+       13.3307,
+       0.668847
       ],
       [
-       17.7601,
-       0.646254
+       16.5421,
+       0.634364
       ],
       [
-       22.1593,
-       0.602854
+       20.5271,
+       0.592152
       ],
       [
-       27.6483,
-       0.573127
+       25.4721,
+       0.551724
       ],
       [
-       34.4968,
-       0.534483
+       31.6084,
+       0.51308
       ],
       [
-       43.0418,
-       0.489298
-      ],
-      [
-       53.7033,
+       39.223,
        0.46849
       ],
       [
-       67.0058,
-       0.429251
+       48.6719,
+       0.433413
       ],
       [
-       83.6033,
-       0.397741
+       60.3971,
+       0.39893
       ],
       [
-       104.3121,
-       0.357313
+       74.9469,
+       0.370392
       ],
       [
-       130.1505,
-       0.322235
+       93.0018,
+       0.337099
       ],
       [
-       162.3892,
-       0.292509
+       115.4062,
+       0.30321
       ],
       [
-       202.6134,
-       0.261593
+       143.2079,
+       0.26635
       ],
       [
-       252.8014,
-       0.230678
+       177.707,
+       0.24019
       ],
       [
-       315.421,
-       0.205113
+       220.5171,
+       0.219976
       ],
       [
-       393.5517,
-       0.176576
+       273.6402,
+       0.197979
       ],
       [
-       491.0355,
-       0.152794
+       339.5609,
+       0.175386
       ],
       [
-       612.6665,
-       0.135553
+       421.3619,
+       0.1522
       ],
       [
-       764.4257,
-       0.123662
+       522.8691,
+       0.136742
       ],
       [
-       953.7762,
-       0.111177
+       648.8297,
+       0.121879
       ],
       [
-       1190.0293,
-       0.10107
+       805.1344,
+       0.109988
       ],
       [
-       1484.8029,
-       0.088585
+       999.0934,
+       0.096908
       ],
       [
-       1852.5929,
-       0.080856
+       1239.7775,
+       0.087396
       ],
       [
-       2311.4855,
-       0.073722
+       1538.4432,
+       0.079073
       ],
       [
-       2884.0471,
-       0.065398
+       1909.0581,
+       0.071938
       ],
       [
-       3598.4338,
-       0.058264
+       2368.9551,
+       0.061831
       ],
       [
-       4489.7762,
-       0.053508
+       2939.6425,
+       0.054102
       ],
       [
-       5601.9067,
-       0.046373
+       3647.81,
+       0.048157
       ],
       [
-       6989.5151,
-       0.039834
+       4526.5769,
+       0.043401
       ],
       [
-       8720.8381,
-       0.032699
+       5617.041,
+       0.036861
       ],
       [
-       10881.0148,
-       0.027348
+       6970.2007,
+       0.030916
       ],
       [
-       13576.2735,
-       0.023781
+       8649.34,
+       0.02497
       ],
       [
-       16939.1555,
-       0.019025
+       10732.9884,
+       0.021998
       ],
       [
-       21135.033,
-       0.019025
+       13318.5931,
+       0.01843
       ],
       [
-       26370.2414,
-       0.017241
+       16527.0766,
+       0.016052
       ],
       [
-       32902.2261,
-       0.013674
+       20508.4921,
+       0.014269
       ],
       [
-       41052.2021,
+       25449.0409,
        0.011296
       ],
       [
-       51220.9507,
-       0.010107
+       31579.7807,
+       0.011296
       ],
       [
-       63908.5275,
-       0.009512
+       39187.4315,
+       0.008323
       ],
       [
-       79738.8535,
-       0.007729
+       48627.7851,
+       0.00654
       ],
       [
-       99490.3969,
-       0.005945
+       60342.3443,
+       0.005351
       ],
       [
-       124134.4544,
+       74878.9711,
        0.004162
       ],
       [
-       154882.9158,
-       0.003567
+       92917.5089,
+       0.002973
       ],
       [
-       193247.8595,
+       115301.5772,
        0.002378
       ],
       [
-       241115.9101,
+       143078.0253,
        0.001784
       ],
       [
-       300841.0145,
+       177545.8917,
        0.001784
       ],
       [
-       375360.1991,
-       0.000595
+       220317.1562,
+       0.001189
       ],
       [
-       468338.0,
+       273392.129,
+       0.001189
+      ],
+      [
+       339253.0,
        0.000595
       ]
      ],
@@ -3793,239 +3824,239 @@
        1.0
       ],
       [
-       4.8513,
-       0.475525
+       4.7405,
+       0.472948
       ],
       [
-       5.8837,
-       0.475525
+       5.6182,
+       0.472948
       ],
       [
-       7.1359,
-       0.475525
+       6.6583,
+       0.472948
       ],
       [
-       8.6546,
-       0.31071
+       7.8911,
+       0.472948
       ],
       [
-       10.4965,
-       0.31071
+       9.352,
+       0.308197
       ],
       [
-       12.7304,
-       0.237879
+       11.0834,
+       0.308197
       ],
       [
-       15.4397,
-       0.237879
+       13.1353,
+       0.235327
       ],
       [
-       18.7256,
-       0.195489
+       15.5672,
+       0.235327
       ],
       [
-       22.7109,
-       0.166916
+       18.4493,
+       0.193221
       ],
       [
-       27.5442,
-       0.146527
+       21.8649,
+       0.164596
       ],
       [
-       33.4063,
-       0.118404
+       25.9129,
+       0.144181
       ],
       [
-       40.5159,
-       0.099523
+       30.7104,
+       0.128921
       ],
       [
-       49.1385,
-       0.08572
+       36.396,
+       0.105929
       ],
       [
-       59.5963,
-       0.07568
+       43.1343,
+       0.097641
       ],
       [
-       72.2797,
-       0.060575
+       51.12,
+       0.083941
       ],
       [
-       87.6624,
-       0.052558
+       60.5843,
+       0.069442
       ],
       [
-       106.3189,
-       0.04181
+       71.8007,
+       0.061722
       ],
       [
-       128.9459,
-       0.032968
+       85.0937,
+       0.050999
       ],
       [
-       156.3885,
-       0.02673
+       100.8478,
+       0.042003
       ],
       [
-       189.6714,
-       0.021343
+       119.5185,
+       0.035778
       ],
       [
-       230.0376,
-       0.017154
+       141.6458,
+       0.028676
       ],
       [
-       278.9947,
-       0.013945
+       167.8698,
+       0.023959
       ],
       [
-       338.371,
-       0.011342
+       198.9488,
+       0.019371
       ],
       [
-       410.3838,
-       0.009499
+       235.7816,
+       0.015943
       ],
       [
-       497.7225,
-       0.00781
+       279.4337,
+       0.013107
       ],
       [
-       603.6488,
-       0.006328
+       331.1673,
+       0.010955
       ],
       [
-       732.1186,
-       0.00513
+       392.4788,
+       0.009215
       ],
       [
-       887.9296,
-       0.004086
+       465.1414,
+       0.007694
       ],
       [
-       1076.9007,
-       0.003338
+       551.2565,
+       0.006547
       ],
       [
-       1306.0889,
-       0.002655
+       653.3148,
+       0.005246
       ],
       [
-       1584.0534,
-       0.002114
+       774.2678,
+       0.004305
       ],
       [
-       1921.175,
-       0.001675
+       917.6139,
+       0.003531
       ],
       [
-       2330.0434,
-       0.001456
+       1087.4986,
+       0.002926
       ],
       [
-       2825.9281,
-       0.001237
+       1288.8354,
+       0.002371
       ],
       [
-       3427.3479,
-       0.001005
+       1527.4472,
+       0.001882
       ],
       [
-       4156.7632,
-       0.000851
+       1810.235,
+       0.001585
       ],
       [
-       5041.4142,
+       2145.3774,
+       0.001302
+      ],
+      [
+       2542.5673,
+       0.001134
+      ],
+      [
+       3013.2919,
+       0.000954
+      ],
+      [
+       3571.1653,
        0.000786
       ],
       [
-       6114.3384,
-       0.000696
-      ],
-      [
-       7415.6045,
+       4232.3221,
        0.000619
       ],
       [
-       8993.8088,
-       0.000503
+       5015.8837,
+       0.000541
       ],
       [
-       10907.8898,
+       5944.512,
        0.000425
       ],
       [
-       13229.3295,
-       0.000335
+       7045.0642,
+       0.000374
       ],
       [
-       16044.8229,
-       0.000309
+       8349.3699,
+       0.000348
       ],
       [
-       19459.5153,
+       9895.1516,
        0.000296
       ],
       [
-       23600.9296,
-       0.000271
-      ],
-      [
-       28623.7283,
+       11727.1155,
        0.000219
       ],
       [
-       34715.4894,
-       0.00018
+       13898.2446,
+       0.000168
       ],
       [
-       42103.7118,
+       16471.3312,
+       0.000155
+      ],
+      [
+       19520.7927,
        0.000142
       ],
       [
-       51064.3109,
-       0.000116
+       23134.824,
+       0.000129
       ],
       [
-       61931.9233,
-       7.7e-05
+       27417.948,
+       0.000103
       ],
       [
-       75112.4034,
-       6.4e-05
+       32494.039,
+       9e-05
       ],
       [
-       91097.9807,
+       38509.9049,
        5.2e-05
       ],
       [
-       110485.6415,
-       5.2e-05
-      ],
-      [
-       133999.4245,
-       3.9e-05
-      ],
-      [
-       162517.4595,
-       3.9e-05
-      ],
-      [
-       197104.7617,
+       45639.5334,
        2.6e-05
       ],
       [
-       239053.0053,
+       54089.1236,
        1.3e-05
       ],
       [
-       289928.7608,
+       64103.0501,
        1.3e-05
       ],
       [
-       351632.0,
+       75970.9301,
+       1.3e-05
+      ],
+      [
+       90036.0,
        1.3e-05
       ]
      ]
@@ -4033,19 +4064,19 @@
    },
    "week2": {
     "projection_nodes": 1682,
-    "projection_links": 193166,
+    "projection_links": 193161,
     "density": 0.1366,
-    "mean_path": 1.868,
+    "mean_path": 1.867,
     "mean_path_random": 1.863,
     "transitivity": 0.539,
-    "transitivity_random": 0.1366,
+    "transitivity_random": 0.1367,
     "transitivity_rewired": {
-     "mean": 0.4979,
-     "sd": 0.0027
+     "mean": 0.4994,
+     "sd": 0.0032
     },
     "friendship_paradox": {
-     "mean_degree": 229.686,
-     "mean_neighbour_degree": 678.142,
+     "mean_degree": 229.68,
+     "mean_neighbour_degree": 678.069,
      "share_with_better_connected_neighbours": 0.8424
     }
    },
@@ -4061,7 +4092,7 @@
      "strength~eigenvector": 0.981,
      "strength~pagerank": 0.99,
      "closeness~betweenness": 0.952,
-     "closeness~eigenvector": 0.934,
+     "closeness~eigenvector": 0.935,
      "closeness~pagerank": 0.968,
      "betweenness~eigenvector": 0.944,
      "betweenness~pagerank": 0.977,
@@ -4083,8 +4114,8 @@
      "strength": [
       "Level II",
       "Level I",
-      "Level III",
       "Software Developers",
+      "Level III",
       "Professional services",
       "Level IV",
       "New York-Newark-Jersey City, NY-NJ",
@@ -4142,68 +4173,68 @@
      ]
     },
     "assortativity": {
-     "degree": -0.3552,
+     "degree": -0.3551,
      "degree_rewired": {
-      "mean": -0.4723,
-      "sd": 0.002
+      "mean": -0.4719,
+      "sd": 0.0018
      },
      "kind": {
-      "real": 0.0677,
+      "real": 0.0678,
       "shuffled_mean": -0.0011,
-      "shuffled_sd": 0.001345
+      "shuffled_sd": 0.001346
      }
     },
     "max_core": 281,
     "nodes_in_max_core": 397,
     "attributes_per_community": {
-     "occupation": 12,
-     "place": 13,
+     "occupation": 10,
+     "place": 10,
      "level": 4,
      "sector": 10
     }
    },
    "week4": {
     "greedy": {
-     "communities": 9,
-     "Q": 0.3947,
-     "nmi_louvain": 0.5724
+     "communities": 8,
+     "Q": 0.3401,
+     "nmi_louvain": 0.4674
     },
     "infomap": {
-     "communities": 909,
-     "codelength": 8.6578,
-     "nmi_louvain": 0.3508
+     "communities": 1025,
+     "codelength": 9.7545,
+     "nmi_louvain": 0.3405
     },
     "strength_vs_degree_spearman": 0.9806,
     "weight_range": [
      1,
-     17879
+     17823
     ],
     "backbone": {
      "alpha": 0.2,
-     "links": 43257,
-     "link_share": 0.2239,
-     "nodes_with_a_link": 1519,
-     "giant_nodes": 1519,
+     "links": 43236,
+     "link_share": 0.2238,
+     "nodes_with_a_link": 1518,
+     "giant_nodes": 1518,
      "strongest": [
       [
        "Level II",
        "Professional services",
-       17879
+       17823
       ],
       [
        "Level II",
        "Software Developers",
-       14482
-      ],
-      [
-       "Level I",
-       "Level II",
-       13673
+       14499
       ],
       [
        "Level I",
        "Professional services",
-       13663
+       13803
+      ],
+      [
+       "Level I",
+       "Level II",
+       13771
       ],
       [
        "Software Developers",
@@ -4213,17 +4244,17 @@
       [
        "Level II",
        "Level III",
-       10841
+       10718
       ],
       [
        "Level II",
        "New York-Newark-Jersey City, NY-NJ",
-       9110
+       9025
       ],
       [
        "Level I",
        "Software Developers",
-       8749
+       8839
       ]
      ]
     },
@@ -4246,22 +4277,22 @@
    {
     "id": 0,
     "name": "Level II Software Developers \u00b7 Professional services \u00b7 several metros",
-    "profiles": 15555,
-    "workers": 295465,
-    "x": 388.57,
-    "y": 631.74,
-    "r": 233.51,
-    "h1b": 265104,
-    "perm": 30361,
+    "profiles": 13746,
+    "workers": 213242,
+    "x": 623.62,
+    "y": 536.52,
+    "r": 225.24,
+    "h1b": 186100,
+    "perm": 27142,
     "fields": {
      "occupation": {
       "value": "15-1252",
       "name": "Software Developers",
-      "share": 0.548,
+      "share": 0.52,
       "top": [
        [
         "Software Developers",
-        0.548
+        0.52
        ],
        [
         "Computer Occupations, All Other",
@@ -4269,782 +4300,905 @@
        ],
        [
         "Accountants and Auditors",
-        0.046
+        0.062
        ]
       ]
      },
      "place": {
       "value": "35620",
       "name": "New York-Newark-Jersey City, NY-NJ",
-      "share": 0.275,
+      "share": 0.292,
       "top": [
        [
         "New York-Newark-Jersey City, NY-NJ",
-        0.275
+        0.292
        ],
        [
         "Dallas-Fort Worth-Arlington, TX",
-        0.271
+        0.275
        ],
        [
         "San Jose-Sunnyvale-Santa Clara, CA",
-        0.094
+        0.046
        ]
       ]
      },
      "level": {
       "value": "1",
       "name": "Level II",
-      "share": 0.824,
+      "share": 0.79,
       "top": [
        [
         "Level II",
-        0.824
+        0.79
        ],
        [
         "Level III",
-        0.09
+        0.117
        ],
        [
         "Level I",
-        0.069
+        0.075
        ]
       ]
      },
      "sector": {
       "value": "54",
       "name": "Professional services",
-      "share": 0.985,
+      "share": 0.983,
       "top": [
        [
         "Professional services",
-        0.985
+        0.983
        ],
        [
         "Manufacturing",
-        0.003
+        0.004
        ],
        [
-        "Business support",
+        "Finance and insurance",
         0.002
        ]
       ]
      }
     },
-    "attribute_nodes": 88,
+    "attribute_nodes": 68,
     "attributes": [
      "Level II",
      "Management Analysts",
      "Accountants and Auditors",
-     "Appraisers of Personal and Business Property",
-     "Tax Examiners and Collectors, and Revenue Agents",
-     "Tax Preparers",
      "Computer Systems Analysts",
+     "Information Security Analysts",
      "Computer Network Support Specialists",
      "Database Administrators",
-     "Database Architects",
      "Network and Computer Systems Administrators",
-     "Computer Programmers"
+     "Computer Programmers",
+     "Software Quality Assurance Analysts and Testers",
+     "Web Developers",
+     "Web and Digital Interface Designers"
     ],
     "top_employers": [
      [
-      "Infosys",
-      16365
-     ],
-     [
-      "Deloitte",
-      11939
-     ],
-     [
       "Cognizant",
-      11260
+      11085
+     ],
+     [
+      "EY",
+      9719
+     ],
+     [
+      "Tata Consultancy Services",
+      8299
      ]
-    ]
+    ],
+    "holds_together": 0.905
    },
    {
     "id": 1,
-    "name": "Level II Software Developers \u00b7 Retail \u00b7 Seattle-Tacoma-Bellevue, WA",
-    "profiles": 7173,
-    "workers": 208023,
-    "x": 804.07,
-    "y": 719.04,
-    "r": 195.93,
-    "h1b": 190482,
-    "perm": 17541,
+    "name": "Level II Software Developers \u00b7 several metros",
+    "profiles": 6616,
+    "workers": 121723,
+    "x": 256.4,
+    "y": 774.9,
+    "r": 170.18,
+    "h1b": 103208,
+    "perm": 18515,
     "fields": {
      "occupation": {
       "value": "15-1252",
       "name": "Software Developers",
-      "share": 0.941,
+      "share": 0.918,
       "top": [
        [
         "Software Developers",
-        0.941
-       ],
-       [
-        "Computer and Information Systems Managers",
-        0.014
+        0.918
        ],
        [
         "Data Scientists",
-        0.01
+        0.017
+       ],
+       [
+        "Computer and Information Systems Managers",
+        0.008
        ]
       ]
      },
      "place": {
       "value": "42660",
       "name": "Seattle-Tacoma-Bellevue, WA",
-      "share": 0.532,
+      "share": 0.324,
       "top": [
        [
         "Seattle-Tacoma-Bellevue, WA",
-        0.532
+        0.324
        ],
        [
         "San Francisco-Oakland-Fremont, CA",
-        0.22
+        0.215
        ],
        [
         "San Jose-Sunnyvale-Santa Clara, CA",
-        0.055
+        0.139
        ]
       ]
      },
      "level": {
       "value": "1",
       "name": "Level II",
-      "share": 0.885,
+      "share": 0.83,
       "top": [
        [
         "Level II",
-        0.885
+        0.83
+       ],
+       [
+        "Level IV",
+        0.071
        ],
        [
         "Level III",
-        0.054
-       ],
-       [
-        "Level IV",
-        0.04
-       ]
-      ]
-     },
-     "sector": {
-      "value": "44-45",
-      "name": "Retail",
-      "share": 0.503,
-      "top": [
-       [
-        "Retail",
-        0.503
-       ],
-       [
-        "Information and telecoms",
-        0.395
-       ],
-       [
-        "Professional services",
-        0.076
-       ]
-      ]
-     }
-    },
-    "attribute_nodes": 41,
-    "attributes": [
-     "Level III",
-     "Marketing Managers",
-     "Facilities Managers",
-     "Computer and Information Systems Managers",
-     "Purchasing Managers",
-     "Transportation, Storage, and Distribution Managers",
-     "Project Management Specialists",
-     "Compensation, Benefits, and Job Analysis Specialists",
-     "Computer and Information Research Scientists",
-     "Computer Network Architects",
-     "Software Developers",
-     "Statisticians"
-    ],
-    "top_employers": [
-     [
-      "Amazon",
-      87908
-     ],
-     [
-      "Oracle America",
-      19112
-     ],
-     [
-      "Microsoft",
-      14905
-     ]
-    ]
-   },
-   {
-    "id": 2,
-    "name": "Level I Healthcare jobs \u00b7 several metros",
-    "profiles": 16689,
-    "workers": 165238,
-    "x": 698.21,
-    "y": 360.18,
-    "r": 174.62,
-    "h1b": 143413,
-    "perm": 21825,
-    "fields": {
-     "occupation": {
-      "value": "29-1123",
-      "name": "Physical Therapists",
-      "share": 0.357,
-      "top": [
-       [
-        "Physical Therapists",
-        0.357
-       ],
-       [
-        "Physicians, All Other",
-        0.059
-       ],
-       [
-        "Software Developers",
-        0.054
-       ]
-      ]
-     },
-     "place": {
-      "value": "16980",
-      "name": "Chicago-Naperville-Elgin, IL-IN",
-      "share": 0.384,
-      "top": [
-       [
-        "Chicago-Naperville-Elgin, IL-IN",
-        0.384
-       ],
-       [
-        "New York-Newark-Jersey City, NY-NJ",
-        0.062
-       ],
-       [
-        "Place unknown",
-        0.033
-       ]
-      ]
-     },
-     "level": {
-      "value": "0",
-      "name": "Level I",
-      "share": 0.755,
-      "top": [
-       [
-        "Level I",
-        0.755
-       ],
-       [
-        "Level II",
-        0.178
-       ],
-       [
-        "Level IV",
-        0.034
-       ]
-      ]
-     },
-     "sector": {
-      "value": "56",
-      "name": "Business support",
-      "share": 0.432,
-      "top": [
-       [
-        "Business support",
-        0.432
-       ],
-       [
-        "Education",
-        0.256
-       ],
-       [
-        "Health care",
-        0.208
-       ]
-      ]
-     }
-    },
-    "attribute_nodes": 852,
-    "attributes": [
-     "Level I",
-     "Administrative Services Managers",
-     "Education and Childcare Administrators, Preschool and Daycare",
-     "Education Administrators, Kindergarten through Secondary",
-     "Education Administrators, Postsecondary",
-     "Education Administrators, All Other",
-     "Entertainment and Recreation Managers, Except Gambling",
-     "Medical and Health Services Managers",
-     "Natural Sciences Managers",
-     "Social and Community Service Managers",
-     "Emergency Management Directors",
-     "Mathematical Science Occupations, All Other"
-    ],
-    "top_employers": [
-     [
-      "Grandison Management",
-      57843
-     ],
-     [
-      "Management Health Systems",
-      1608
-     ],
-     [
-      "Mayo Clinic",
-      697
-     ]
-    ]
-   },
-   {
-    "id": 3,
-    "name": "Software Developers \u00b7 Manufacturing \u00b7 San Jose-Sunnyvale-Santa Clara, CA",
-    "profiles": 7954,
-    "workers": 163359,
-    "x": 394.39,
-    "y": 173.63,
-    "r": 173.63,
-    "h1b": 146761,
-    "perm": 16598,
-    "fields": {
-     "occupation": {
-      "value": "15-1252",
-      "name": "Software Developers",
-      "share": 0.57,
-      "top": [
-       [
-        "Software Developers",
-        0.57
-       ],
-       [
-        "Electronics Engineers, Except Computer",
-        0.161
-       ],
-       [
-        "Industrial Engineers",
         0.064
        ]
       ]
      },
-     "place": {
-      "value": "41940",
-      "name": "San Jose-Sunnyvale-Santa Clara, CA",
-      "share": 0.613,
-      "top": [
-       [
-        "San Jose-Sunnyvale-Santa Clara, CA",
-        0.613
-       ],
-       [
-        "Detroit-Warren-Dearborn, MI",
-        0.048
-       ],
-       [
-        "San Francisco-Oakland-Fremont, CA",
-        0.044
-       ]
-      ]
-     },
-     "level": {
-      "value": "3",
-      "name": "Level IV",
-      "share": 0.492,
-      "top": [
-       [
-        "Level IV",
-        0.492
-       ],
-       [
-        "Level II",
-        0.297
-       ],
-       [
-        "Level III",
-        0.17
-       ]
-      ]
-     },
      "sector": {
-      "value": "31-33",
-      "name": "Manufacturing",
-      "share": 0.888,
+      "value": "51",
+      "name": "Information and telecoms",
+      "share": 0.435,
       "top": [
        [
-        "Manufacturing",
-        0.888
+        "Information and telecoms",
+        0.435
+       ],
+       [
+        "Retail",
+        0.308
        ],
        [
         "Professional services",
-        0.096
-       ],
-       [
-        "Finance and insurance",
-        0.003
+        0.225
        ]
       ]
      }
     },
-    "attribute_nodes": 147,
+    "attribute_nodes": 36,
     "attributes": [
-     "Level IV",
-     "Industrial Production Managers",
-     "Architectural and Engineering Managers",
-     "Managers, All Other",
-     "Purchasing Agents, Except Wholesale, Retail, and Farm Products",
-     "Compliance Officers",
-     "Logisticians",
-     "Aerospace Engineers",
-     "Chemical Engineers",
-     "Electrical Engineers",
-     "Electronics Engineers, Except Computer",
-     "Industrial Engineers"
+     "Level III",
+     "Computer and Information Systems Managers",
+     "Transportation, Storage, and Distribution Managers",
+     "Compensation and Benefits Managers",
+     "Computer and Information Research Scientists",
+     "Computer Network Architects",
+     "Software Developers",
+     "Data Scientists",
+     "Computer Hardware Engineers",
+     "Administrative Law Judges, Adjudicators, and Hearing Officers",
+     "Special Effects Artists and Animators",
+     "Graphic Designers"
     ],
     "top_employers": [
      [
-      "Nvidia",
-      46245
+      "Amazon",
+      22509
      ],
      [
-      "Apple",
-      15449
+      "Microsoft",
+      12034
      ],
      [
-      "Cisco",
-      13894
+      "Google",
+      8657
      ]
-    ]
+    ],
+    "holds_together": 0.757
    },
    {
-    "id": 4,
-    "name": "Level II Software Developers \u00b7 Finance and insurance \u00b7 New York-Newark-Jersey City, NY-NJ",
-    "profiles": 5595,
-    "workers": 96594,
-    "x": 133.51,
-    "y": 343.06,
-    "r": 133.51,
-    "h1b": 84898,
-    "perm": 11696,
+    "id": 2,
+    "name": "Mixed: mostly healthcare and education jobs \u00b7 several metros",
+    "profiles": 16612,
+    "workers": 103531,
+    "x": 156.94,
+    "y": 409.91,
+    "r": 156.94,
+    "h1b": 81656,
+    "perm": 21875,
     "fields": {
      "occupation": {
       "value": "15-1252",
       "name": "Software Developers",
-      "share": 0.783,
+      "share": 0.1,
       "top": [
        [
         "Software Developers",
-        0.783
+        0.1
        ],
        [
-        "Financial and Investment Analysts",
-        0.054
+        "Physicians, All Other",
+        0.088
        ],
        [
-        "Data Scientists",
-        0.033
+        "Medical Scientists, Except Epidemiologists",
+        0.08
        ]
       ]
      },
      "place": {
       "value": "35620",
       "name": "New York-Newark-Jersey City, NY-NJ",
-      "share": 0.592,
+      "share": 0.086,
       "top": [
        [
         "New York-Newark-Jersey City, NY-NJ",
-        0.592
+        0.086
        ],
        [
-        "Dallas-Fort Worth-Arlington, TX",
-        0.04
+        "Boston-Cambridge-Newton, MA-NH",
+        0.075
        ],
        [
-        "Durham-Chapel Hill, NC",
-        0.033
+        "Place unknown",
+        0.043
+       ]
+      ]
+     },
+     "level": {
+      "value": "0",
+      "name": "Level I",
+      "share": 0.612,
+      "top": [
+       [
+        "Level I",
+        0.612
+       ],
+       [
+        "Level II",
+        0.289
+       ],
+       [
+        "Level IV",
+        0.06
+       ]
+      ]
+     },
+     "sector": {
+      "value": "61",
+      "name": "Education",
+      "share": 0.395,
+      "top": [
+       [
+        "Education",
+        0.395
+       ],
+       [
+        "Health care",
+        0.286
+       ],
+       [
+        "Professional services",
+        0.129
+       ]
+      ]
+     }
+    },
+    "attribute_nodes": 808,
+    "attributes": [
+     "Level I",
+     "Fundraising Managers",
+     "Administrative Services Managers",
+     "Education and Childcare Administrators, Preschool and Daycare",
+     "Education Administrators, Kindergarten through Secondary",
+     "Education Administrators, Postsecondary",
+     "Education Administrators, All Other",
+     "Medical and Health Services Managers",
+     "Natural Sciences Managers",
+     "Social and Community Service Managers",
+     "Emergency Management Directors",
+     "Meeting, Convention, and Event Planners"
+    ],
+    "top_employers": [
+     [
+      "Grandison Management",
+      1449
+     ],
+     [
+      "Management Health Systems",
+      1348
+     ],
+     [
+      "Leland Stanford JR University",
+      639
+     ]
+    ],
+    "holds_together": 0.912
+   },
+   {
+    "id": 3,
+    "name": "Software Developers / Electronics Engineers, Except Computer \u00b7 Manufacturing \u00b7 several metros",
+    "profiles": 8797,
+    "workers": 93619,
+    "x": 562.62,
+    "y": 149.24,
+    "r": 149.24,
+    "h1b": 68203,
+    "perm": 25416,
+    "fields": {
+     "occupation": {
+      "value": "15-1252",
+      "name": "Software Developers",
+      "share": 0.322,
+      "top": [
+       [
+        "Software Developers",
+        0.322
+       ],
+       [
+        "Electronics Engineers, Except Computer",
+        0.132
+       ],
+       [
+        "Industrial Engineers",
+        0.116
+       ]
+      ]
+     },
+     "place": {
+      "value": "41940",
+      "name": "San Jose-Sunnyvale-Santa Clara, CA",
+      "share": 0.235,
+      "top": [
+       [
+        "San Jose-Sunnyvale-Santa Clara, CA",
+        0.235
+       ],
+       [
+        "Detroit-Warren-Dearborn, MI",
+        0.079
+       ],
+       [
+        "San Francisco-Oakland-Fremont, CA",
+        0.066
        ]
       ]
      },
      "level": {
       "value": "1",
       "name": "Level II",
-      "share": 0.76,
+      "share": 0.585,
       "top": [
        [
         "Level II",
-        0.76
+        0.585
        ],
        [
         "Level IV",
-        0.128
+        0.191
+       ],
+       [
+        "Level III",
+        0.142
+       ]
+      ]
+     },
+     "sector": {
+      "value": "31-33",
+      "name": "Manufacturing",
+      "share": 0.855,
+      "top": [
+       [
+        "Manufacturing",
+        0.855
+       ],
+       [
+        "Professional services",
+        0.107
+       ],
+       [
+        "Wholesale",
+        0.012
+       ]
+      ]
+     }
+    },
+    "attribute_nodes": 214,
+    "attributes": [
+     "Level IV",
+     "Industrial Production Managers",
+     "Purchasing Managers",
+     "Training and Development Managers",
+     "Architectural and Engineering Managers",
+     "Managers, All Other",
+     "Purchasing Agents, Except Wholesale, Retail, and Farm Products",
+     "Compliance Officers",
+     "Logisticians",
+     "Aerospace Engineers",
+     "Bioengineers and Biomedical Engineers",
+     "Chemical Engineers"
+    ],
+    "top_employers": [
+     [
+      "Apple",
+      8143
+     ],
+     [
+      "Intel",
+      3748
+     ],
+     [
+      "Tesla",
+      2996
+     ]
+    ],
+    "holds_together": 0.842
+   },
+   {
+    "id": 4,
+    "name": "Level II Software Developers \u00b7 Finance and insurance \u00b7 several metros",
+    "profiles": 6519,
+    "workers": 66478,
+    "x": 694.72,
+    "y": 874.24,
+    "r": 125.76,
+    "h1b": 54527,
+    "perm": 11951,
+    "fields": {
+     "occupation": {
+      "value": "15-1252",
+      "name": "Software Developers",
+      "share": 0.647,
+      "top": [
+       [
+        "Software Developers",
+        0.647
+       ],
+       [
+        "Financial and Investment Analysts",
+        0.077
+       ],
+       [
+        "Data Scientists",
+        0.055
+       ]
+      ]
+     },
+     "place": {
+      "value": "35620",
+      "name": "New York-Newark-Jersey City, NY-NJ",
+      "share": 0.372,
+      "top": [
+       [
+        "New York-Newark-Jersey City, NY-NJ",
+        0.372
+       ],
+       [
+        "Chicago-Naperville-Elgin, IL-IN",
+        0.093
+       ],
+       [
+        "Dallas-Fort Worth-Arlington, TX",
+        0.064
+       ]
+      ]
+     },
+     "level": {
+      "value": "1",
+      "name": "Level II",
+      "share": 0.649,
+      "top": [
+       [
+        "Level II",
+        0.649
+       ],
+       [
+        "Level IV",
+        0.168
        ],
        [
         "Level I",
-        0.066
+        0.109
        ]
       ]
      },
      "sector": {
       "value": "52",
       "name": "Finance and insurance",
-      "share": 0.857,
+      "share": 0.8,
       "top": [
        [
         "Finance and insurance",
-        0.857
+        0.8
        ],
        [
         "Professional services",
-        0.066
+        0.152
        ],
        [
-        "Holding companies",
-        0.058
+        "Manufacturing",
+        0.012
        ]
       ]
      }
     },
-    "attribute_nodes": 46,
+    "attribute_nodes": 49,
     "attributes": [
      "Financial Managers",
-     "Compensation and Benefits Managers",
      "Claims Adjusters, Examiners, and Investigators",
+     "Compensation, Benefits, and Job Analysis Specialists",
      "Credit Analysts",
      "Financial and Investment Analysts",
-     "Personal Financial Advisors",
      "Insurance Underwriters",
      "Financial Risk Specialists",
      "Financial Examiners",
      "Credit Counselors",
      "Loan Officers",
+     "Tax Examiners and Collectors, and Revenue Agents",
      "Financial Specialists, All Other"
     ],
     "top_employers": [
      [
       "Goldman Sachs",
-      30154
-     ],
-     [
-      "JPMorgan Chase",
-      4173
+      2852
      ],
      [
       "Fidelity Investments",
       2242
+     ],
+     [
+      "Citigroup",
+      1909
      ]
-    ]
+    ],
+    "holds_together": 0.862
    },
    {
     "id": 5,
-    "name": "Mixed: mostly computer and engineering jobs \u00b7 several metros",
-    "profiles": 18598,
-    "workers": 49657,
-    "x": 147.59,
-    "y": 875.47,
-    "r": 95.73,
-    "h1b": 33997,
-    "perm": 15660,
+    "name": "Mixed: mostly computer and business jobs \u00b7 several metros",
+    "profiles": 13981,
+    "workers": 32236,
+    "x": 385.54,
+    "y": 316.35,
+    "r": 87.58,
+    "h1b": 20492,
+    "perm": 11744,
     "fields": {
      "occupation": {
       "value": "15-1252",
       "name": "Software Developers",
-      "share": 0.223,
+      "share": 0.254,
       "top": [
        [
         "Software Developers",
-        0.223
-       ],
-       [
-        "Civil Engineers",
-        0.121
+        0.254
        ],
        [
         "Market Research Analysts and Marketing Specialists",
-        0.057
+        0.084
+       ],
+       [
+        "General and Operations Managers",
+        0.031
        ]
       ]
      },
      "place": {
       "value": "31080",
       "name": "Los Angeles-Long Beach-Anaheim, CA",
-      "share": 0.153,
+      "share": 0.195,
       "top": [
        [
         "Los Angeles-Long Beach-Anaheim, CA",
-        0.153
+        0.195
        ],
        [
         "New York-Newark-Jersey City, NY-NJ",
-        0.136
+        0.113
        ],
        [
         "Miami-Fort Lauderdale-West Palm Beach, FL",
-        0.073
+        0.1
        ]
       ]
      },
      "level": {
       "value": "1",
       "name": "Level II",
-      "share": 0.445,
+      "share": 0.502,
       "top": [
        [
         "Level II",
-        0.445
+        0.502
        ],
        [
         "Level I",
-        0.371
+        0.308
        ],
        [
         "Level III",
-        0.097
+        0.106
+       ]
+      ]
+     },
+     "sector": {
+      "value": "42",
+      "name": "Wholesale",
+      "share": 0.198,
+      "top": [
+       [
+        "Wholesale",
+        0.198
+       ],
+       [
+        "Transport",
+        0.185
+       ],
+       [
+        "Professional services",
+        0.184
+       ]
+      ]
+     }
+    },
+    "attribute_nodes": 225,
+    "attributes": [
+     "Chief Executives",
+     "General and Operations Managers",
+     "Advertising and Promotions Managers",
+     "Marketing Managers",
+     "Sales Managers",
+     "Public Relations Managers",
+     "Facilities Managers",
+     "Human Resources Managers",
+     "Entertainment and Recreation Managers, Except Gambling",
+     "Property, Real Estate, and Community Association Managers",
+     "Personal Service Managers, All Other",
+     "Agents and Business Managers of Artists, Performers, and Athletes"
+    ],
+    "top_employers": [
+     [
+      "FedEx",
+      1212
+     ],
+     [
+      "American Airlines",
+      398
+     ],
+     [
+      "ST Jude Children S Research Hospital",
+      364
+     ]
+    ],
+    "holds_together": 0.602
+   },
+   {
+    "id": 6,
+    "name": "Level I Engineering jobs \u00b7 several metros",
+    "profiles": 7141,
+    "workers": 22080,
+    "x": 503.2,
+    "y": 807.12,
+    "r": 72.48,
+    "h1b": 16267,
+    "perm": 5813,
+    "fields": {
+     "occupation": {
+      "value": "17-2051",
+      "name": "Civil Engineers",
+      "share": 0.3,
+      "top": [
+       [
+        "Civil Engineers",
+        0.3
+       ],
+       [
+        "Software Developers",
+        0.118
+       ],
+       [
+        "Architects, Except Landscape and Naval",
+        0.074
+       ]
+      ]
+     },
+     "place": {
+      "value": "26420",
+      "name": "Houston-Pasadena-The Woodlands, TX",
+      "share": 0.184,
+      "top": [
+       [
+        "Houston-Pasadena-The Woodlands, TX",
+        0.184
+       ],
+       [
+        "New York-Newark-Jersey City, NY-NJ",
+        0.144
+       ],
+       [
+        "Phoenix-Mesa-Chandler, AZ",
+        0.068
+       ]
+      ]
+     },
+     "level": {
+      "value": "0",
+      "name": "Level I",
+      "share": 0.517,
+      "top": [
+       [
+        "Level I",
+        0.517
+       ],
+       [
+        "Level II",
+        0.33
+       ],
+       [
+        "Level IV",
+        0.088
        ]
       ]
      },
      "sector": {
       "value": "54",
       "name": "Professional services",
-      "share": 0.252,
+      "share": 0.451,
       "top": [
        [
         "Professional services",
-        0.252
-       ],
-       [
-        "Wholesale",
-        0.186
+        0.451
        ],
        [
         "Construction",
-        0.137
+        0.313
+       ],
+       [
+        "Utilities",
+        0.083
        ]
       ]
      }
     },
-    "attribute_nodes": 304,
+    "attribute_nodes": 132,
     "attributes": [
-     "Chief Executives",
-     "General and Operations Managers",
-     "Advertising and Promotions Managers",
-     "Sales Managers",
-     "Public Relations Managers",
-     "Fundraising Managers",
-     "Human Resources Managers",
      "Construction Managers",
-     "Property, Real Estate, and Community Association Managers",
-     "Personal Service Managers, All Other",
-     "Wholesale and Retail Buyers, Except Farm Products",
-     "Insurance Appraisers, Auto Damage"
+     "Cost Estimators",
+     "Project Management Specialists",
+     "Architects, Except Landscape and Naval",
+     "Landscape Architects",
+     "Cartographers and Photogrammetrists",
+     "Surveyors",
+     "Civil Engineers",
+     "Environmental Engineers",
+     "Marine Engineers and Naval Architects",
+     "Mining and Geological Engineers, Including Mining Safety Engineers",
+     "Nuclear Engineers"
     ],
     "top_employers": [
      [
-      "Samsung Semiconductor",
-      1460
+      "WSP",
+      360
      ],
      [
-      "FedEx",
-      1212
+      "Aecom Technical Services",
+      279
      ],
      [
-      "Dell",
-      604
+      "Jacobs Engineering",
+      193
      ]
-    ]
+    ],
+    "holds_together": 0.621
    },
    {
-    "id": 6,
+    "id": 7,
     "name": "Level II Food service jobs \u00b7 Hospitality \u00b7 several metros",
-    "profiles": 3120,
-    "workers": 11488,
-    "x": 84.9,
-    "y": 610.96,
-    "r": 46.04,
-    "h1b": 1717,
-    "perm": 9771,
+    "profiles": 3047,
+    "workers": 10787,
+    "x": 343.17,
+    "y": 535.21,
+    "r": 50.66,
+    "h1b": 1674,
+    "perm": 9113,
     "fields": {
      "occupation": {
       "value": "35-3023",
       "name": "Fast Food and Counter Workers",
-      "share": 0.336,
+      "share": 0.357,
       "top": [
        [
         "Fast Food and Counter Workers",
-        0.336
+        0.357
        ],
        [
         "Maids and Housekeeping Cleaners",
-        0.088
+        0.091
        ],
        [
         "Cooks, Restaurant",
-        0.081
+        0.086
        ]
       ]
      },
      "place": {
       "value": "unknown",
       "name": "Place unknown",
-      "share": 0.114,
+      "share": 0.121,
       "top": [
        [
         "Place unknown",
-        0.114
+        0.121
        ],
        [
         "New York-Newark-Jersey City, NY-NJ",
-        0.067
+        0.069
        ],
        [
-        "Hickory-Lenoir-Morganton, NC",
-        0.046
+        "Atlanta-Sandy Springs-Roswell, GA",
+        0.034
        ]
       ]
      },
      "level": {
       "value": "1",
       "name": "Level II",
-      "share": 0.761,
+      "share": 0.741,
       "top": [
        [
         "Level II",
-        0.761
+        0.741
        ],
        [
         "Level I",
-        0.151
+        0.162
        ],
        [
         "Level IV",
-        0.071
+        0.075
        ]
       ]
      },
      "sector": {
       "value": "72",
       "name": "Hospitality",
-      "share": 0.812,
+      "share": 0.837,
       "top": [
        [
         "Hospitality",
-        0.812
-       ],
-       [
-        "Manufacturing",
-        0.068
+        0.837
        ],
        [
         "Professional services",
-        0.027
+        0.036
+       ],
+       [
+        "Retail",
+        0.026
        ]
       ]
      }
     },
-    "attribute_nodes": 98,
+    "attribute_nodes": 96,
     "attributes": [
-     "Training and Development Managers",
      "Food Service Managers",
      "Lodging Managers",
-     "Meeting, Convention, and Event Planners",
      "Chefs and Head Cooks",
      "First-Line Supervisors of Food Preparation and Serving Workers",
      "Cooks, Fast Food",
@@ -5052,7 +5206,9 @@
      "Cooks, Short Order",
      "Food Preparation Workers",
      "Bartenders",
-     "Fast Food and Counter Workers"
+     "Fast Food and Counter Workers",
+     "Waiters and Waitresses",
+     "Food Servers, Nonrestaurant"
     ],
     "top_employers": [
      [
@@ -5060,689 +5216,261 @@
       833
      ],
      [
-      "Case Farms Processing",
-      464
-     ],
-     [
       "Concord Hospitality Enterprises",
       348
+     ],
+     [
+      "Phase Three Star",
+      316
      ]
-    ]
+    ],
+    "holds_together": 0.891
    },
    {
-    "id": 7,
-    "name": "Level II Meat, Poultry, and Fish Cutters and Trimmers \u00b7 Manufacturing \u00b7 Outside metro areas, Georgia",
-    "profiles": 699,
-    "workers": 10229,
-    "x": 116.68,
-    "y": 520.08,
-    "r": 43.45,
-    "h1b": 263,
-    "perm": 9966,
+    "id": 8,
+    "name": "Level II Software Developers \u00b7 Holding companies \u00b7 New York-Newark-Jersey City, NY-NJ",
+    "profiles": 319,
+    "workers": 7838,
+    "x": 715.93,
+    "y": 275.2,
+    "r": 43.18,
+    "h1b": 5280,
+    "perm": 2558,
     "fields": {
      "occupation": {
-      "value": "51-3022",
-      "name": "Meat, Poultry, and Fish Cutters and Trimmers",
-      "share": 0.603,
+      "value": "15-1252",
+      "name": "Software Developers",
+      "share": 0.721,
       "top": [
        [
-        "Meat, Poultry, and Fish Cutters and Trimmers",
-        0.603
+        "Software Developers",
+        0.721
        ],
+       [
+        "Helpers--Production Workers",
+        0.184
+       ],
+       [
+        "Data Scientists",
+        0.017
+       ]
+      ]
+     },
+     "place": {
+      "value": "35620",
+      "name": "New York-Newark-Jersey City, NY-NJ",
+      "share": 0.538,
+      "top": [
+       [
+        "New York-Newark-Jersey City, NY-NJ",
+        0.538
+       ],
+       [
+        "Allentown-Bethlehem-Easton, PA-NJ",
+        0.126
+       ],
+       [
+        "Columbus, OH",
+        0.074
+       ]
+      ]
+     },
+     "level": {
+      "value": "1",
+      "name": "Level II",
+      "share": 0.893,
+      "top": [
+       [
+        "Level II",
+        0.893
+       ],
+       [
+        "Level I",
+        0.058
+       ],
+       [
+        "Level III",
+        0.034
+       ]
+      ]
+     },
+     "sector": {
+      "value": "55",
+      "name": "Holding companies",
+      "share": 0.725,
+      "top": [
+       [
+        "Holding companies",
+        0.725
+       ],
+       [
+        "Business support",
+        0.115
+       ],
+       [
+        "Manufacturing",
+        0.074
+       ]
+      ]
+     }
+    },
+    "attribute_nodes": 11,
+    "attributes": [
+     "Personal Financial Advisors",
+     "Helpers--Production Workers",
+     "Allentown-Bethlehem-Easton, PA-NJ",
+     "Columbus, OH",
+     "Gaffney, SC",
+     "Ludington, MI",
+     "Salem, OR",
+     "Tifton, GA",
+     "Topeka, KS",
+     "Outside metro areas, Delaware",
+     "Holding companies"
+    ],
+    "top_employers": [
+     [
+      "JPMorgan Chase",
+      4173
+     ],
+     [
+      "Labor Guys",
+      891
+     ],
+     [
+      "Humana",
+      358
+     ]
+    ],
+    "holds_together": 0.682
+   },
+   {
+    "id": 9,
+    "name": "Level II Packers and Packagers, Hand \u00b7 Agriculture \u00b7 several metros",
+    "profiles": 812,
+    "workers": 3963,
+    "x": 264.19,
+    "y": 570.04,
+    "r": 30.71,
+    "h1b": 389,
+    "perm": 3574,
+    "fields": {
+     "occupation": {
+      "value": "53-7064",
+      "name": "Packers and Packagers, Hand",
+      "share": 0.478,
+      "top": [
        [
         "Packers and Packagers, Hand",
-        0.206
+        0.478
        ],
        [
-        "Graders and Sorters, Agricultural Products",
-        0.032
+        "Farmworkers and Laborers, Crop, Nursery, and Greenhouse",
+        0.072
+       ],
+       [
+        "Animal Scientists",
+        0.054
        ]
       ]
      },
      "place": {
       "value": "N-GA",
       "name": "Outside metro areas, Georgia",
-      "share": 0.548,
+      "share": 0.351,
       "top": [
        [
         "Outside metro areas, Georgia",
-        0.548
+        0.351
        ],
        [
-        "Outside metro areas, Alabama",
-        0.173
+        "Outside metro areas, Texas",
+        0.104
        ],
        [
         "Charlotte-Concord-Gastonia, NC-SC",
-        0.033
+        0.086
        ]
       ]
      },
      "level": {
       "value": "1",
       "name": "Level II",
-      "share": 0.931,
+      "share": 0.814,
       "top": [
        [
         "Level II",
-        0.931
+        0.814
        ],
        [
         "Level I",
-        0.059
+        0.15
        ],
        [
         "Level III",
-        0.005
+        0.025
        ]
       ]
      },
      "sector": {
-      "value": "31-33",
-      "name": "Manufacturing",
-      "share": 0.682,
+      "value": "11",
+      "name": "Agriculture",
+      "share": 0.69,
       "top": [
        [
-        "Manufacturing",
-        0.682
+        "Agriculture",
+        0.69
        ],
        [
-        "Agriculture",
-        0.27
+        "Manufacturing",
+        0.115
        ],
        [
         "Business support",
-        0.03
+        0.055
        ]
       ]
      }
     },
-    "attribute_nodes": 45,
+    "attribute_nodes": 43,
     "attributes": [
      "Farmers, Ranchers, and Other Agricultural Managers",
-     "Buyers and Purchasing Agents, Farm Products",
      "Farm Labor Contractors",
      "Animal Scientists",
-     "Forensic Science Technicians",
+     "Security Guards",
+     "Pesticide Handlers, Sprayers, and Applicators, Vegetation",
      "Animal Trainers",
-     "Payroll and Timekeeping Clerks",
      "First-Line Supervisors of Farming, Fishing, and Forestry Workers",
      "Animal Breeders",
-     "Graders and Sorters, Agricultural Products",
      "Agricultural Equipment Operators",
-     "Farmworkers and Laborers, Crop, Nursery, and Greenhouse"
+     "Farmworkers and Laborers, Crop, Nursery, and Greenhouse",
+     "Farmworkers, Farm, Ranch, and Aquacultural Animals",
+     "Rotary Drill Operators, Oil and Gas"
     ],
     "top_employers": [
-     [
-      "FPL Food",
-      2259
-     ],
-     [
-      "Consolidated Catfish Producers",
-      1730
-     ],
      [
       "South Georgia Pecan",
       1386
+     ],
+     [
+      "Rely Workforce",
+      204
+     ],
+     [
+      "Dakota Provisions",
+      153
      ]
-    ]
-   },
-   {
-    "id": 8,
-    "name": "Mixed: mostly computer and science jobs \u00b7 Boston-Cambridge-Newton, MA-NH",
-    "profiles": 1811,
-    "workers": 7750,
-    "x": 477.54,
-    "y": 378.4,
-    "r": 37.82,
-    "h1b": 6212,
-    "perm": 1538,
-    "fields": {
-     "occupation": {
-      "value": "15-1252",
-      "name": "Software Developers",
-      "share": 0.263,
-      "top": [
-       [
-        "Software Developers",
-        0.263
-       ],
-       [
-        "Biological Scientists, All Other",
-        0.1
-       ],
-       [
-        "Electrical Engineers",
-        0.062
-       ]
-      ]
-     },
-     "place": {
-      "value": "14460",
-      "name": "Boston-Cambridge-Newton, MA-NH",
-      "share": 0.622,
-      "top": [
-       [
-        "Boston-Cambridge-Newton, MA-NH",
-        0.622
-       ],
-       [
-        "New York-Newark-Jersey City, NY-NJ",
-        0.043
-       ],
-       [
-        "Chicago-Naperville-Elgin, IL-IN",
-        0.024
-       ]
-      ]
-     },
-     "level": {
-      "value": "1",
-      "name": "Level II",
-      "share": 0.507,
-      "top": [
-       [
-        "Level II",
-        0.507
-       ],
-       [
-        "Level I",
-        0.269
-       ],
-       [
-        "Level IV",
-        0.13
-       ]
-      ]
-     },
-     "sector": {
-      "value": "54",
-      "name": "Professional services",
-      "share": 0.403,
-      "top": [
-       [
-        "Professional services",
-        0.403
-       ],
-       [
-        "Utilities",
-        0.248
-       ],
-       [
-        "Arts and recreation",
-        0.137
-       ]
-      ]
-     }
-    },
-    "attribute_nodes": 34,
-    "attributes": [
-     "Agents and Business Managers of Artists, Performers, and Athletes",
-     "Nuclear Engineers",
-     "Curators",
-     "Museum Technicians and Conservators",
-     "Set and Exhibit Designers",
-     "Actors",
-     "Umpires, Referees, and Other Sports Officials",
-     "Dancers",
-     "Choreographers",
-     "Disc Jockeys, Except Radio",
-     "Entertainers and Performers, Sports and Related Workers, All Other",
-     "Broadcast Announcers and Radio Disc Jockeys"
     ],
-    "top_employers": [
-     [
-      "Dana-Farber Cancer Institute",
-      279
-     ],
-     [
-      "Vertex Pharmaceuticals",
-      198
-     ],
-     [
-      "Athenahealth",
-      162
-     ]
-    ]
-   },
-   {
-    "id": 9,
-    "name": "Level II Helpers--Production Workers \u00b7 Business support \u00b7 Allentown-Bethlehem-Easton, PA-NJ",
-    "profiles": 73,
-    "workers": 1551,
-    "x": 589.87,
-    "y": 769.06,
-    "r": 16.92,
-    "h1b": 76,
-    "perm": 1475,
-    "fields": {
-     "occupation": {
-      "value": "51-9198",
-      "name": "Helpers--Production Workers",
-      "share": 0.93,
-      "top": [
-       [
-        "Helpers--Production Workers",
-        0.93
-       ],
-       [
-        "Software Developers",
-        0.013
-       ],
-       [
-        "General and Operations Managers",
-        0.007
-       ]
-      ]
-     },
-     "place": {
-      "value": "10900",
-      "name": "Allentown-Bethlehem-Easton, PA-NJ",
-      "share": 0.626,
-      "top": [
-       [
-        "Allentown-Bethlehem-Easton, PA-NJ",
-        0.626
-       ],
-       [
-        "Atlanta-Sandy Springs-Roswell, GA",
-        0.113
-       ],
-       [
-        "Topeka, KS",
-        0.094
-       ]
-      ]
-     },
-     "level": {
-      "value": "1",
-      "name": "Level II",
-      "share": 0.972,
-      "top": [
-       [
-        "Level II",
-        0.972
-       ],
-       [
-        "Level I",
-        0.02
-       ],
-       [
-        "Level III",
-        0.004
-       ]
-      ]
-     },
-     "sector": {
-      "value": "56",
-      "name": "Business support",
-      "share": 0.579,
-      "top": [
-       [
-        "Business support",
-        0.579
-       ],
-       [
-        "Manufacturing",
-        0.361
-       ],
-       [
-        "Professional services",
-        0.03
-       ]
-      ]
-     }
-    },
-    "attribute_nodes": 7,
-    "attributes": [
-     "Outdoor Power Equipment and Other Small Engine Mechanics",
-     "Helpers--Production Workers",
-     "Allentown-Bethlehem-Easton, PA-NJ",
-     "Gaffney, SC",
-     "Salem, OR",
-     "Tifton, GA",
-     "Topeka, KS"
-    ],
-    "top_employers": [
-     [
-      "Labor Guys",
-      891
-     ],
-     [
-      "Reser S Fine Foods",
-      138
-     ],
-     [
-      "Georgia Plating",
-      115
-     ]
-    ]
-   },
-   {
-    "id": 10,
-    "name": "Level II Team Assemblers \u00b7 Manufacturing \u00b7 Madison, WI",
-    "profiles": 90,
-    "workers": 1201,
-    "x": 322.6,
-    "y": 384.99,
-    "r": 14.89,
-    "h1b": 193,
-    "perm": 1008,
-    "fields": {
-     "occupation": {
-      "value": "51-2092",
-      "name": "Team Assemblers",
-      "share": 0.806,
-      "top": [
-       [
-        "Team Assemblers",
-        0.806
-       ],
-       [
-        "Software Developers",
-        0.072
-       ],
-       [
-        "Computer Programmers",
-        0.011
-       ]
-      ]
-     },
-     "place": {
-      "value": "31540",
-      "name": "Madison, WI",
-      "share": 0.684,
-      "top": [
-       [
-        "Madison, WI",
-        0.684
-       ],
-       [
-        "Reading, PA",
-        0.082
-       ],
-       [
-        "Winchester, VA-WV",
-        0.063
-       ]
-      ]
-     },
-     "level": {
-      "value": "1",
-      "name": "Level II",
-      "share": 0.92,
-      "top": [
-       [
-        "Level II",
-        0.92
-       ],
-       [
-        "Level I",
-        0.059
-       ],
-       [
-        "Level III",
-        0.013
-       ]
-      ]
-     },
-     "sector": {
-      "value": "31-33",
-      "name": "Manufacturing",
-      "share": 0.767,
-      "top": [
-       [
-        "Manufacturing",
-        0.767
-       ],
-       [
-        "Professional services",
-        0.131
-       ],
-       [
-        "Business support",
-        0.067
-       ]
-      ]
-     }
-    },
-    "attribute_nodes": 6,
-    "attributes": [
-     "Team Assemblers",
-     "Production Workers, All Other",
-     "Lancaster, PA",
-     "Madison, WI",
-     "Winchester, VA-WV",
-     "Yankton, SD"
-    ],
-    "top_employers": [
-     [
-      "Stoughton Trailers",
-      647
-     ],
-     [
-      "Morgan Truck Body",
-      98
-     ],
-     [
-      "Platinum Staffing",
-      71
-     ]
-    ]
-   },
-   {
-    "id": 11,
-    "name": "Software Developers / Mining and Geological Engineers \u00b7 Mining and energy \u00b7 Houston-Pasadena-The Woodlands, TX",
-    "profiles": 229,
-    "workers": 1067,
-    "x": 122.72,
-    "y": 664.68,
-    "r": 14.03,
-    "h1b": 805,
-    "perm": 262,
-    "fields": {
-     "occupation": {
-      "value": "15-1252",
-      "name": "Software Developers",
-      "share": 0.291,
-      "top": [
-       [
-        "Software Developers",
-        0.291
-       ],
-       [
-        "Mining and Geological Engineers, Including Mining Safety Engineers",
-        0.148
-       ],
-       [
-        "Petroleum Engineers",
-        0.084
-       ]
-      ]
-     },
-     "place": {
-      "value": "26420",
-      "name": "Houston-Pasadena-The Woodlands, TX",
-      "share": 0.572,
-      "top": [
-       [
-        "Houston-Pasadena-The Woodlands, TX",
-        0.572
-       ],
-       [
-        "Phoenix-Mesa-Chandler, AZ",
-        0.052
-       ],
-       [
-        "Outside metro areas, Arizona",
-        0.037
-       ]
-      ]
-     },
-     "level": {
-      "value": "1",
-      "name": "Level II",
-      "share": 0.477,
-      "top": [
-       [
-        "Level II",
-        0.477
-       ],
-       [
-        "Level I",
-        0.322
-       ],
-       [
-        "Level IV",
-        0.15
-       ]
-      ]
-     },
-     "sector": {
-      "value": "21",
-      "name": "Mining and energy",
-      "share": 0.96,
-      "top": [
-       [
-        "Mining and energy",
-        0.96
-       ],
-       [
-        "Professional services",
-        0.025
-       ],
-       [
-        "Manufacturing",
-        0.005
-       ]
-      ]
-     }
-    },
-    "attribute_nodes": 13,
-    "attributes": [
-     "Mining and Geological Engineers, Including Mining Safety Engineers",
-     "Petroleum Engineers",
-     "Geological Technicians, Except Hydrologic Technicians",
-     "Derrick Operators, Oil and Gas",
-     "Service Unit Operators, Oil and Gas",
-     "Rock Splitters, Quarry",
-     "Helpers--Extraction Workers",
-     "Elko, NV",
-     "Grand Rapids, MN",
-     "Payson, AZ",
-     "Safford, AZ",
-     "Outside metro areas, Arizona"
-    ],
-    "top_employers": [
-     [
-      "Schlumberger Technology",
-      132
-     ],
-     [
-      "Freeport Minerals",
-      46
-     ],
-     [
-      "NOV",
-      42
-     ]
-    ]
-   },
-   {
-    "id": 12,
-    "name": "Level I Software Developers \u00b7 Professional services \u00b7 Sheridan, WY",
-    "profiles": 4,
-    "workers": 65,
-    "x": 525.11,
-    "y": 435.32,
-    "r": 3.46,
-    "h1b": 65,
-    "perm": 0,
-    "fields": {
-     "occupation": {
-      "value": "15-1252",
-      "name": "Software Developers",
-      "share": 0.985,
-      "top": [
-       [
-        "Software Developers",
-        0.985
-       ],
-       [
-        "Network and Computer Systems Administrators",
-        0.015
-       ]
-      ]
-     },
-     "place": {
-      "value": "43260",
-      "name": "Sheridan, WY",
-      "share": 1.0,
-      "top": [
-       [
-        "Sheridan, WY",
-        1.0
-       ]
-      ]
-     },
-     "level": {
-      "value": "0",
-      "name": "Level I",
-      "share": 0.969,
-      "top": [
-       [
-        "Level I",
-        0.969
-       ],
-       [
-        "Level II",
-        0.031
-       ]
-      ]
-     },
-     "sector": {
-      "value": "54",
-      "name": "Professional services",
-      "share": 0.985,
-      "top": [
-       [
-        "Professional services",
-        0.985
-       ],
-       [
-        "Hospitality",
-        0.015
-       ]
-      ]
-     }
-    },
-    "attribute_nodes": 1,
-    "attributes": [
-     "Sheridan, WY"
-    ],
-    "top_employers": [
-     [
-      "Cloudtek Data",
-      54
-     ],
-     [
-      "Metatek Solutions",
-      9
-     ],
-     [
-      "Redstaff Hotels ND",
-      1
-     ]
-    ]
+    "holds_together": 0.943
    }
   ],
-  "spacing": 0.42958120132163313,
-  "seconds": 261
+  "spacing": 0.4877641578377405,
+  "seconds": 219
  },
  "workers_vs_their_company": {
-  "nmi": 0.3913,
-  "ami": 0.3912,
-  "workers": 1011687
+  "nmi": 0.2742,
+  "ami": 0.2741,
+  "workers": 675497
  },
  "network_staffing": {
   "all_links": 6362,

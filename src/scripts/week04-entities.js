@@ -117,6 +117,10 @@ export function layoutDots(d) {
 }
 
 /** The colouring `by` ("community", "sector", "level" or "pagerank"): of(i), legend and key(i) per profile. */
+/** A group whose workers share a group in fewer than half the Louvain seeds. */
+const loose = (d, c) => c.holds_together < d.loose_below;
+const smaller = (n) => (n === 1 ? "1 smaller group, in a lighter tint" : `${n} smaller groups, in lighter tints`);
+
 export function palette(d, by, rgb) {
   const other = rgb("--w4-community-other");
   if (by === "community") {
@@ -131,8 +135,10 @@ export function palette(d, by, rgb) {
         return c < 0 ? other : c < d.top ? colours[c] : tints[c % d.top];
       },
       legend: [
-        ...d.communities.slice(0, d.top).map((c, i) => ({ key: i, label: `${i + 1} · ${c.name}`, colour: colours[i], count: c.workers })),
-        { key: "other", label: `${d.communities.length - d.top} smaller groups, in lighter tints`, colour: tints[0] },
+        ...d.communities.slice(0, d.top).map((c, i) => ({ key: i, label: `${i + 1} · ${c.name}${loose(d, c) ? " · loose" : ""}`, colour: colours[i], count: c.workers })),
+        ...(d.communities.length > d.top
+          ? [{ key: "other", label: smaller(d.communities.length - d.top), colour: tints[0] }]
+          : []),
       ],
       key: (i) => {
         const c = d.profiles.community[i];
@@ -269,18 +275,19 @@ export function entityView(deck, d, dots, state, rgb, T) {
     const level = d.lookups.level[p.level[i]];
     const c = p.community[i];
     const group = c >= 0 ? d.communities[c].name : "outside the connected network";
+    const held = c >= 0 ? `<br>Its workers share a group in ${Math.round(100 * d.communities[c].holds_together)}% of Louvain runs${loose(d, d.communities[c]) ? " (loose)" : ""}` : "";
     const count = p.h1b[i] + p.perm[i];
     let head;
     let body;
     if (d.dots === "workers") {
       head = `${dots.visa[index] ? "PERM worker" : "H-1B worker"}: ${occ}`;
-      body = `${level} · ${sector}<br>${place}<br>${fmt(count)} workers share this profile (${fmt(p.h1b[i])} H-1B, ${fmt(p.perm[i])} PERM)`;
+      body = `${level} · ${sector}<br>${place}<br>${count === 1 ? "1 worker has" : `${fmt(count)} workers share`} this profile (${fmt(p.h1b[i])} H-1B, ${fmt(p.perm[i])} PERM)`;
     } else {
       head = d.items.name[index];
-      body = `${fmt(count)} workers, mostly ${occ}<br>${level} · ${sector}<br>Most workers in ${place}`;
+      body = `${count === 1 ? `1 worker (${occ})` : `${fmt(count)} workers, mostly ${occ}`}<br>${level} · ${sector}<br>${count === 1 ? "In" : "Most workers in"} ${place.replace(/^Outside/, "outside")}`;
     }
     return {
-      html: `<b>${esc(head)}</b>${body}<br>Community ${c >= 0 ? c + 1 : "–"}: ${esc(group)}`,
+      html: `<b>${esc(head)}</b>${body}<br>Community ${c >= 0 ? c + 1 : "–"}: ${esc(group)}${held}`,
       className: "w4-entities-tip",
       style: tipStyle(T),
     };
@@ -538,14 +545,16 @@ export function entityText(d, dots) {
     `Louvain splits a two-sided network: on one side the ${d.dots === "workers" ? "worker profiles" : "companies"}, on the other every occupation, metro, wage level and sector, ` +
     `each ${d.dots === "workers" ? "profile" : "company"} linked to its own with weight = its workers (best of ${s.louvain.runs} seeds). ` +
     `Each group is a disc sized by its workers; a force layout of how strongly the groups link places the discs, so linked groups sit close, ` +
-    `and inside a disc ${d.dots === "workers" ? "workers run from the group's largest occupation outwards" : "companies run from the largest outwards, sized by their workers"}. `;
+    `and inside a disc ${d.dots === "workers" ? "workers run from the group's largest occupation outwards" : "companies run from the largest outwards, sized by their workers"}. ` +
+    `A group marked loose keeps its workers together in fewer than ${Math.round(100 * d.loose_below)}% of the seeds, so its edges would move on a rerun. `;
   const caption =
     d.dots === "workers"
-      ? `One dot per worker in the 2025 filings: each position a certified H-1B filing asks for and each certified PERM case. ` +
+      ? `One dot per worker in the 2025 filings: each certified H-1B filing and each certified PERM case. ` +
+        `A filing counts once however many positions it requests, since a request is a ceiling, not a hire. ` +
         `Workers with the same occupation, metro, wage level and sector form one profile. ${how}` +
         `The employer and whether the worker is placed at a client are not in the network, so the colours cannot follow them by construction. ` +
         `Hover a dot for its profile, click a legend entry to highlight one group, scroll to zoom and drag to pan.`
-      : `One dot per company that filed for a worker in 2025, sized by its workers. ${how}` +
+      : `One dot per company that filed for a worker in 2025, sized by its workers: one per certified filing or PERM case. ${how}` +
         `Whether a company places workers at clients is not in the network. ` +
         `Hover a dot for the company, click a legend entry to highlight one group, scroll to zoom and drag to pan.`;
   return { answer, caption };
