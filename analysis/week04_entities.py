@@ -731,8 +731,43 @@ def week4_facts(g, proj, member, attributes, ent):
     return out
 
 
+# A group's name names only what most of it does. One occupation names it if
+# it holds OCC_ALONE of the group's workers; else a SOC major group holding
+# MAJOR_ALONE ("Computer jobs"); else two occupations, or two major groups,
+# that together hold PAIR ("Mixed: mostly healthcare and education jobs"); else
+# "Mixed occupations". Sector and metro join the name when they hold half.
+OCC_ALONE, MAJOR_ALONE, PAIR = 0.4, 0.5, 0.4
+# Short nouns for the SOC major groups, so two can share a name without their
+# own "and"s running together.
+JOBS = {"Management": "management", "Business and financial": "business", "Computer and mathematical": "computer",
+        "Architecture and engineering": "engineering", "Life, physical and social science": "science",
+        "Community and social service": "social service", "Legal": "legal", "Education and library": "education",
+        "Arts, design, media": "arts and media", "Healthcare practitioners": "healthcare",
+        "Healthcare support": "healthcare support", "Protective service": "protective service",
+        "Food preparation": "food service", "Building and grounds": "cleaning and grounds",
+        "Personal care": "personal care", "Sales": "sales", "Office and administrative": "office", "Farming": "farm",
+        "Construction": "construction", "Installation and repair": "repair", "Production": "production",
+        "Transportation": "transport", "Military": "military", UNKNOWN: "unclassified"}
+
+
+def occupation_name(shares, majors, level):
+    """The occupation part of a group's name (see OCC_ALONE). A title's
+    ", Including ..." clause is left out of the name, not out of the fields."""
+    occ = [[t.split(", Including")[0], x] for t, x in shares["top"]]
+    lead = f"{level['name']} " if level["share"] >= 0.5 else ""
+    if occ[0][1] >= OCC_ALONE:
+        return lead + occ[0][0]
+    if majors[0][1] >= MAJOR_ALONE:
+        return lead + f"{JOBS[majors[0][0]].capitalize()} jobs"
+    if len(occ) > 1 and occ[0][1] + occ[1][1] >= PAIR:
+        return f"{occ[0][0]} / {occ[1][0]}"
+    if len(majors) > 1 and majors[0][1] + majors[1][1] >= PAIR:
+        return f"Mixed: mostly {JOBS[majors[0][0]]} and {JOBS[majors[1][0]]} jobs"
+    return "Mixed occupations"
+
+
 def name_community(profiles, idx, lookups, describe):
-    """A community's name from the most common value of each field, by workers."""
+    """A community's name from the most common values of each field, by workers."""
     part = profiles.iloc[idx]
     w = part["workers"].values
     shares = {}
@@ -741,8 +776,11 @@ def name_community(profiles, idx, lookups, describe):
         value, share = s.index[0], float(s.iloc[0] / w.sum())
         shares[col] = {"value": str(value), "name": lookups[col].get(value, str(value)), "share": round(share, 3),
                        "top": [[lookups[col].get(v, str(v)), round(float(x / w.sum()), 3)] for v, x in s.head(3).items()]}
-    occ, lev, sec, plc = (shares[c] for c in ("occupation", "level", "sector", "place"))
-    bits = [f"{lev['name']} {occ['name']}" if lev["share"] >= 0.5 else occ["name"]]
+    major = pd.Series(w, index=part["occupation"].astype(str).str[:2].map(MAJOR_GROUPS).fillna(UNKNOWN).values)
+    major = major.groupby(level=0).sum().sort_values(ascending=False, kind="stable")
+    majors = [[m, float(x / w.sum())] for m, x in major.head(2).items()]
+    sec, plc = shares["sector"], shares["place"]
+    bits = [occupation_name(shares["occupation"], majors, shares["level"])]
     if sec["share"] >= 0.5:
         bits.append(sec["name"])
     bits.append(plc["name"] if plc["share"] >= 0.5 else "several metros")
