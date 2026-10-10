@@ -45,14 +45,14 @@ from pathlib import Path
 import pandas as pd
 
 import week04_names as names
-from week04_data import OUT as BUILD, ROOT, load
+from week04_data import OUT as BUILD, ROOT, load, save
 from week04_staffing import certified, placements, resolver
 
 RAW = ROOT / "build" / "raw" / "gleif"
 LEI_FILE = RAW / "gleif-lei2-20260926.csv.zip"
 RR_FILE = RAW / "gleif-rr-20260926.csv.zip"
-US_EXTRACT = BUILD / "gleif_us.csv.gz"
-PARENTS_EXTRACT = BUILD / "gleif_parents.csv.gz"
+US_EXTRACT = BUILD / "gleif_us.parquet"
+PARENTS_EXTRACT = BUILD / "gleif_parents.parquet"
 OUT = Path(__file__).with_suffix(".json")
 YEARS = [2022, 2023, 2024, 2025, 2026]
 MIN_FILINGS = 20
@@ -69,7 +69,7 @@ def us_register():
     """US-addressed, active GLEIF entities: LEI and normalized names. Cached, since
     the register is 5 GB unzipped."""
     if US_EXTRACT.exists():
-        return pd.read_csv(US_EXTRACT, dtype=str, keep_default_na=False)
+        return load("gleif_us")
     cols = {"LEI": "lei", "Entity.LegalName": "legal", "Entity.OtherEntityNames.OtherEntityName.1": "other",
             "Entity.LegalAddress.Country": "legal_country", "Entity.HeadquartersAddress.Country": "hq_country",
             "Entity.EntityStatus": "status"}
@@ -83,7 +83,7 @@ def us_register():
     frame = pd.concat(parts, ignore_index=True)
     frame["key"] = frame["legal"].map(names.legal_name)
     frame["other_key"] = frame["other"].map(lambda s: names.legal_name(s) if s else "")
-    frame.to_csv(US_EXTRACT, index=False)
+    save(frame, "gleif_us")
     return frame
 
 
@@ -91,7 +91,7 @@ def parent_names(leis):
     """Legal names of the given LEIs wherever they are registered (Infosys
     Limited is Indian), from a second pass over the register. Cached."""
     if PARENTS_EXTRACT.exists():
-        cached = pd.read_csv(PARENTS_EXTRACT, dtype=str, keep_default_na=False)
+        cached = load("gleif_parents")
         if set(leis) <= set(cached["lei"]):
             return dict(zip(cached["lei"], cached["legal"]))
     found = []
@@ -100,7 +100,7 @@ def parent_names(leis):
                                  chunksize=500_000):
             found.append(chunk[chunk["LEI"].isin(leis)])
     frame = pd.concat(found).rename(columns={"LEI": "lei", "Entity.LegalName": "legal"})
-    frame.to_csv(PARENTS_EXTRACT, index=False)
+    save(frame, "gleif_parents")
     return dict(zip(frame["lei"], frame["legal"]))
 
 

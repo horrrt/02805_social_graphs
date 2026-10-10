@@ -14,11 +14,11 @@
    2024,
    2025
   ],
-  "pairs_file": "build/week04/skills_similarity.csv.gz"
+  "pairs_file": "build/week04/skills_similarity.parquet"
  },
  "cohiring": {
   "source": {
-   "page": "docs/weeks/week04/data/jobs.json",
+   "page": "public/weeks/week04/data/jobs.json",
    "year": 2025
   },
   "occupations": 60,
