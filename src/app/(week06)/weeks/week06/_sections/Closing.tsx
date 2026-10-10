@@ -50,7 +50,7 @@ export function Closing() {
             Data: the course's snapshot of the 303 pages, their node table and their links, frozen on 26 August 2026
             and checked against a SHA-256 hash on every load, and Wikidata's sex or gender for each page's item, fetched
             on 6 October 2026 and committed (
-            <a href={`${CODE}week06_gender.csv`}>week06_gender.csv</a>
+            <a href={`${CODE}week06_gender.parquet`}>week06_gender.parquet</a>
             ). Every random step has a fixed seed.
           </p>
           <p className="sub">
@@ -70,7 +70,7 @@ export function Closing() {
               TF-IDF and cosine on the 303 pages; names removed, or kept alone, by the brief's capital-letter rule; 20
               removals of other words matched on rarity; 1,000 shuffles of Wikidata's gender labels; undirected network distances; 50 pairs read by
               hand (
-              <a href={`${CODE}week06_pairs_read.csv`}>week06_pairs_read.csv</a>
+              <a href={`${CODE}week06_pairs_read.parquet`}>week06_pairs_read.parquet</a>
               ).
             </li>
           </ul>

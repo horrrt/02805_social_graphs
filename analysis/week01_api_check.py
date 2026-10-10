@@ -2,6 +2,7 @@
 diff them against the frozen snapshot."""
 import json, re, time, urllib.parse, urllib.request
 import pandas as pd, networkx as nx
+import tables
 
 UA = "02805-LogLogLegends/1.0 (DTU course project; contact via GitHub horrrt)"
 API = "https://en.wikipedia.org/w/api.php"
@@ -21,9 +22,8 @@ def outlinks(text):
     """Every [[Page name]] in the wiki-source, as underscore ids."""
     return {m.group(1).strip().replace(" ", "_") for m in LINK.finditer(text)}
 
-nodes = pd.read_csv("data/week1_nodes.tsv", sep="\t", comment="#")
-edges = pd.read_csv("data/week1_edges.tsv", sep="\t", comment="#",
-                    names=["source", "target"])
+nodes = tables.frame("data/week1_nodes.parquet")
+edges = tables.frame("data/week1_edges.parquet")
 D = nx.DiGraph(); D.add_nodes_from(nodes.node_id)
 D.add_edges_from(edges.itertuples(index=False, name=None))
 roster = set(nodes.node_id)

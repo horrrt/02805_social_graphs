@@ -51,7 +51,7 @@ Checks
   the small firm's own strength that tie carries, skipping any pair whose
   two names look like one firm under two spellings (rapidfuzz
   token_sort_ratio >= DUP_RATIO) — those are counted and listed separately,
-  as merge candidates for week04_name_merges.csv, not applied here.
+  as merge candidates for week04_name_merges.parquet, not applied here.
 - Communities: Louvain on the giant component (100 runs) against 100
   degree-preserving rewirings of the employer x law-firm bipartite graph,
   re-projected and scored on each rewiring's own giant component. NMI and
@@ -227,7 +227,7 @@ def split_isolated(nodes, isolated):
 def duplicate_pairs(g):
     """Projection links between two names that are probably one firm under
     two spellings (rapidfuzz token_sort_ratio on the display label >= DUP_RATIO),
-    sorted by filings: candidates for week04_name_merges.csv, not applied here."""
+    sorted by filings: candidates for week04_name_merges.parquet, not applied here."""
     dups = []
     for u, v, w in g.edges(data="weight"):
         lu, lv = resolver().label(u), resolver().label(v)
@@ -462,7 +462,7 @@ def main():
     filter_only_iso, filter_only_rest = split_isolated(filter_only, isolated)
     threshold_iso, threshold_rest = split_isolated(kept, isolated)
     dups = duplicate_pairs(g)
-    print("Probable one firm under two spellings (candidates for week04_name_merges.csv):")
+    print("Probable one firm under two spellings (candidates for week04_name_merges.parquet):")
     for d in dups[:20]:
         print(f"  {d['filings']:>4}  {d['a_label']}  |  {d['b_label']}", flush=True)
     examples = hub_examples(g, h_f, filter_only, dups)

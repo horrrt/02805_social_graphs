@@ -6,6 +6,7 @@ import numpy as np
 import pandas as pd
 import networkx as nx
 import matplotlib
+import tables
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import matplotlib.patheffects as pe
@@ -30,9 +31,8 @@ plt.rcParams.update({
 })
 OUT = "public/weeks/week01/figures"
 
-nodes = pd.read_csv("data/week1_nodes.tsv", sep="\t", comment="#")
-edges = pd.read_csv("data/week1_edges.tsv", sep="\t", comment="#",
-                    names=["source", "target"])
+nodes = tables.frame("data/week1_nodes.parquet")
+edges = tables.frame("data/week1_edges.parquet")
 D = nx.DiGraph()
 D.add_nodes_from(nodes.node_id)
 D.add_edges_from(edges.itertuples(index=False, name=None))

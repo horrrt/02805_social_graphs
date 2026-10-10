@@ -9,7 +9,7 @@ resolver's client() so a bridged FEIN key still matches), and only a candidate
 that is some kind of organisation (P31 transitively a subclass of Q43229,
 checked with a cached SPARQL query) survives. Ties break on sitelinks. A
 company's sector comes from its own NAICS code (P3224), else the NAICS of its
-industry items (P452), else the reviewed table in week04_wikidata_industries.csv
+industry items (P452), else the reviewed table in week04_wikidata_industries.parquet
 for an industry Wikidata never coded, else a SIC code (P3242 ->
 week04_sec.sector_of_sic) on the company or its industries; industries vote by
 majority and a tie is recorded rather than guessed.
@@ -41,7 +41,7 @@ atomic write-then-replace, safe for concurrent writers, so a rerun makes zero
 requests and only continues where it stopped. Set WIKIDATA_BUDGET_SECONDS to
 stop after that long; unset, the script runs to completion.
 
-Output: analysis/week04_wikidata_sectors.csv (key, label, filings, qid,
+Output: analysis/week04_wikidata_sectors.parquet (key, label, filings, qid,
 wikidata_label, match, industry_qids, industry_labels, naics2, source_codes,
 reason), read by week04_names.naics2(); analysis/week04_wikidata.json for the
 summary numbers, ambiguous ties and sector conflicts.
@@ -49,7 +49,6 @@ summary numbers, ambiguous ties and sector conflicts.
 
 import argparse
 import concurrent.futures as cf
-import csv
 import hashlib
 import json
 import os
@@ -68,13 +67,14 @@ import week04_names as names
 from week04_data import RAW, load
 from week04_sec import sector_of_sic
 from week04_staffing import certified, giant_of, graph, placements, resolver, tracked
+import tables
 
-OUT = Path(__file__).with_name("week04_wikidata_sectors.csv")
+OUT = Path(__file__).with_name("week04_wikidata_sectors.parquet")
 SUMMARY = Path(__file__).with_suffix(".json")
 # Reviewed by hand from this script's own "no sector" industry breakdown
 # (the P452 items that leave a matched company unlabelled); the rule for
 # which industries get a sector is written at the top of the file itself.
-INDUSTRY_TABLE = Path(__file__).with_name("week04_wikidata_industries.csv")
+INDUSTRY_TABLE = Path(__file__).with_name("week04_wikidata_industries.parquet")
 CACHE = RAW / "wikidata"
 SEARCH_CACHE = CACHE / "search"
 ENTITY_CACHE = CACHE / "entities"
@@ -363,14 +363,12 @@ def claim_values(claims, prop):
 
 
 def industry_sector_table():
-    """qid -> reviewed NAICS sector, from week04_wikidata_industries.csv. Built
+    """qid -> reviewed NAICS sector, from week04_wikidata_industries.parquet. Built
     by hand (see that file's header) from this script's own industries that
     otherwise leave a matched company unlabelled."""
     if not INDUSTRY_TABLE.exists():
         return {}
-    with open(INDUSTRY_TABLE, newline="", encoding="utf-8") as fh:
-        rows = csv.DictReader(line for line in fh if not line.startswith("#"))
-        return {r["qid"]: r["naics2"] for r in rows if r["naics2"]}
+    return {r["qid"]: r["naics2"] for r in tables.rows(INDUSTRY_TABLE) if r["naics2"]}
 
 
 def sector_of(claims, industry_entities, industry_table):
@@ -615,14 +613,11 @@ def main():
         rows.append({"key": key, "label": resolver().label(key), "filings": int(todo[key]), **result})
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
-    with open(OUT, "w", newline="", encoding="utf-8") as fh:
-        fh.write("# Client and filing-firm keys matched to a Wikidata company by exact normalized "
-                 "name (week04_names.client/resolver().client), restricted to items that are some kind "
-                 "of organization; NAICS/SIC from the company or its industries via week04_wikidata.py. "
-                 "A row with no naics2 matched a company but found no usable code; see 'reason'.\n")
-        writer = csv.DictWriter(fh, COLUMNS)
-        writer.writeheader()
-        writer.writerows(rows)
+    tables.write(OUT, pd.DataFrame(rows, columns=COLUMNS),
+                 notes=["Client and filing-firm keys matched to a Wikidata company by exact normalized "
+                        "name (week04_names.client/resolver().client), restricted to items that are some kind "
+                        "of organization; NAICS/SIC from the company or its industries via week04_wikidata.py. "
+                        "A row with no naics2 matched a company but found no usable code; see 'reason'."])
 
     matched = len(rows)
     with_sector = sum(1 for r in rows if r["naics2"])

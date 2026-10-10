@@ -1,6 +1,4 @@
 """Frozen data and exact statistics shared by every Arcade experience."""
-import csv
-import hashlib
 import json
 import math
 from collections import Counter
@@ -9,6 +7,7 @@ from pathlib import Path
 import networkx as nx
 
 from check_pages import check
+import tables
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "public/assets/data"
@@ -28,15 +27,13 @@ DISPLAY_NAME_OVERRIDES = {
 
 
 def load():
-    with (ROOT / "data/week1_nodes.tsv").open() as f:
-        rows = list(csv.DictReader((l for l in f if not l.startswith("#")), delimiter="\t"))
+    rows = tables.rows(ROOT / "data/week1_nodes.parquet")
     for r in rows:
         if r["node_id"] in DISPLAY_NAME_OVERRIDES:
             r["name"] = DISPLAY_NAME_OVERRIDES[r["node_id"]]
     graph = nx.DiGraph()
     graph.add_nodes_from(r["node_id"] for r in rows)
-    with (ROOT / "data/week1_edges.tsv").open() as f:
-        graph.add_edges_from(csv.reader((l for l in f if not l.startswith("#")), delimiter="\t"))
+    graph.add_edges_from(tables.records(ROOT / "data/week1_edges.parquet"))
     facts = json.loads((ROOT / "analysis/week01_facts.json").read_text())
     assert (len(graph), graph.number_of_edges()) == (facts["n_nodes"], facts["n_arcs"]) == (303, 1784)
     assert len(list(nx.isolates(graph))) == facts["n_isolates"] == 17
@@ -92,7 +89,7 @@ def build():
                "textMethod": "303 short article descriptions supplied in the frozen course roster; not complete Wikipedia pages. TF-IDF is an exploratory preview over these descriptions.",
                "greedyDraft": {"cards": draft, "covered": len(covered), "denominator": 303, "optimal": False},
                "coreTriangles": triangles, "fixtures": fixtures,
-               "hashes": {f: hashlib.sha256((ROOT / "data" / f).read_bytes()).hexdigest() for f in ["week1_nodes.tsv", "week1_edges.tsv"]}}
+               "hashes": {f"{t}.tsv": tables.digest(ROOT / "data" / f"{t}.parquet") for t in ["week1_nodes", "week1_edges"]}}
     write("arcade_graph.json", payload)
     print(f"Arcade: {len(cards)} cards, {len(community_sets)} exploratory communities, greedy five-card coverage {len(covered)}/303.")
     return payload

@@ -27,7 +27,7 @@ Method
   several labels takes the first in PRIORITY (killed, family, enemy, ally,
   teammate); negation is not handled. The rest are unlabelled.
 - Precision: SAMPLE sentences per label, drawn with a fixed seed, read by hand;
-  the verdicts sit in analysis/week05_relations_checked.csv with the sentence
+  the verdicts sit in analysis/week05_relations_checked.parquet with the sentence
   each one judged. The script stops if a sampled arc has no verdict, if its
   sentence differs from the one read, or if a verdict's arc is no longer
   drawn. `--sample` prints the draw.
@@ -48,7 +48,6 @@ Read the corpus and the network only through week05_text.
     python analysis/week05_relations.py --sample   # prints the sentences to read
 """
 
-import csv
 import json
 import random
 import re
@@ -62,10 +61,11 @@ import spacy
 from check_pages import check
 from week04_staffing import louvain
 from week05_text import graph, nodes, pages, weighted
+import tables
 
 ROOT = Path(__file__).resolve().parents[1]
 PAGE = ROOT / "public/weeks/week05/data/relations.json"
-CHECKED = Path(__file__).with_name("week05_relations_checked.csv")
+CHECKED = Path(__file__).with_name("week05_relations_checked.parquet")
 SEED = 2805
 RUNS = 100
 SHUFFLES = 1000
@@ -200,9 +200,8 @@ def sample(rows):
 
 def precision(picked):
     verdicts = {}
-    with CHECKED.open(newline="", encoding="utf-8") as fh:
-        for row in csv.DictReader(fh):
-            verdicts[(row["source"], row["target"], row["label"])] = row
+    for row in tables.rows(CHECKED):
+        verdicts[(row["source"], row["target"], row["label"])] = row
     drawn = {(r["source"], r["target"], label) for label, rows in picked.items() for r in rows}
     stale = sorted(set(verdicts) - drawn)
     if stale:

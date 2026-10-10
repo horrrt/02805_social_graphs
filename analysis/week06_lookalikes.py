@@ -13,12 +13,12 @@ Steps:
    name) and count again. The null removes as many non-name words, each matched to a name on
    document frequency, 20 times with seeds SEED + i.
 3. Take the gendered pronouns out as well, and ask whether a page's neighbours share its
-   Wikidata gender (analysis/week06_gender.csv) more often than shuffled labels allow.
+   Wikidata gender (analysis/week06_gender.parquet) more often than shuffled labels allow.
 4. Network distance (undirected shortest path) from each page to its ten textual neighbours,
    against all pairs. Pairs with no path form their own bucket.
 5. The closest unlinked pairs with names kept and with names removed, each read by hand into
    one of four buckets fixed before reading (READ_BUCKETS), stored in
-   analysis/week06_pairs_read.csv with the words that drove the match. The script stops when a
+   analysis/week06_pairs_read.parquet with the words that drove the match. The script stops when a
    pair is unread, when its words changed since the reading, or when a verdict's pair is no
    longer drawn.
 
@@ -29,7 +29,6 @@ public/weeks/week06/data/lookalikes.json (the same numbers and the explorer's pe
     python analysis/week06_lookalikes.py --to-read   # print the unread pairs and their sentences
 """
 
-import csv
 import json
 import math
 import os
@@ -41,6 +40,7 @@ from pathlib import Path
 
 import networkx as nx
 import numpy as np
+import tables
 
 sys.path.insert(0, str(Path(__file__).parent))
 import week05_text as t  # noqa: E402
@@ -48,8 +48,8 @@ import week05_text as t  # noqa: E402
 ROOT = Path(__file__).resolve().parents[1]
 OUT = Path(__file__).with_suffix(".json")
 PAGE_OUT = ROOT / "public/weeks/week06/data/lookalikes.json"
-READ = Path(__file__).with_name("week06_pairs_read.csv")
-GENDER = Path(__file__).with_name("week06_gender.csv")
+READ = Path(__file__).with_name("week06_pairs_read.parquet")
+GENDER = Path(__file__).with_name("week06_gender.parquet")
 SEED = 6
 K = 10  # neighbours per page, as in the course's explorable
 NULL_RUNS = 20
@@ -179,8 +179,7 @@ def matched_removal(c, m, names, rng):
 
 
 def gender_labels(c):
-    with GENDER.open() as f:
-        rows = {r["node_id"]: r["gender"] for r in csv.DictReader(line for line in f if not line.startswith("#"))}
+    rows = {r["node_id"]: r["gender"] for r in tables.rows(GENDER)}
     return np.array([rows[i] for i in c.ids])
 
 
@@ -283,9 +282,8 @@ def read_verdicts(c, drawn, to_read):
     """Check every drawn pair has a current verdict; return the verdict rows."""
     verdicts = {}
     if READ.exists():
-        with READ.open() as f:
-            for r in csv.DictReader(line for line in f if not line.startswith("#")):
-                verdicts[(r["representation"], r["a"], r["b"])] = r
+        for r in tables.rows(READ):
+            verdicts[(r["representation"], r["a"], r["b"])] = r
     missing, stale = [], []
     for rep, i, j, words in drawn:
         key = (rep, c.ids[i], c.ids[j])

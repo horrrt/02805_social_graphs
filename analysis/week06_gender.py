@@ -3,7 +3,7 @@
 Week 6 asks whether pages read alike because of pronouns once names are gone.
 To test that, each page needs a gender label that does not come from its own
 text, so this script reads P21 from Wikidata for each node's wikidata_id
-(data/week1_nodes.tsv) and writes analysis/week06_gender.csv. A page about a
+(data/week1_nodes.parquet) and writes analysis/week06_gender.parquet. A page about a
 team or about several characters who share a name usually has no P21; it
 stays "not recorded" and drops out of the gender comparison.
 
@@ -13,7 +13,6 @@ the committed CSV and never the API. Rerun this only to refresh the labels:
     python analysis/week06_gender.py
 """
 
-import csv
 import json
 import sys
 import time
@@ -23,10 +22,14 @@ import urllib.request
 from datetime import date
 from pathlib import Path
 
+import pandas as pd
+
+import tables
+
 sys.path.insert(0, str(Path(__file__).parent))
 import week05_text as t  # noqa: E402
 
-OUT = Path(__file__).with_suffix(".csv")
+OUT = Path(__file__).with_suffix(".parquet")
 API = "https://www.wikidata.org/w/api.php"
 UA = "02805-social-graphs course project (research; github.com/horrrt/02805_social_graphs)"
 # Q-ids of the P21 values the roster uses, named as Wikidata names them.
@@ -65,11 +68,8 @@ def main():
             raise SystemExit(f"{node_id} ({qid}): P21 value {unknown} has no label in LABELS")
         gender = "|".join(LABELS[v] for v in values) or "not recorded"
         rows.append((node_id, qid, gender))
-    with OUT.open("w", newline="") as f:
-        f.write(f"# Wikidata P21 (sex or gender) per node, fetched {date.today()} by week06_gender.py\n")
-        w = csv.writer(f)
-        w.writerow(["node_id", "wikidata_id", "gender"])
-        w.writerows(rows)
+    tables.write(OUT, pd.DataFrame(rows, columns=["node_id", "wikidata_id", "gender"]),
+                 notes=[f"Wikidata P21 (sex or gender) per node, fetched {date.today()} by week06_gender.py"])
     from collections import Counter
     print(Counter(g for *_, g in rows))
 

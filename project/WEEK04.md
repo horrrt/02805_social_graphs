@@ -99,7 +99,7 @@ Layout differences the loader already handles:
   a client, `resolver().label(key)` to display either. An employer is its tax number (FY2022 and FY2023
   borrow it from the same name in later years); a client takes an employer's tax number when the names
   match exactly. Merges beyond a tax number are written down: company families in
-  `analysis/week04_client_aliases.csv`, misspellings in `analysis/week04_name_merges.csv`. The rule for
+  `analysis/week04_client_aliases.parquet`, misspellings in `analysis/week04_name_merges.parquet`. The rule for
   "same company" is at the top of the CSV. Add to those files rather than to your own script.
 - **Run `python analysis/check_pages.py` after changing any page data.** It checks each week's JSON files
   against the fields and cross-references their page scripts read (Pydantic models, one per file).
@@ -120,7 +120,7 @@ Layout differences the loader already handles:
 - **Sectors come from two tables.** `week04_names.naics2(key)` returns the reviewed sector in the alias
   CSV, else the SEC's: `python analysis/week04_sec.py` matches our companies with 5+ filings to the SEC's
   list of listed companies by exact name key, takes each one's SIC code and converts it to a NAICS
-  sector (`analysis/week04_sec_sectors.csv`, 1,640 companies). A name the SEC spells differently stays
+  sector (`analysis/week04_sec_sectors.parquet`, 1,640 companies). A name the SEC spells differently stays
   unlabelled.
 - **Approvals come from USCIS.** `week04_data.py --refs` also fetches the USCIS H-1B Employer Data Hub
   for FY2022 (complete) and FY2023 (partial) into `build/week04/uscis_fy{year}.parquet`. The hub gives

@@ -4,7 +4,6 @@ Run: python analysis/week02_resilience.py
 The website's main results, examples, and downloadable draws come from this file.
 """
 import csv
-import hashlib
 import json
 import platform
 import statistics
@@ -16,6 +15,7 @@ import networkx as nx
 
 from arcade_data import DISPLAY_NAME_OVERRIDES
 from week04_staffing import tracked
+import tables
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "public/assets/data"
@@ -26,15 +26,13 @@ LABELS = ["Spider-Man", "Hulk", "Black Widow", "Doctor Strange"]
 
 
 def load_graph():
-    with (ROOT / "data/week1_nodes.tsv").open() as f:
-        roster = list(csv.DictReader((l for l in f if not l.startswith("#")), delimiter="\t"))
+    roster = tables.rows(ROOT / "data/week1_nodes.parquet")
     for r in roster:
         if r["node_id"] in DISPLAY_NAME_OVERRIDES:
             r["name"] = DISPLAY_NAME_OVERRIDES[r["node_id"]]
     directed = nx.DiGraph()
     directed.add_nodes_from(r["node_id"] for r in roster)
-    with (ROOT / "data/week1_edges.tsv").open() as f:
-        directed.add_edges_from(csv.reader((l for l in f if not l.startswith("#")), delimiter="\t"))
+    directed.add_edges_from(tables.records(ROOT / "data/week1_edges.parquet"))
     undirected = directed.to_undirected()
     giant = max(nx.connected_components(undirected), key=len)
     graph = undirected.subgraph(sorted(giant)).copy()
@@ -161,7 +159,7 @@ def main():
                      "metric": "Remaining articles outside the largest component after removing one named article and all its incident edges.",
                      "selection": "Exploratory: Spider-Man is the highest-degree article. Hulk contrasts a large hub; Black Widow was chosen after inspecting all single-node removals; Doctor Strange is a second large hub with stranded neighbors.",
                      "limitations": "Finite edge-swap chains approximate a null ensemble; longer-run sensitivity is a diagnostic, not proof of uniform sampling. Tail estimates are descriptive, unadjusted across the four displayed cases. Links are article links, not friendships, readership or resilience of a fictional universe.",
-                     "hashes": {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in [ROOT / "data/week1_nodes.tsv", ROOT / "data/week1_edges.tsv"]}},
+                     "hashes": {f"{t}.tsv": tables.digest(ROOT / "data" / f"{t}.parquet") for t in ["week1_nodes", "week1_edges"]}},
         "nodes": [{"id": n, "name": roster[n]["name"], "url": roster[n]["url"], "degree": graph.degree(n),
                    "x": round((positions[n]["x"] - 55) / 605 * 780 + 45, 2),
                    "y": round((positions[n]["y"] - 60) / 520 * 510 + 45, 2)} for n in graph],
