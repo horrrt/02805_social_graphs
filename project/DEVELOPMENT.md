@@ -4,7 +4,7 @@ See the [repository README](../README.md) for an overview of the project.
 
 ## The frozen data
 
-- Snapshot: 26 August 2026; `data/week1_nodes.tsv` and `data/week1_edges.tsv`.
+- Snapshot: 26 August 2026; `data/week1_nodes.parquet` and `data/week1_edges.parquet`.
 - 303 nodes and 1,784 directed links; undirected collapse has 1,434 edges.
 - Weak components: a 277-node core, a nine-node island, 17 isolates.
 - Add the complete roster before adding edges, or the isolates disappear.
@@ -37,8 +37,11 @@ from `requirements.txt`.
 - Counts, wages, dates and yes/no flags in the DOL and USCIS tables are stored as numbers, dates and booleans; `save()` stops on a value that does not parse. Use `frame[col].fillna(False)` for "the filing said yes".
 - Identifiers that look like numbers (FEIN, NAICS, SOC, ZIP, tax ID) stay text, so their leading zeros survive. The lottery tables stay text because their numbers sit beside redaction markers.
 - An older checkout's `build/week04/*.csv.gz` converts, and gains its types, in seconds with `python analysis/week04_data.py --convert --no-tables`. No 14-minute rebuild is needed.
-- The committed rosters in `data/` stay TSV. They are small, diff cleanly, and carry `#` provenance headers.
-- Everything in `public/` stays JSON or CSV, because the browser fetches it.
+- Every committed table is Parquet too: the rosters and migration tables in `data/`, and the tables in `analysis/`, including the ones people review by hand. They go through `analysis/tables.py`: `frame()` for pandas, `rows()` for dicts of strings, `write()` to save. Each keeps its old `#` notes as Parquet metadata.
+- A column takes a number type only when every value prints back as the text it was, so nothing is lost. `tables.text()` rebuilds the old CSV or TSV byte for byte, and `tables.digest()` hashes it, which is why the snapshot hashes recorded before the move still hold.
+- To read or edit a table by hand: `python analysis/tables.py show <table>` prints it as CSV, and `python analysis/tables.py edit <table>` opens it in `$EDITOR` and saves your changes back. `to-csv` and `from-csv` do the same in two steps.
+- To see table changes in `git diff` and `git log -p` as CSV rows, run once per clone, from its root: `git config diff.parquet.textconv "$PWD/.venv-course/bin/python analysis/tables.py show"`. Git does not see an activated environment, so the path names the interpreter.
+- Everything in `public/` stays JSON or CSV, because the browser fetches it. Measured on the Week 4 map data, gzipped JSON is 20–30% smaller in transit than Parquet and decodes 3–7× faster.
 
 To regenerate the analysis and figures:
 

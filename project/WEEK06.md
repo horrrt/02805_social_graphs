@@ -56,7 +56,7 @@ the brief states.
 
 | Opener | Method | Course already has | Null | Hand check | Stability | Reuses | Effort |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| Names or meaning? | TF-IDF with and without names | 4.01 linked in 10; Storm, Frost | Same pages, same TF-IDF, names removed | Closest unlinked pairs sorted into fixed buckets | Deterministic; a second name rule as the check | `week05_text.py`, `week05_copying_ties.csv` | Low |
+| Names or meaning? | TF-IDF with and without names | 4.01 linked in 10; Storm, Frost | Same pages, same TF-IDF, names removed | Closest unlinked pairs sorted into fixed buckets | Deterministic; a second name rule as the check | `week05_text.py`, `week05_copying_ties.parquet` | Low |
 | Textually close, structurally far | TF-IDF cosine vs undirected shortest path | Closest unlinked pairs list | Random pairs; isolates as their own bucket | Read the far pairs | Deterministic | `week05_text.graph()` | Low |
 | Does the representation change the answer? | TF-IDF vs Word2Vec page vectors | none | Seeds `SEED + i` | Disagreements read | Neighbour overlap across seeds | Week 5 search engine | Medium, `gensim` |
 | Recognise a community from its language | Scattertext or LDA on two Louvain communities | none on Marvel | Shuffled labels; held-out pages | High-weight pages read | Louvain and LDA seeds | `week05_communities.py` | Medium, `scattertext` |

@@ -7,19 +7,19 @@ import assert from "node:assert/strict";
 import { existsSync, readFileSync, statSync } from "node:fs";
 import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
+import { parquetReadObjects } from "hyparquet";
+import { compressors } from "hyparquet-compressors";
 import { builtPage, codeFiles, pageStyles } from "./built-page.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const read = (name) => (name.startsWith("out/") ? builtPage(name) : readFileSync(join(ROOT, name), "utf8"));
 
-const tsv = read("data/migration_sources.tsv")
-  .split("\n")
-  .filter((line) => line && !line.startsWith("#"));
-const header = tsv[0].split("\t");
-const rows = tsv.slice(1).map((line) => {
-  const cells = line.split("\t");
-  return Object.fromEntries(header.map((key, i) => [key, cells[i]]));
-});
+// The table is Parquet (analysis/tables.py); an empty cell is null there and "" here.
+const table = readFileSync(join(ROOT, "data/migration_sources.parquet"));
+const rows = (
+  await parquetReadObjects({ file: table.buffer.slice(table.byteOffset, table.byteOffset + table.byteLength), compressors })
+).map((row) => Object.fromEntries(Object.entries(row).map(([key, value]) => [key, value ?? ""])));
+const header = Object.keys(rows[0]);
 
 const catalogue = read("project/MIGRATION_DATA_CATALOGUE.md");
 const questions = read("project/MIGRATION_QUESTIONS.md");

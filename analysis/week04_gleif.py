@@ -5,7 +5,7 @@ they are separate legal entities with their own names and tax numbers. The
 Global Legal Entity Identifier Foundation (GLEIF) publishes every registered
 entity and, for most large ones, its ultimate accounting parent (CC0). This
 script matches our company spellings to that register and proposes family rows
-for week04_client_aliases.csv.
+for week04_client_aliases.parquet.
 
 Method
 - Spellings: every normalized name (week04_names.legal_name for employers and
@@ -32,7 +32,7 @@ Method
     python analysis/week04_gleif.py --write    # also append the proposed rows to the alias table
 
 Output: analysis/week04_gleif.json; with --write, rows appended to
-analysis/week04_client_aliases.csv under a comment naming this script.
+analysis/week04_client_aliases.parquet, with a note naming this script.
 Source: https://www.gleif.org/en/lei-data/gleif-golden-copy (CC0).
 """
 
@@ -45,6 +45,7 @@ from pathlib import Path
 import pandas as pd
 
 import week04_names as names
+import tables
 from week04_data import OUT as BUILD, ROOT, load, save
 from week04_staffing import certified, placements, resolver
 
@@ -245,10 +246,12 @@ def main():
     if args.write and proposed:
         present = set(aliases)
         rows = [r for r in proposed if r["name"] not in present]
-        with open(names.ALIASES, "a", encoding="utf-8") as fh:
-            fh.write("# From GLEIF ultimate parents (analysis/week04_gleif.py), 26 Sep 2026: same parent, same brand.\n")
-            for r in rows:
-                fh.write(f"{r['name']},{r['canonical']},{r['naics2']}\n")
+        table = pd.DataFrame(tables.rows(names.ALIASES))
+        added = pd.DataFrame([{"name": r["name"], "canonical": r["canonical"], "naics2": r["naics2"]} for r in rows])
+        tables.write(names.ALIASES, pd.concat([table, added], ignore_index=True)[list(table.columns)],
+                     notes=tables.notes(names.ALIASES) + [
+                         f"The last {len(rows)} rows: GLEIF ultimate parents (analysis/week04_gleif.py), "
+                         "26 Sep 2026: same parent, same brand."])
         print(f"appended {len(rows)} rows to {names.ALIASES.name}")
 
 

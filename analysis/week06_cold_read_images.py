@@ -10,13 +10,13 @@ week06_cold_read.py reads it. The API answers 429 when asked too fast, so batche
     python analysis/week06_cold_read_images.py   # about 30 seconds
 """
 
-import csv
 import json
 import time
 import urllib.error
 import urllib.parse
 import urllib.request
 from pathlib import Path
+import tables
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = Path(__file__).with_suffix(".json")
@@ -39,8 +39,7 @@ def get(params, tries=6):
 
 
 def main():
-    lines = (line for line in (ROOT / "data/week1_nodes.tsv").open() if not line.startswith("#"))
-    ids = [row["node_id"] for row in csv.DictReader(lines, delimiter="\t")]
+    ids = [row["node_id"] for row in tables.rows(ROOT / "data/week1_nodes.parquet")]
     out = {}
     for i in range(0, len(ids), 50):
         batch = {x.replace("_", " "): x for x in ids[i:i + 50]}

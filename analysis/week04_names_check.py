@@ -17,7 +17,7 @@ work without one:
     python analysis/week04_names_check.py                 # run the checks
     python analysis/week04_names_check.py --build-merges  # rebuild the misspelling list first
 
---build-merges writes week04_name_merges.csv: a client name that is a near
+--build-merges writes week04_name_merges.parquet: a client name that is a near
 copy (rapidfuzz ratio 95 or more) of a name at least five times as common,
 both at least 12 characters, the same digits in both, and never two names that
 bridge to different tax numbers. Every row is a merge anyone can read and undo.
@@ -26,7 +26,6 @@ Output: analysis/week04_names_check.json. Exits non-zero if (c) fails.
 """
 
 import argparse
-import csv
 import json
 import re
 import sys
@@ -38,6 +37,7 @@ from rapidfuzz import fuzz, process
 
 import week04_names as names
 from week04_data import load
+import tables
 
 OUT = Path(__file__).with_suffix(".json")
 YEARS = [2022, 2023, 2024, 2025, 2026]
@@ -122,12 +122,9 @@ def build_merges(emp):
             rows.append({"variant": variant, "target": target, "variant_filings": int(counts[variant]),
                          "target_filings": int(counts[target]), "score": round(score, 1)})
     rows.sort(key=lambda r: (-r["target_filings"], -r["variant_filings"]))
-    with open(names.MERGES, "w", newline="", encoding="utf-8") as fh:
-        fh.write("# Client names that misspell a much more common one; built by "
-                 "week04_names_check.py --build-merges. Delete a row to undo a merge.\n")
-        writer = csv.DictWriter(fh, ["variant", "target", "variant_filings", "target_filings", "score"])
-        writer.writeheader()
-        writer.writerows(rows)
+    tables.write(names.MERGES, pd.DataFrame(rows, columns=["variant", "target", "variant_filings", "target_filings", "score"]),
+                 notes=["Client names that misspell a much more common one; built by "
+                        "week04_names_check.py --build-merges. Delete a row to undo a merge."])
     old.unlink(missing_ok=True)
     names.merges.cache_clear()
     names.client.cache_clear()
@@ -208,7 +205,7 @@ def main():
             failures.append(f"should stay apart: {a!r} and {b!r} are both {key(side, a)}")
     out["regressions"] = {"must_merge": len(MUST_MERGE), "must_not_merge": len(MUST_NOT_MERGE),
                           "failures": failures}
-    merges = pd.read_csv(names.MERGES, comment="#") if names.MERGES.exists() else pd.DataFrame()
+    merges = tables.frame(names.MERGES) if names.MERGES.exists() else pd.DataFrame()
     out["merges"] = {"rows": len(merges), "sample": merges.sample(min(15, len(merges)), random_state=1)
                      .to_dict("records") if len(merges) else []}
     OUT.write_text(json.dumps(out, indent=1) + "\n")

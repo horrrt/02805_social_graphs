@@ -61,7 +61,7 @@ Our site already follows the same split: precomputed JSON from `analysis/`, draw
 | Opener | Method | Reuses from Week 5 | Effort |
 |---|---|---|---|
 | Textually close, structurally far | TF-IDF cosine vs shortest-path distance | `week05_text.py` tokens and its directed `graph()`; distances still to write. The course's `lookalikes.json` already gives 4.01 linked in 10 TF-IDF neighbours against 0.31 at random | Low |
-| Names or meaning? | TF-IDF with and without character names | `week05_copying_ties.csv` (5 of 12 copying clusters are `mantle` ties: one codename, several bearers), Week 5 search engine | Low to medium |
+| Names or meaning? | TF-IDF with and without character names | `week05_copying_ties.parquet` (5 of 12 copying clusters are `mantle` ties: one codename, several bearers), Week 5 search engine | Low to medium |
 | How much does the representation change the answer? | One question asked with two methods (BoW vs TF-IDF, or TF-IDF vs Word2Vec) | Week 5 search engine as the baseline | Medium |
 | Recognise a community from its language | Scattertext or LDA on two Louvain communities, story tested on held-out pages | `week05_communities.py` | Medium; needs `scattertext` |
 | Characters between topics | LDA topic-mixture entropy per page | `week05_text.py` | Medium; LDA is seed-sensitive |

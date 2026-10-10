@@ -18,11 +18,10 @@ Needs the week 4 tables (python analysis/week04_data.py) and, for the ticker
 list, CONTACT_EMAIL=you@student.dtu.dk. Caches the SEC files in
 build/raw/week04/sec/; the SEC asks for at most ten requests a second.
 
-Output: analysis/week04_sec_sectors.csv (company key, CIK, ticker, SEC name,
+Output: analysis/week04_sec_sectors.parquet (company key, CIK, ticker, SEC name,
 SIC, SIC description, NAICS sector), read by week04_names.naics2().
 """
 
-import csv
 import json
 import os
 import time
@@ -34,8 +33,9 @@ import pandas as pd
 import week04_names as names
 from week04_data import RAW
 from week04_staffing import certified, placements, resolver
+import tables
 
-OUT = Path(__file__).with_name("week04_sec_sectors.csv")
+OUT = Path(__file__).with_name("week04_sec_sectors.parquet")
 CACHE = RAW / "sec"
 # www.sec.gov refuses a User-Agent without a contact address; data.sec.gov
 # accepts the project's name. Set CONTACT_EMAIL to fetch the ticker list.
@@ -107,12 +107,9 @@ def main():
             "naics2": sector_of_sic(sic) if sic else "",
             "filings": int(ours[key]),
         })
-    with open(OUT, "w", newline="", encoding="utf-8") as fh:
-        fh.write("# Listed companies matched to week 4 clients and filing firms by exact normalized name; "
-                 "SIC from the SEC submissions API, NAICS sector by week04_sec.sector_of_sic().\n")
-        writer = csv.DictWriter(fh, list(rows[0]))
-        writer.writeheader()
-        writer.writerows(rows)
+    tables.write(OUT, pd.DataFrame(rows, columns=list(rows[0])),
+                 notes=["Listed companies matched to week 4 clients and filing firms by exact normalized name; "
+                        "SIC from the SEC submissions API, NAICS sector by week04_sec.sector_of_sic()."])
     labelled = sum(1 for row in rows if row["naics2"])
     print(f"{len(ours):,} companies with {MIN_FILINGS}+ filings; {len(rows)} matched to the SEC, "
           f"{labelled} with a sector -> {OUT.name}")

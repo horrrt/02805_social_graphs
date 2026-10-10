@@ -159,8 +159,8 @@ under what we did). Nothing else changes: the slot IDs, `slot()` and the kit tes
   Nugent" on other pages rather than "Doctor Spectrum"; fixing that moves section 1's numbers.
 - `words()` lowercases before it matches, and "İ" lowercases to two characters, so "İzmir" splits in two on
   the one page that has it. Section 4 asserts its tokens equal `words()` everywhere else.
-- `data/week4_edges_weighted.tsv` has no header row after its `#` comments. Read it with explicit column
-  names or the first edge becomes the header.
+- `data/week4_edges_weighted.parquet` has columns `source`, `target` and `weight`. The course's TSV had no header
+  row after its `#` comments; the Parquet copy names the columns and keeps the comments as notes.
 - Page lengths run from 1,244 to 87,256 characters, a 70× spread (course data page). Normalise by length
   before comparing pages.
 - The text is rendered prose: templates and infoboxes are gone, section headings and Wikipedia house

@@ -28,7 +28,6 @@ Skips images already on disk, so a rerun only fetches what is new.
     python analysis/week06_portraits.py marveldb     # one source
 """
 
-import csv
 import io
 import json
 import re
@@ -39,6 +38,7 @@ import urllib.parse
 from pathlib import Path
 
 from PIL import Image
+import tables
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "public/play/cold-read/portraits"
@@ -51,8 +51,7 @@ MARVELDB = "https://marvel.fandom.com/api.php?"
 def titles():
     """Each page's title as the game's data names it; five differ from the page id
     (Anne_Weying is "She-Venom (Patricia Robertson)")."""
-    lines = (line for line in (ROOT / "data/week1_nodes.tsv").open() if not line.startswith("#"))
-    return {row["node_id"]: row["name"] for row in csv.DictReader(lines, delimiter="\t")}
+    return {row["node_id"]: row["name"] for row in tables.rows(ROOT / "data/week1_nodes.parquet")}
 
 
 TITLES = titles()

@@ -13,7 +13,6 @@ from __future__ import annotations
 
 import argparse
 import collections
-import csv
 import json
 import pathlib
 import random
@@ -21,30 +20,26 @@ import statistics
 
 import networkx as nx
 
+import tables
+
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-NODES = ROOT / "data" / "migration_nodes.tsv"
-EDGES = ROOT / "data" / "migration_edges.tsv"
+NODES = ROOT / "data" / "migration_nodes.parquet"
+EDGES = ROOT / "data" / "migration_edges.parquet"
 FACTS = ROOT / "analysis" / "week03_facts.json"
 
 
-def read_tsv(path):
-    with path.open(encoding="utf-8") as fh:
-        rows = [line for line in fh if not line.startswith("#")]
-    return list(csv.DictReader(rows, delimiter="\t"))
+def read_table(path):
+    return tables.rows(path)
 
 
 def load():
-    nodes = read_tsv(NODES)
+    nodes = read_table(NODES)
     directed = nx.DiGraph()
     for row in nodes:
         directed.add_node(row["node_id"], **row)
-    with EDGES.open(encoding="utf-8") as fh:
-        for line in fh:
-            if line.startswith("#"):
-                continue
-            source, target = line.rstrip("\n").split("\t")
-            if source in directed and target in directed:
-                directed.add_edge(source, target)
+    for source, target in tables.records(EDGES):
+        if source in directed and target in directed:
+            directed.add_edge(source, target)
     return nodes, directed
 
 

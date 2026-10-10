@@ -29,7 +29,7 @@ Method
   (Publication history, Powers and abilities...), read from the heading lines
   the rendered text keeps; the section shares count both pages of a pair.
 - What ties each cluster's characters (a mantle, a team or a family) is read
-  by hand and kept in analysis/week05_copying_ties.csv; the script stops on a
+  by hand and kept in analysis/week05_copying_ties.parquet; the script stops on a
   cluster with no row and on a row whose cluster no longer forms.
 - Check: are copying pairs linked in the link network (either direction) more
   often than any two pages are, and more often than pairs that share only a
@@ -45,7 +45,6 @@ Read the corpus and the network only through week05_text.
     python analysis/week05_copying.py
 """
 
-import csv
 import itertools
 import json
 import re
@@ -58,12 +57,13 @@ from scipy.stats import binomtest
 
 from check_pages import check
 from week05_text import graph, nodes, pages
+import tables
 
 ROOT = Path(__file__).resolve().parents[1]
 PAGE = ROOT / "public/weeks/week05/data/copying.json"
 # What ties each cluster's characters, read by hand from their pages: they share
 # a mantle (one codename, several bearers), a team, or a family.
-TIES = Path(__file__).with_name("week05_copying_ties.csv")
+TIES = Path(__file__).with_name("week05_copying_ties.parquet")
 N = 8
 N_ALT = 12
 TEMPLATE_PAGES = 10   # an n-gram on more pages than this is house phrasing
@@ -238,9 +238,8 @@ def main():
     page_nodes = [{"id": p, "name": names[p], "cluster": cluster_of[p], "x": pos[p][0], "y": pos[p][1],
                    "copied_tokens": int(net.degree(p, weight="weight"))} for p in sorted(net)]
     ties = {}
-    with TIES.open(newline="", encoding="utf-8") as fh:
-        for row in csv.DictReader(fh):
-            ties[frozenset(row["pages"].split(";"))] = row
+    for row in tables.rows(TIES):
+        ties[frozenset(row["pages"].split(";"))] = row
     stale = sorted(sorted(k) for k in set(ties) - {frozenset(c) for c in clusters})
     if stale:
         raise SystemExit(f"{TIES.name} has rows for clusters that no longer form: {stale}; delete them")

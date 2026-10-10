@@ -198,7 +198,7 @@ def main() -> None:
             print(f"  resize  {out.name} ({size(out)})")
 
     print("\n4. derived data")
-    # data/migration_country_indicators.tsv is committed and is not rebuilt
+    # data/migration_country_indicators.parquet is committed and is not rebuilt
     # here: it comes from the World Bank, one row per country, via
     #   python scripts/migration/fetch_country_layer.py --only worldbank
     # which takes a minute and needs the network. The corridor script reads it

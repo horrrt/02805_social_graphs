@@ -842,5 +842,5 @@
     "null_runs": 100,
     "null_method": "degree- and strength-preserving: double edge swaps between edges of equal weight"
   },
-  "communities_source": "docs/weeks/week05/data/communities.json"
+  "communities_source": "public/weeks/week05/data/communities.json"
 }

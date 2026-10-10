@@ -8,7 +8,6 @@ Every quantity is measured on the real network and on 1,000 draws from each of
 two nulls, and reported as a z-score and an empirical p-value.
 """
 import csv
-import hashlib
 import json
 import platform
 import statistics
@@ -19,6 +18,7 @@ import networkx as nx
 
 from arcade_data import DISPLAY_NAME_OVERRIDES
 from week04_staffing import tracked
+import tables
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "public/assets/data"
@@ -45,15 +45,13 @@ QUANTITIES = [
 
 def load_graph():
     """The week-1 snapshot, undirected, with all 303 nodes added before any edge."""
-    with (ROOT / "data/week1_nodes.tsv").open() as f:
-        roster = list(csv.DictReader((l for l in f if not l.startswith("#")), delimiter="\t"))
+    roster = tables.rows(ROOT / "data/week1_nodes.parquet")
     for r in roster:
         if r["node_id"] in DISPLAY_NAME_OVERRIDES:
             r["name"] = DISPLAY_NAME_OVERRIDES[r["node_id"]]
     directed = nx.DiGraph()
     directed.add_nodes_from(r["node_id"] for r in roster)
-    with (ROOT / "data/week1_edges.tsv").open() as f:
-        directed.add_edges_from(csv.reader((l for l in f if not l.startswith("#")), delimiter="\t"))
+    directed.add_edges_from(tables.records(ROOT / "data/week1_edges.parquet"))
     graph = directed.to_undirected()
     assert (len(directed), directed.number_of_edges()) == (303, 1784)
     assert (len(graph), graph.number_of_edges()) == (303, 1434)
@@ -218,8 +216,8 @@ def main():
             "limitations": "A finite swap chain approximates the null ensemble rather than "
                            "sampling it uniformly. Quantities fixed by a null's construction "
                            "have no z-score, which is the point, not a failure.",
-            "hashes": {p.name: hashlib.sha256(p.read_bytes()).hexdigest()
-                       for p in [ROOT / "data/week1_nodes.tsv", ROOT / "data/week1_edges.tsv"]},
+            "hashes": {f"{t}.tsv": tables.digest(ROOT / "data" / f"{t}.parquet")
+                       for t in ["week1_nodes", "week1_edges"]},
         },
         "paradox": context,
         "quantities": [

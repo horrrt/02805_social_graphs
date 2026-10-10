@@ -26,6 +26,7 @@ from __future__ import annotations
 import argparse
 import collections
 import csv
+import io
 import json
 import pathlib
 import sys
@@ -33,7 +34,9 @@ import urllib.parse
 import urllib.request
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[2] / "analysis"))
 
+import tables  # noqa: E402
 from wikiclients import _request
 
 DESA_URL = (
@@ -227,7 +230,7 @@ def main():
         print("UN DESA international migrant stock")
         path = download(DESA_URL, cache / "undesa_stock_2024.xlsx")
         flows = desa_flows(path, iso_by_m49)
-        with (data / "migration_flows.tsv").open("w", encoding="utf-8") as fh:
+        with io.StringIO() as fh:
             fh.write("# UN DESA International Migrant Stock 2024, Table 1 "
                      "(POP/DB/MIG/Stock/Rev.2024).\n")
             fh.write("# One row per origin -> destination pair: people living in the "
@@ -243,10 +246,11 @@ def main():
                     row["origin_name"], row["destination_name"],
                     *row["stocks"], row["female_2024"],
                 ]) + "\n")
+            tables.save_text(data / "migration_flows.parquet", fh.getvalue())
 
         print(f"UNHCR displacement, {args.year}")
         items = unhcr_year(args.year)
-        with (data / "migration_displacement.tsv").open("w", encoding="utf-8") as fh:
+        with io.StringIO() as fh:
             fh.write(f"# UNHCR Refugee Data Finder, {args.year} "
                      f"(api.unhcr.org/population/v1/population).\n")
             fh.write("# origin = country of origin, asylum = country of asylum. "
@@ -264,6 +268,7 @@ def main():
                     item.get("coo_iso") or "", item.get("coa_iso") or "",
                     item.get("coo_name") or "", item.get("coa_name") or "", *values,
                 ]) + "\n")
+            tables.save_text(data / "migration_displacement.parquet", fh.getvalue())
 
     print("World Bank indicators")
     indicators = {}
@@ -281,7 +286,7 @@ def main():
 
     iso_codes = sorted(set(name_by_iso)
                        | {v for _, values in indicators.values() for v in values})
-    with (data / "migration_country_indicators.tsv").open("w", encoding="utf-8") as fh:
+    with io.StringIO() as fh:
         fh.write("# World Bank open data, one row per country. The year each "
                  "indicator came from is in the column name.\n")
         columns = [f"{name}_{year}" if year else name
@@ -293,6 +298,7 @@ def main():
             cells = [indicators[name][1].get(iso3, "")
                      for name in WORLD_BANK_INDICATORS.values()]
             fh.write("\t".join(str(x) for x in [iso3, name_by_iso[iso3], *cells]) + "\n")
+        tables.save_text(data / "migration_country_indicators.parquet", fh.getvalue())
 
     print("done")
 
