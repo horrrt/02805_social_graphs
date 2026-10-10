@@ -1,4 +1,4 @@
-"""Week 1 site figures. White ground, three-colour palette carried over from notebook 01."""
+"""Week 1 site figures. White ground, three-colour palette."""
 import sys
 from pathlib import Path
 

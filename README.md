@@ -19,7 +19,7 @@ and limitations.
 
 - `src/`: the Next.js website, interactive visualizations and styles.
 - `public/`: datasets, images, fonts and vendored libraries served by the website.
-- `analysis/` and `notebooks/`: reproducible analyses and course exercises.
+- `analysis/`: reproducible analyses.
 - `data/` and `scripts/`: datasets, collection tools and exporters.
 - `tests/`: checks for the website, data and documentation.
 - `project/` and `review/`: methods, project notes, guidelines and review records.
