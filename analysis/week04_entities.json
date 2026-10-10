@@ -1115,7 +1115,7 @@
   "communities": [
    {
     "id": 0,
-    "name": "Level II Software Developers \u00b7 Professional services \u00b7 several metros",
+    "name": "Level II Computer jobs \u00b7 Professional services \u00b7 several metros",
     "profiles": 9707,
     "workers": 235985,
     "x": 647.97,
@@ -1351,7 +1351,7 @@
    },
    {
     "id": 2,
-    "name": "Software Developers \u00b7 Manufacturing \u00b7 San Jose-Sunnyvale-Santa Clara, CA",
+    "name": "Software Developers / Electronics Engineers, Except Computer \u00b7 Manufacturing \u00b7 San Jose-Sunnyvale-Santa Clara, CA",
     "profiles": 9233,
     "workers": 150575,
     "x": 254.74,
@@ -1469,7 +1469,7 @@
    },
    {
     "id": 3,
-    "name": "Level I Physical Therapists \u00b7 Business support \u00b7 several metros",
+    "name": "Level I Healthcare jobs \u00b7 Business support \u00b7 several metros",
     "profiles": 7986,
     "workers": 104513,
     "x": 874.97,
@@ -1587,7 +1587,7 @@
    },
    {
     "id": 4,
-    "name": "Software Developers \u00b7 several metros",
+    "name": "Mixed: mostly healthcare and education jobs \u00b7 several metros",
     "profiles": 30064,
     "workers": 92009,
     "x": 655.86,
@@ -1705,7 +1705,7 @@
    },
    {
     "id": 5,
-    "name": "Software Developers \u00b7 Finance and insurance \u00b7 several metros",
+    "name": "Computer jobs \u00b7 Finance and insurance \u00b7 several metros",
     "profiles": 3760,
     "workers": 90173,
     "x": 506.88,
@@ -1823,7 +1823,7 @@
    },
    {
     "id": 6,
-    "name": "Accountants and Auditors \u00b7 several metros",
+    "name": "Accountants and Auditors / Software Developers \u00b7 several metros",
     "profiles": 5435,
     "workers": 35227,
     "x": 464.07,
@@ -1941,7 +1941,7 @@
    },
    {
     "id": 7,
-    "name": "Civil Engineers \u00b7 several metros",
+    "name": "Mixed: mostly engineering and computer jobs \u00b7 several metros",
     "profiles": 4230,
     "workers": 20462,
     "x": 367.41,
@@ -2059,7 +2059,7 @@
    },
    {
     "id": 8,
-    "name": "Level II Fast Food and Counter Workers \u00b7 several metros",
+    "name": "Mixed: mostly food service and management jobs \u00b7 several metros",
     "profiles": 4511,
     "workers": 18050,
     "x": 394.07,
@@ -2177,7 +2177,7 @@
    },
    {
     "id": 9,
-    "name": "Level II Software Developers \u00b7 Boston-Cambridge-Newton, MA-NH",
+    "name": "Level II Computer jobs \u00b7 Boston-Cambridge-Newton, MA-NH",
     "profiles": 1405,
     "workers": 14582,
     "x": 409.32,
@@ -2292,7 +2292,7 @@
    },
    {
     "id": 10,
-    "name": "Level II Software Developers \u00b7 several metros",
+    "name": "Mixed: mostly computer and transport jobs \u00b7 several metros",
     "profiles": 4107,
     "workers": 12955,
     "x": 455.55,
@@ -2750,7 +2750,7 @@
    },
    {
     "id": 14,
-    "name": "Software Developers \u00b7 Sacramento-Roseville-Folsom, CA",
+    "name": "Computer jobs \u00b7 Sacramento-Roseville-Folsom, CA",
     "profiles": 1248,
     "workers": 3934,
     "x": 455.89,
@@ -2867,7 +2867,7 @@
    },
    {
     "id": 15,
-    "name": "Level II Team Assemblers \u00b7 several metros",
+    "name": "Team Assemblers / Software Developers \u00b7 several metros",
     "profiles": 715,
     "workers": 3052,
     "x": 721.66,
@@ -3082,7 +3082,7 @@
    },
    {
     "id": 17,
-    "name": "Software Developers \u00b7 Professional services \u00b7 Bloomington, IL",
+    "name": "Computer jobs \u00b7 Professional services \u00b7 Bloomington, IL",
     "profiles": 103,
     "workers": 861,
     "x": 810.62,
@@ -3181,7 +3181,7 @@
    }
   ],
   "spacing": 0.38673634708491356,
-  "seconds": 342
+  "seconds": 156
  },
  "companies": {
   "entity": "companies",
@@ -4481,7 +4481,7 @@
    },
    {
     "id": 2,
-    "name": "Level I Physical Therapists \u00b7 several metros",
+    "name": "Level I Healthcare jobs \u00b7 several metros",
     "profiles": 16689,
     "workers": 165238,
     "x": 698.21,
@@ -4835,7 +4835,7 @@
    },
    {
     "id": 5,
-    "name": "Software Developers \u00b7 several metros",
+    "name": "Mixed: mostly computer and engineering jobs \u00b7 several metros",
     "profiles": 18598,
     "workers": 49657,
     "x": 147.59,
@@ -4953,7 +4953,7 @@
    },
    {
     "id": 6,
-    "name": "Level II Fast Food and Counter Workers \u00b7 Hospitality \u00b7 several metros",
+    "name": "Level II Food service jobs \u00b7 Hospitality \u00b7 several metros",
     "profiles": 3120,
     "workers": 11488,
     "x": 84.9,
@@ -5189,7 +5189,7 @@
    },
    {
     "id": 8,
-    "name": "Level II Software Developers \u00b7 Boston-Cambridge-Newton, MA-NH",
+    "name": "Mixed: mostly computer and science jobs \u00b7 Boston-Cambridge-Newton, MA-NH",
     "profiles": 1811,
     "workers": 7750,
     "x": 477.54,
@@ -5532,7 +5532,7 @@
    },
    {
     "id": 11,
-    "name": "Software Developers \u00b7 Mining and energy \u00b7 Houston-Pasadena-The Woodlands, TX",
+    "name": "Software Developers / Mining and Geological Engineers \u00b7 Mining and energy \u00b7 Houston-Pasadena-The Woodlands, TX",
     "profiles": 229,
     "workers": 1067,
     "x": 122.72,
@@ -5737,7 +5737,7 @@
    }
   ],
   "spacing": 0.42958120132163313,
-  "seconds": 284
+  "seconds": 261
  },
  "workers_vs_their_company": {
   "nmi": 0.3913,
