@@ -1,11 +1,7 @@
 {
   "python.defaultInterpreterPath": "${workspaceFolder}/.venv-course/bin/python",
   "python.terminal.activateEnvironment": true,
-  "jupyter.notebookFileRoot": "${fileDirname}",
-  "notebook.output.textLineLimit": 60,
-  "notebook.lineNumbers": "on",
   "files.exclude": {
-    "**/.ipynb_checkpoints": true,
     "**/__pycache__": true
   },
   "github.copilot.chat.codeGeneration.useInstructionFiles": true,
