@@ -12,11 +12,9 @@ week06_cold_read.py reads it. The API answers 429 when asked too fast, so batche
 
 import json
 import time
-import urllib.error
-import urllib.parse
-import urllib.request
 from pathlib import Path
 import tables
+import fetch as web
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = Path(__file__).with_suffix(".json")
@@ -25,17 +23,11 @@ UA = "LogLogLegends/1.0 (DTU 02805 course project; https://github.com/horrrt/028
 SIZE = 320
 
 
-def get(params, tries=6):
-    url = API + "?" + urllib.parse.urlencode(params)
-    for i in range(tries):
-        try:
-            with urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": UA})) as r:
-                return json.load(r)
-        except urllib.error.HTTPError as e:
-            if e.code != 429 or i == tries - 1:
-                raise
-            time.sleep(2 ** (i + 2))
-    raise RuntimeError("unreachable")
+SESSION = web.session(UA)
+
+
+def get(params):
+    return web.json(SESSION, API, params=params)
 
 
 def main():

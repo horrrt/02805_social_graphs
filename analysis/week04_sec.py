@@ -25,7 +25,6 @@ SIC, SIC description, NAICS sector), read by week04_names.naics2().
 import json
 import os
 import time
-import urllib.request
 from pathlib import Path
 
 import pandas as pd
@@ -34,6 +33,7 @@ import week04_names as names
 from week04_data import RAW
 from week04_staffing import certified, placements, resolver
 import tables
+import fetch as web
 
 OUT = Path(__file__).with_name("week04_sec_sectors.parquet")
 CACHE = RAW / "sec"
@@ -48,9 +48,7 @@ def fetch(url, dest):
     if not dest.exists():
         dest.parent.mkdir(parents=True, exist_ok=True)
         agent = f"Mozilla/5.0 (research; {CONTACT})" if CONTACT and "www.sec.gov" in url else AGENT
-        req = urllib.request.Request(url, headers={"User-Agent": agent})
-        with urllib.request.urlopen(req, timeout=60) as r:
-            dest.write_bytes(r.read())
+        dest.write_bytes(web.content(web.session(agent), url, timeout=60))
         time.sleep(0.12)
     return json.loads(dest.read_text())
 

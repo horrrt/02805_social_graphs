@@ -41,6 +41,7 @@ from `requirements.txt`.
 - A column takes a number type only when every value prints back as the text it was, so nothing is lost. `tables.text()` rebuilds the old CSV or TSV byte for byte, and `tables.digest()` hashes it, which is why the snapshot hashes recorded before the move still hold.
 - To read or edit a table by hand: `python analysis/tables.py show <table>` prints it as CSV, and `python analysis/tables.py edit <table>` opens it in `$EDITOR` and saves your changes back. `to-csv` and `from-csv` do the same in two steps.
 - To see table changes in `git diff` and `git log -p` as CSV rows, run once per clone, from its root: `git config diff.parquet.textconv "$PWD/.venv-course/bin/python analysis/tables.py show"`. Git does not see an activated environment, so the path names the interpreter.
+- Scripts download through `analysis/fetch.py`: `fetch.session(user_agent)` is a `requests` session that retries a 429, a 5xx, a timeout or a dropped connection (waiting out any Retry-After) and raises at once on anything else; `fetch.download()` writes via a `.part` file and uses `aria2c` (sixteen connections, resume) when it is on PATH. Each script keeps the User-Agent its service wants.
 - Everything in `public/` stays JSON or CSV, because the browser fetches it. Measured on the Week 4 map data, gzipped JSON is 20–30% smaller in transit than Parquet and decodes 3–7× faster.
 
 To regenerate the analysis and figures:

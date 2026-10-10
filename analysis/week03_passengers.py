@@ -36,10 +36,9 @@ import csv
 import json
 import math
 import pathlib
-import urllib.parse
-import urllib.request
 
 from scipy import stats
+import fetch as web
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 RAW = ROOT / "build" / "raw"
@@ -51,10 +50,7 @@ USER_AGENT = "02805-social-graphs course project (DTU), contact via the reposito
 
 
 def soda(params: dict) -> list[dict]:
-    url = f"{SODA}?{urllib.parse.urlencode(params)}"
-    request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
-    with urllib.request.urlopen(request, timeout=180) as response:
-        return json.loads(response.read())
+    return web.json(web.session(USER_AGENT), SODA, params=params, timeout=180)
 
 
 def airport_countries() -> dict[str, str]:

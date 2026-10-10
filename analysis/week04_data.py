@@ -62,12 +62,12 @@ import os
 import re
 import sys
 import urllib.parse
-import urllib.request
 import zipfile
 from pathlib import Path
 
 import pandas as pd
 import polars as pl
+import fetch as web
 
 ROOT = Path(__file__).resolve().parents[1]
 RAW = ROOT / "build" / "raw" / "week04"
@@ -377,24 +377,8 @@ def check_columns(columns, allowed=frozenset()):
 
 
 def download(url, dest, user_agent=None):
-    """Fetch url to dest via a .part file; rename only when the size matches."""
-    if dest.exists():
-        return dest
-    dest.parent.mkdir(parents=True, exist_ok=True)
-    part = dest.with_suffix(dest.suffix + ".part")
-    headers = {"User-Agent": user_agent} if user_agent else {}
-    print(f"downloading {url}", flush=True)
-    with urllib.request.urlopen(urllib.request.Request(url, headers=headers), timeout=120) as r:
-        expected = r.headers.get("Content-Length")
-        encoded = r.headers.get("Content-Encoding")
-        with open(part, "wb") as fh:
-            while chunk := r.read(1 << 20):
-                fh.write(chunk)
-    # A compressed response reports its size on the wire, not on disk.
-    if expected and not encoded and part.stat().st_size != int(expected):
-        raise SystemExit(f"{dest.name}: got {part.stat().st_size} bytes, expected {expected}")
-    part.rename(dest)
-    return dest
+    """Fetch url to dest via a .part file (fetch.download: aria2c when on PATH)."""
+    return web.download(url, dest, user_agent=user_agent)
 
 
 def find(name, url, local, user_agent=None):

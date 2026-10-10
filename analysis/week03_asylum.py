@@ -35,9 +35,10 @@ import collections
 import json
 import pathlib
 import time
-import urllib.request
 
 from check_pages import check
+import requests
+import fetch as web
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 RAW = ROOT / "build" / "raw"
@@ -66,10 +67,8 @@ def year_slice(year: int, force: bool) -> dict:
         return json.loads(cache.read_text(encoding="utf-8"))
     url = f"{API}?{QUERY}&sinceTimePeriod={year}-01&untilTimePeriod={year}-12"
     print(f"  fetch   {year} … ", end="", flush=True)
-    request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
     started = time.time()
-    with urllib.request.urlopen(request, timeout=600) as response:
-        body = response.read()
+    body = web.content(web.session(USER_AGENT), url, timeout=600)
     cache.write_bytes(body)
     print(f"{len(body) // 1024} KB in {time.time() - started:.0f}s")
     return json.loads(body)
@@ -94,8 +93,8 @@ def main():
     for year in range(args.first, args.last + 1):
         try:
             cube = year_slice(year, args.force)
-        except urllib.error.HTTPError as error:
-            print(f"  {year}: {error.code}, stopping here")
+        except requests.HTTPError as error:
+            print(f"  {year}: {error.response.status_code}, stopping here")
             break
         index = cube["dimension"]
         citizens = index["citizen"]["category"]

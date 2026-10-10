@@ -15,12 +15,11 @@ Edit games.json, never the Markdown: render overwrites it.
 import json
 import re
 import sys
-import time
-import urllib.error
 import urllib.parse
-import urllib.request
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "analysis"))
+import fetch as web  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 DIR = ROOT / "project/games"
@@ -105,20 +104,8 @@ def import_md():
     print(f"imported {sum(len(l['games']) for l in lists)} games in {len(lists)} lists into {DATA.relative_to(ROOT)}")
 
 
-def get(url, params, tries=6):
-    full = url + "?" + urllib.parse.urlencode(params)
-    for i in range(tries):
-        try:
-            with urllib.request.urlopen(urllib.request.Request(full, headers={"User-Agent": UA}), timeout=30) as r:
-                return json.load(r)
-        except urllib.error.HTTPError as e:
-            if e.code not in (429, 503) or i == tries - 1:
-                raise
-        except urllib.error.URLError:
-            if i == tries - 1:
-                raise
-        time.sleep(2 ** (i + 1))
-    raise RuntimeError("unreachable")
+def get(url, params):
+    return web.json(web.session(UA), url, params=params, timeout=30)
 
 
 def search_name(name):

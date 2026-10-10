@@ -68,6 +68,7 @@ from week04_data import RAW, load
 from week04_sec import sector_of_sic
 from week04_staffing import certified, giant_of, graph, placements, resolver, tracked
 import tables
+import fetch as web
 
 OUT = Path(__file__).with_name("week04_wikidata_sectors.parquet")
 SUMMARY = Path(__file__).with_suffix(".json")
@@ -114,8 +115,9 @@ MAX_RETRIES = 6
 
 BUDGET = float(os.environ["WIKIDATA_BUDGET_SECONDS"]) if os.environ.get("WIKIDATA_BUDGET_SECONDS") else None
 
-SESSION = requests.Session()
-SESSION.headers.update({"User-Agent": AGENT})
+# fetch.session with its own retries off: _get below waits out a Retry-After
+# for every worker thread at once, which a per-request retry cannot do.
+SESSION = web.session(AGENT, tries=0)
 REQUESTS_MADE = 0
 REQUESTS_LOCK = threading.Lock()
 CLASS_LOCK = threading.Lock()

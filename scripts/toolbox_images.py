@@ -21,12 +21,13 @@ import json
 import re
 import sys
 import time
-import urllib.error
 import urllib.parse
-import urllib.request
 from concurrent.futures import ThreadPoolExecutor
 from html import unescape
 from pathlib import Path
+import requests
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "analysis"))
+import fetch as web  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 GAMES = ROOT / "project/games/games.json"
@@ -35,23 +36,28 @@ OUT = ROOT / "project/toolbox/images.json"
 UA = "LogLogLegends/1.0 (DTU 02805 course project; https://github.com/horrrt/02805_social_graphs)"
 
 
-def fetch(url, tries=3, timeout=20, method="GET", limit=None):
-    """Status and body; `limit` caps the bytes read (web pages need only their head, API answers need all of it)."""
-    for i in range(tries):
+SESSION = web.session(UA, headers={"Accept": "text/html,application/json,*/*"}, tries=3)
+
+
+def fetch(url, timeout=20, method="GET", limit=None):
+    """Status and body; `limit` caps the bytes read (web pages need only their head, API answers need all of it).
+    A dead page is status 0 or its error status, with no body: it just has no picture."""
+    try:
+        r = SESSION.request(method, url, timeout=timeout, stream=True)
+    except requests.RequestException:
+        return 0, b""
+    with r:
+        if method != "GET" or r.status_code >= 400:
+            return r.status_code, b""
+        body = b""
         try:
-            req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "text/html,application/json,*/*"}, method=method)
-            with urllib.request.urlopen(req, timeout=timeout) as r:
-                return r.status, (r.read(limit) if limit else r.read()) if method == "GET" else b""
-        except urllib.error.HTTPError as e:
-            if e.code in (429, 503) and i < tries - 1:
-                time.sleep(2 ** (i + 2))
-                continue
-            return e.code, b""
-        except Exception:  # noqa: BLE001 - a dead page just has no picture
-            if i == tries - 1:
-                return 0, b""
-            time.sleep(2)
-    return 0, b""
+            for chunk in r.iter_content(1 << 16):
+                body += chunk
+                if limit and len(body) >= limit:
+                    break
+        except requests.RequestException:
+            return 0, b""
+        return r.status_code, body[:limit] if limit else body
 
 
 def og_image(url):

@@ -1,19 +1,18 @@
 """Stretch: re-derive one article's out-links from the live Wikipedia API and
 diff them against the frozen snapshot."""
-import json, re, time, urllib.parse, urllib.request
+import json, re, time
 import pandas as pd, networkx as nx
 import tables
+import fetch as web
 
 UA = "02805-LogLogLegends/1.0 (DTU course project; contact via GitHub horrrt)"
+SESSION = web.session(UA)
 API = "https://en.wikipedia.org/w/api.php"
 
 def wikitext(title):
     q = {"action": "query", "prop": "revisions", "rvprop": "content",
          "rvslots": "main", "format": "json", "formatversion": "2", "titles": title}
-    req = urllib.request.Request(f"{API}?{urllib.parse.urlencode(q)}",
-                                 headers={"User-Agent": UA})
-    with urllib.request.urlopen(req, timeout=30) as r:
-        page = json.load(r)["query"]["pages"][0]
+    page = web.json(SESSION, API, params=q, timeout=30)["query"]["pages"][0]
     return page["revisions"][0]["slots"]["main"]["content"]
 
 LINK = re.compile(r"\[\[([^\[\]|#]+)(?:\|[^\[\]]*)?\]\]")
