@@ -164,7 +164,7 @@ def main_places(lca, lookup, town_lookup):
     city, for the PERM worksites."""
     sites = load(f"worksites_fy{YEAR}")
     sites = sites[sites["CASE_NUMBER"].isin(lca["CASE_NUMBER"])].copy()
-    sites["workers"] = pd.to_numeric(sites["WORKSITE_WORKERS"], errors="coerce").fillna(1)
+    sites["workers"] = sites["WORKSITE_WORKERS"].fillna(1)
     stats = where.locate(sites, lookup, town_lookup)
     abbr = {n.upper(): a for a, n in where.STATE_NAMES.items()}
     st = sites["state"].map(abbr)
@@ -223,7 +223,7 @@ def filings():
     lookup, town_lookup, gaz_names = metro_table()
     lca = filtered(YEAR)
     place, usual, site_stats = main_places(lca, lookup, town_lookup)
-    positions = pd.to_numeric(lca["TOTAL_WORKER_POSITIONS"], errors="coerce").fillna(1).astype(int)
+    positions = lca["TOTAL_WORKER_POSITIONS"].fillna(1).astype(int)
     abbr = {n.upper(): a for a, n in where.STATE_NAMES.items()}
     # A case missing from the worksite file keeps its main row's state.
     fallback = lca["WORKSITE_STATE"].str.upper().str.strip().map(abbr)
@@ -238,7 +238,7 @@ def filings():
         "sector": lca["NAICS_CODE"].map(sector_of_code).values,
         "employer": lca["employer"].values,
         "hq_state": lca["EMPLOYER_STATE"].str.strip().str.upper().values,
-        "placed": np.where(lca["SECONDARY_ENTITY"].str.upper().str.startswith("Y").fillna(False),
+        "placed": np.where(lca["SECONDARY_ENTITY"].fillna(False),
                            "placed at a client", "direct"),
         "weight": positions.values,
     })

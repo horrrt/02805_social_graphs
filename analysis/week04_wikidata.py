@@ -423,7 +423,7 @@ def our_targets():
         rows, _, _ = placements(year, lca)
         year_rows[year] = (lca, rows)
         sites = load(f"worksites_fy{year}")
-        sites = sites[sites["SECONDARY_ENTITY"].str.upper().str.startswith("Y")]
+        sites = sites[sites["SECONDARY_ENTITY"].fillna(False)]
         sites = sites[sites["CASE_NUMBER"].isin(lca["CASE_NUMBER"])]
         for n in sites["SECONDARY_ENTITY_BUSINESS_NAME"]:
             k = resolver().client(n)

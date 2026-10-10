@@ -2,8 +2,9 @@
 
 Downloads the Department of Labor disclosure files for FY2022 to FY2026 (the
 last up to June 2026), keeps only the columns on the allow-lists below, and
-writes one Parquet file per table and year to build/week04/ (gitignored). Every
-week 4 script reads those files through load(); nobody opens the workbooks.
+writes one Parquet file per table and year to build/week04/ (gitignored), with
+numbers, dates and yes/no flags stored as such (see FLAGS below). Every week 4
+script reads those files through load(); nobody opens the workbooks.
 
 A US fiscal year runs from 1 October to 30 September: FY2025 is October 2024
 to September 2025.
@@ -28,7 +29,7 @@ Never commit anything under build/.
     python analysis/week04_data.py --refs             # also the Census, USCIS and BLS reference files
     python analysis/week04_data.py --hub --no-tables  # USCIS approvals per employer, FY2022 to FY2026
     python analysis/week04_data.py --lottery --no-tables  # H-1B lottery registrations, FY2022 to FY2024
-    python analysis/week04_data.py --convert --no-tables  # turn an older build's .csv.gz tables into Parquet
+    python analysis/week04_data.py --convert --no-tables  # bring an older build's tables to Parquet with types
 
 Two more tables come from outside DOL:
 
@@ -510,37 +511,104 @@ def lottery(year, local=()):
     print(f"lottery_fy{year}: {len(table):,} registrations -> build/week04/lottery_fy{year}.parquet")
 
 
+# Columns stored with a real type in the DOL and USCIS tables; every other
+# column stays text. Identifiers that look like numbers (EMPLOYER_FEIN, TAX_ID,
+# NAICS_CODE, SOC_CODE, ZIP) stay text, since a leading zero is part of them.
+# The lottery tables stay text too: their numbers are interleaved with
+# redaction markers that a number type would erase.
+FLAGS = ["SECONDARY_ENTITY", "FULL_TIME_POSITION", "H_1B_DEPENDENT", "WILLFUL_VIOLATOR", "SUPPORT_H1B",
+         "AGENT_REPRESENTING_EMPLOYER", "EMP_WORKER_INTEREST", "IS_MULTIPLE_LOCATIONS", "PROFESSIONAL_OCCUPATION",
+         "REQUIRED_TRAINING", "OTHER_REQ_IS_FULLTIME_EMP", "OTHER_REQ_IS_PAID_EXPERIENCE",
+         "OTHER_REQ_IS_FW_CURRENTLY_WRK", "OTHER_REQ_JOB_COMBO_OCCUP", "OTHER_REQ_JOB_FOREIGN_LANGUAGE",
+         "OTHER_REQ_EMP_LAYOFF"]
+COUNTS = ["TOTAL_WORKER_POSITIONS", "WORKSITE_WORKERS", "TOTAL_WORKSITE_LOCATIONS", "NEW_EMPLOYMENT",
+          "CONTINUED_EMPLOYMENT", "CHANGE_PREVIOUS_EMPLOYMENT", "NEW_CONCURRENT_EMPLOYMENT", "CHANGE_EMPLOYER",
+          "AMENDED_PETITION", "EMP_NUM_PAYROLL", "EMP_YEAR_COMMENCED", "REQUIRED_EXPERIENCE_MONTHS", "FISCAL_YEAR",
+          *(f"{t}_{o}" for t in ("INITIAL", "CONTINUING", "NEW_EMPLOYMENT", "CONTINUATION", "CHANGE_WITH_SAME_EMPLOYER",
+                                 "NEW_CONCURRENT", "CHANGE_OF_EMPLOYER", "AMENDED") for o in ("APPROVAL", "DENIAL"))]
+AMOUNTS = ["PREVAILING_WAGE", "WAGE_RATE_OF_PAY_FROM", "WAGE_RATE_OF_PAY_TO", "PW_WAGE", "JOB_OPP_WAGE_FROM",
+           "JOB_OPP_WAGE_TO"]
+DATES = ["RECEIVED_DATE", "DECISION_DATE", "ORIGINAL_CERT_DATE", "BEGIN_DATE", "END_DATE"]
+TYPED = ("lca_", "worksites_", "perm_", "uscis_")
+YES, NO = {"Y", "YES"}, {"N", "NO"}
+
+
+def retype(frame, name):
+    """Give a polars table of text its real types (see FLAGS, COUNTS, AMOUNTS and
+    DATES), with an empty cell as null. A value that does not parse stops the
+    build instead of turning into a silent null. Columns already typed stay."""
+    if not name.startswith(TYPED):
+        return frame
+    casts = []
+    for col in frame.columns:
+        if frame.schema[col] != pl.String:
+            continue
+        c = pl.col(col)
+        blank = c.str.strip_chars().replace("", None)
+        if col in FLAGS:
+            upper = blank.str.to_uppercase()
+            bad = frame.filter(c.str.strip_chars().ne("") & ~upper.is_in(YES | NO))[col]
+            if len(bad):
+                raise SystemExit(f"{name}.{col}: not a yes/no flag: {bad.unique().head(5).to_list()}")
+            casts.append(pl.when(upper.is_in(YES)).then(True).when(upper.is_in(NO)).then(False)
+                         .otherwise(None).alias(col))
+        elif col in COUNTS:
+            casts.append(blank.str.replace_all(",", "").cast(pl.Float64, strict=True).cast(pl.Int64, strict=True)
+                         .alias(col))
+        elif col in AMOUNTS:
+            casts.append(blank.str.replace_all(",", "").cast(pl.Float64, strict=True).alias(col))
+        elif col in DATES:
+            casts.append(blank.str.slice(0, 10).str.to_date("%Y-%m-%d", strict=True).alias(col))
+    return frame.with_columns(casts) if casts else frame
+
+
 def save(frame, name, folder=OUT):
-    """Write a table as build/week04/<name>.parquet, every column a string and
-    every empty cell "", the shape load() promises. Numbers keep the text a CSV
-    would have held ("3.0", "2022")."""
+    """Write a pandas table as build/week04/<name>.parquet: blanks become "",
+    then the typed columns get their types (retype()); the rest stay text."""
     folder.mkdir(parents=True, exist_ok=True)
-    target = folder / f"{name}.parquet"
-    text = pl.from_pandas(frame.fillna("").astype(str))
+    return _write(retype(pl.from_pandas(frame.fillna("").astype(str)), name), folder / f"{name}.parquet")
+
+
+def _write(frame, target):
     part = target.with_suffix(".parquet.part")
-    text.write_parquet(part, compression="zstd")
+    frame.write_parquet(part, compression="zstd")
     part.rename(target)
     return target
 
 
 def load(name, folder=OUT):
-    """The trimmed table as strings; convert the columns you use yourself."""
+    """A trimmed table as pandas. Text columns are str with "" for a blank cell.
+    A count is int64, or float64 with NaN where a cell was blank; an amount is
+    float64; a date is datetime64; a flag is the nullable "boolean" dtype, NA where
+    the filing left it blank, so write frame[col].fillna(False) for "said yes"."""
     path = folder / f"{name}.parquet"
     if not path.exists():
         raise SystemExit(f"{path.relative_to(ROOT)} is missing: run python analysis/week04_data.py"
                          + (" --convert --no-tables" if path.with_suffix(".csv.gz").exists() else ""))
-    return pl.read_parquet(path).to_pandas()
+    frame = pl.read_parquet(path)
+    flags = [c for c, t in frame.schema.items() if t == pl.Boolean]
+    out = frame.to_pandas()
+    return out.astype({c: "boolean" for c in flags}) if flags else out
 
 
 def convert(folder=OUT):
-    """Turn every <name>.csv.gz an older build left in folder into <name>.parquet,
-    read exactly as load() used to read it. The .csv.gz files stay; delete them
-    once the Parquet copies check out."""
+    """Bring an older build up to date: every <name>.csv.gz becomes <name>.parquet
+    (read as load() first read it), and every all-text <name>.parquet gets its
+    types. The .csv.gz files stay; delete them once the Parquet copies check out."""
     for old in sorted(folder.glob("*.csv.gz")):
         name = old.name.removesuffix(".csv.gz")
+        if (folder / f"{name}.parquet").exists():
+            continue
         frame = pl.read_csv(old, infer_schema=False, empty_string_is_null=False).to_pandas()
         target = save(frame, name, folder)
         print(f"{name}: {len(frame):,} rows -> {target.relative_to(ROOT)}", flush=True)
+    for path in sorted(folder.glob("*.parquet")):
+        frame = pl.read_parquet(path)
+        typed = retype(frame, path.stem)
+        if typed.schema != frame.schema:
+            _write(typed, path)
+            print(f"{path.stem}: typed {sum(typed.schema[c] != frame.schema[c] for c in frame.columns)} columns",
+                  flush=True)
 
 
 def main():
@@ -552,7 +620,7 @@ def main():
     parser.add_argument("--refs", action="store_true", help="also fetch the Census, BLS and O*NET tables")
     parser.add_argument("--hub", action="store_true", help="also fetch the USCIS hub for FY2022 to FY2026")
     parser.add_argument("--lottery", action="store_true", help="also fetch the H-1B lottery registrations")
-    parser.add_argument("--convert", action="store_true", help="turn an older build's .csv.gz tables into Parquet")
+    parser.add_argument("--convert", action="store_true", help="bring an older build's tables to Parquet with types")
     parser.add_argument("--no-tables", action="store_true",
                         help="skip the DOL tables (with --refs, --hub, --lottery or --convert)")
     args = parser.parse_args()

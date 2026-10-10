@@ -122,7 +122,7 @@ def spellings():
         lca = certified(year)
         counts.update(lca["EMPLOYER_NAME"].map(names.legal_name).value_counts().to_dict())
         sites = load(f"worksites_fy{year}")
-        sites = sites[sites["SECONDARY_ENTITY"].str.upper().str.startswith("Y")
+        sites = sites[sites["SECONDARY_ENTITY"].fillna(False)
                       & sites["CASE_NUMBER"].isin(lca["CASE_NUMBER"])]
         counts.update(sites["SECONDARY_ENTITY_BUSINESS_NAME"].map(names.client).dropna().value_counts().to_dict())
         perm = load(f"perm_fy{year}")

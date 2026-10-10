@@ -170,8 +170,8 @@ def modularity_vs_rewiring(giant, rng, label):
 def monthly_series(lca):
     """Certified and placed filings per calendar month, Oct..Jun, from an
     Oct-Jun-windowed period: where the shutdown dip and any backlog show up."""
-    decided = pd.to_datetime(lca["DECISION_DATE"], errors="coerce")
-    placed = lca["SECONDARY_ENTITY"].str.upper().str.startswith("Y")
+    decided = lca["DECISION_DATE"]
+    placed = lca["SECONDARY_ENTITY"].fillna(False)
     month = decided.dt.to_period("M").astype(str)
     total, placed_counts = month.value_counts(), month[placed].value_counts()
     return [{"month": m, "certified_filings": int(total.get(m, 0)), "placed_filings": int(placed_counts.get(m, 0))}
@@ -181,14 +181,14 @@ def monthly_series(lca):
 def build_period(fy, kind, lca_all, placed_cases_with_worksite_row):
     """One (period, window) slice: certified filings kept, and the diagnostics
     that go with narrowing to the window and to real client companies."""
-    decided = pd.to_datetime(lca_all["DECISION_DATE"], errors="coerce")
+    decided = lca_all["DECISION_DATE"]
     bad = int(decided.isna().sum())
     start, end = bounds(fy, kind)
     kept = lca_all[decided.between(start, end)].copy()
     diag = {"rows_before": len(lca_all), "bad_dates": bad,
             "outside_window": len(lca_all) - bad - len(kept), "rows_after": len(kept)}
     rows, placeholder, site_rows = staffing.placements(fy, kept)
-    placed = kept[kept["SECONDARY_ENTITY"].str.upper().str.startswith("Y")]
+    placed = kept[kept["SECONDARY_ENTITY"].fillna(False)]
     main_row_only = int((~placed["CASE_NUMBER"].isin(placed_cases_with_worksite_row)).sum())
     return {"lca": kept, "rows": rows, "diag": diag, "placeholder": placeholder,
             "site_rows": site_rows, "main_row_only": main_row_only}
@@ -201,7 +201,7 @@ def analyze(periods, resolver, rng, tag):
     # 1 · totals.
     def totals_for(fy):
         lca, rows = periods[fy]["lca"], periods[fy]["rows"]
-        placed = lca[lca["SECONDARY_ENTITY"].str.upper().str.startswith("Y")]
+        placed = lca[lca["SECONDARY_ENTITY"].fillna(False)]
         return {
             "certified_filings": int(len(lca)),
             "placed_filings": int(len(placed)), "placed_share": round(len(placed) / len(lca), 4),
@@ -226,7 +226,7 @@ def analyze(periods, resolver, rng, tag):
 
     # 2 · employer kinds, fixed by this window's FY2025.
     lca25 = periods[2025]["lca"].assign(
-        placed=lambda d: d["SECONDARY_ENTITY"].str.upper().str.startswith("Y"))
+        placed=lambda d: d["SECONDARY_ENTITY"].fillna(False))
     firms25 = lca25.groupby("employer").agg(filings=("placed", "size"), placed=("placed", "sum"))
     qualifying = firms25[firms25["filings"] >= MIN_FILINGS].copy()
     qualifying["kind"] = np.where(qualifying["placed"] / qualifying["filings"] >= 0.5, "placing", "direct")
@@ -268,7 +268,7 @@ def analyze(periods, resolver, rng, tag):
 
     # 3 · filing type: new employment vs change of employer, placing vs direct.
     def numeric_flag_share(frame, col):
-        return round(float((pd.to_numeric(frame[col], errors="coerce").fillna(0) > 0).mean()), 4)
+        return round(float((frame[col].fillna(0) > 0).mean()), 4)
 
     def filing_type_for(fy):
         lca = periods[fy]["lca"]
@@ -405,7 +405,7 @@ def main():
     worksite_placed_cases = {}
     for fy in FYS:
         sites = load(f"worksites_fy{fy}")
-        placed_sites = sites[sites["SECONDARY_ENTITY"].str.upper().str.startswith("Y")]
+        placed_sites = sites[sites["SECONDARY_ENTITY"].fillna(False)]
         worksite_placed_cases[fy] = set(placed_sites["CASE_NUMBER"])
 
     windows = {}
@@ -421,8 +421,8 @@ def main():
         windows[kind] = periods
 
     # Verify FY2026's file is already Oct-Jun, rather than assume it.
-    decided26 = pd.to_datetime(raw[2026]["DECISION_DATE"], errors="coerce")
-    received26 = pd.to_datetime(raw[2026]["RECEIVED_DATE"], errors="coerce")
+    decided26 = raw[2026]["DECISION_DATE"]
+    received26 = raw[2026]["RECEIVED_DATE"]
     fy2026_check = {
         "decision_date_min": str(decided26.min().date()), "decision_date_max": str(decided26.max().date()),
         "received_date_min": str(received26.min().date()), "received_date_max": str(received26.max().date()),
