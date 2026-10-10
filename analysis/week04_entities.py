@@ -83,7 +83,9 @@ YEAR = 2025
 RUNS = 100
 NULLS = 20  # the brief's own count of shuffles
 SHUFFLES = 100  # label shuffles per NMI test
-TOP = 12  # communities with their own colour
+TOP = 12  # communities with their own colour, at most
+MIN_SHARE = 0.01  # ... and only those with at least this share of the workers
+LOOSE = 0.5  # a group that holds together less often than this is marked loose
 ALPHA = 0.2  # the disparity filter's cut, as section 1 and exercise 4.11
 MAX_CLIQUES = 20000  # maximal cliques above which k-clique percolation is skipped: networkx compares cliques pairwise
 AMI_MAX_VALUES = 1000
@@ -223,6 +225,9 @@ def filings():
     lookup, town_lookup, gaz_names = metro_table()
     lca = filtered(YEAR)
     place, usual, site_stats = main_places(lca, lookup, town_lookup)
+    # One worker per filing, as a PERM case is one worker. A filing's requested
+    # positions are a ceiling, not hires: Grandison Management requests 40 on
+    # every one of its 1,446 filings, which would count 57,840 workers.
     positions = lca["TOTAL_WORKER_POSITIONS"].fillna(1).astype(int)
     abbr = {n.upper(): a for a, n in where.STATE_NAMES.items()}
     # A case missing from the worksite file keeps its main row's state.
@@ -240,7 +245,7 @@ def filings():
         "hq_state": lca["EMPLOYER_STATE"].str.strip().str.upper().values,
         "placed": np.where(lca["SECONDARY_ENTITY"].fillna(False),
                            "placed at a client", "direct"),
-        "weight": positions.values,
+        "weight": 1,
     })
     placing = intermediaries(lca)
 
@@ -292,7 +297,7 @@ def filings():
     titles = occupation_titles(items)
     places = place_names(sorted(set(items["place"])), gaz_names)
     notes = {
-        "h1b_filings": int(len(h1b)), "h1b_positions": int(h1b["weight"].sum()),
+        "h1b_filings": int(len(h1b)), "h1b_positions_requested": int(positions.sum()),
         "perm_cases": int(len(pm)), "perm_dropped_unreadable_soc": dropped_perm,
         "workers": int(items["weight"].sum()),
         "worksites": site_stats, "perm_worksites": perm_stats,
@@ -478,6 +483,22 @@ def louvain_runs(g, runs, label, weighted=True, profiles=0, per_profile=None):
                             chunksize=max(1, runs // (4 * WORKERS))))
     stamp(f"{label}: {runs} Louvain runs", started)
     return found
+
+
+def holds_together(member, memberships, weight, p):
+    """For each community of `member`: the chance that two of its workers, drawn
+    by weight, share a community in one Louvain seed, averaged over the seeds."""
+    out = []
+    for c in range(int(member.max()) + 1):
+        idx = np.flatnonzero(member == c)
+        w = weight[idx].astype(float)
+        total = w.sum()
+        same = []
+        for mb in memberships:
+            _, inv = np.unique(mb[:p][idx], return_inverse=True)
+            same.append(float((np.bincount(inv, weights=w) ** 2).sum() / total ** 2))
+        out.append(float(np.mean(same)))
+    return out
 
 
 def by_size(membership, weight):
@@ -766,6 +787,24 @@ def occupation_name(shares, majors, level):
     return "Mixed occupations"
 
 
+def tell_apart(communities):
+    """Two groups with one name get told apart: a "several metros" group whose
+    top metro holds a quarter says "mostly" that metro; else the name adds the
+    group's leading occupation; a name still shared adds the top employer."""
+    def shared():
+        names = [c["name"] for c in communities]
+        return [c for c in communities if names.count(c["name"]) > 1]
+    for c in shared():
+        metro, share = c["fields"]["place"]["top"][0]
+        if c["name"].endswith("several metros") and share >= 0.25:
+            c["name"] = c["name"].removesuffix("several metros") + f"mostly {metro}"
+        else:
+            c["name"] += f" · led by {c['fields']['occupation']['top'][0][0]}"
+    for c in shared():
+        if c["top_employers"]:
+            c["name"] += f" · {c['top_employers'][0][0]}"
+
+
 def name_community(profiles, idx, lookups, describe):
     """A community's name from the most common values of each field, by workers."""
     part = profiles.iloc[idx]
@@ -811,6 +850,7 @@ def run(ent):
     member = np.array([remap[c] for c in member])
     member_attr = np.array([remap.get(c, -1) for c in member_all[p:]])
     seeds_nmi = [nmi(memberships[i][:p], memberships[i + 1][:p]) for i in range(0, min(RUNS, 20) - 1, 2)]
+    together = holds_together(member, memberships, w_profiles, p)
     recur = float(np.mean([nmi(memberships[best][:p], mb[:p]) > 0.999 for mb in memberships]))
     null_started = time.time()
     with pool(g, p, per_profile) as ex:
@@ -865,7 +905,9 @@ def run(ent):
             "h1b": int(ent.profiles["h1b"].values[idx].sum()), "perm": int(ent.profiles["perm"].values[idx].sum()),
             "fields": shares, "attribute_nodes": len(own), "attributes": own[:12],
             "top_employers": [[resolver().label(e), int(v)] for e, v in top_employers.items()],
+            "holds_together": round(together[c], 3),
         })
+    tell_apart(communities)
     result = {
         "entity": ent.name, "unit": ent.unit, "year": YEAR, "notes": ent.notes,
         "profiles": p, "attribute_nodes": len(attributes), "links": g.ecount(),
@@ -911,7 +953,10 @@ def page_file(ent, result, member, pagerank):
         prof, member, rank = prof.iloc[order].reset_index(drop=True), member[order], rank[order]
     data = {
         "generated_by": "analysis/week04_entities.py", "entity": ent.name, "unit": ent.unit, "year": YEAR,
-        "dots": ent.dots, "top": TOP, "spacing": round(result["spacing"], 6),
+        "dots": ent.dots, "spacing": round(result["spacing"], 6),
+        # Groups with their own colour: the largest TOP that hold MIN_SHARE of the workers.
+        "top": max(1, sum(1 for c in result["communities"][:TOP] if c["workers"] >= MIN_SHARE * result["workers"])),
+        "loose_below": LOOSE,
         "lookups": {
             "occupation": [[c, ent.lookups["occupation"].get(c, c)] for c in codes["occupation"]],
             "place": [[c, ent.lookups["place"].get(c, c)] for c in codes["place"]],
@@ -927,7 +972,8 @@ def page_file(ent, result, member, pagerank):
             "h1b": [int(v) for v in prof["h1b"]], "perm": [int(v) for v in prof["perm"]],
             "pagerank_rank": [int(r) for r in rank],
         },
-        "communities": [{k: c[k] for k in ("id", "name", "profiles", "workers", "h1b", "perm", "top_employers", "x", "y", "r")}
+        "communities": [{k: c[k] for k in ("id", "name", "profiles", "workers", "h1b", "perm", "top_employers", "x", "y", "r",
+                                           "holds_together")}
                         | {"fields": {f: v["top"] for f, v in c["fields"].items()}} for c in result["communities"]],
         "summary": {k: result[k] for k in ("profiles", "attribute_nodes", "links", "workers", "louvain", "null",
                                            "robustness", "labels")},
