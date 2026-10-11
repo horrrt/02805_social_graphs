@@ -1,4 +1,5 @@
-import PageScripts from "@/components/PageScripts";
+import { CardShell } from "@/features/mockups/CardShell";
+import { EmptyShortlist, Favourite, ReviewInit, Status, Summary, Tools, Viewer } from "@/features/mockups/Review";
 
 export default function Page() {
   return (
@@ -38,85 +39,11 @@ export default function Page() {
             <a href="?collection=marvel">Marvel · 1 concept</a>
           </div>
         </section>
-        <section className="review-tools" aria-label="Review controls" data-js-only="" hidden>
-          <div className="tools-row">
-            <div className="filters" role="group" aria-label="Filter mockups">
-              <button type="button" className="review-button" data-filter="all" aria-pressed="true">
-                All
-                {" "}
-                <span className="filter-count">48</span>
-              </button>
-              {" "}
-              <button type="button" className="review-button" data-filter="data-stories" aria-pressed="false">
-                Data stories
-                {" "}
-                <span className="filter-count">3</span>
-              </button>
-              {" "}
-              <button type="button" className="review-button" data-filter="disney" aria-pressed="false">
-                Modern Disney
-                {" "}
-                <span className="filter-count">3</span>
-              </button>
-              {" "}
-              <button type="button" className="review-button" data-filter="netflix" aria-pressed="false">
-                Netflix
-                {" "}
-                <span className="filter-count">4</span>
-              </button>
-              {" "}
-              <button type="button" className="review-button" data-filter="marvel" aria-pressed="false">
-                Marvel
-                {" "}
-                <span className="filter-count">1</span>
-              </button>
-              {" "}
-              <button type="button" className="review-button" data-filter="comedy" aria-pressed="false">
-                Comic &amp; comedy
-                {" "}
-                <span className="filter-count">8</span>
-              </button>
-              {" "}
-              <button type="button" className="review-button" data-filter="ux" aria-pressed="false">
-                UX principles
-                {" "}
-                <span className="filter-count">3</span>
-              </button>
-              {" "}
-              <button type="button" className="review-button" data-filter="reference" aria-pressed="false">
-                Reference inspired
-                {" "}
-                <span className="filter-count">6</span>
-              </button>
-              {" "}
-              <button type="button" className="review-button" data-filter="original" aria-pressed="false">
-                Original ideas
-                {" "}
-                <span className="filter-count">20</span>
-              </button>
-              {" "}
-              <button type="button" className="review-button" data-filter="saved" aria-pressed="false">
-                My shortlist
-                {" "}
-                <span className="filter-count" id="shortlist-count">0</span>
-              </button>
-            </div>
-            <div className="shortlist-actions">
-              <button type="button" className="review-button primary" id="copy-shortlist" disabled>Copy shortlist</button>
-            </div>
-          </div>
-          <div className="copy-fallback" id="copy-fallback" hidden>
-            <label htmlFor="shortlist-text">Copy this shortlist and paste it into chat.</label>
-            <textarea id="shortlist-text" readOnly />
-          </div>
-        </section>
-        <div className="review-summary">
-          <p id="visible-count">Showing 48 of 48 visual concepts</p>
-          <p id="shortlist-hint" data-js-only="" hidden>Save favourites to make a shortlist. Choices stay in this browser.</p>
-        </div>
-        <p className="sr-only" id="review-status" role="status" aria-live="polite" aria-atomic="true"></p>
+        <Tools />
+        <Summary />
+        <Status />
         <section className="mockup-grid" aria-label="Design and data visualization gallery">
-          <article className="mockup-card" data-mockup="1" id="card-1">
+          <CardShell n={1}>
             <div className="card-topline">
               <span className="mockup-number">01</span>
               <span className="mockup-origin">Original direction</span>
@@ -129,10 +56,10 @@ export default function Page() {
             </h2>
             <div className="card-actions">
               <a className="review-button" href="images/01-control-room.webp" data-open-mockup="1" aria-label="View mockup 1">View full page</a>
-              <button className="review-button" type="button" data-favourite="1" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+              <Favourite n={1} />
             </div>
-          </article>
-          <article className="mockup-card" data-mockup="2" id="card-2">
+          </CardShell>
+          <CardShell n={2}>
             <div className="card-topline">
               <span className="mockup-number">02</span>
               <span className="mockup-origin">Original direction</span>
@@ -145,10 +72,10 @@ export default function Page() {
             </h2>
             <div className="card-actions">
               <a className="review-button" href="images/02-missing-panel.webp" data-open-mockup="2" aria-label="View mockup 2">View full page</a>
-              <button className="review-button" type="button" data-favourite="2" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+              <Favourite n={2} />
             </div>
-          </article>
-          <article className="mockup-card" data-mockup="3" id="card-3">
+          </CardShell>
+          <CardShell n={3}>
             <div className="card-topline">
               <span className="mockup-number">03</span>
               <span className="mockup-origin">Original direction</span>
@@ -161,10 +88,10 @@ export default function Page() {
             </h2>
             <div className="card-actions">
               <a className="review-button" href="images/03-case-file.webp" data-open-mockup="3" aria-label="View mockup 3">View full page</a>
-              <button className="review-button" type="button" data-favourite="3" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+              <Favourite n={3} />
             </div>
-          </article>
-          <article className="mockup-card" data-mockup="4" id="card-4">
+          </CardShell>
+          <CardShell n={4}>
             <div className="card-topline">
               <span className="mockup-number">04</span>
               <span className="mockup-origin">Original direction</span>
@@ -177,10 +104,10 @@ export default function Page() {
             </h2>
             <div className="card-actions">
               <a className="review-button" href="images/04-parallel-universes.webp" data-open-mockup="4" aria-label="View mockup 4">View full page</a>
-              <button className="review-button" type="button" data-favourite="4" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+              <Favourite n={4} />
             </div>
-          </article>
-          <article className="mockup-card" data-mockup="5" id="card-5">
+          </CardShell>
+          <CardShell n={5}>
             <div className="card-topline">
               <span className="mockup-number">05</span>
               <span className="mockup-origin">Original direction</span>
@@ -193,10 +120,10 @@ export default function Page() {
             </h2>
             <div className="card-actions">
               <a className="review-button" href="images/05-metro.webp" data-open-mockup="5" aria-label="View mockup 5">View full page</a>
-              <button className="review-button" type="button" data-favourite="5" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+              <Favourite n={5} />
             </div>
-          </article>
-          <article className="mockup-card" data-mockup="6" id="card-6">
+          </CardShell>
+          <CardShell n={6}>
             <div className="card-topline">
               <span className="mockup-number">06</span>
               <span className="mockup-origin">Original direction</span>
@@ -209,10 +136,10 @@ export default function Page() {
             </h2>
             <div className="card-actions">
               <a className="review-button" href="images/06-museum.webp" data-open-mockup="6" aria-label="View mockup 6">View full page</a>
-              <button className="review-button" type="button" data-favourite="6" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+              <Favourite n={6} />
             </div>
-          </article>
-          <article className="mockup-card" data-mockup="7" id="card-7">
+          </CardShell>
+          <CardShell n={7}>
             <div className="card-topline">
               <span className="mockup-number">07</span>
               <span className="mockup-origin">Original direction</span>
@@ -225,10 +152,10 @@ export default function Page() {
             </h2>
             <div className="card-actions">
               <a className="review-button" href="images/07-newspaper.webp" data-open-mockup="7" aria-label="View mockup 7">View full page</a>
-              <button className="review-button" type="button" data-favourite="7" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+              <Favourite n={7} />
             </div>
-          </article>
-          <article className="mockup-card" data-mockup="8" id="card-8">
+          </CardShell>
+          <CardShell n={8}>
             <div className="card-topline">
               <span className="mockup-number">08</span>
               <span className="mockup-origin">Original direction</span>
@@ -241,10 +168,10 @@ export default function Page() {
             </h2>
             <div className="card-actions">
               <a className="review-button" href="images/08-festival.webp" data-open-mockup="8" aria-label="View mockup 8">View full page</a>
-              <button className="review-button" type="button" data-favourite="8" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+              <Favourite n={8} />
             </div>
-          </article>
-          <article className="mockup-card" data-mockup="9" id="card-9">
+          </CardShell>
+          <CardShell n={9}>
             <div className="card-topline">
               <span className="mockup-number">09</span>
               <span className="mockup-origin">Original direction</span>
@@ -257,10 +184,10 @@ export default function Page() {
             </h2>
             <div className="card-actions">
               <a className="review-button" href="images/09-story-scroll.webp" data-open-mockup="9" aria-label="View mockup 9">View full page</a>
-              <button className="review-button" type="button" data-favourite="9" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+              <Favourite n={9} />
             </div>
-          </article>
-          <article className="mockup-card" data-mockup="10" id="card-10">
+          </CardShell>
+          <CardShell n={10}>
             <div className="card-topline">
               <span className="mockup-number">10</span>
               <span className="mockup-origin">Original direction</span>
@@ -273,10 +200,10 @@ export default function Page() {
             </h2>
             <div className="card-actions">
               <a className="review-button" href="images/10-observatory.webp" data-open-mockup="10" aria-label="View mockup 10">View full page</a>
-              <button className="review-button" type="button" data-favourite="10" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+              <Favourite n={10} />
             </div>
-          </article>
-          <article className="mockup-card" data-mockup="11" id="card-11">
+          </CardShell>
+          <CardShell n={11}>
             <div className="card-topline">
               <span className="mockup-number">11</span>
               <span className="mockup-origin">Original direction</span>
@@ -289,10 +216,10 @@ export default function Page() {
             </h2>
             <div className="card-actions">
               <a className="review-button" href="images/11-notebook.webp" data-open-mockup="11" aria-label="View mockup 11">View full page</a>
-              <button className="review-button" type="button" data-favourite="11" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+              <Favourite n={11} />
             </div>
-          </article>
-          <article className="mockup-card" data-mockup="12" id="card-12">
+          </CardShell>
+          <CardShell n={12}>
             <div className="card-topline">
               <span className="mockup-number">12</span>
               <span className="mockup-origin">Original direction</span>
@@ -305,10 +232,10 @@ export default function Page() {
             </h2>
             <div className="card-actions">
               <a className="review-button" href="images/12-switchboard.webp" data-open-mockup="12" aria-label="View mockup 12">View full page</a>
-              <button className="review-button" type="button" data-favourite="12" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+              <Favourite n={12} />
             </div>
-          </article>
-          <article className="mockup-card" data-mockup="13" id="card-13">
+          </CardShell>
+          <CardShell n={13}>
             <div className="card-topline">
               <span className="mockup-number">13</span>
               <span className="mockup-origin">Original direction</span>
@@ -321,10 +248,10 @@ export default function Page() {
             </h2>
             <div className="card-actions">
               <a className="review-button" href="images/13-cutpaper.webp" data-open-mockup="13" aria-label="View mockup 13">View full page</a>
-              <button className="review-button" type="button" data-favourite="13" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+              <Favourite n={13} />
             </div>
-          </article>
-          <article className="mockup-card" data-mockup="14" id="card-14">
+          </CardShell>
+          <CardShell n={14}>
             <div className="card-topline">
               <span className="mockup-number">14</span>
               <span className="mockup-origin">Original direction</span>
@@ -337,10 +264,10 @@ export default function Page() {
             </h2>
             <div className="card-actions">
               <a className="review-button" href="images/14-arcade.webp" data-open-mockup="14" aria-label="View mockup 14">View full page</a>
-              <button className="review-button" type="button" data-favourite="14" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+              <Favourite n={14} />
             </div>
-          </article>
-          <article className="mockup-card" data-mockup="15" id="card-15">
+          </CardShell>
+          <CardShell n={15}>
             <div className="card-topline">
               <span className="mockup-number">15</span>
               <span className="mockup-origin">Original direction</span>
@@ -353,10 +280,10 @@ export default function Page() {
             </h2>
             <div className="card-actions">
               <a className="review-button" href="images/15-documentary.webp" data-open-mockup="15" aria-label="View mockup 15">View full page</a>
-              <button className="review-button" type="button" data-favourite="15" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+              <Favourite n={15} />
             </div>
-          </article>
-          <article className="mockup-card" data-mockup="16" id="card-16">
+          </CardShell>
+          <CardShell n={16}>
             <div className="card-topline">
               <span className="mockup-number">16</span>
               <span className="mockup-origin">Original direction</span>
@@ -369,10 +296,10 @@ export default function Page() {
             </h2>
             <div className="card-actions">
               <a className="review-button" href="images/16-playground.webp" data-open-mockup="16" aria-label="View mockup 16">View full page</a>
-              <button className="review-button" type="button" data-favourite="16" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+              <Favourite n={16} />
             </div>
-          </article>
-          <article className="mockup-card" data-mockup="17" id="card-17">
+          </CardShell>
+          <CardShell n={17}>
             <div className="card-topline">
               <span className="mockup-number">17</span>
               <span className="mockup-origin">Original direction</span>
@@ -385,10 +312,10 @@ export default function Page() {
             </h2>
             <div className="card-actions">
               <a className="review-button" href="images/17-blueprint.webp" data-open-mockup="17" aria-label="View mockup 17">View full page</a>
-              <button className="review-button" type="button" data-favourite="17" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+              <Favourite n={17} />
             </div>
-          </article>
-          <article className="mockup-card" data-mockup="18" id="card-18">
+          </CardShell>
+          <CardShell n={18}>
             <div className="card-topline">
               <span className="mockup-number">18</span>
               <span className="mockup-origin">Original direction</span>
@@ -401,10 +328,10 @@ export default function Page() {
             </h2>
             <div className="card-actions">
               <a className="review-button" href="images/18-cardtable.webp" data-open-mockup="18" aria-label="View mockup 18">View full page</a>
-              <button className="review-button" type="button" data-favourite="18" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+              <Favourite n={18} />
             </div>
-          </article>
-          <article className="mockup-card" data-mockup="19" id="card-19">
+          </CardShell>
+          <CardShell n={19}>
             <div className="card-topline">
               <span className="mockup-number">19</span>
               <span className="mockup-origin">Original direction</span>
@@ -417,10 +344,10 @@ export default function Page() {
             </h2>
             <div className="card-actions">
               <a className="review-button" href="images/19-outcome-atlas.webp" data-open-mockup="19" aria-label="View mockup 19">View full page</a>
-              <button className="review-button" type="button" data-favourite="19" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+              <Favourite n={19} />
             </div>
-          </article>
-          <article className="mockup-card" data-mockup="20" id="card-20">
+          </CardShell>
+          <CardShell n={20}>
             <div className="card-topline">
               <span className="mockup-number">20</span>
               <span className="mockup-origin">Original direction</span>
@@ -433,10 +360,10 @@ export default function Page() {
             </h2>
             <div className="card-actions">
               <a className="review-button" href="images/20-big-finding.webp" data-open-mockup="20" aria-label="View mockup 20">View full page</a>
-              <button className="review-button" type="button" data-favourite="20" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+              <Favourite n={20} />
             </div>
-          </article>
-          <article className="mockup-card" data-mockup="22" id="card-22">
+          </CardShell>
+          <CardShell n={22}>
             <div className="card-topline">
               <span className="mockup-number">22</span>
               <span className="mockup-origin">Stripe</span>
@@ -449,10 +376,10 @@ export default function Page() {
             </h2>
             <div className="card-actions">
               <a className="review-button" href="images/22-stripe.webp" data-open-mockup="22" aria-label="View mockup 22">View full page</a>
-              <button className="review-button" type="button" data-favourite="22" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+              <Favourite n={22} />
             </div>
-          </article>
-          <article className="mockup-card" data-mockup="23" id="card-23">
+          </CardShell>
+          <CardShell n={23}>
             <div className="card-topline">
               <span className="mockup-number">23</span>
               <span className="mockup-origin">Wait But Why</span>
@@ -465,10 +392,10 @@ export default function Page() {
             </h2>
             <div className="card-actions">
               <a className="review-button" href="images/23-wbw.webp" data-open-mockup="23" aria-label="View mockup 23">View full page</a>
-              <button className="review-button" type="button" data-favourite="23" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+              <Favourite n={23} />
             </div>
-          </article>
-          <article className="mockup-card" data-mockup="24" id="card-24">
+          </CardShell>
+          <CardShell n={24}>
             <div className="card-topline">
               <span className="mockup-number">24</span>
               <span className="mockup-origin">Our World in Data</span>
@@ -481,10 +408,10 @@ export default function Page() {
             </h2>
             <div className="card-actions">
               <a className="review-button" href="images/24-owid.webp" data-open-mockup="24" aria-label="View mockup 24">View full page</a>
-              <button className="review-button" type="button" data-favourite="24" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+              <Favourite n={24} />
             </div>
-          </article>
-          <article className="mockup-card" data-mockup="25" id="card-25">
+          </CardShell>
+          <CardShell n={25}>
             <div className="card-topline">
               <span className="mockup-number">25</span>
               <span className="mockup-origin">McKinsey</span>
@@ -497,10 +424,10 @@ export default function Page() {
             </h2>
             <div className="card-actions">
               <a className="review-button" href="images/25-mckinsey.webp" data-open-mockup="25" aria-label="View mockup 25">View full page</a>
-              <button className="review-button" type="button" data-favourite="25" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+              <Favourite n={25} />
             </div>
-          </article>
-          <article className="mockup-card" data-mockup="26" id="card-26">
+          </CardShell>
+          <CardShell n={26}>
             <div className="card-topline">
               <span className="mockup-number">26</span>
               <span className="mockup-origin">BCG</span>
@@ -513,10 +440,10 @@ export default function Page() {
             </h2>
             <div className="card-actions">
               <a className="review-button" href="images/26-bcg.webp" data-open-mockup="26" aria-label="View mockup 26">View full page</a>
-              <button className="review-button" type="button" data-favourite="26" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+              <Favourite n={26} />
             </div>
-          </article>
-          <article className="mockup-card" data-mockup="27" id="card-27">
+          </CardShell>
+          <CardShell n={27}>
             <div className="card-topline">
               <span className="mockup-number">27</span>
               <span className="mockup-origin">Bain &amp; Company</span>
@@ -529,10 +456,10 @@ export default function Page() {
             </h2>
             <div className="card-actions">
               <a className="review-button" href="images/27-bain.webp" data-open-mockup="27" aria-label="View mockup 27">View full page</a>
-              <button className="review-button" type="button" data-favourite="27" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+              <Favourite n={27} />
             </div>
-          </article>
-          <article className="mockup-card" data-mockup="28" id="card-28">
+          </CardShell>
+          <CardShell n={28}>
             <div className="card-topline">
               <span className="mockup-number">28</span>
               <span className="mockup-origin">UX principles</span>
@@ -546,7 +473,7 @@ export default function Page() {
             <p className="ux-focus">Visible state, immediate feedback and a clear way to undo.</p>
             <div className="card-actions">
               <a className="review-button" href="images/28-guided-experiment.webp" data-open-mockup="28" aria-label="View mockup 28">View full page</a>
-              <button className="review-button" type="button" data-favourite="28" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+              <Favourite n={28} />
             </div>
             <details className="ux-rationale">
               <summary>UX rationale &amp; review notes</summary>
@@ -568,8 +495,8 @@ export default function Page() {
                 Rebuild the generated bars from the data; their lengths are not exact numeric ratios.
               </p>
             </details>
-          </article>
-          <article className="mockup-card" data-mockup="29" id="card-29">
+          </CardShell>
+          <CardShell n={29}>
             <div className="card-topline">
               <span className="mockup-number">29</span>
               <span className="mockup-origin">UX principles</span>
@@ -583,7 +510,7 @@ export default function Page() {
             <p className="ux-focus">Compare results side by side without remembering hidden screens.</p>
             <div className="card-actions">
               <a className="review-button" href="images/29-clear-comparison.webp" data-open-mockup="29" aria-label="View mockup 29">View full page</a>
-              <button className="review-button" type="button" data-favourite="29" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+              <Favourite n={29} />
             </div>
             <details className="ux-rationale">
               <summary>UX rationale &amp; review notes</summary>
@@ -601,8 +528,8 @@ export default function Page() {
                 Remove the unsupported “Typically 1–2” caption. Qualify “most links” as “among these four examples”.
               </p>
             </details>
-          </article>
-          <article className="mockup-card" data-mockup="30" id="card-30">
+          </CardShell>
+          <CardShell n={30}>
             <div className="card-topline">
               <span className="mockup-number">30</span>
               <span className="mockup-origin">UX principles</span>
@@ -616,7 +543,7 @@ export default function Page() {
             <p className="ux-focus">Clear reading routes, meaningful labels and color-independent cues.</p>
             <div className="card-actions">
               <a className="review-button" href="images/30-flexible-reading.webp" data-open-mockup="30" aria-label="View mockup 30">View full page</a>
-              <button className="review-button" type="button" data-favourite="30" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+              <Favourite n={30} />
             </div>
             <details className="ux-rationale">
               <summary>UX rationale &amp; review notes</summary>
@@ -642,8 +569,8 @@ export default function Page() {
                 Rebuild the bars from data. Replace “unusually well connected” with “an unusually large removal effect under this comparison”.
               </p>
             </details>
-          </article>
-          <article className="mockup-card" data-mockup="31" id="card-31">
+          </CardShell>
+          <CardShell n={31}>
             <div className="card-topline">
               <span className="mockup-number">31</span>
               <span className="mockup-origin">xkcd</span>
@@ -657,7 +584,7 @@ export default function Page() {
             <p className="ux-focus">A deadpan comic turns a graph problem into a small visual surprise.</p>
             <div className="card-actions">
               <a className="review-button" href="images/31-xkcd.webp" data-open-mockup="31" aria-label="View mockup 31">View full page</a>
-              <button className="review-button" type="button" data-favourite="31" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+              <Favourite n={31} />
             </div>
             <details className="ux-rationale">
               <summary>Story &amp; interaction</summary>
@@ -670,8 +597,8 @@ export default function Page() {
                 Collapse the methods by default. Use “Same link counts, different wiring” for the shuffled comparison.
               </p>
             </details>
-          </article>
-          <article className="mockup-card" data-mockup="32" id="card-32">
+          </CardShell>
+          <CardShell n={32}>
             <div className="card-topline">
               <span className="mockup-number">32</span>
               <span className="mockup-origin">Mr Bean</span>
@@ -688,7 +615,7 @@ export default function Page() {
             </p>
             <div className="card-actions">
               <a className="review-button" href="images/32-mr-bean.webp" data-open-mockup="32" aria-label="View mockup 32">View full page</a>
-              <button className="review-button" type="button" data-favourite="32" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+              <Favourite n={32} />
             </div>
             <details className="ux-rationale">
               <summary>Story &amp; interaction</summary>
@@ -701,8 +628,8 @@ export default function Page() {
                 Remove the invented names on the five stranded article nodes. Delete “Typically 275.6 together”; the comparison should retain the verified 1.4 average stranded result.
               </p>
             </details>
-          </article>
-          <article className="mockup-card" data-mockup="33" id="card-33">
+          </CardShell>
+          <CardShell n={33}>
             <div className="card-topline">
               <span className="mockup-number">33</span>
               <span className="mockup-origin">Monty Python</span>
@@ -718,7 +645,7 @@ export default function Page() {
             </p>
             <div className="card-actions">
               <a className="review-button" href="images/33-monty-python.webp" data-open-mockup="33" aria-label="View mockup 33">View full page</a>
-              <button className="review-button" type="button" data-favourite="33" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+              <Favourite n={33} />
             </div>
             <details className="ux-rationale">
               <summary>Story &amp; interaction</summary>
@@ -731,8 +658,8 @@ export default function Page() {
                 Render the graph from the verified data; the illustration shows four red nodes next to the “5 stranded” label. State that the shuffle trials are connected networks.
               </p>
             </details>
-          </article>
-          <article className="mockup-card" data-mockup="34" id="card-34">
+          </CardShell>
+          <CardShell n={34}>
             <div className="card-topline">
               <span className="mockup-number">34</span>
               <span className="mockup-origin">Wallace &amp; Gromit</span>
@@ -746,7 +673,7 @@ export default function Page() {
             <p className="ux-focus">An elaborate invention makes one missing link the punchline.</p>
             <div className="card-actions">
               <a className="review-button" href="images/34-wallace-and-gromit.webp" data-open-mockup="34" aria-label="View mockup 34">View full page</a>
-              <button className="review-button" type="button" data-favourite="34" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+              <Favourite n={34} />
             </div>
             <details className="ux-rationale">
               <summary>Story &amp; interaction</summary>
@@ -759,8 +686,8 @@ export default function Page() {
                 State that the shuffled networks remain connected. Keep any claim that an article “matters” specific to fragmentation in this Wikipedia-link experiment.
               </p>
             </details>
-          </article>
-          <article className="mockup-card" data-mockup="35" id="card-35">
+          </CardShell>
+          <CardShell n={35}>
             <div className="card-topline">
               <span className="mockup-number">35</span>
               <span className="mockup-origin">Ricky Gervais</span>
@@ -774,7 +701,7 @@ export default function Page() {
             <p className="ux-focus">A fictional stand-up narrator supplies the setup, reveal and callback.</p>
             <div className="card-actions">
               <a className="review-button" href="images/35-ricky-gervais.webp" data-open-mockup="35" aria-label="View mockup 35">View full page</a>
-              <button className="review-button" type="button" data-favourite="35" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+              <Favourite n={35} />
             </div>
             <details className="ux-rationale">
               <summary>Story &amp; interaction</summary>
@@ -787,8 +714,8 @@ export default function Page() {
                 Render the graph from the verified data; the illustration shows four red nodes next to the “5 stranded” label. State that the shuffle trials are connected networks.
               </p>
             </details>
-          </article>
-          <article className="mockup-card" data-mockup="36" id="card-36">
+          </CardShell>
+          <CardShell n={36}>
             <div className="card-topline">
               <span className="mockup-number">36</span>
               <span className="mockup-origin">The LEGO Movie</span>
@@ -802,7 +729,7 @@ export default function Page() {
             <p className="ux-focus">A cheerful construction scene makes a broken connection easy to understand.</p>
             <div className="card-actions">
               <a className="review-button" href="images/36-lego-movie.webp" data-open-mockup="36" aria-label="View mockup 36">View full page</a>
-              <button className="review-button" type="button" data-favourite="36" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+              <Favourite n={36} />
             </div>
             <details className="ux-rationale">
               <summary>Story &amp; interaction</summary>
@@ -815,8 +742,8 @@ export default function Page() {
                 Replace “same structure” with “the same original degree for each article”. Explain that original links are undirected neighbours and the shuffled networks remain connected.
               </p>
             </details>
-          </article>
-          <article className="mockup-card" data-mockup="37" id="card-37">
+          </CardShell>
+          <CardShell n={37}>
             <div className="card-topline">
               <span className="mockup-number">37</span>
               <span className="mockup-origin">The Muppets</span>
@@ -830,7 +757,7 @@ export default function Page() {
             <p className="ux-focus">An affectionate puppet-show mishap turns the experiment into a short performance.</p>
             <div className="card-actions">
               <a className="review-button" href="images/37-muppets.webp" data-open-mockup="37" aria-label="View mockup 37">View full page</a>
-              <button className="review-button" type="button" data-favourite="37" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+              <Favourite n={37} />
             </div>
             <details className="ux-rationale">
               <summary>Story &amp; interaction</summary>
@@ -843,8 +770,8 @@ export default function Page() {
                 Use the numerical 1.4 average in the shuffle comparison rather than five faded dots, which do not represent that average. State that the shuffled networks remain connected.
               </p>
             </details>
-          </article>
-          <article className="mockup-card" data-mockup="38" id="card-38">
+          </CardShell>
+          <CardShell n={38}>
             <div className="card-topline">
               <span className="mockup-number">38</span>
               <span className="mockup-origin">Wes Anderson</span>
@@ -858,7 +785,7 @@ export default function Page() {
             <p className="ux-focus">A meticulously staged hotel comedy turns the missing article into a visual mystery.</p>
             <div className="card-actions">
               <a className="review-button" href="images/38-wes-anderson.webp" data-open-mockup="38" aria-label="View mockup 38">View full page</a>
-              <button className="review-button" type="button" data-favourite="38" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+              <Favourite n={38} />
             </div>
             <details className="ux-rationale">
               <summary>Story &amp; interaction</summary>
@@ -871,8 +798,8 @@ export default function Page() {
                 Clarify that 277 articles are the connected core used for the experiment, and that the shuffle trials remain connected.
               </p>
             </details>
-          </article>
-          <article className="mockup-card" data-mockup="39" id="card-39">
+          </CardShell>
+          <CardShell n={39}>
             <div className="card-topline">
               <span className="mockup-number">39</span>
               <span className="mockup-origin">Modern Disney</span>
@@ -886,7 +813,7 @@ export default function Page() {
             <p className="ux-focus">A luminous thread leads a small character—and the reader—from discovery to consequence.</p>
             <div className="card-actions">
               <a className="review-button" href="images/39-disney-thread.webp" data-open-mockup="39" aria-label="View mockup 39">View full page</a>
-              <button className="review-button" type="button" data-favourite="39" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+              <Favourite n={39} />
             </div>
             <details className="ux-rationale">
               <summary>Story &amp; interaction</summary>
@@ -899,8 +826,8 @@ export default function Page() {
                 Use the verified network for the final interactive graph. State that the shuffled networks stay connected and preserve each article’s original degree.
               </p>
             </details>
-          </article>
-          <article className="mockup-card" data-mockup="40" id="card-40">
+          </CardShell>
+          <CardShell n={40}>
             <div className="card-topline">
               <span className="mockup-number">40</span>
               <span className="mockup-origin">Modern Disney</span>
@@ -914,7 +841,7 @@ export default function Page() {
             <p className="ux-focus">A warm island journey makes losing a route feel immediate and understandable.</p>
             <div className="card-actions">
               <a className="review-button" href="images/40-disney-lantern.webp" data-open-mockup="40" aria-label="View mockup 40">View full page</a>
-              <button className="review-button" type="button" data-favourite="40" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+              <Favourite n={40} />
             </div>
             <details className="ux-rationale">
               <summary>Story &amp; interaction</summary>
@@ -927,8 +854,8 @@ export default function Page() {
                 Replace “same connection pattern” with “the same original degree for each article”. Render the final graph from verified data rather than the illustrative island scene.
               </p>
             </details>
-          </article>
-          <article className="mockup-card" data-mockup="41" id="card-41">
+          </CardShell>
+          <CardShell n={41}>
             <div className="card-topline">
               <span className="mockup-number">41</span>
               <span className="mockup-origin">Modern Disney</span>
@@ -942,7 +869,7 @@ export default function Page() {
             <p className="ux-focus">An enchanted house makes the reader curious about what changes behind one missing door.</p>
             <div className="card-actions">
               <a className="review-button" href="images/41-disney-doors.webp" data-open-mockup="41" aria-label="View mockup 41">View full page</a>
-              <button className="review-button" type="button" data-favourite="41" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+              <Favourite n={41} />
             </div>
             <details className="ux-rationale">
               <summary>Story &amp; interaction</summary>
@@ -955,8 +882,8 @@ export default function Page() {
                 Correct the small “Real network” heading and describe the comparison as degree-preserving, connected shuffles. Render the final graph from verified data.
               </p>
             </details>
-          </article>
-          <article className="mockup-card" data-mockup="42" id="card-42">
+          </CardShell>
+          <CardShell n={42}>
             <div className="card-topline">
               <span className="mockup-number">42</span>
               <span className="mockup-origin">Netflix</span>
@@ -970,7 +897,7 @@ export default function Page() {
             <p className="ux-focus">A film-like decision point gives visitors a reason to act before revealing the evidence.</p>
             <div className="card-actions">
               <a className="review-button" href="images/42-netflix-cut.webp" data-open-mockup="42" aria-label="View mockup 42">View full page</a>
-              <button className="review-button" type="button" data-favourite="42" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+              <Favourite n={42} />
             </div>
             <details className="ux-rationale">
               <summary>Story &amp; interaction</summary>
@@ -983,8 +910,8 @@ export default function Page() {
                 Explicitly state that shuffled networks remain connected, and distinguish preserved degrees from preserved links. Draw the interactive network from verified data.
               </p>
             </details>
-          </article>
-          <article className="mockup-card" data-mockup="43" id="card-43">
+          </CardShell>
+          <CardShell n={43}>
             <div className="card-topline">
               <span className="mockup-number">43</span>
               <span className="mockup-origin">Netflix</span>
@@ -998,7 +925,7 @@ export default function Page() {
             <p className="ux-focus">A documentary opening turns the removal experiment into a mystery worth following.</p>
             <div className="card-actions">
               <a className="review-button" href="images/43-netflix-missing.webp" data-open-mockup="43" aria-label="View mockup 43">View full page</a>
-              <button className="review-button" type="button" data-favourite="43" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+              <Favourite n={43} />
             </div>
             <details className="ux-rationale">
               <summary>Story &amp; interaction</summary>
@@ -1011,8 +938,8 @@ export default function Page() {
                 Keep 1.4 as a numerical average rather than faded article dots. Add the frozen-data date in the evidence details and render the final network from verified data.
               </p>
             </details>
-          </article>
-          <article className="mockup-card" data-mockup="44" id="card-44">
+          </CardShell>
+          <CardShell n={44}>
             <div className="card-topline">
               <span className="mockup-number">44</span>
               <span className="mockup-origin">Netflix</span>
@@ -1026,7 +953,7 @@ export default function Page() {
             <p className="ux-focus">A short series of chapters turns the analysis into a narrative people can finish.</p>
             <div className="card-actions">
               <a className="review-button" href="images/44-netflix-episodes.webp" data-open-mockup="44" aria-label="View mockup 44">View full page</a>
-              <button className="review-button" type="button" data-favourite="44" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+              <Favourite n={44} />
             </div>
             <details className="ux-rationale">
               <summary>Story &amp; interaction</summary>
@@ -1039,8 +966,8 @@ export default function Page() {
                 The illustration shows four stranded dots beside a label of five; draw the final graph from verified data. Keep 1.4 as a numerical average and state that shuffles are connected before removal.
               </p>
             </details>
-          </article>
-          <article className="mockup-card" data-mockup="45" id="card-45">
+          </CardShell>
+          <CardShell n={45}>
             <div className="card-topline">
               <span className="mockup-number">45</span>
               <span className="mockup-origin">Netflix</span>
@@ -1057,7 +984,7 @@ export default function Page() {
             </p>
             <div className="card-actions">
               <a className="review-button" href="images/45-netflix-worlds.webp" data-open-mockup="45" aria-label="View mockup 45">View full page</a>
-              <button className="review-button" type="button" data-favourite="45" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+              <Favourite n={45} />
             </div>
             <details className="ux-rationale">
               <summary>Story &amp; interaction</summary>
@@ -1070,8 +997,8 @@ export default function Page() {
                 Replace “same connections” with “same degrees”. Shuffles are connected before removal, but can fragment afterwards; replace the “remains connected” outcome with the measured comparison.
               </p>
             </details>
-          </article>
-          <article className="mockup-card" data-mockup="46" id="card-46">
+          </CardShell>
+          <CardShell n={46}>
             <div className="card-topline">
               <span className="mockup-number">46</span>
               <span className="mockup-origin">Marvel</span>
@@ -1087,7 +1014,7 @@ export default function Page() {
             </p>
             <div className="card-actions">
               <a className="review-button" href="images/46-marvel-stark.webp" data-open-mockup="46" aria-label="View mockup 46">View full page</a>
-              <button className="review-button" type="button" data-favourite="46" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+              <Favourite n={46} />
             </div>
             <details className="ux-rationale">
               <summary>Story &amp; interaction</summary>
@@ -1100,8 +1027,8 @@ export default function Page() {
                 Define stranded as outside the largest remaining group, rather than necessarily isolated from one another. State that shuffled networks are connected before removal and add the data snapshot date.
               </p>
             </details>
-          </article>
-          <article className="mockup-card data-story-card" data-mockup="47" id="card-47">
+          </CardShell>
+          <CardShell n={47} className="mockup-card data-story-card">
             <div className="card-topline">
               <span className="mockup-number">47</span>
               <span className="mockup-origin">Data story · verified data</span>
@@ -1118,7 +1045,7 @@ export default function Page() {
                 <p className="ux-review-note">Exact static visualization · snapshot 26 Aug 2026 · interactions proposed</p>
                 <div className="card-actions">
                   <a className="review-button" href="data-figures/removal-census.png" data-open-mockup="47" aria-label="View visualization 47">View visualization</a>
-                  <button className="review-button" type="button" data-favourite="47" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+                  <Favourite n={47} />
                 </div>
                 <details className="ux-rationale">
                   <summary>Interaction &amp; UX</summary>
@@ -1226,8 +1153,8 @@ export default function Page() {
                 </details>
               </div>
             </div>
-          </article>
-          <article className="mockup-card data-story-card" data-mockup="48" id="card-48">
+          </CardShell>
+          <CardShell n={48} className="mockup-card data-story-card">
             <div className="card-topline">
               <span className="mockup-number">48</span>
               <span className="mockup-origin">Data story · verified data</span>
@@ -1246,7 +1173,7 @@ export default function Page() {
                 <p className="ux-review-note">Exact static visualization · snapshot 26 Aug 2026 · interactions proposed</p>
                 <div className="card-actions">
                   <a className="review-button" href="data-figures/black-widow-islands.png" data-open-mockup="48" aria-label="View visualization 48">View visualization</a>
-                  <button className="review-button" type="button" data-favourite="48" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+                  <Favourite n={48} />
                 </div>
                 <details className="ux-rationale">
                   <summary>Interaction &amp; UX</summary>
@@ -1314,8 +1241,8 @@ export default function Page() {
                 </details>
               </div>
             </div>
-          </article>
-          <article className="mockup-card data-story-card" data-mockup="49" id="card-49">
+          </CardShell>
+          <CardShell n={49} className="mockup-card data-story-card">
             <div className="card-topline">
               <span className="mockup-number">49</span>
               <span className="mockup-origin">Data story · verified data</span>
@@ -1334,7 +1261,7 @@ export default function Page() {
                 <p className="ux-review-note">Exact static visualization · snapshot 26 Aug 2026 · interactions proposed</p>
                 <div className="card-actions">
                   <a className="review-button" href="data-figures/shuffled-worlds.png" data-open-mockup="49" aria-label="View visualization 49">View visualization</a>
-                  <button className="review-button" type="button" data-favourite="49" aria-pressed="false" data-js-only="" hidden>Save favourite</button>
+                  <Favourite n={49} />
                 </div>
                 <details className="ux-rationale">
                   <summary>Interaction &amp; UX</summary>
@@ -1414,15 +1341,9 @@ export default function Page() {
                 </details>
               </div>
             </div>
-          </article>
+          </CardShell>
         </section>
-        <section className="empty-shortlist" id="empty-shortlist" hidden>
-          <h2>Your shortlist starts here.</h2>
-          <p>
-            Save any design that catches your eye. Then copy your shortlist and paste it into chat so we know which ones you mean.
-          </p>
-          <button className="review-button primary" type="button" id="show-all">Browse all 49</button>
-        </section>
+        <EmptyShortlist />
         <footer className="review-foot">
           <p>
             Compare the hook, the story, the clarity of the findings and the usefulness of the interaction.
@@ -1430,57 +1351,14 @@ export default function Page() {
           <a href="../weeks/week02/">Return to the current story →</a>
         </footer>
       </main>
-      <dialog className="mockup-viewer" id="mockup-viewer" aria-labelledby="viewer-title" aria-describedby="viewer-note">
-        <header className="viewer-head">
-          <div className="viewer-heading">
-            <div>
-              <h2 id="viewer-title">Full-page mockup</h2>
-              <p>
-                <span id="viewer-origin"></span>
-                {" "}
-                <a id="viewer-reference" href="#" target="_blank" rel="noopener" hidden>Visual reference ↗</a>
-              </p>
-            </div>
-            <button type="button" className="review-button" id="close-viewer" autoFocus>Close</button>
-          </div>
-          <div className="viewer-controls">
-            <button type="button" className="review-button" id="previous-mockup" aria-label="Previous mockup">← Previous</button>
-            <span className="viewer-position" id="viewer-position">1 / 49</span>
-            <button type="button" className="review-button" id="next-mockup" aria-label="Next mockup">Next →</button>
-            <button type="button" className="review-button" id="fit-page" aria-pressed="false">Fit whole page</button>
-            <button type="button" className="review-button" id="viewer-favourite" data-favourite="" aria-pressed="false">Save favourite</button>
-            <button type="button" className="review-button" id="copy-mockup-link">Copy link</button>
-            <a className="review-button" id="open-image" href="images/01-control-room.webp" target="_blank" rel="noopener">Open image ↗</a>
-          </div>
-        </header>
-        <div className="viewer-canvas" id="viewer-canvas" tabIndex={0} role="region" aria-label="Full-page design; scroll to read the complete page">
-          <img id="viewer-image" alt="" decoding="async" />
-        </div>
-        <footer className="viewer-foot">
-          <p className="ux-review-note" id="viewer-correction" hidden></p>
-          <details className="ux-rationale" id="viewer-rationale" hidden>
-            <summary id="viewer-rationale-label">UX rationale &amp; review notes</summary>
-            <p id="viewer-ux-summary"></p>
-            <p className="ux-sources" id="viewer-ux-sources"></p>
-            <p className="ux-review-note" id="viewer-review-note"></p>
-          </details>
-          <p id="viewer-note">
-            Design concept · illustrative network and generated labels. Use arrow keys to move between mockups; Escape closes the viewer.
-          </p>
-          <p className="viewer-status" id="viewer-status" role="status" aria-live="polite" aria-atomic="true"></p>
-          <div className="copy-fallback" id="viewer-copy-fallback" hidden>
-            <label htmlFor="mockup-link-text">Copy this link to share the current mockup.</label>
-            <textarea id="mockup-link-text" readOnly />
-          </div>
-        </footer>
-      </dialog>
+      <Viewer />
+      <ReviewInit />
       <noscript>
         <p className="wide">
           All 49 concept images and the data-story text alternatives are available above. Enable JavaScript to filter designs, save favourites and use the page viewer.
         </p>
       </noscript>
       <script type="application/json" id="mockup-data" dangerouslySetInnerHTML={{ __html: "[{\"number\": 1, \"name\": \"The Network Control Room\", \"image\": \"images/01-control-room.webp\", \"thumbnail\": \"thumbs/01-control-room.webp\", \"width\": 768, \"height\": 2048, \"inspiration\": \"\", \"referenceUrl\": \"\", \"collection\": \"original\"}, {\"number\": 2, \"name\": \"The Missing Panel\", \"image\": \"images/02-missing-panel.webp\", \"thumbnail\": \"thumbs/02-missing-panel.webp\", \"width\": 768, \"height\": 2048, \"inspiration\": \"\", \"referenceUrl\": \"\", \"collection\": \"original\"}, {\"number\": 3, \"name\": \"The Case File\", \"image\": \"images/03-case-file.webp\", \"thumbnail\": \"thumbs/03-case-file.webp\", \"width\": 768, \"height\": 2048, \"inspiration\": \"\", \"referenceUrl\": \"\", \"collection\": \"original\"}, {\"number\": 4, \"name\": \"Parallel Universes — The Full Story\", \"image\": \"images/04-parallel-universes.webp\", \"thumbnail\": \"thumbs/04-parallel-universes.webp\", \"width\": 768, \"height\": 2048, \"inspiration\": \"\", \"referenceUrl\": \"\", \"collection\": \"original\"}, {\"number\": 5, \"name\": \"The Metro Map\", \"image\": \"images/05-metro.webp\", \"thumbnail\": \"thumbs/05-metro.webp\", \"width\": 768, \"height\": 2048, \"inspiration\": \"\", \"referenceUrl\": \"\", \"collection\": \"original\"}, {\"number\": 6, \"name\": \"The Museum of Missing Links\", \"image\": \"images/06-museum.webp\", \"thumbnail\": \"thumbs/06-museum.webp\", \"width\": 772, \"height\": 2038, \"inspiration\": \"\", \"referenceUrl\": \"\", \"collection\": \"original\"}, {\"number\": 7, \"name\": \"The Network Newspaper\", \"image\": \"images/07-newspaper.webp\", \"thumbnail\": \"thumbs/07-newspaper.webp\", \"width\": 793, \"height\": 1983, \"inspiration\": \"\", \"referenceUrl\": \"\", \"collection\": \"original\"}, {\"number\": 8, \"name\": \"The Festival of Connections\", \"image\": \"images/08-festival.webp\", \"thumbnail\": \"thumbs/08-festival.webp\", \"width\": 768, \"height\": 2048, \"inspiration\": \"\", \"referenceUrl\": \"\", \"collection\": \"original\"}, {\"number\": 9, \"name\": \"Follow the Thread\", \"image\": \"images/09-story-scroll.webp\", \"thumbnail\": \"thumbs/09-story-scroll.webp\", \"width\": 768, \"height\": 2048, \"inspiration\": \"\", \"referenceUrl\": \"\", \"collection\": \"original\"}, {\"number\": 10, \"name\": \"The Network Observatory\", \"image\": \"images/10-observatory.webp\", \"thumbnail\": \"thumbs/10-observatory.webp\", \"width\": 763, \"height\": 2061, \"inspiration\": \"\", \"referenceUrl\": \"\", \"collection\": \"original\"}, {\"number\": 11, \"name\": \"The Open Field Notebook\", \"image\": \"images/11-notebook.webp\", \"thumbnail\": \"thumbs/11-notebook.webp\", \"width\": 768, \"height\": 2048, \"inspiration\": \"\", \"referenceUrl\": \"\", \"collection\": \"original\"}, {\"number\": 12, \"name\": \"The Connection Switchboard\", \"image\": \"images/12-switchboard.webp\", \"thumbnail\": \"thumbs/12-switchboard.webp\", \"width\": 768, \"height\": 2048, \"inspiration\": \"\", \"referenceUrl\": \"\", \"collection\": \"original\"}, {\"number\": 13, \"name\": \"The Cut-Paper Atlas\", \"image\": \"images/13-cutpaper.webp\", \"thumbnail\": \"thumbs/13-cutpaper.webp\", \"width\": 768, \"height\": 2046, \"inspiration\": \"\", \"referenceUrl\": \"\", \"collection\": \"original\"}, {\"number\": 14, \"name\": \"The Prediction Arcade\", \"image\": \"images/14-arcade.webp\", \"thumbnail\": \"thumbs/14-arcade.webp\", \"width\": 768, \"height\": 2048, \"inspiration\": \"\", \"referenceUrl\": \"\", \"collection\": \"original\"}, {\"number\": 15, \"name\": \"The Network Documentary\", \"image\": \"images/15-documentary.webp\", \"thumbnail\": \"thumbs/15-documentary.webp\", \"width\": 768, \"height\": 2048, \"inspiration\": \"\", \"referenceUrl\": \"\", \"collection\": \"original\"}, {\"number\": 16, \"name\": \"The Connection Playground\", \"image\": \"images/16-playground.webp\", \"thumbnail\": \"thumbs/16-playground.webp\", \"width\": 768, \"height\": 2048, \"inspiration\": \"\", \"referenceUrl\": \"\", \"collection\": \"original\"}, {\"number\": 17, \"name\": \"A Blueprint for Connection\", \"image\": \"images/17-blueprint.webp\", \"thumbnail\": \"thumbs/17-blueprint.webp\", \"width\": 785, \"height\": 2004, \"inspiration\": \"\", \"referenceUrl\": \"\", \"collection\": \"original\"}, {\"number\": 18, \"name\": \"The Article Card Table\", \"image\": \"images/18-cardtable.webp\", \"thumbnail\": \"thumbs/18-cardtable.webp\", \"width\": 770, \"height\": 2043, \"inspiration\": \"\", \"referenceUrl\": \"\", \"collection\": \"original\"}, {\"number\": 19, \"name\": \"The Atlas of Four Outcomes\", \"image\": \"images/19-outcome-atlas.webp\", \"thumbnail\": \"thumbs/19-outcome-atlas.webp\", \"width\": 793, \"height\": 1983, \"inspiration\": \"\", \"referenceUrl\": \"\", \"collection\": \"original\"}, {\"number\": 20, \"name\": \"The Big Finding\", \"image\": \"images/20-big-finding.webp\", \"thumbnail\": \"thumbs/20-big-finding.webp\", \"width\": 768, \"height\": 2048, \"inspiration\": \"\", \"referenceUrl\": \"\", \"collection\": \"original\"}, {\"number\": 22, \"name\": \"The Hidden Infrastructure\", \"image\": \"images/22-stripe.webp\", \"thumbnail\": \"thumbs/22-stripe.webp\", \"width\": 768, \"height\": 2048, \"inspiration\": \"Stripe\", \"referenceUrl\": \"https://stripe.com/\", \"collection\": \"reference\"}, {\"number\": 23, \"name\": \"Wait, Where Did Everyone Go?\", \"image\": \"images/23-wbw.webp\", \"thumbnail\": \"thumbs/23-wbw.webp\", \"width\": 768, \"height\": 2048, \"inspiration\": \"Wait But Why\", \"referenceUrl\": \"https://waitbutwhy.com/2020/09/universe.html\", \"collection\": \"reference\"}, {\"number\": 24, \"name\": \"Our Network in Data\", \"image\": \"images/24-owid.webp\", \"thumbnail\": \"thumbs/24-owid.webp\", \"width\": 797, \"height\": 1974, \"inspiration\": \"Our World in Data\", \"referenceUrl\": \"https://ourworldindata.org/\", \"collection\": \"reference\"}, {\"number\": 25, \"name\": \"The Network Resilience Brief\", \"image\": \"images/25-mckinsey.webp\", \"thumbnail\": \"thumbs/25-mckinsey.webp\", \"width\": 768, \"height\": 2048, \"inspiration\": \"McKinsey\", \"referenceUrl\": \"https://pages.mckinsey.com/GEI-report\", \"collection\": \"reference\"}, {\"number\": 26, \"name\": \"Structure Shapes Outcomes\", \"image\": \"images/26-bcg.webp\", \"thumbnail\": \"thumbs/26-bcg.webp\", \"width\": 774, \"height\": 2032, \"inspiration\": \"BCG\", \"referenceUrl\": \"https://www.bcg.com/\", \"collection\": \"reference\"}, {\"number\": 27, \"name\": \"The Result, Clearly\", \"image\": \"images/27-bain.webp\", \"thumbnail\": \"thumbs/27-bain.webp\", \"width\": 802, \"height\": 1960, \"inspiration\": \"Bain & Company\", \"referenceUrl\": \"https://view.ceros.com/bain/m-and-a-report-2024-2-3-1/p/1\", \"collection\": \"reference\"}, {\"number\": 28, \"name\": \"One Decision at a Time\", \"width\": 768, \"height\": 2048, \"uxSummary\": \"Keep the selected article and result beside the controls, with a visible Restore article action. Put secondary methods behind labeled disclosures. This applies visibility of system status, user control and progressive disclosure.\", \"uxSources\": [{\"title\": \"Nielsen Norman Group: usability heuristics\", \"url\": \"https://www.nngroup.com/articles/ten-usability-heuristics/\"}, {\"title\": \"Nielsen Norman Group: progressive disclosure\", \"url\": \"https://www.nngroup.com/articles/progressive-disclosure/\"}], \"reviewNote\": \"Rebuild the generated bars from the data; their lengths are not exact numeric ratios.\", \"image\": \"images/28-guided-experiment.webp\", \"thumbnail\": \"thumbs/28-guided-experiment.webp\", \"inspiration\": \"\", \"referenceUrl\": \"\", \"collection\": \"ux\"}, {\"number\": 29, \"name\": \"See the Difference\", \"width\": 768, \"height\": 2048, \"uxSummary\": \"Keep real and shuffled results side by side with shared labels and a visible article selection. A four-row results table supports comparison without recalling another screen. This applies recognition over recall, consistency and clear grouping.\", \"uxSources\": [{\"title\": \"Nielsen Norman Group: usability heuristics\", \"url\": \"https://www.nngroup.com/articles/ten-usability-heuristics/\"}], \"reviewNote\": \"Remove the unsupported “Typically 1–2” caption. Qualify “most links” as “among these four examples”.\", \"image\": \"images/29-clear-comparison.webp\", \"thumbnail\": \"thumbs/29-clear-comparison.webp\", \"inspiration\": \"\", \"referenceUrl\": \"\", \"collection\": \"ux\"}, {\"number\": 30, \"name\": \"Read It Your Way\", \"width\": 768, \"height\": 2048, \"uxSummary\": \"Offer direct routes to findings, the experiment and evidence. Pair node colors with shapes and labels, expose an article-list alternative and use roomy controls. This applies flexible navigation, color-independent meaning and easier target selection.\", \"uxSources\": [{\"title\": \"Nielsen Norman Group: usability heuristics\", \"url\": \"https://www.nngroup.com/articles/ten-usability-heuristics/\"}, {\"title\": \"W3C: use of color\", \"url\": \"https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html\"}, {\"title\": \"W3C: target size\", \"url\": \"https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html\"}], \"reviewNote\": \"Rebuild the bars from data. Replace “unusually well connected” with “an unusually large removal effect under this comparison”.\", \"image\": \"images/30-flexible-reading.webp\", \"thumbnail\": \"thumbs/30-flexible-reading.webp\", \"inspiration\": \"\", \"referenceUrl\": \"\", \"collection\": \"ux\"}, {\"number\": 31, \"name\": \"A Small Graph Problem\", \"image\": \"images/31-xkcd.webp\", \"thumbnail\": \"thumbs/31-xkcd.webp\", \"width\": 768, \"height\": 2046, \"inspiration\": \"xkcd\", \"referenceUrl\": \"\", \"collection\": \"comedy\", \"rationaleLabel\": \"Story & interaction\", \"uxSummary\": \"A short setup and punchline introduce the five stranded articles. Sparse sketch artwork keeps attention on the labeled experiment, immediate result and undo action.\", \"reviewNote\": \"Collapse the methods by default. Use “Same link counts, different wiring” for the shuffled comparison.\"}, {\"number\": 32, \"name\": \"Bean Breaks the Network\", \"image\": \"images/32-mr-bean.webp\", \"thumbnail\": \"thumbs/32-mr-bean.webp\", \"width\": 768, \"height\": 2048, \"inspiration\": \"Mr Bean\", \"referenceUrl\": \"\", \"collection\": \"comedy\", \"rationaleLabel\": \"Story & interaction\", \"uxSummary\": \"A sequence of expressions and actions explains removal and consequence before any detailed reading. Explicit scientific labels and a visible reset make the interaction understandable.\", \"reviewNote\": \"Remove the invented names on the five stranded article nodes. Delete “Typically 275.6 together”; the comparison should retain the verified 1.4 average stranded result.\", \"correctionNotice\": \"Image correction needed: ignore “275.6 together” and the invented names of the stranded articles.\"}, {\"number\": 33, \"name\": \"The Department of Silly Links\", \"image\": \"images/33-monty-python.webp\", \"thumbnail\": \"thumbs/33-monty-python.webp\", \"width\": 768, \"height\": 2048, \"inspiration\": \"Monty Python\", \"referenceUrl\": \"\", \"collection\": \"comedy\", \"rationaleLabel\": \"Story & interaction\", \"uxSummary\": \"The collage supplies the opening joke; a clean white experiment area keeps the action, result and reset clear. A straight numerical comparison closes the story.\", \"reviewNote\": \"Render the graph from the verified data; the illustration shows four red nodes next to the “5 stranded” label. State that the shuffle trials are connected networks.\"}, {\"number\": 34, \"name\": \"The Link-O-Matic\", \"image\": \"images/34-wallace-and-gromit.webp\", \"thumbnail\": \"thumbs/34-wallace-and-gromit.webp\", \"width\": 768, \"height\": 2048, \"inspiration\": \"Wallace & Gromit\", \"referenceUrl\": \"\", \"collection\": \"comedy\", \"rationaleLabel\": \"Story & interaction\", \"uxSummary\": \"Tactile invention scenes frame the graph as something visitors can investigate. Conventional text controls remain clear beside the playful machinery and a compact evidence summary.\", \"reviewNote\": \"State that the shuffled networks remain connected. Keep any claim that an article “matters” specific to fragmentation in this Wikipedia-link experiment.\"}, {\"number\": 35, \"name\": \"The Network Roast\", \"image\": \"images/35-ricky-gervais.webp\", \"thumbnail\": \"thumbs/35-ricky-gervais.webp\", \"width\": 768, \"height\": 2048, \"inspiration\": \"Ricky Gervais\", \"referenceUrl\": \"\", \"collection\": \"comedy\", \"rationaleLabel\": \"Story & interaction\", \"uxSummary\": \"The theatrical opening draws attention to the result, followed by a quieter experiment and evidence reveal. The portrait is part of an unofficial visual concept; no dialogue or endorsement is attributed to Ricky Gervais.\", \"reviewNote\": \"Render the graph from the verified data; the illustration shows four red nodes next to the “5 stranded” label. State that the shuffle trials are connected networks.\"}, {\"number\": 36, \"name\": \"Everything Is Connected\", \"image\": \"images/36-lego-movie.webp\", \"thumbnail\": \"thumbs/36-lego-movie.webp\", \"width\": 768, \"height\": 2048, \"inspiration\": \"The LEGO Movie\", \"referenceUrl\": \"\", \"collection\": \"comedy\", \"rationaleLabel\": \"Story & interaction\", \"uxSummary\": \"Building and unbuilding a physical model creates a clear setup and consequence. The experiment follows the same idea with visible controls, a direct result and an easy restore action.\", \"reviewNote\": \"Replace “same structure” with “the same original degree for each article”. Explain that original links are undirected neighbours and the shuffled networks remain connected.\"}, {\"number\": 37, \"name\": \"The Great Graph Show\", \"image\": \"images/37-muppets.webp\", \"thumbnail\": \"thumbs/37-muppets.webp\", \"width\": 768, \"height\": 2048, \"inspiration\": \"The Muppets\", \"referenceUrl\": \"\", \"collection\": \"comedy\", \"rationaleLabel\": \"Story & interaction\", \"uxSummary\": \"A playful stage scene introduces the surprise, then the curtain gives way to a calm experiment area. Large controls, explicit results and optional evidence keep the science easy to follow.\", \"reviewNote\": \"Use the numerical 1.4 average in the shuffle comparison rather than five faded dots, which do not represent that average. State that the shuffled networks remain connected.\"}, {\"number\": 38, \"name\": \"The Grand Link Hotel\", \"image\": \"images/38-wes-anderson.webp\", \"thumbnail\": \"thumbs/38-wes-anderson.webp\", \"width\": 768, \"height\": 2048, \"inspiration\": \"Wes Anderson\", \"referenceUrl\": \"\", \"collection\": \"comedy\", \"rationaleLabel\": \"Story & interaction\", \"uxSummary\": \"Symmetry and deadpan miniature scenes create a distinctive opening, while a clear finding and conventional experiment controls guide the reader. The final scene returns to the restore action and closes the story.\", \"reviewNote\": \"Clarify that 277 articles are the connected core used for the experiment, and that the shuffle trials remain connected.\"}, {\"number\": 39, \"name\": \"The Thread That Holds Us\", \"image\": \"images/39-disney-thread.webp\", \"thumbnail\": \"thumbs/39-disney-thread.webp\", \"width\": 768, \"height\": 2048, \"inspiration\": \"Modern Disney\", \"referenceUrl\": \"\", \"collection\": \"disney\", \"rationaleLabel\": \"Story & interaction\", \"uxSummary\": \"A guided scroll follows one luminous connection through three story beats. A clearly labeled removal and restore action turns the reveal into an understandable experiment.\", \"reviewNote\": \"Use the verified network for the final interactive graph. State that the shuffled networks stay connected and preserve each article’s original degree.\"}, {\"number\": 40, \"name\": \"The Lantern Crossing\", \"image\": \"images/40-disney-lantern.webp\", \"thumbnail\": \"thumbs/40-disney-lantern.webp\", \"width\": 809, \"height\": 1942, \"inspiration\": \"Modern Disney\", \"referenceUrl\": \"\", \"collection\": \"disney\", \"rationaleLabel\": \"Story & interaction\", \"uxSummary\": \"A voyage uses three spacious chapters and a direct reveal. Readable result labels sit beside the visual consequence, while optional evidence stays closed until requested.\", \"reviewNote\": \"Replace “same connection pattern” with “the same original degree for each article”. Render the final graph from verified data rather than the illustrative island scene.\"}, {\"number\": 41, \"name\": \"The House of Hidden Connections\", \"image\": \"images/41-disney-doors.webp\", \"thumbnail\": \"thumbs/41-disney-doors.webp\", \"width\": 768, \"height\": 2048, \"inspiration\": \"Modern Disney\", \"referenceUrl\": \"\", \"collection\": \"disney\", \"rationaleLabel\": \"Story & interaction\", \"uxSummary\": \"A set of four labeled doors offers a clear choice. The revealed outcome and the return action stay in the same place, while the lower page explains the comparison in plain language.\", \"reviewNote\": \"Correct the small “Real network” heading and describe the comparison as degree-preserving, connected shuffles. Render the final graph from verified data.\"}, {\"number\": 42, \"name\": \"Choose the Cut\", \"image\": \"images/42-netflix-cut.webp\", \"thumbnail\": \"thumbs/42-netflix-cut.webp\", \"width\": 768, \"height\": 2048, \"inspiration\": \"Netflix\", \"referenceUrl\": \"\", \"collection\": \"netflix\", \"rationaleLabel\": \"Story & interaction\", \"uxSummary\": \"Four equal choices communicate the experiment clearly. The selected path exposes the result immediately, with an obvious rewind action and a stable comparison below.\", \"reviewNote\": \"Explicitly state that shuffled networks remain connected, and distinguish preserved degrees from preserved links. Draw the interactive network from verified data.\"}, {\"number\": 43, \"name\": \"The Missing Article\", \"image\": \"images/43-netflix-missing.webp\", \"thumbnail\": \"thumbs/43-netflix-missing.webp\", \"width\": 768, \"height\": 2048, \"inspiration\": \"Netflix\", \"referenceUrl\": \"\", \"collection\": \"netflix\", \"rationaleLabel\": \"Story & interaction\", \"uxSummary\": \"A single documentary-style action leads into a three-chapter story. The result appears early; evidence unfolds below without making visitors browse an unrelated content library.\", \"reviewNote\": \"Keep 1.4 as a numerical average rather than faded article dots. Add the frozen-data date in the evidence details and render the final network from verified data.\"}, {\"number\": 44, \"name\": \"Anatomy of a Blackout\", \"image\": \"images/44-netflix-episodes.webp\", \"thumbnail\": \"thumbs/44-netflix-episodes.webp\", \"width\": 804, \"height\": 1957, \"inspiration\": \"Netflix\", \"referenceUrl\": \"\", \"collection\": \"netflix\", \"rationaleLabel\": \"Story & interaction\", \"uxSummary\": \"Three clear chapters provide orientation and a sense of progress. Each chapter contains one message, and the experiment remains accessible without playing a video.\", \"reviewNote\": \"The illustration shows four stranded dots beside a label of five; draw the final graph from verified data. Keep 1.4 as a numerical average and state that shuffles are connected before removal.\"}, {\"number\": 45, \"name\": \"Two Worlds, One Test\", \"image\": \"images/45-netflix-worlds.webp\", \"thumbnail\": \"thumbs/45-netflix-worlds.webp\", \"width\": 768, \"height\": 2048, \"inspiration\": \"Netflix\", \"referenceUrl\": \"\", \"collection\": \"netflix\", \"rationaleLabel\": \"Story & interaction\", \"uxSummary\": \"A large labeled comparison can be understood at a glance. The same action applies to both worlds, making the controlled comparison easier to follow.\", \"reviewNote\": \"Replace “same connections” with “same degrees”. Shuffles are connected before removal, but can fragment afterwards; replace the “remains connected” outcome with the measured comparison.\", \"correctionNotice\": \"Image correction needed: shuffled networks can fragment after removal; “remains connected” is not the result.\"}, {\"number\": 46, \"name\": \"The Stark Briefing\", \"image\": \"images/46-marvel-stark.webp\", \"thumbnail\": \"thumbs/46-marvel-stark.webp\", \"width\": 768, \"height\": 2048, \"inspiration\": \"Marvel\", \"referenceUrl\": \"\", \"collection\": \"marvel\", \"rationaleLabel\": \"Story & interaction\", \"uxSummary\": \"The mission, action and outcome are presented in a stable sequence. Technical decoration stays around the edges so labels, controls and the actual evidence remain readable.\", \"reviewNote\": \"Define stranded as outside the largest remaining group, rather than necessarily isolated from one another. State that shuffled networks are connected before removal and add the data snapshot date.\"}, {\"number\": 47, \"name\": \"The Fragility Census\", \"kind\": \"data-visualization\", \"collection\": \"data-stories\", \"inspiration\": \"\", \"referenceUrl\": \"\", \"image\": \"data-figures/removal-census.png\", \"thumbnail\": \"thumbs/47-removal-census.webp\", \"width\": 1800, \"height\": 1350, \"alt\": \"277 removal tests: 264 circles represent connected outcomes and 13 squares represent fragmentation. Ranked stranded counts: Spider-Man 5, Black Widow 3, Doctor Strange 2; ten other removals strand one article each.\", \"rationaleLabel\": \"Learning, interaction & UX\", \"uxSummary\": \"264 of 277 removals leave the remaining articles connected. Explore the 13 exceptions. Proposed interaction: Filter the census to its 13 exceptions, select an article and reveal its outcome beside the selection. A clear reset and a searchable list provide alternative routes. UX: The overview comes first. Circles and squares distinguish outcomes without relying on colour. The selected article and its result stay together; methods remain optional.\", \"reviewNote\": \"This is an exact static figure. The filter and selection are proposed interactions. Use a searchable list and visible keyboard focus rather than 277 tiny tab stops.\", \"uxSources\": [{\"title\": \"Source data · week02_all_removals.csv\", \"url\": \"../assets/data/week02_all_removals.csv\"}, {\"title\": \"NN/G: usability heuristics\", \"url\": \"https://www.nngroup.com/articles/ten-usability-heuristics/\"}, {\"title\": \"NN/G: progressive disclosure\", \"url\": \"https://www.nngroup.com/articles/progressive-disclosure/\"}, {\"title\": \"W3C: use of colour\", \"url\": \"https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html\"}]}, {\"number\": 48, \"name\": \"Follow the Fracture\", \"kind\": \"data-visualization\", \"collection\": \"data-stories\", \"inspiration\": \"\", \"referenceUrl\": \"\", \"image\": \"data-figures/black-widow-islands.png\", \"thumbnail\": \"thumbs/48-black-widow-islands.webp\", \"width\": 1800, \"height\": 1200, \"alt\": \"Before: Black Widow connects the collapsed 273-article main group to Blue Eagle and Rockman; Rockman connects to The Witness. After Black Widow is removed, Blue Eagle is alone and Rockman still links to The Witness. Three articles are outside the 273-article main group.\", \"rationaleLabel\": \"Learning, interaction & UX\", \"uxSummary\": \"Black Widow’s removal strands three articles in two groups. Stranded does not necessarily mean alone. Proposed interaction: Switch between Before and After while positions stay fixed. Restore the article to undo the removal, or step through the two stranded groups. UX: A reversible action and stable positions make the consequence easy to follow. Direct labels, outlined groups and a text alternative carry the meaning. Motion is optional.\", \"reviewNote\": \"This is an exact topology schematic with the main group and its 23 links collapsed. Shapes are not proportional to group size. Before/After and Restore are proposed controls; reduced-motion mode should change states instantly.\", \"uxSources\": [{\"title\": \"Source data · week02_resilience.json\", \"url\": \"../assets/data/week02_resilience.json\"}, {\"title\": \"NN/G: usability heuristics\", \"url\": \"https://www.nngroup.com/articles/ten-usability-heuristics/\"}, {\"title\": \"NN/G: progressive disclosure\", \"url\": \"https://www.nngroup.com/articles/progressive-disclosure/\"}, {\"title\": \"W3C: use of colour\", \"url\": \"https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html\"}]}, {\"number\": 49, \"name\": \"A Thousand Possible Worlds\", \"kind\": \"data-visualization\", \"collection\": \"data-stories\", \"inspiration\": \"\", \"referenceUrl\": \"\", \"image\": \"data-figures/shuffled-worlds.png\", \"thumbnail\": \"thumbs/49-shuffled-worlds.webp\", \"width\": 1800, \"height\": 1200, \"alt\": \"Histogram of 1,000 degree-preserving shuffles: 0 stranded in 235 trials, 1 in 350, 2 in 248, 3 in 114, 4 in 44 and 5 in 9. The observed result is 5. Mean shuffled stranding is 1.409.\", \"rationaleLabel\": \"Learning, interaction & UX\", \"uxSummary\": \"Only 9 of 1,000 shuffled trials strand at least five articles after Spider-Man is removed. Proposed interaction: Optionally predict whether five is common or rare, then reveal its position in the distribution. Offer Skip to result and a table of every outcome. UX: One optional choice leads to immediate explanatory feedback. A zero baseline, direct counts, a visible denominator and a hatched tail keep the comparison clear.\", \"reviewNote\": \"This is an exact static histogram. Prediction and reveal are proposed interactions. Shuffles are connected before removal; the 9/1,000 count is descriptive and exploratory, not proof of causation or a calibrated significance claim.\", \"uxSources\": [{\"title\": \"Source data · week02_null_draws.csv\", \"url\": \"../assets/data/week02_null_draws.csv\"}, {\"title\": \"NN/G: usability heuristics\", \"url\": \"https://www.nngroup.com/articles/ten-usability-heuristics/\"}, {\"title\": \"NN/G: progressive disclosure\", \"url\": \"https://www.nngroup.com/articles/progressive-disclosure/\"}, {\"title\": \"W3C: use of colour\", \"url\": \"https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html\"}]}]" }} />
-      <PageScripts page="mockups" />
     </>
   );
 }

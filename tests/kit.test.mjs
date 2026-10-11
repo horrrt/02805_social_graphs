@@ -52,3 +52,9 @@ test("the week 5 page loads each section's script and keeps the six parts' ids",
   }
   assert.ok(pageStyles("week05").includes("post.css"), "post.css is imported");
 });
+
+test("the kit README's code fences are balanced", () => {
+  // A merge once dropped one closing ``` and turned a whole section into code.
+  const fences = readFileSync(new URL("../src/kit/README.md", import.meta.url), "utf8").split("\n").filter((l) => l.startsWith("```")).length;
+  assert.equal(fences % 2, 0, `src/kit/README.md has ${fences} fence lines`);
+});

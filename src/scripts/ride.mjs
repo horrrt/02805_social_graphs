@@ -38,15 +38,16 @@ export function mountRide(root, data, { onClose, onRestore }) {
   function routeLine(container, path, broken = false) {
     container.replaceChildren();
     for (const id of path) {
+      const closedStop = broken && id === station;
       const stop = document.createElement("li");
-      stop.className = broken && id === station ? "closed-stop" : "";
+      stop.className = closedStop ? "closed-stop" : "";
       const button = document.createElement("button");
       button.type = "button";
       button.className = "ride-stop";
       button.textContent = label(id);
       button.setAttribute(
         "aria-label",
-        `${label(id)}${broken && id === station ? ", closed" : ""}: inspect article`,
+        `${label(id)}${closedStop ? ", closed" : ""}: inspect article`,
       );
       button.addEventListener("click", () => {
         const n = nodes.get(id);
@@ -85,18 +86,18 @@ export function mountRide(root, data, { onClose, onRestore }) {
     const verdict = arrived
       ? `You can still arrive. ${result.after.length > result.before.length ? `The shortest route now takes ${result.after.length - 1} hops instead of ${result.before.length - 1}.` : "A shortest route still takes the same number of hops."}`
       : `Journey cut off. There is no route from ${label(from)} to ${label(to)} anywhere in the remaining network.`;
-    find("#ride-result").textContent =
-      `${guess === null ? "" : guess === arrived ? "Your prediction holds. " : "The network does something different. "}${verdict}`;
+    let prefix = "";
+    if (guess === arrived) prefix = "Your prediction holds. ";
+    else if (guess !== null) prefix = "The network does something different. ";
+    find("#ride-result").textContent = `${prefix}${verdict}`;
     find("#ride-after-note").textContent = arrived
       ? "This is one shortest surviving route. Other routes may exist."
       : "The crossed-out station shows where the old route breaks. We checked the whole remaining core, not only the stops drawn here.";
   }
   for (const button of root.querySelectorAll("[data-arrive]"))
     button.addEventListener("click", () => {
-      guess =
-        button.dataset.arrive === "skip"
-          ? null
-          : button.dataset.arrive === "yes";
+      const answer = button.dataset.arrive;
+      guess = answer === "skip" ? null : answer === "yes";
       onClose();
     });
   find("#ride-reset").addEventListener("click", () => {

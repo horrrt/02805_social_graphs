@@ -85,7 +85,7 @@ export function Search() {
               We chose the 12 queries and their targets ourselves, so the hit rate says how the search does on our questions, and the single first-place hit, Moon Knight, carries the raw headline.
             </p>
           </Drawer>
-          <Drawer label="What we read in the pages" bodyId="search-checked">
+          <Drawer label="What we read" bodyId="search-checked">
             <p>
               Redneck's page wins "weather-controlling mutant from Kenya" while sharing one word with the query besides stopwords, mutant, in its first sentence:
             </p>

@@ -67,7 +67,10 @@ export function Weird() {
               MATTR counts repeats, not strangeness: Coldblood wins by naming each cyborg part once, and only reading tells a list from an odd story.
             </p>
           </Drawer>
-          <Drawer label="What we read in the pages" bodyId="weird-checked">
+          <Drawer label="Table">
+            <Part part="pages" />
+          </Drawer>
+          <Drawer label="What we read" bodyId="weird-checked">
             <p>
               A sentence past the lead of each of the top three pages, and one from the last page, quoted from the page.
             </p>

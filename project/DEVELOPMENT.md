@@ -4,7 +4,7 @@ See the [repository README](../README.md) for an overview of the project.
 
 ## The frozen data
 
-- Snapshot: 26 August 2026; `data/week1_nodes.tsv` and `data/week1_edges.tsv`.
+- Snapshot: 26 August 2026; `data/week1_nodes.parquet` and `data/week1_edges.parquet`.
 - 303 nodes and 1,784 directed links; undirected collapse has 1,434 edges.
 - Weak components: a 277-node core, a nine-node island, 17 isolates.
 - Add the complete roster before adding edges, or the isolates disappear.
@@ -24,30 +24,25 @@ python3.13 -m venv .venv-course
 source .venv-course/bin/activate
 python -m pip install -r requirements-lock.txt
 python -m pip check
-python -m ipykernel install --sys-prefix --name socialgraphs --display-name "Social Graphs (Python 3.13)"
-python -m jupyterlab
 ```
 
-The notebooks are in `notebooks/`:
+Run analysis scripts from the repository root. The lock records the Python 3.13
+environment tested on macOS; other platforms may need a compatible resolution
+from `requirements.txt`.
 
-| Notebook | What it holds |
-| --- | --- |
-| `01_toolbox_shakedown.ipynb` | Exercise 1.3: karate club and the adjacency-matrix explorable |
-| `02_marvel_degrees.ipynb` | Exercise 1.6 in full: Marvel degree distributions and binning |
-| `03_marvel_exercises.ipynb` | Every data exercise from weeks 1-4 on the Marvel network, plus the dataset-free parts (random graphs, Watts-Strogatz, preferential attachment, karate) |
-| `04_migration_exercises.ipynb` | The same exercises on the UN DESA 2024 migrant stock network |
-| `05_h1b_exercises.ipynb` | The same exercises on the FY2025 H-1B outsourcing firm to client network |
+### Data formats
 
-Two notebooks read gitignored files from `build/`. Notebook 04 needs
-`build/raw/iso3166_m49.csv`, the pinned ISO 3166 to UN M49 region table that
-`scripts/migration/fetch_country_layer.py` downloads (its URL is
-`ISO3166_M49_URL` in that script). Notebook 05 reads the Week 4 filings from
-`build/week04/`, so run `python analysis/week04_data.py` first on a fresh clone;
-it takes about 14 minutes to run. Open a notebook in
-JupyterLab, select **Social Graphs (Python 3.13)**, and choose
-**Restart Kernel and Run All Cells**. Run analysis scripts from the repository
-root. The lock records the Python 3.13 environment tested on macOS; other
-platforms may need a compatible resolution from `requirements.txt`.
+- Downloads in `build/raw/` stay in the format the publisher ships (xlsx, zip, csv). They are the provenance record.
+- Tables the scripts derive into `build/` are Parquet. `week04_data.save()` writes them and `load()` reads them back.
+- Counts, wages, dates and yes/no flags in the DOL and USCIS tables are stored as numbers, dates and booleans; `save()` stops on a value that does not parse. Use `frame[col].fillna(False)` for "the filing said yes".
+- Identifiers that look like numbers (FEIN, NAICS, SOC, ZIP, tax ID) stay text, so their leading zeros survive. The lottery tables stay text because their numbers sit beside redaction markers.
+- An older checkout's `build/week04/*.csv.gz` converts, and gains its types, in seconds with `python analysis/week04_data.py --convert --no-tables`. No 14-minute rebuild is needed.
+- Every committed table is Parquet too: the rosters and migration tables in `data/`, and the tables in `analysis/`, including the ones people review by hand. They go through `analysis/tables.py`: `frame()` for pandas, `rows()` for dicts of strings, `write()` to save. Each keeps its old `#` notes as Parquet metadata.
+- A column takes a number type only when every value prints back as the text it was, so nothing is lost. `tables.text()` rebuilds the old CSV or TSV byte for byte, and `tables.digest()` hashes it, which is why the snapshot hashes recorded before the move still hold.
+- To read or edit a table by hand: `python analysis/tables.py show <table>` prints it as CSV, and `python analysis/tables.py edit <table>` opens it in `$EDITOR` and saves your changes back. `to-csv` and `from-csv` do the same in two steps.
+- To see table changes in `git diff` and `git log -p` as CSV rows, run once per clone, from its root: `git config diff.parquet.textconv "$PWD/.venv-course/bin/python analysis/tables.py show"`. Git does not see an activated environment, so the path names the interpreter.
+- Scripts download through `analysis/fetch.py`: `fetch.session(user_agent)` is a `requests` session that retries a 429, a 5xx, a timeout or a dropped connection (waiting out any Retry-After) and raises at once on anything else; `fetch.download()` writes via a `.part` file and uses `aria2c` (sixteen connections, resume) when it is on PATH. Each script keeps the User-Agent its service wants.
+- Everything in `public/` stays JSON or CSV, because the browser fetches it. Measured on the Week 4 map data, gzipped JSON is 20–30% smaller in transit than Parquet and decodes 3–7× faster.
 
 To regenerate the analysis and figures:
 
@@ -101,8 +96,26 @@ published build lives under `/02805_social_graphs/`.
 npm test
 ```
 
-`npm test` builds the static export into `out/` and then runs
-`node --test 'tests/*.test.mjs'`, because most tests read the built pages.
+`npm test` first runs the component tests, then builds the static export into
+`out/` and runs `node --test 'tests/*.test.mjs'`, because most tests read the
+built pages.
+
+The component tests in `tests/components/` render client components with
+[React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
+in jsdom and drive them with `user-event`, under the same Node test runner;
+`tsx` compiles the TSX and resolves `@/`. Run them alone, with no build:
+
+```bash
+npm run test:components
+```
+
+Each test file imports `./dom` first, which registers the jsdom globals and
+unmounts after every test. `tests/components/hooks.mjs` loads any stylesheet a
+component imports as an empty module, since jsdom applies no layout, and
+resolves `next/error` to `tests/components/next-error.mjs`, because Node cannot
+see the `catchError` export that `island()` imports. A
+component that measures the page (SectionRail) gets its positions from the
+test, which stubs `getBoundingClientRect`.
 
 Tests cross-check all 277 browser removals against independently generated CSV
 results, Python path fixtures, exact stranded groups, triangle and coverage
@@ -119,10 +132,11 @@ saved progress.
   title and stylesheet imports; `page.tsx` under the route's folder holds the
   markup. Every page is its own group because the pages differ in body class and
   stylesheets, so moving between pages is a full page load.
-- **Chart code.** `src/scripts/` holds plain ES modules that draw into the
-  markup. `src/components/PageScripts.tsx` imports a page's entry module,
-  `src/scripts/entries/<page>.js`, once React has hydrated the page, so a script
-  never races React for the DOM.
+- **Chart code.** React components in `src/features/` render every page's
+  interactive parts and draw its charts after hydration. `src/scripts/` holds
+  plain ES modules they import: models, data helpers and drawing code. Nothing
+  loads a script on its own; the old entry loader (`src/scripts/entries/` and
+  `PageScripts.tsx`) is gone.
 - **Styles.** Stylesheets live in `src/styles/` and fonts in `src/fonts/`. Next
   bundles both and names every file by its content hash, so a deploy cannot serve
   one version's code with another version's markup.
@@ -217,7 +231,9 @@ through `getComputedStyle`, so one definition drives the stylesheet, the SVG
 variants and the 2D canvas at once.
 
 `src/scripts/week03-boot.js` holds the registries; each renderer is one
-module under `src/scripts/variants/`.
+module under `src/scripts/variants/`. The React islands in
+`src/features/week03/` load the data and the renderer, hold the controls and
+the page state, and call `corridor.js` to draw.
 
 ### Rebuilding, and what is committed
 

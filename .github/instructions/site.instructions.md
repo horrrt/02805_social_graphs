@@ -16,10 +16,9 @@ applyTo: "src/**,public/**,tests/**"
   canvases, charts, listeners and body writes go through the hooks in `src/lib/`. Its README,
   `src/lib/README.md`, holds the rules (R1-R22), working rules, recipes and gates every change follows, and
   `tests/react-rules.test.mjs` enforces the mechanical ones.
-- Until a page converts, its old chart scripts still draw into the server-rendered markup after hydration:
-  `src/scripts/entries/<page>.js`, loaded by `src/components/PageScripts.tsx`. Both are legacy and go in the
-  cleanup batch; never add a `<script>` tag in JSX. Keep links as plain `<a href>`, not `next/link`, so each
-  page loads fresh and its scripts run once.
+- Every page renders with React. A module in `src/scripts/` runs only when a component imports it: the old
+  entry loader (`src/scripts/entries/` and `src/components/PageScripts.tsx`) is gone. Never add a `<script>`
+  tag in JSX. Keep links as plain `<a href>`, not `next/link`, so each page loads fresh.
 - Add any library or component the page needs, or draw plain SVG from the page's data: charting (ECharts, D3,
   Vega-Lite, Observable Plot, deck.gl), maps, tables, UI widgets, web components or anything else. No approval
   needed. Vendor a library first: save the unmodified minified build to `public/assets/vendor/` with the version in
@@ -39,7 +38,7 @@ applyTo: "src/**,public/**,tests/**"
 - Give each colour one meaning across the page. If orange means a placed worker, it means nothing else.
 - Leave headings bare: no pill, chip or badge beside a section or question title. Put scope in a caption.
 - Build every post's cards in Week 4's form: question and answer, one paragraph beside "What to notice", the
-  figure, then drawers (Method with the limitation, More numbers, What we read in the pages). No slot labels or
+  figure, then drawers in one row (Method with the limitation, More numbers, Table, What we read). No slot labels or
   open limitation blocks. `tests/text-budget.test.mjs` fails a card over 350 words before a click
   (project/POST_GUIDE.md, "Keep the card short").
 - Keep pages readable without JavaScript: put the prose, numbers and captions in the JSX, and give every
@@ -56,3 +55,6 @@ applyTo: "src/**,public/**,tests/**"
 - Keep existing element IDs, anchors and routes: other sections and tests link to them.
 - When you add a page or change the lobby, update `src/scripts/weeks.js` and run `npm test`, which builds
   the site and runs `node --test 'tests/*.test.mjs'` against it.
+- Test what a client component does (keys, clicks, state) with React Testing Library in
+  `tests/components/*.test.tsx`: import `./dom` first, query by role and name, drive it with `userEvent`.
+  `npm run test:components` runs them in about a second, without a build.

@@ -138,8 +138,8 @@ on:
 ## Recipe Z: close batches
 
 - **Z1** Rebase onto the latest main and rebuild `$BASE` from it.
-- **Z2** Delete the page's entry, its ENTRIES line in `src/components/PageScripts.tsx`, the page's
-  `<PageScripts/>`, and every bridge and shim of the page with their mounts.
+- **Z2** Delete every bridge and shim of the page with their mounts. The entry loader
+  (`src/scripts/entries/` and `src/components/PageScripts.tsx`) is already gone.
 - **Z3** Grep that no module of the page has top-level DOM, listeners, fetch or await.
 - **Z4** Run `runtime.mjs --check-known <page>` and delete superseded known files.
 - **Z5** Run all gates over every scenario file, and faults for every island (shards in the background).
@@ -165,7 +165,8 @@ orchestrator.
 
 ## Transition
 
-Until a page's close batch, its old scripts still run: `src/scripts/entries/<page>.js` imported by
-`<PageScripts>` (`src/components/PageScripts.tsx`). Those two are legacy and go in the cleanup batch (Z2).
-Bridges (`// bridge: <close batch>`) and shims (`// shim: <batch>`) exist only on integration branches, under
-`src/features/<page>/`, while the page's entry exists.
+Every page has closed. The entry loader that ran old page scripts after hydration
+(`src/scripts/entries/<page>.js` imported by `src/components/PageScripts.tsx`) is deleted, and a module in
+`src/scripts/` runs only when a component imports it. Bridges (`// bridge: <close batch>`) and shims
+(`// shim: <batch>`) were allowed only under `src/features/<page>/` while the page's entry existed, so none
+remain.

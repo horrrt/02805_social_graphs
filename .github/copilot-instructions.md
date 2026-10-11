@@ -23,11 +23,11 @@ If the request is ambiguous or a rule below blocks it, stop and ask. Do not gues
 
 ## Checks
 
-- Site or tests changed: `npm test` (it builds the site, then runs `node --test 'tests/*.test.mjs'`) must
-  end with `fail 0`. It includes
+- Site or tests changed: `npm test` (it runs the React Testing Library tests in `tests/components/`,
+  builds the site, then runs `node --test 'tests/*.test.mjs'`) must end with `fail 0`. It includes
   `tests/text-budget.test.mjs`, which holds every post from Week 4 on to Week 4's density; for text a page
   script draws, run the console check in project/POST_GUIDE.md, "Keep the card short".
-- `analysis/week04_names.py`, `analysis/week04_client_aliases.csv` or `analysis/week04_name_merges.csv`
+- `analysis/week04_names.py`, `analysis/week04_client_aliases.parquet` or `analysis/week04_name_merges.parquet`
   changed: `python analysis/week04_names_check.py` must exit 0 and print `"failures": []`.
 - Any page data changed: `python analysis/check_pages.py` must print `ok` for every file. It checks every
   week's page JSON against the fields and cross-references its page scripts read (Pydantic models in
@@ -69,6 +69,9 @@ Why the change was needed, in plain sentences, wrapped at 72 characters.
 - Scopes: `week01` to `week08`, `site`, `analysis`, `names`, `data`, `tests`, `ci`, `deps`, `docs`.
 - Body: what changed and why, in sentences. Name the number that moved when a rerun moves one.
 - A pull request title follows the same format.
+- `.githooks/commit-msg` rejects a header CI would fail, before the commit exists. `npm install`
+  turns it on; in a checkout without one, run `git config core.hooksPath .githooks`. Never skip it
+  with `--no-verify`: three pull requests (#94, #126, #166) needed a force-push for a long header.
 
 ## Never
 

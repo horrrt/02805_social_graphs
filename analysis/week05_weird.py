@@ -6,8 +6,7 @@ that a real property of the page or formatting and boilerplate?
 Owner: Niklas
 
 Page section: src/app/(week05)/weeks/week05/page.tsx#weird
-Output: public/weeks/week05/data/weird.json (and a copy in analysis/), every
-number the section quotes, validated with check(path, data) against the Weird
+Output: public/weeks/week05/data/weird.json, every number the section quotes, validated with check(path, data) against the Weird
 model in week05_schemas.py.
 
 Method
@@ -66,7 +65,6 @@ from check_pages import check
 from week05_text import SHARED_NAME_RULE, WORD_RULE, nodes, pages, sentences, shared_name, words
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = Path(__file__).with_suffix(".json")
 PAGE = ROOT / "public/weeks/week05/data/weird.json"
 WINDOW = 100          # tokens per MATTR window; the shortest page has 193
 WINDOW_ALT = 50       # the second window, for the stability check
@@ -352,7 +350,6 @@ def main():
     }
     check(PAGE, payload)
     encoded = json.dumps(payload, indent=1, ensure_ascii=False) + "\n"
-    OUT.write_text(encoded, encoding="utf-8")
     PAGE.write_text(encoded, encoding="utf-8")
     print(json.dumps({k: payload[k] for k in ("corpus", "checks", "stability", "several", "summary")}, indent=1))
     for r in payload["top"] + payload["bottom"]:

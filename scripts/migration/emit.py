@@ -1,11 +1,11 @@
-"""Stage 5: write the dataset out as TSV, in the shape the Marvel files use.
+"""Stage 5: write the dataset out as tables (analysis/tables.py), in the shape the Marvel files use.
 
 Four files land in data/:
 
-  migration_nodes.tsv      one organisation per row, with country and type
-  migration_edges.tsv      A -> B when A's article links to B's
-  migration_org_edges.tsv  typed Wikidata ties: member of, parent, affiliation
-  migration_countries.tsv  the per-country roll-up
+  migration_nodes.parquet      one organisation per row, with country and type
+  migration_edges.parquet      A -> B when A's article links to B's
+  migration_org_edges.parquet  typed Wikidata ties: member of, parent, affiliation
+  migration_countries.parquet  the per-country roll-up
 
 plus a facts JSON so a post can quote numbers without re-running the harvest.
 
@@ -17,13 +17,16 @@ from __future__ import annotations
 import argparse
 import collections
 import datetime
+import io
 import json
 import pathlib
 import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[2] / "analysis"))
 
 import scope
+import tables
 
 WIKIDATA_TIES = ["member_of", "parent_org", "subsidiary", "affiliation",
                  "part_of", "has_part"]
@@ -63,12 +66,12 @@ def main():
         f"# kept when Wikidata says the item is an organization (P31/P279* Q43229).\n"
     )
 
-    with (data / "migration_nodes.tsv").open("w", encoding="utf-8") as fh:
+    with io.StringIO() as fh:
         fh.write(header)
-        fh.write("# node_id matches migration_edges.tsv. country_source records which "
+        fh.write("# node_id matches migration_edges.parquet. country_source records which "
                  "rule placed the organisation.\n")
         fh.write("node_id\tname\twikidata_id\torg_type\tcountry\tcountry_iso\t"
-                 "continent\tinception\tdissolved\twebsite\turl\tdescription\t"
+                 "continent\tinception\tdissolved\twikipedia_languages\twebsite\turl\tdescription\t"
                  "country_source\tcategories\n")
         for qid in sorted(organisations, key=lambda q: ids[q]):
             node = organisations[qid]
@@ -91,14 +94,16 @@ def main():
                 node.get("country_source", ""),
                 "|".join(c.split(":", 1)[1] for c in node["categories"]),
             ]) + "\n")
+        tables.save_text(data / "migration_nodes.parquet", fh.getvalue())
 
-    with (data / "migration_edges.tsv").open("w", encoding="utf-8") as fh:
+    with io.StringIO() as fh:
         fh.write(header)
         fh.write(f"# {len(organisations)} nodes, {len(link_edges)} directed arcs. "
-                 "Isolated organisations exist — take the node set from migration_nodes.tsv.\n")
+                 "Isolated organisations exist — take the node set from migration_nodes.parquet.\n")
         fh.write("# source\ttarget\n")
         for source, target in sorted(link_edges, key=lambda e: (ids[e[0]], ids[e[1]])):
             fh.write(f"{ids[source]}\t{ids[target]}\n")
+        tables.save_text(data / "migration_edges.parquet", fh.getvalue(), names=["source", "target"])
 
     typed = []
     for qid, node in organisations.items():
@@ -106,20 +111,21 @@ def main():
             for other in node.get(tie, []):
                 if other in organisations and other != qid:
                     typed.append((ids[qid], ids[other], tie))
-    with (data / "migration_org_edges.tsv").open("w", encoding="utf-8") as fh:
+    with io.StringIO() as fh:
         fh.write(header)
         fh.write("# Declared organisation-to-organisation ties from Wikidata, not "
-                 "article links. Both endpoints are in migration_nodes.tsv.\n")
+                 "article links. Both endpoints are in migration_nodes.parquet.\n")
         fh.write("# source\ttarget\trelation\n")
         for row in sorted(set(typed)):
             fh.write("\t".join(row) + "\n")
+        tables.save_text(data / "migration_org_edges.parquet", fh.getvalue(), names=["source", "target", "relation"])
 
     per_country = collections.Counter()
     types_per_country = collections.defaultdict(collections.Counter)
     for node in organisations.values():
         per_country[node.get("country", "")] += 1
         types_per_country[node.get("country", "")][node["org_type"]] += 1
-    with (data / "migration_countries.tsv").open("w", encoding="utf-8") as fh:
+    with io.StringIO() as fh:
         fh.write(header)
         fh.write("# One row per country. 'unplaced' counts organisations no rule "
                  "could place, mostly international bodies.\n")
@@ -131,6 +137,7 @@ def main():
                 meta.get("label", "") or ("unplaced" if not country else country),
                 meta.get("iso", ""), meta.get("continent", ""), country, count, top,
             ]) + "\n")
+        tables.save_text(data / "migration_countries.parquet", fh.getvalue())
 
     facts = {
         "harvested": stamp,

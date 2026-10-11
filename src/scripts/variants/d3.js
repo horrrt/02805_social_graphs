@@ -13,10 +13,10 @@ import { fs, family } from "../type-scale.mjs";
 const FONT = () => family("sans");
 
 export function install(api, d3) {
-  const { state, node, metrics, withMetrics, degreeCounts, ccdf, select, colours, $ } =
-    api;
-  const { spotlight, earthScale } = api;
-  const { showTip, hideTip, modeFlags, format } = api;
+  const {
+    state, node, metrics, withMetrics, degreeCounts, ccdf, select, colours, $,
+    spotlight, earthScale, showTip, hideTip, modeFlags, format,
+  } = api;
 
   // The axis switch reaches SVG too: log where the mode says log, linear where
   // it does not.
@@ -25,29 +25,31 @@ export function install(api, d3) {
       ? d3.scaleLog().domain(domain).range(range)
       : d3.scaleLinear().domain([0, domain[1]]).nice().range(range);
 
+  // The first draw into a host takes it over from the canvas beside it: the
+  // SVG fills the width and the canvas goes. The chart's island renders both.
+  function takeOver(canvas, host) {
+    if (host.style.display === "block") return;
+    host.style.display = "block";
+    host.style.width = "100%";
+    canvas.style.display = "none";
+  }
+
   // One SVG per canvas, sized from the canvas it replaces so the layout does
-  // not move when you switch variants.
+  // not move when you switch variants. The island renders it after the canvas.
   function svgFor(id, pad = { l: 52, r: 16, t: 14, b: 38 }) {
     const canvas = $(id);
-    if (!canvas) return null;
-    let host = document.getElementById(`${id}-d3`);
+    const host = $(`${id}-d3`);
+    if (!canvas || !host) return null;
     // Once the canvas is hidden it measures 0 wide, and a fixed fallback width
     // scaled the SVG, and its text, down to fit. Measure the box it fills.
     const width = Math.round(
-      host?.getBoundingClientRect().width ||
+      (host.style.display === "block" && host.getBoundingClientRect().width) ||
         canvas.clientWidth ||
         canvas.parentElement?.clientWidth ||
         600,
     );
     const height = Math.round(width * (canvas.height / canvas.width));
-    if (!host) {
-      host = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-      host.id = `${id}-d3`;
-      host.style.display = "block";
-      host.style.width = "100%";
-      canvas.after(host);
-      canvas.style.display = "none";
-    }
+    takeOver(canvas, host);
     const svg = d3.select(host).attr("viewBox", `0 0 ${width} ${height}`).attr("height", height);
     svg.selectAll("*").remove();
     return {
@@ -59,24 +61,20 @@ export function install(api, d3) {
   }
 
   function axes(svg, box, x, y, { xLabel, yLabel, xTicks = 5, yTicks = 5, yFormat } = {}) {
+    const style = (s) => {
+      s.selectAll(".tick line").attr("stroke", "#eaf0f7");
+      s.select(".domain").attr("stroke", "#c6d4e6");
+      s.selectAll("text").attr("fill", "#7a8fac").attr("font-family", FONT()).attr("font-size", fs("caption"));
+    };
     const g = svg.append("g");
     g.append("g")
       .attr("transform", `translate(0,${box.bottom})`)
       .call(d3.axisBottom(x).ticks(xTicks, "~s").tickSize(-(box.bottom - box.top)))
-      .call((s) => s.selectAll(".tick line").attr("stroke", "#eaf0f7"))
-      .call((s) => s.select(".domain").attr("stroke", "#c6d4e6"))
-      .call((s) => s.selectAll("text").attr("fill", "#7a8fac").attr("font-family", FONT()).attr("font-size", fs("caption")));
+      .call(style);
     g.append("g")
       .attr("transform", `translate(${box.left},0)`)
-      .call(
-        d3
-          .axisLeft(y)
-          .ticks(yTicks, yFormat ?? "~s")
-          .tickSize(-(box.right - box.left)),
-      )
-      .call((s) => s.selectAll(".tick line").attr("stroke", "#eaf0f7"))
-      .call((s) => s.select(".domain").attr("stroke", "#c6d4e6"))
-      .call((s) => s.selectAll("text").attr("fill", "#7a8fac").attr("font-family", FONT()).attr("font-size", fs("caption")));
+      .call(d3.axisLeft(y).ticks(yTicks, yFormat ?? "~s").tickSize(-(box.right - box.left)))
+      .call(style);
     const label = (text, tx, ty, rotate) =>
       g
         .append("text")
@@ -428,16 +426,16 @@ export function install(api, d3) {
   // One canvas behind the globe SVG, used only when the photograph is chosen.
   let underlay = null;
   function photoUnderlay(width, height, radius) {
-    const svg = document.getElementById("globe-canvas-d3");
+    const svg = $("globe-canvas-d3");
     if (!svg) return;
+    // The hero island renders the underlay before the globe's SVG.
     if (!underlay) {
-      underlay = document.createElement("canvas");
-      underlay.id = "globe-canvas-d3-photo";
+      underlay = $("globe-canvas-d3-photo");
+      if (!underlay) return;
       underlay.style.position = "absolute";
       underlay.style.inset = "0";
       underlay.style.pointerEvents = "none";
       svg.parentElement.style.position = "relative";
-      svg.parentElement.insertBefore(underlay, svg);
       svg.style.position = "relative";
     }
     underlay.hidden = state.basemap !== "photo";
@@ -456,27 +454,16 @@ export function install(api, d3) {
   let projection = null;
   function globe() {
     const canvas = $("globe-canvas");
-    if (!canvas) return;
-    let host = document.getElementById("globe-canvas-d3");
+    const host = $("globe-canvas-d3");
+    if (!canvas || !host) return;
     const width = canvas.clientWidth || 720;
     const height = canvas.clientHeight || width;
-    if (!host) {
-      host = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-      host.id = "globe-canvas-d3";
-      host.style.display = "block";
-      host.style.width = "100%";
-      canvas.after(host);
-      canvas.style.display = "none";
-    }
+    takeOver(canvas, host);
     const svg = d3.select(host).attr("viewBox", `0 0 ${width} ${height}`).attr("height", height);
     svg.selectAll("*").remove();
 
     if (!projection) {
-      projection = d3
-        .geoOrthographic()
-        .rotate([-12, -18])
-        .translate([width / 2, height / 2])
-        .scale(Math.min(Math.min(width, height) * 0.48, Math.min(width, height) * 0.42 * earthScale()));
+      projection = d3.geoOrthographic().rotate([-12, -18]);
       svg.call(
         d3.drag().on("drag", (event) => {
           const [lon, lat] = projection.rotate();
@@ -577,10 +564,7 @@ export function install(api, d3) {
 
   return {
     globe,
-    setupGlobe() {
-      const hint = document.querySelector(".stage-hint");
-      if (hint) hint.textContent = "Drag to spin. Click a country. (SVG)";
-    },
+    hint: "Drag to spin. Click a country. (SVG)",
     hist,
     ccdf: ccdfChart,
     scatterBetween,

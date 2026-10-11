@@ -11,8 +11,10 @@ filename, rather than being pulled from a CDN.
 | `echarts-5.5.1.min.js` | 5.5.1 | Apache-2.0 | `?variant=echarts`, week 3 views, week 4 |
 | `globe.gl-2.32.0.min.js` | 2.32.0 | MIT (bundles three.js) | `?variant=globe` |
 | `deck.gl-9.0.30.min.js` | 9.0.30 | MIT | `?variant=deck` |
+| `katex-0.19.0/` (`katex.min.js`, `katex.min.css`, `fonts/`) | 0.19.0 | MIT | Cold Read's debrief formulas (`src/lib/Tex.tsx`); the stylesheet is imported by `src/app/(cold-read)/layout.tsx` |
+| `driver.js-1.9.0.min.js`, `driver.js-1.9.0.min.css` | 1.9.0 | MIT | Cold Read's example games (`src/features/cold-read/Tutorial.tsx`); the stylesheet is imported by `src/app/(cold-read)/layout.tsx` |
 
-Each is the unmodified minified distribution from jsDelivr. Only a page that
+Each is the unmodified minified distribution from jsDelivr (Driver.js: its `dist/driver.js.iife.js` and `dist/driver.css`; KaTeX: its `dist/` script, stylesheet and fonts). Only a page that
 needs a file loads it, so the default week 3 post still ships no library at all.
 
 To add one: download the minified build to `<name>-<version>.min.js`

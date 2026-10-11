@@ -124,7 +124,7 @@ def placement_groups(frame):
     """Company keys split two ways: "any" (a company with at least one placed
     filing) and "min20" (week04_staffing.MIN_FILINGS or more placed filings,
     the headline)."""
-    placed = frame[frame["SECONDARY_ENTITY"].str.upper().str.startswith("Y", na=False)]
+    placed = frame[frame["SECONDARY_ENTITY"].fillna(False)]
     any_placing = set(placed["company"].unique())
     counts = placed["company"].value_counts()
     min20_placing = set(counts[counts >= MIN_FILINGS].index)

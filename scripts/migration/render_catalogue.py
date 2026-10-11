@@ -1,6 +1,6 @@
 """Render the source catalogue from scripts/migration/sources.py.
 
-Writes project/MIGRATION_DATA_CATALOGUE.md for reading and data/migration_sources.tsv
+Writes project/MIGRATION_DATA_CATALOGUE.md for reading and data/migration_sources.parquet
 for filtering. Run it after any edit to sources.py; never edit the outputs.
 
     python scripts/migration/render_catalogue.py
@@ -9,17 +9,21 @@ for filtering. Run it after any edit to sources.py; never edit the outputs.
 from __future__ import annotations
 
 import collections
+import io
 import pathlib
 import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[2] / "analysis"))
 
+import pyarrow.parquet as pq
 import sources
+import tables
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent.parent
 DOC = ROOT / "project" / "MIGRATION_DATA_CATALOGUE.md"
 QUESTIONS_DOC = ROOT / "project" / "MIGRATION_QUESTIONS.md"
-TSV = ROOT / "data" / "migration_sources.tsv"
+TABLE = ROOT / "data" / "migration_sources.parquet"
 
 TSV_COLUMNS = ["id", "name", "family", "publisher", "unit", "coverage", "years",
                "cadence", "access", "fmt", "api", "licence", "network",
@@ -39,40 +43,33 @@ def cell(value):
 
 
 LOCAL_NOTES = {
-    "migration_nodes.tsv": "Migration organisations harvested from the Wikipedia "
+    "migration_nodes.parquet": "Migration organisations harvested from the Wikipedia "
         "category tree and classified through Wikidata. See `wikidata-orgs` below.",
-    "migration_edges.tsv": "Article-link arcs among those organisations: A -> B when "
+    "migration_edges.parquet": "Article-link arcs among those organisations: A -> B when "
         "A's English Wikipedia article links to B's.",
-    "migration_org_edges.tsv": "Declared Wikidata ties among the same organisations: "
+    "migration_org_edges.parquet": "Declared Wikidata ties among the same organisations: "
         "member of, parent organisation, subsidiary, affiliation, part of.",
-    "migration_countries.tsv": "Per-country roll-up of the organisation set.",
-    "migration_flows.tsv": "UN DESA bilateral migrant stock, 1990 to 2024. "
+    "migration_countries.parquet": "Per-country roll-up of the organisation set.",
+    "migration_flows.parquet": "UN DESA bilateral migrant stock, 1990 to 2024. "
         "See `undesa-ims` below.",
-    "migration_displacement.tsv": "UNHCR origin/asylum populations for one year. "
+    "migration_displacement.parquet": "UNHCR origin/asylum populations for one year. "
         "See `unhcr-rdf` below.",
-    "migration_country_indicators.tsv": "World Bank country indicators. "
+    "migration_country_indicators.parquet": "World Bank country indicators. "
         "See `wb-wdi` below.",
-    "migration_sources.tsv": "This catalogue, as a table.",
+    "migration_sources.parquet": "This catalogue, as a table.",
 }
 
 
 def local_files():
     """What is already on disk here, counted rather than claimed."""
     rows = []
-    for path in sorted((ROOT / "data").glob("migration_*.tsv")):
-        header, body, comments = None, 0, []
-        with path.open(encoding="utf-8") as fh:
-            for line in fh:
-                if line.startswith("#"):
-                    comments.append(line.lstrip("# ").rstrip())
-                elif header is None:
-                    header = line.rstrip("\n").split("\t")
-                else:
-                    body += 1
+    for path in sorted((ROOT / "data").glob("migration_*.parquet")):
+        comments = tables.notes(path)
+        schema = pq.read_schema(path)
         rows.append({
             "file": path.name,
-            "rows": body,
-            "columns": header or [],
+            "rows": pq.read_metadata(path).num_rows,
+            "columns": list(schema.names),
             "note": LOCAL_NOTES.get(path.name, comments[0] if comments else ""),
         })
     return rows
@@ -98,7 +95,7 @@ def render_markdown():
         "against the publisher before a number from it goes in a post.\n"
     )
     out.append(
-        "Machine-readable version: [`data/migration_sources.tsv`](../data/migration_sources.tsv). "
+        "Machine-readable version: [`data/migration_sources.parquet`](../data/migration_sources.parquet) (`python analysis/tables.py show data/migration_sources.parquet` prints it as CSV). "
         "Source of truth: [`scripts/migration/sources.py`](../scripts/migration/sources.py). "
         "Regenerate with `python scripts/migration/render_catalogue.py`.\n"
     )
@@ -191,14 +188,15 @@ def render_markdown():
     return len(out)
 
 
-def render_tsv():
-    with TSV.open("w", encoding="utf-8") as fh:
+def render_table():
+    with io.StringIO() as fh:
         fh.write("# Index of migration data sources. Rendered from "
                  "scripts/migration/sources.py; do not edit by hand.\n")
         fh.write("# 'metrics' and 'limits' hold pipe-separated lists.\n")
         fh.write("\t".join(TSV_COLUMNS) + "\n")
         for source in sources.SOURCES:
             fh.write("\t".join(cell(source[c]) for c in TSV_COLUMNS) + "\n")
+        tables.save_text(TABLE, fh.getvalue())
 
 
 def render_questions_page():
@@ -305,7 +303,7 @@ def render_questions_page():
     out.append(
         "One warning that applies to every betweenness question below. On the raw "
         "DESA matrix the top brokers come out as Australia, Norway, the USA, Denmark, "
-        "Greece and China, and mean path length is 1.74. That ranking is measuring "
+        "Greece and China, and mean path length is 1.75. That ranking is measuring "
         "statistical reporting systems: register countries name hundreds of tiny "
         "origins and survey countries bucket them into 'other'. Threshold the edges "
         "at 100,000 people and the ranking becomes the USA, France, Germany, the UK, "
@@ -359,10 +357,10 @@ def render_questions_page():
 def main():
     lines = render_markdown()
     question_lines = render_questions_page()
-    render_tsv()
+    render_table()
     print(f"wrote {DOC.relative_to(ROOT)} ({lines} lines)")
     print(f"wrote {QUESTIONS_DOC.relative_to(ROOT)} ({question_lines} lines)")
-    print(f"wrote {TSV.relative_to(ROOT)} ({len(sources.SOURCES)} rows)")
+    print(f"wrote {TABLE.relative_to(ROOT)} ({len(sources.SOURCES)} rows)")
 
 
 if __name__ == "__main__":

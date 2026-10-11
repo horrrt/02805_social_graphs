@@ -8,10 +8,12 @@
 // The year is fixed at 2024, the most recent DESA revision, so a reader moving
 // the year slider upstairs does not silently change the answers down here.
 
+import { api } from "./corridor.js";
 import { font, fs } from "./type-scale.mjs";
 
 const YEAR = 2024;
-const $ = (id) => document.getElementById(id);
+// The canvases the questions islands render and hand to corridor.js.
+const $ = (id) => api.$(id);
 
 // Chart text takes its size from the type scale in type.css, read at draw time.
 // Ticks, axis titles and notes are captions; country names are small at 600;
@@ -21,9 +23,7 @@ const NAME = (weight = 600) => font("small", weight);
 const VALUE = () => font("small", 700);
 const TITLE = () => font("body", 700);
 
-let api = null;
 let model = null;
-let drawn = false;
 
 /* -------------------------------------------------------------------- data */
 
@@ -63,7 +63,7 @@ function build() {
   }
 
   return {
-    rows, total, hosts, abroad, nodes, indicators,
+    rows, total, hosts, abroad,
     name: (iso3) => nodes[iso3]?.name ?? iso3,
     gdp: (iso3) => indicators[iso3]?.gdp ?? null,
     pop: (iso3) => indicators[iso3]?.pop ?? null,
@@ -214,23 +214,6 @@ function hit(canvas, event) {
   return nearest?.mark ?? null;
 }
 
-function wire(id) {
-  const canvas = $(id);
-  if (!canvas || canvas.dataset.qpick) return;
-  canvas.dataset.qpick = "on";
-  canvas.addEventListener("pointermove", (event) => {
-    const mark = hit(canvas, event);
-    canvas.style.cursor = mark ? "pointer" : "default";
-    if (mark?.label) api.showTip(event, mark.label);
-    else api.hideTip();
-  });
-  canvas.addEventListener("pointerleave", () => api.hideTip());
-  canvas.addEventListener("click", (event) => {
-    const mark = hit(canvas, event);
-    if (mark?.iso3) api.select(mark.iso3);
-  });
-}
-
 /* ---------------------------------------------------------------- 1. a ring
 
    The busiest corridors among the fourteen countries most involved in them, as
@@ -289,7 +272,7 @@ function drawRing() {
   const canvas = $("q-ring");
   if (!canvas) return;
   const { ctx, width, height } = api.surface(canvas);
-  const { INK, MUTE } = api.colours;
+  const { INK, MUTE_TEXT } = api.colours;
   const { keep, matrix, out, into } = ringData();
   const list = register("q-ring");
 
@@ -384,7 +367,7 @@ function drawRing() {
     ctx.fillText(fitText(ctx, model.name(keep[i]), room), lx, ly);
     // The total only fits while the ring is wide enough to leave a margin.
     if (room > 70) {
-      ctx.fillStyle = MUTE;
+      ctx.fillStyle = MUTE_TEXT;
       ctx.font = NOTE();
       ctx.fillText(api.format.compact.format(out[i] + into[i]), lx, ly + gap);
       ctx.font = NAME();
@@ -399,7 +382,7 @@ function drawRing() {
     });
   }
 
-  ctx.fillStyle = MUTE;
+  ctx.fillStyle = MUTE_TEXT;
   ctx.font = NOTE();
   ctx.textAlign = "center";
   ctx.textBaseline = "top";
@@ -490,7 +473,7 @@ function drawHosts() {
   const canvas = $("q-hosts");
   if (!canvas) return;
   const { ctx, width, height } = api.surface(canvas);
-  const { PEOPLE, OUTBOUND, INK, MUTE, GRID } = api.colours;
+  const { PEOPLE, OUTBOUND, INK, MUTE_TEXT, GRID } = api.colours;
   const list = register("q-hosts");
   const rows = hostsData().slice(0, 15);
 
@@ -535,7 +518,7 @@ function drawHosts() {
     ctx.textAlign = "center";
     ctx.fillText(fitText(ctx, model.name(iso3), gutter - 8), mid, y);
     ctx.font = VALUE();
-    ctx.fillStyle = MUTE;
+    ctx.fillStyle = MUTE_TEXT;
     ctx.textAlign = "right";
     ctx.fillText(api.format.compact.format(model.abroad.get(iso3) ?? 0), mid - gutter / 2 - left - 4, y);
     ctx.textAlign = "left";
@@ -612,7 +595,7 @@ function drawDistance() {
   const canvas = $("q-distance");
   if (!canvas) return;
   const { ctx, width, height } = api.surface(canvas);
-  const { PEOPLE, ACCESS, INK, MUTE } = api.colours;
+  const { PEOPLE, ACCESS, INK, MUTE_TEXT } = api.colours;
   const list = register("q-distance");
   const data = distanceData();
   const box = api.frame(width, height, { l: 46, r: 16, t: 30, b: 46 });
@@ -645,7 +628,7 @@ function drawDistance() {
         label: `<b>${d.label} km</b><br>${one(value)}% ${what}`,
       });
     }
-    ctx.fillStyle = MUTE;
+    ctx.fillStyle = MUTE_TEXT;
     ctx.font = NOTE();
     ctx.textAlign = "center";
     ctx.textBaseline = "top";
@@ -692,7 +675,7 @@ function drawDistance() {
   ctx.textAlign = "right";
   ctx.textBaseline = "middle";
   for (const [colour, text] of [[ACCESS, "of all corridors"], [PEOPLE, "of all migrants"]]) {
-    ctx.fillStyle = MUTE;
+    ctx.fillStyle = MUTE_TEXT;
     ctx.fillText(text, legendX, box.top - 12);
     legendX -= ctx.measureText(text).width + 7;
     ctx.fillStyle = colour;
@@ -707,11 +690,11 @@ function drawDistance() {
   );
 }
 
-function answerDistance() {
+export function answerDistance() {
   const near = model.rows.filter((r) => r.km > 0 && r.km <= 2000);
   const share = pct(near.reduce((sum, r) => sum + r.people, 0), model.total);
   const median = weightedMedian(model.rows.map((r) => [r.km, r.people]));
-  const unweighted = [...model.rows].map((r) => r.km).sort((a, b) => a - b)[
+  const unweighted = model.rows.map((r) => r.km).sort((a, b) => a - b)[
     Math.floor(model.rows.length / 2)
   ];
   const far = distanceData().slice(-3);
@@ -754,6 +737,10 @@ const TIERS = [
   [20000, 50000, "$20k–50k"],
   [50000, Infinity, "over $50k"],
 ];
+
+// The foreign-born share on the log axis, floored so a country with almost
+// nobody born abroad still has a place on it.
+const logShare = (d) => Math.log10(Math.max(d.share, 0.02));
 
 function wealthData() {
   const out = [];
@@ -804,7 +791,7 @@ function fitLine(xs, ys) {
 }
 
 function drawWealthScatter(ctx, box, rows, list) {
-  const { PEOPLE, INK, MUTE } = api.colours;
+  const { PEOPLE, INK, MUTE_TEXT } = api.colours;
   const values = rows.map((d) => d.gdp);
   const domain = [Math.min(...values), Math.max(...values)];
   box.x = api.logScale(box, domain, "x");
@@ -817,7 +804,7 @@ function drawWealthScatter(ctx, box, rows, list) {
   });
 
   const xs = rows.map((d) => Math.log10(d.gdp));
-  const ys = rows.map((d) => Math.log10(Math.max(d.share, 0.02)));
+  const ys = rows.map(logShare);
   const fit = fitLine(xs, ys);
   ctx.save();
   ctx.beginPath();
@@ -857,7 +844,7 @@ function drawWealthScatter(ctx, box, rows, list) {
   // the cloud, the two furthest from the line in either direction, and the
   // largest country on the chart. Chosen from the data, not typed in, so the
   // labels follow a data refresh instead of going stale against it.
-  const residual = (d) => Math.log10(Math.max(d.share, 0.02)) - fit.at(Math.log10(d.gdp));
+  const residual = (d) => logShare(d) - fit.at(Math.log10(d.gdp));
   const byShare = [...rows].sort((a, b) => b.share - a.share);
   const byResidual = [...rows].sort((a, b) => residual(a) - residual(b));
   const notable = new Set([
@@ -885,13 +872,13 @@ function drawWealthScatter(ctx, box, rows, list) {
     }
     placed.push(y);
     ctx.textAlign = right ? "left" : "right";
-    ctx.fillStyle = MUTE;
+    ctx.fillStyle = MUTE_TEXT;
     ctx.fillText(fitText(ctx, model.name(d.iso3), 92), d.px + (right ? 8 : -8), y);
   }
 }
 
 function drawReach(ctx, box, list) {
-  const { ACCESS, INK, MUTE } = api.colours;
+  const { ACCESS, INK, MUTE_TEXT } = api.colours;
   const bands = reachData();
   const domain = [400, 12000];
   box.x = api.logScale(box, domain, "x");
@@ -918,7 +905,7 @@ function drawReach(ctx, box, list) {
     ctx.fillStyle = `rgba(${r},0.95)`;
     ctx.fill();
 
-    ctx.fillStyle = MUTE;
+    ctx.fillStyle = MUTE_TEXT;
     ctx.font = NAME();
     ctx.textAlign = "right";
     ctx.textBaseline = "middle";
@@ -946,7 +933,7 @@ function drawWealth() {
   const canvas = $("q-wealth");
   if (!canvas) return;
   const { ctx, width, height } = api.surface(canvas);
-  const { INK, MUTE } = api.colours;
+  const { INK, MUTE_TEXT } = api.colours;
   const list = register("q-wealth");
   const data = wealthData();
 
@@ -964,7 +951,7 @@ function drawWealth() {
   drawReach(ctx, reach, list);
 
   const xs = data.map((d) => Math.log10(d.gdp));
-  const ys = data.map((d) => Math.log10(Math.max(d.share, 0.02)));
+  const ys = data.map(logShare);
   const titles = [
     [scatter, "How rich the destination is", `r = ${correlation(xs, ys).toFixed(2)} · n = ${data.length}`],
     [reach, "How far its foreign-born came", "bar: middle half · dot: median"],
@@ -975,7 +962,7 @@ function drawWealth() {
     ctx.textAlign = "left";
     ctx.textBaseline = "alphabetic";
     ctx.fillText(title, box.left - (box === reach ? 70 : 0), box.top - 12);
-    ctx.fillStyle = MUTE;
+    ctx.fillStyle = MUTE_TEXT;
     ctx.font = NOTE();
     ctx.textAlign = "right";
     ctx.fillText(stat, box.right + (box === reach ? 70 : 0), box.top - 12);
@@ -986,9 +973,9 @@ function drawWealth() {
   const growing = data.filter((d) => d.growth !== null);
   const speed = correlation(
     growing.map((d) => d.growth),
-    growing.map((d) => Math.log10(Math.max(d.share, 0.02))),
+    growing.map(logShare),
   );
-  ctx.fillStyle = MUTE;
+  ctx.fillStyle = MUTE_TEXT;
   ctx.font = NOTE();
   ctx.textAlign = "left";
   ctx.textBaseline = "bottom";
@@ -1017,14 +1004,13 @@ function drawWealth() {
 
 function answerWealth() {
   const data = wealthData();
-  const level = correlation(
-    data.map((d) => Math.log10(d.gdp)),
-    data.map((d) => Math.log10(Math.max(d.share, 0.02))),
-  );
+  const xs = data.map((d) => Math.log10(d.gdp));
+  const ys = data.map(logShare);
+  const level = correlation(xs, ys);
   const growing = data.filter((d) => d.growth !== null);
   const speed = correlation(
     growing.map((d) => d.growth),
-    growing.map((d) => Math.log10(Math.max(d.share, 0.02))),
+    growing.map(logShare),
   );
   const bands = reachData();
   const poorest = bands[0];
@@ -1036,7 +1022,7 @@ function answerWealth() {
     `foreign-born share of the population is ` +
     `<b>${level.toFixed(2)}</b> (95% ${range(correlationInterval(level, data.length))}) on log ` +
     `axes: ten times the income, roughly ` +
-    `<b>${(10 ** fitLine(data.map((d) => Math.log10(d.gdp)), data.map((d) => Math.log10(Math.max(d.share, 0.02)))).slope).toFixed(1)}×</b> ` +
+    `<b>${(10 ** fitLine(xs, ys).slope).toFixed(1)}×</b> ` +
     `the foreign-born share. Put the same countries against their 2024 growth rate and it falls ` +
     `to <b>${speed.toFixed(2)}</b> (95% ${range(correlationInterval(speed, growing.length))}, ` +
     `an interval that contains zero). Being rich and having a large foreign-born ` +
@@ -1102,7 +1088,7 @@ function drawIncome() {
   const canvas = $("q-income");
   if (!canvas) return;
   const { ctx, width, height } = api.surface(canvas);
-  const { PEOPLE, ACCESS, INK, MUTE } = api.colours;
+  const { PEOPLE, ACCESS, INK, MUTE, MUTE_TEXT } = api.colours;
   const list = register("q-income");
   const { tiers, fled, steps, placedTotal } = incomeData();
 
@@ -1133,7 +1119,7 @@ function drawIncome() {
         ctx.textBaseline = "middle";
         ctx.fillText(`${one(part.share)}%`, x + w / 2, y + tall / 2);
       }
-      ctx.fillStyle = MUTE;
+      ctx.fillStyle = MUTE_TEXT;
       ctx.font = NOTE();
       ctx.textAlign = w > 52 ? "center" : "left";
       ctx.textBaseline = "top";
@@ -1192,7 +1178,7 @@ function drawIncome() {
         `${api.format.compact.format(part.people)} foreign-born living there`,
     });
   });
-  ctx.fillStyle = MUTE;
+  ctx.fillStyle = MUTE_TEXT;
   ctx.font = NOTE();
   ctx.textAlign = "right";
   ctx.textBaseline = "alphabetic";
@@ -1206,7 +1192,7 @@ function drawIncome() {
   const birthY = 260;
   stack(steps, ACCESS, birthY, "The destination against their own country of birth");
 
-  ctx.fillStyle = MUTE;
+  ctx.fillStyle = MUTE_TEXT;
   ctx.font = NOTE();
   ctx.textAlign = "left";
   ctx.textBaseline = "top";
@@ -1265,18 +1251,17 @@ function sexData() {
     row.female += r.female;
     per.set(r.d, row);
   }
-  const rows = [...per.entries()]
+  return [...per.entries()]
     .filter(([, v]) => v.people >= SEX_FLOOR)
     .map(([iso3, v]) => ({ iso3, people: v.people, share: pct(v.female, v.people) }))
     .sort((a, b) => a.share - b.share);
-  return rows;
 }
 
 function drawSex() {
   const canvas = $("q-sex");
   if (!canvas) return;
   const { ctx, width, height } = api.surface(canvas);
-  const { PEOPLE, ACCESS, INK, MUTE, GRID } = api.colours;
+  const { PEOPLE, ACCESS, INK, MUTE, MUTE_TEXT, GRID } = api.colours;
   const list = register("q-sex");
   const rows = sexData();
   const show = [...rows.slice(0, 8), null, ...rows.slice(-8).reverse()];
@@ -1290,7 +1275,7 @@ function drawSex() {
 
   ctx.font = NOTE();
   ctx.textBaseline = "top";
-  ctx.fillStyle = MUTE;
+  ctx.fillStyle = MUTE_TEXT;
   for (const tick of [20, 30, 40, 50, 60, 70]) {
     ctx.strokeStyle = tick === 50 ? MUTE : GRID;
     ctx.beginPath();
@@ -1301,7 +1286,7 @@ function drawSex() {
     ctx.fillText(`${tick}%`, x(tick), height - 22);
   }
   ctx.textAlign = "center";
-  ctx.fillStyle = MUTE;
+  ctx.fillStyle = MUTE_TEXT;
   ctx.fillText("Share of the foreign-born population that is female", (left + right) / 2, 12);
 
   show.forEach((row, i) => {
@@ -1319,7 +1304,7 @@ function drawSex() {
     ctx.textAlign = "right";
     ctx.textBaseline = "middle";
     ctx.fillText(fitText(ctx, model.name(row.iso3), left - 16), left - 8, y);
-    ctx.fillStyle = MUTE;
+    ctx.fillStyle = MUTE_TEXT;
     ctx.font = VALUE();
     ctx.textAlign = "left";
     ctx.fillText(`${one(row.share)}%`, right + 6, y);
@@ -1343,7 +1328,7 @@ function drawSex() {
   ctx.lineTo(width - 12, Math.round(gy) + 0.5);
   ctx.stroke();
   ctx.setLineDash([]);
-  ctx.fillStyle = MUTE;
+  ctx.fillStyle = MUTE_TEXT;
   ctx.font = NOTE();
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
@@ -1380,92 +1365,74 @@ function answerSex() {
 
 /* ------------------------------------------------------------------- wiring */
 
-const CHARTS = [
-  ["q-ring", drawRing, "q-ring-answer", answerRing],
-  ["q-hosts", drawHosts, "q-hosts-answer", answerHosts],
-  ["q-distance", drawDistance, "q-distance-answer", answerDistance],
-  ["q-wealth", drawWealth, "q-wealth-answer", answerWealth],
-  ["q-income", drawIncome, "q-income-answer", answerIncome],
-  ["q-sex", drawSex, "q-sex-answer", answerSex],
-];
-
-function render() {
-  if (!api?.state?.edges) return;
-  if (!model) model = build();
-  for (const [canvasId, draw, answerId, answer] of CHARTS) {
-    draw();
-    wire(canvasId);
-    const host = $(answerId);
-    if (host && !host.dataset.written) {
-      host.innerHTML = answer();
-      host.dataset.written = "on";
-    }
-  }
-  drawn = true;
-}
-
-// The ring's own controls. Its answer is rewritten on every change, since the
-// numbers in it belong to the year and the list on screen.
-function redrawRing() {
-  drawRing();
-  wire("q-ring");
-  const host = $("q-ring-answer");
-  if (host) {
-    host.innerHTML = answerRing();
-    host.dataset.written = "on";
-  }
-}
-
-function setupRingControls() {
-  const scope = $("q-ring-scope");
-  // The other five answers pair stocks with one snapshot of GDP, population and
-  // sex, so they stay where that pairing holds. Saying which questions the year
-  // moves is cheaper than a reader assuming it moves all six.
-  if (scope)
-    scope.textContent =
-      `The slider changes this ring only. The five answers below are all ${YEAR}.`;
-  const slider = $("q-ring-year");
-  if (!slider || slider.dataset.ready) return;
-  slider.dataset.ready = "on";
-
-  const years = api.state.edges.years;
-  const ends = slider.parentElement?.querySelector(".ends");
-  if (ends) ends.innerHTML = `<span>${years[0]}</span><span>${years.at(-1)}</span>`;
-  slider.max = String(years.length - 1);
-  slider.value = String(Math.max(years.indexOf(ringState.year), 0));
-  // The slider's value is an index into the eight snapshots, so without this a
-  // screen reader announces "3" where the page says 2005.
-  slider.setAttribute("aria-valuetext", String(ringState.year));
-
-  slider.addEventListener("input", (event) => {
-    ringState.year = years[Number(event.target.value)] ?? YEAR;
-    slider.setAttribute("aria-valuetext", String(ringState.year));
-    const now = $("q-ring-now");
-    if (now) now.textContent = String(ringState.year);
-    redrawRing();
-  });
-}
-
 // Six canvases and a pass over 9,095 corridors is not free, and most readers
-// never open the drawer. Nothing is computed until they do.
-export function installQuestions(shared) {
-  api = shared;
-  const drawer = $("questions");
-  if (!drawer) return;
-  drawer.addEventListener("toggle", () => {
-    if (drawer.open) {
-      setupRingControls();
-      render();
-    }
-  });
-  if (drawer.open) {
-    setupRingControls();
-    render();
-  }
-  window.addEventListener("week03:restyle", () => {
-    if (drawn && drawer.open) render();
-  });
-  window.addEventListener("resize", () => {
-    if (drawn && drawer.open) render();
-  });
+// never open the drawer. Nothing is computed until the questions islands ask,
+// which they do once the drawer is open.
+function ready() {
+  if (!api?.state?.edges) return false;
+  if (!model) model = build();
+  return true;
 }
+
+/** Draw the chart on canvas `id` (q-ring, q-hosts, …). */
+export function drawQuestion(id) {
+  if (!ready()) return;
+  const draw = {
+    "q-ring": drawRing,
+    "q-hosts": drawHosts,
+    "q-distance": drawDistance,
+    "q-wealth": drawWealth,
+    "q-income": drawIncome,
+    "q-sex": drawSex,
+  }[id];
+  draw?.();
+}
+
+/** The answer under chart `id`, as HTML. */
+export function answerQuestion(id) {
+  if (!ready()) return null;
+  const answer = {
+    "q-ring": answerRing,
+    "q-hosts": answerHosts,
+    "q-distance": answerDistance,
+    "q-wealth": answerWealth,
+    "q-income": answerIncome,
+    "q-sex": answerSex,
+  }[id];
+  return answer ? answer() : null;
+}
+
+// The ring's own year. Its answer is rewritten on every change, since the
+// numbers in it belong to the year and the list on screen.
+export function ringYears() {
+  return api.state.edges.years;
+}
+
+export function setRingYear(year) {
+  ringState.year = year ?? YEAR;
+}
+
+// The other five answers pair stocks with one snapshot of GDP, population and
+// sex, so they stay where that pairing holds. Saying which questions the year
+// moves is cheaper than a reader assuming it moves all six.
+export const RING_SCOPE = `The slider changes this ring only. The five answers below are all ${YEAR}.`;
+
+export { YEAR as QUESTION_YEAR };
+
+// The pointer on a question's canvas, from its island: hover shows the mark's
+// tooltip, a click selects its country, exactly as the charts upstairs behave.
+export const questionPointer = {
+  move(canvas, event) {
+    const mark = hit(canvas, event);
+    canvas.style.cursor = mark ? "pointer" : "default";
+    if (mark?.label) api.showTip(event, mark.label);
+    else api.hideTip();
+  },
+  leave() {
+    api.hideTip();
+  },
+  click(canvas, event) {
+    const mark = hit(canvas, event);
+    if (mark?.iso3) api.select(mark.iso3);
+  },
+};

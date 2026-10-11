@@ -1,5 +1,5 @@
 import { FindingsStrip } from "@/components/post/FindingsStrip";
-import { FindingRow } from "@/features/week05/frame/FindingRow";
+import { FindingRow } from "@/components/post/FindingRow";
 import { Frame } from "@/features/week05/frame/Frame";
 
 // Findings: one row per section; the frame island draws each [data-finding] mini chart.

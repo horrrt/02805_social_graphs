@@ -50,7 +50,7 @@ export type StripOptions = {
 };
 
 /** The tokens every strip mark reads, as week04-strip.js token() reads them from <body>. */
-export const MARK_TOKENS = ["--ink", "--ink-soft", "--ink-mute", "--line", "--card", "--ground", "--w4-band", "--w4-grid"];
+export const MARK_TOKENS = ["--ink", "--ink-soft", "--ink-mute", "--ink-mute-text", "--line", "--card", "--ground", "--w4-band", "--w4-grid"];
 
 type Placed = { x: number; y: number; anchor: "start" | "middle" | "end"; text: string; role: string; weight: number | string };
 
@@ -115,7 +115,7 @@ function StripSvg({ rows, opts, scale, measure, tokens }: { rows: StripRow[]; op
   L.ticks.forEach((tick: { x: number; y: number; label: string }, i: number) => {
     marks.push(<line key={`tick-line ${i}`} x1={tick.x} y1={L.gridTop} x2={tick.x} y2={ybot} stroke={t["--w4-grid"]} strokeWidth={1} />);
     marks.push(
-      <text key={`tick ${i}`} x={tick.x} y={tick.y} fontSize={caption} fill={t["--ink-mute"]} textAnchor="middle">
+      <text key={`tick ${i}`} x={tick.x} y={tick.y} fontSize={caption} fill={t["--ink-mute-text"]} textAnchor="middle">
         {tick.label}
       </text>,
     );
@@ -124,7 +124,7 @@ function StripSvg({ rows, opts, scale, measure, tokens }: { rows: StripRow[]; op
   if (L.axisTitle) {
     const { x, y, text } = L.axisTitle;
     marks.push(
-      <text key="axis-title" x={x} y={y} fontSize={caption} fill={t["--ink-mute"]} textAnchor="end">
+      <text key="axis-title" x={x} y={y} fontSize={caption} fill={t["--ink-mute-text"]} textAnchor="end">
         {text}
       </text>,
     );
@@ -148,7 +148,7 @@ function StripSvg({ rows, opts, scale, measure, tokens }: { rows: StripRow[]; op
     );
     if (g.sub)
       marks.push(
-        <text key={k("sub")} x={g.sub.x} y={g.sub.y} fontSize={caption} fill={t["--ink-mute"]}>
+        <text key={k("sub")} x={g.sub.x} y={g.sub.y} fontSize={caption} fill={t["--ink-mute-text"]}>
           {r.sub}
         </text>,
       );

@@ -6,12 +6,12 @@ import networkx as nx
 from scipy import stats
 
 from arcade_data import DISPLAY_NAME_OVERRIDES
+import tables
 
 DATA = "data"
 
-nodes = pd.read_csv(f"{DATA}/week1_nodes.tsv", sep="\t", comment="#")
-edges = pd.read_csv(f"{DATA}/week1_edges.tsv", sep="\t", comment="#",
-                    names=["source", "target"])
+nodes = tables.frame(f"{DATA}/week1_nodes.parquet")
+edges = tables.frame(f"{DATA}/week1_edges.parquet")
 
 D = nx.DiGraph()
 D.add_nodes_from(nodes.node_id)          # isolates survive because of this line

@@ -83,7 +83,9 @@ YEAR = 2025
 RUNS = 100
 NULLS = 20  # the brief's own count of shuffles
 SHUFFLES = 100  # label shuffles per NMI test
-TOP = 12  # communities with their own colour
+TOP = 12  # communities with their own colour, at most
+MIN_SHARE = 0.01  # ... and only those with at least this share of the workers
+LOOSE = 0.5  # a group that holds together less often than this is marked loose
 ALPHA = 0.2  # the disparity filter's cut, as section 1 and exercise 4.11
 MAX_CLIQUES = 20000  # maximal cliques above which k-clique percolation is skipped: networkx compares cliques pairwise
 AMI_MAX_VALUES = 1000
@@ -164,7 +166,7 @@ def main_places(lca, lookup, town_lookup):
     city, for the PERM worksites."""
     sites = load(f"worksites_fy{YEAR}")
     sites = sites[sites["CASE_NUMBER"].isin(lca["CASE_NUMBER"])].copy()
-    sites["workers"] = pd.to_numeric(sites["WORKSITE_WORKERS"], errors="coerce").fillna(1)
+    sites["workers"] = sites["WORKSITE_WORKERS"].fillna(1)
     stats = where.locate(sites, lookup, town_lookup)
     abbr = {n.upper(): a for a, n in where.STATE_NAMES.items()}
     st = sites["state"].map(abbr)
@@ -223,7 +225,10 @@ def filings():
     lookup, town_lookup, gaz_names = metro_table()
     lca = filtered(YEAR)
     place, usual, site_stats = main_places(lca, lookup, town_lookup)
-    positions = pd.to_numeric(lca["TOTAL_WORKER_POSITIONS"], errors="coerce").fillna(1).astype(int)
+    # One worker per filing, as a PERM case is one worker. A filing's requested
+    # positions are a ceiling, not hires: Grandison Management requests 40 on
+    # every one of its 1,446 filings, which would count 57,840 workers.
+    positions = lca["TOTAL_WORKER_POSITIONS"].fillna(1).astype(int)
     abbr = {n.upper(): a for a, n in where.STATE_NAMES.items()}
     # A case missing from the worksite file keeps its main row's state.
     fallback = lca["WORKSITE_STATE"].str.upper().str.strip().map(abbr)
@@ -238,9 +243,9 @@ def filings():
         "sector": lca["NAICS_CODE"].map(sector_of_code).values,
         "employer": lca["employer"].values,
         "hq_state": lca["EMPLOYER_STATE"].str.strip().str.upper().values,
-        "placed": np.where(lca["SECONDARY_ENTITY"].str.upper().str.startswith("Y").fillna(False),
+        "placed": np.where(lca["SECONDARY_ENTITY"].fillna(False),
                            "placed at a client", "direct"),
-        "weight": positions.values,
+        "weight": 1,
     })
     placing = intermediaries(lca)
 
@@ -292,7 +297,7 @@ def filings():
     titles = occupation_titles(items)
     places = place_names(sorted(set(items["place"])), gaz_names)
     notes = {
-        "h1b_filings": int(len(h1b)), "h1b_positions": int(h1b["weight"].sum()),
+        "h1b_filings": int(len(h1b)), "h1b_positions_requested": int(positions.sum()),
         "perm_cases": int(len(pm)), "perm_dropped_unreadable_soc": dropped_perm,
         "workers": int(items["weight"].sum()),
         "worksites": site_stats, "perm_worksites": perm_stats,
@@ -478,6 +483,22 @@ def louvain_runs(g, runs, label, weighted=True, profiles=0, per_profile=None):
                             chunksize=max(1, runs // (4 * WORKERS))))
     stamp(f"{label}: {runs} Louvain runs", started)
     return found
+
+
+def holds_together(member, memberships, weight, p):
+    """For each community of `member`: the chance that two of its workers, drawn
+    by weight, share a community in one Louvain seed, averaged over the seeds."""
+    out = []
+    for c in range(int(member.max()) + 1):
+        idx = np.flatnonzero(member == c)
+        w = weight[idx].astype(float)
+        total = w.sum()
+        same = []
+        for mb in memberships:
+            _, inv = np.unique(mb[:p][idx], return_inverse=True)
+            same.append(float((np.bincount(inv, weights=w) ** 2).sum() / total ** 2))
+        out.append(float(np.mean(same)))
+    return out
 
 
 def by_size(membership, weight):
@@ -731,8 +752,61 @@ def week4_facts(g, proj, member, attributes, ent):
     return out
 
 
+# A group's name names only what most of it does. One occupation names it if
+# it holds OCC_ALONE of the group's workers; else a SOC major group holding
+# MAJOR_ALONE ("Computer jobs"); else two occupations, or two major groups,
+# that together hold PAIR ("Mixed: mostly healthcare and education jobs"); else
+# "Mixed occupations". Sector and metro join the name when they hold half.
+OCC_ALONE, MAJOR_ALONE, PAIR = 0.4, 0.5, 0.4
+# Short nouns for the SOC major groups, so two can share a name without their
+# own "and"s running together.
+JOBS = {"Management": "management", "Business and financial": "business", "Computer and mathematical": "computer",
+        "Architecture and engineering": "engineering", "Life, physical and social science": "science",
+        "Community and social service": "social service", "Legal": "legal", "Education and library": "education",
+        "Arts, design, media": "arts and media", "Healthcare practitioners": "healthcare",
+        "Healthcare support": "healthcare support", "Protective service": "protective service",
+        "Food preparation": "food service", "Building and grounds": "cleaning and grounds",
+        "Personal care": "personal care", "Sales": "sales", "Office and administrative": "office", "Farming": "farm",
+        "Construction": "construction", "Installation and repair": "repair", "Production": "production",
+        "Transportation": "transport", "Military": "military", UNKNOWN: "unclassified"}
+
+
+def occupation_name(shares, majors, level):
+    """The occupation part of a group's name (see OCC_ALONE). A title's
+    ", Including ..." clause is left out of the name, not out of the fields."""
+    occ = [[t.split(", Including")[0], x] for t, x in shares["top"]]
+    lead = f"{level['name']} " if level["share"] >= 0.5 else ""
+    if occ[0][1] >= OCC_ALONE:
+        return lead + occ[0][0]
+    if majors[0][1] >= MAJOR_ALONE:
+        return lead + f"{JOBS[majors[0][0]].capitalize()} jobs"
+    if len(occ) > 1 and occ[0][1] + occ[1][1] >= PAIR:
+        return f"{occ[0][0]} / {occ[1][0]}"
+    if len(majors) > 1 and majors[0][1] + majors[1][1] >= PAIR:
+        return f"Mixed: mostly {JOBS[majors[0][0]]} and {JOBS[majors[1][0]]} jobs"
+    return "Mixed occupations"
+
+
+def tell_apart(communities):
+    """Two groups with one name get told apart: a "several metros" group whose
+    top metro holds a quarter says "mostly" that metro; else the name adds the
+    group's leading occupation; a name still shared adds the top employer."""
+    def shared():
+        names = [c["name"] for c in communities]
+        return [c for c in communities if names.count(c["name"]) > 1]
+    for c in shared():
+        metro, share = c["fields"]["place"]["top"][0]
+        if c["name"].endswith("several metros") and share >= 0.25:
+            c["name"] = c["name"].removesuffix("several metros") + f"mostly {metro}"
+        else:
+            c["name"] += f" · led by {c['fields']['occupation']['top'][0][0]}"
+    for c in shared():
+        if c["top_employers"]:
+            c["name"] += f" · {c['top_employers'][0][0]}"
+
+
 def name_community(profiles, idx, lookups, describe):
-    """A community's name from the most common value of each field, by workers."""
+    """A community's name from the most common values of each field, by workers."""
     part = profiles.iloc[idx]
     w = part["workers"].values
     shares = {}
@@ -741,8 +815,11 @@ def name_community(profiles, idx, lookups, describe):
         value, share = s.index[0], float(s.iloc[0] / w.sum())
         shares[col] = {"value": str(value), "name": lookups[col].get(value, str(value)), "share": round(share, 3),
                        "top": [[lookups[col].get(v, str(v)), round(float(x / w.sum()), 3)] for v, x in s.head(3).items()]}
-    occ, lev, sec, plc = (shares[c] for c in ("occupation", "level", "sector", "place"))
-    bits = [f"{lev['name']} {occ['name']}" if lev["share"] >= 0.5 else occ["name"]]
+    major = pd.Series(w, index=part["occupation"].astype(str).str[:2].map(MAJOR_GROUPS).fillna(UNKNOWN).values)
+    major = major.groupby(level=0).sum().sort_values(ascending=False, kind="stable")
+    majors = [[m, float(x / w.sum())] for m, x in major.head(2).items()]
+    sec, plc = shares["sector"], shares["place"]
+    bits = [occupation_name(shares["occupation"], majors, shares["level"])]
     if sec["share"] >= 0.5:
         bits.append(sec["name"])
     bits.append(plc["name"] if plc["share"] >= 0.5 else "several metros")
@@ -773,6 +850,7 @@ def run(ent):
     member = np.array([remap[c] for c in member])
     member_attr = np.array([remap.get(c, -1) for c in member_all[p:]])
     seeds_nmi = [nmi(memberships[i][:p], memberships[i + 1][:p]) for i in range(0, min(RUNS, 20) - 1, 2)]
+    together = holds_together(member, memberships, w_profiles, p)
     recur = float(np.mean([nmi(memberships[best][:p], mb[:p]) > 0.999 for mb in memberships]))
     null_started = time.time()
     with pool(g, p, per_profile) as ex:
@@ -827,7 +905,9 @@ def run(ent):
             "h1b": int(ent.profiles["h1b"].values[idx].sum()), "perm": int(ent.profiles["perm"].values[idx].sum()),
             "fields": shares, "attribute_nodes": len(own), "attributes": own[:12],
             "top_employers": [[resolver().label(e), int(v)] for e, v in top_employers.items()],
+            "holds_together": round(together[c], 3),
         })
+    tell_apart(communities)
     result = {
         "entity": ent.name, "unit": ent.unit, "year": YEAR, "notes": ent.notes,
         "profiles": p, "attribute_nodes": len(attributes), "links": g.ecount(),
@@ -862,9 +942,21 @@ def page_file(ent, result, member, pagerank):
     codes = {col: sorted(set(prof[col].astype(str))) for col in ("occupation", "place", "sector")}
     index = {col: {c: i for i, c in enumerate(v)} for col, v in codes.items()}
     rank = np.argsort(np.argsort(-pagerank, kind="stable"), kind="stable")  # 0 = most central
+    member = np.asarray(member)
+    if ent.dots == "items":
+        # One item per profile: write the profiles in the items' order (largest
+        # first), so item k is profile k and the page needs no index between them.
+        items = ent.items.sort_values("weight", ascending=False, kind="stable")
+        order = items["profile"].to_numpy()
+        assert sorted(order) == list(range(len(prof))), "companies need exactly one item per profile"
+        assert (items["weight"].to_numpy() == (prof["h1b"] + prof["perm"]).to_numpy()[order]).all()
+        prof, member, rank = prof.iloc[order].reset_index(drop=True), member[order], rank[order]
     data = {
         "generated_by": "analysis/week04_entities.py", "entity": ent.name, "unit": ent.unit, "year": YEAR,
-        "dots": ent.dots, "top": TOP, "spacing": round(result["spacing"], 6),
+        "dots": ent.dots, "spacing": round(result["spacing"], 6),
+        # Groups with their own colour: the largest TOP that hold MIN_SHARE of the workers.
+        "top": max(1, sum(1 for c in result["communities"][:TOP] if c["workers"] >= MIN_SHARE * result["workers"])),
+        "loose_below": LOOSE,
         "lookups": {
             "occupation": [[c, ent.lookups["occupation"].get(c, c)] for c in codes["occupation"]],
             "place": [[c, ent.lookups["place"].get(c, c)] for c in codes["place"]],
@@ -880,7 +972,8 @@ def page_file(ent, result, member, pagerank):
             "h1b": [int(v) for v in prof["h1b"]], "perm": [int(v) for v in prof["perm"]],
             "pagerank_rank": [int(r) for r in rank],
         },
-        "communities": [{k: c[k] for k in ("id", "name", "profiles", "workers", "h1b", "perm", "top_employers", "x", "y", "r")}
+        "communities": [{k: c[k] for k in ("id", "name", "profiles", "workers", "h1b", "perm", "top_employers", "x", "y", "r",
+                                           "holds_together")}
                         | {"fields": {f: v["top"] for f, v in c["fields"].items()}} for c in result["communities"]],
         "summary": {k: result[k] for k in ("profiles", "attribute_nodes", "links", "workers", "louvain", "null",
                                            "robustness", "labels")},
@@ -888,9 +981,8 @@ def page_file(ent, result, member, pagerank):
         "notes": result["notes"],
     }
     if ent.dots == "items":
-        items = ent.items.sort_values("weight", ascending=False, kind="stable")
-        data["items"] = {"profile": [int(p) for p in items["profile"]], "workers": [int(w) for w in items["weight"]],
-                         "name": [str(n) for n in items["label"]]}
+        # A company's workers are its profile's h1b + perm.
+        data["items"] = {"name": [str(n) for n in items["label"]]}
     return data
 
 

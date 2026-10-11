@@ -1,7 +1,8 @@
 "use client";
 
 // The section rail down the left margin (nav.w4-rail, styled by rail.css).
-// One dot per section, with its questions as small dots under it; the section
+// One dot per section, with its questions as small dots under it (none when a
+// section has only one); the section
 // in view is current and opens its questions. Hovering or focusing the rail
 // shows every name, in a panel sized to the widest one. Every week draws its
 // rail with it; `column` is the width of the page's centred content column,
@@ -29,7 +30,8 @@ function RailList({ items, open }: { items: RailItem[]; open: Set<string> }) {
             <a aria-current={current ? "true" : undefined} aria-label={item.label} href={`#${item.target}`}>
               <span aria-hidden="true" className="w4-rail-label">{item.label}</span>
             </a>
-            {item.children?.length ? <RailList items={item.children} open={open} /> : null}
+            {/* A lone question adds nothing to its section's dot, so the rail shows only the section. */}
+            {item.children && item.children.length > 1 ? <RailList items={item.children} open={open} /> : null}
           </li>
         );
       })}

@@ -72,10 +72,10 @@ export function Copying() {
               The house-style cutoff barely matters: any cutoff from 3 to 20 pages gives the same 22 pairs. And runs of 12 words add 16 pairs from a templated lead that 8-word runs split, on eight Strikeforce: Morituri pages whose leads come in two versions.
             </p>
           </Drawer>
-          <Drawer label="Table: the 12 clusters">
+          <Drawer label="Table">
             <Part part="clusters" />
           </Drawer>
-          <Drawer label="What we read in the pages" bodyId="copying-checked">
+          <Drawer label="What we read" bodyId="copying-checked">
             <p>
               The longest passage of the largest copying pair, quoted from its first page. The next two pairs, and a templated lead that only runs of 12 words find, are one click away.
             </p>

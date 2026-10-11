@@ -141,7 +141,7 @@ export async function echart(host, option, { height = 360 } = {}) {
   host.append(el);
   const text = { fontFamily: family(), fontSize: fs("small"), color: token("--ink") };
   const axis = {
-    axisLabel: { fontSize: fs("caption"), color: token("--ink-mute") },
+    axisLabel: { fontSize: fs("caption"), color: token("--ink-mute-text") },
     nameTextStyle: { fontSize: fs("caption"), color: token("--ink-soft") },
     axisLine: { lineStyle: { color: token("--line") } },
     splitLine: { lineStyle: { color: token("--line-soft") } },

@@ -90,7 +90,7 @@ export function Autocomplete() {
               <Part part="modularity" />
             </Plot>
           </Drawer>
-          <Drawer label="What we read in the pages" bodyId="autocomplete-checked">
+          <Drawer label="What we read" bodyId="autocomplete-checked">
             <p>
               For every fake we searched its group's sentences for the longest run of words it repeats verbatim. The runs are 8 to 17 words long, and 8 of the 9 come from a single page. Opening the example gives away one quiz answer.
             </p>

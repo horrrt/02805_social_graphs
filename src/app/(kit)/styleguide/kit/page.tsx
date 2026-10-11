@@ -1,6 +1,12 @@
 import { PostSection } from "@/components/post/PostSection";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { Demo } from "@/features/kit-page/demos";
+import { DemoNetworks } from "@/features/kit-page/demos-networks";
+import { TextDemo } from "@/features/kit-page/demos-text";
+import { DistDemo } from "@/features/kit-page/demos-distributions";
+import { DemoGames } from "@/features/kit-page/demos-games";
+import { DemoEditors } from "@/features/kit-page/demos-editors";
+import { DemoGrowth } from "@/features/kit-page/demos-growth";
 
 export default function Page() {
   return (
@@ -35,6 +41,45 @@ export default function Page() {
         <PostSection id="demo-term">
           <h2>termify() and drawer()</h2>
           <Demo demo="term" />
+        </PostSection>
+        <PostSection id="demo-explorables">
+          <h2>Text explorables</h2>
+          <p className="sub">
+            Ten pieces for the language weeks, from src/kit with toy words and numbers. Each takes its data as props;
+            the controls around them belong to the demo.
+          </p>
+          <div className="w4-two">
+            <div>
+              <h3>VectorAngle: cosine is the angle, not the length</h3>
+              <Demo demo="vector" />
+            </div>
+            <div>
+              <h3>AnalogyPlot: king − man + woman</h3>
+              <Demo demo="analogy" />
+            </div>
+          </div>
+          <h3>SplitBars: what each similarity is made of</h3>
+          <Demo demo="split" />
+          <div className="w4-two">
+            <div>
+              <h3>SweepCurve: one number as a dial turns</h3>
+              <Demo demo="sweep" />
+            </div>
+            <div>
+              <h3>MixtureBar: a document as a topic mixture</h3>
+              <Demo demo="mix" />
+            </div>
+          </div>
+          <h3>TokenWindow: the pairs word2vec trains on</h3>
+          <Demo demo="tokens" />
+          <h3>CountMatrix: a word is its row</h3>
+          <Demo demo="matrix" />
+          <h3>RankedBars: a page's most distinctive words</h3>
+          <Demo demo="ranked" />
+          <h3>AxisMap: items on two meaning axes</h3>
+          <Demo demo="axismap" />
+          <h3>GuessRanker: describe the target without naming it</h3>
+          <Demo demo="guess" />
         </PostSection>
         <PostSection id="demo-network">
           <h2>networkView(): six ways to draw a network</h2>
@@ -85,6 +130,169 @@ export default function Page() {
             </div>
           </div>
         </PostSection>
+        {/* ==== Kit: networks ==== */}
+        <PostSection id="demo-networks">
+          <h2>Network explorables</h2>
+          <p className="sub">
+            Five pieces for the network weeks, from src/kit on toy and textbook graphs: NetCanvas, StepPlayer and
+            Readouts, NetworkView's additions, and the seeded models in graph-core.js. Same seed, same run.
+          </p>
+          <h3>Preferential attachment: StepPlayer, NetCanvas and Readouts</h3>
+          <DemoNetworks demo="nw-ba" />
+          <div className="w4-two">
+            <div>
+              <h3>Breadth-first search on a ring with shortcuts</h3>
+              <DemoNetworks demo="nw-bfs" />
+            </div>
+            <div>
+              <h3>Watts–Strogatz: rewire the ring</h3>
+              <DemoNetworks demo="nw-ws" />
+            </div>
+          </div>
+          <h3>Louvain, one move at a time, on the karate club</h3>
+          <DemoNetworks demo="nw-louvain" />
+          <h3>Krackhardt&apos;s kite: size by a centrality, click to take someone out</h3>
+          <DemoNetworks demo="nw-kite" />
+        </PostSection>
+        {/* ==== end Kit: networks ==== */}
+        {/* ==== Kit batch D: Text ==== */}
+        <PostSection id="demo-text">
+          <h2>Text: tokens, contributions, search and methods side by side</h2>
+          <p className="sub">
+            TaggedTokens, ContributionBars, RankedResults and MethodCompare from src/kit, and the new CountMatrix and
+            AxisMap options, with toy words and numbers. The methods behind them are in src/kit/text-core.js.
+          </p>
+          <h3>TaggedTokens: a token pipeline you can edit</h3>
+          <TextDemo demo="text-pipeline" />
+          <div className="w4-two">
+            <div>
+              <h3>TaggedTokens: an n-gram window</h3>
+              <TextDemo demo="text-ngram" />
+            </div>
+            <div>
+              <h3>TaggedTokens: BIO tags become entity spans</h3>
+              <TextDemo demo="text-ner" />
+            </div>
+          </div>
+          <div className="w4-two">
+            <div>
+              <h3>ContributionBars: a sentiment lexicon with negation</h3>
+              <TextDemo demo="text-lexicon" />
+            </div>
+            <div>
+              <h3>ContributionBars: a logistic classifier&apos;s features</h3>
+              <TextDemo demo="text-classifier" />
+            </div>
+          </div>
+          <h3>RankedResults: two engines, one query</h3>
+          <TextDemo demo="text-search" />
+          <h3>MethodCompare: one sentence, three sentiment methods</h3>
+          <TextDemo demo="text-compare" />
+          <div className="w4-two">
+            <div>
+              <h3>CountMatrix: counts, PPMI, TF and TF-IDF</h3>
+              <TextDemo demo="text-ppmi" />
+            </div>
+            <div>
+              <h3>AxisMap: two rates on log axes</h3>
+              <TextDemo demo="text-logmap" />
+            </div>
+          </div>
+        </PostSection>
+        {/* ==== end Kit batch D: Text ==== */}
+        {/* ==== Kit: distributions and nulls ==== */}
+        <PostSection id="demo-distributions">
+          <h2>Distributions and nulls</h2>
+          <p className="sub">
+            Four pieces for degree distributions and null models, from src/kit with toy numbers drawn by a seeded
+            generator. The numbers behind them are in src/kit/dist-core.js.
+          </p>
+          <h3>DistributionPlot: degrees against the Poisson of the same mean</h3>
+          <DistDemo demo="dist-degree" />
+          <div className="w4-two">
+            <div>
+              <h3>DistributionPlot: an ideal Zipf curve against toy word counts</h3>
+              <DistDemo demo="dist-zipf" />
+            </div>
+            <div>
+              <h3>DistributionPlot: one run against the spread of forty</h3>
+              <DistDemo demo="dist-ba" />
+            </div>
+          </div>
+          <h3>NullHistogram: a shuffle test, one shuffle at a time</h3>
+          <DistDemo demo="dist-shuffle" />
+          <h3>NullBoard: which measures survive which null model</h3>
+          <DistDemo demo="dist-board" />
+          <h3>NullBars: links by type against a label shuffle</h3>
+          <DistDemo demo="dist-links" />
+        </PostSection>
+        {/* ==== end Kit: distributions and nulls ==== */}
+        {/* ==== Kit: games ==== */}
+        <PostSection id="demo-games">
+          <h2>Games</h2>
+          <p className="sub">
+            Four games from src/kit on toy graphs and toy words, each in GameShell: settings, a row of scores, the game, then a
+            reveal against bots or a reference. The rules are in src/kit/game-core.js. Same seed, same game.
+          </p>
+          <h3>PathQuest: there and back on a one-way town, under fog</h3>
+          <DemoGames demo="games-quest" />
+          <h3>AttackGame: break up the karate club</h3>
+          <DemoGames demo="games-attack" />
+          <h3>SeatingGame: a single table or a full room</h3>
+          <DemoGames demo="games-seating" />
+          <h3>QuizRun: suspects, real or generated, and fill the gap</h3>
+          <DemoGames demo="games-quiz" />
+        </PostSection>
+        {/* ==== end Kit: games ==== */}
+        {/* ==== Kit: editors and puzzles ==== */}
+        <PostSection id="demo-editors">
+          <h2>Editors and puzzles</h2>
+          <p className="sub">
+            Eight pieces the reader works with by hand, from src/kit on toy and textbook data: a cut dendrogram, an
+            editable matrix, a partition, an ego network, a pick-k puzzle, a pipeline, a strip of stages and a detail
+            panel. The tree and matrix helpers are in src/kit/dendro-core.js and src/kit/matrix-core.js.
+          </p>
+          <h3>Dendrogram: Girvan–Newman on the karate club, cut once or branch by branch</h3>
+          <DemoEditors demo="ed-dendro" />
+          <h3>EditableMatrix: type a link, see it drawn</h3>
+          <DemoEditors demo="ed-matrix" />
+          <h3>PartitionEditor: split the club by hand and watch Q</h3>
+          <DemoEditors demo="ed-partition" />
+          <h3>EgoEditor: one node&apos;s clustering coefficient</h3>
+          <DemoEditors demo="ed-ego" />
+          <h3>NodePicker: find the planted clique</h3>
+          <DemoEditors demo="ed-clique" />
+          <h3>StepFlow: two pipelines, one with a worked example</h3>
+          <DemoEditors demo="ed-flow" />
+          <div className="w4-two">
+            <div>
+              <h3>StageTabs: from counts to language models</h3>
+              <DemoEditors demo="ed-stages" />
+            </div>
+            <div></div>
+          </div>
+          <h3>DetailPanel: a picked topic&apos;s words, documents and neighbours</h3>
+          <DemoEditors demo="ed-detail" />
+        </PostSection>
+        {/* ==== end Kit: editors and puzzles ==== */}
+        {/* ==== Kit batch E2: Growth ==== */}
+        <PostSection id="demo-growth">
+          <h2>Growth</h2>
+          <p className="sub">
+            Four pieces for growing networks, from src/kit on toy BA graphs and toy debut years: GrowthReplay,
+            GrowthLab, ComponentGallery and FriendshipParadox. The numbers behind them are in src/kit/growth-core.js.
+            Same seed, same run.
+          </p>
+          <h3>GrowthReplay: a network in arrival order, three ways</h3>
+          <DemoGrowth demo="gr-replay" />
+          <h3>GrowthLab: nonlinear preferential attachment, Π(k) ∝ k^α</h3>
+          <DemoGrowth demo="gr-lab" />
+          <h3>ComponentGallery: a sparse random network, one tile per component</h3>
+          <DemoGrowth demo="gr-gallery" />
+          <h3>FriendshipParadox: your friends have more friends than you</h3>
+          <DemoGrowth demo="gr-paradox" />
+        </PostSection>
+        {/* ==== end Kit batch E2: Growth ==== */}
       </main>
       <SiteFooter>
         <span>

@@ -55,7 +55,8 @@ Posts from Week 3 on (`.corridor` in `corridor.css`):
 | --- | --- | --- |
 | `--ink` | #0f2340 | Text |
 | `--ink-soft` | #46618a | Secondary text |
-| `--ink-mute` | #7a8fac | Captions, inactive marks |
+| `--ink-mute` | #7a8fac | Inactive marks, guide lines, the grey series |
+| `--ink-mute-text` | #59708f | Captions, tick labels and other quiet text (4.5:1 on `--ground`) |
 | `--ground` | #eef3f9 | Page background |
 | `--card` | #ffffff | Card surface |
 | `--line` | #dce5f0 | Borders and rules |
@@ -64,7 +65,8 @@ Posts from Week 3 on (`.corridor` in `corridor.css`):
 | `--gain` / `--loss` | #00875a / #cc3311 | A diverging pair, separable under deuteranopia |
 | `--outbound` | #6b4fbb | Third categorical slot |
 
-Links and buttons use the accent #14618f. A scatter takes three categorical colours at most
+`--ink-mute` is too pale for text (3:1 on `--ground`), so text takes `--ink-mute-text`. Each Week 3 skin sets
+its own pair. Links and buttons use the accent #14618f. A scatter takes three categorical colours at most
 (`--series-1` to `--series-3` in `post.css`) and greys out unlabelled points with `--series-none`.
 
 The arcade pages (`arcade.css`) use the same navy, blue and orange under the names `--paper`, `--accent` and

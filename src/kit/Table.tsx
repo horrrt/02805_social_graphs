@@ -9,7 +9,10 @@ export type TableSpec = { columns: Column[]; rows: Record<string, unknown>[]; ca
 
 // en-GB stops at three decimals, so a number under 0.001 keeps three significant digits instead of reading 0.
 const num = (v: number) => (v !== 0 && Math.abs(v) < 0.001 ? v.toLocaleString("en-GB", { maximumSignificantDigits: 3 }) : v.toLocaleString("en-GB"));
-const cellText = (v: unknown) => (v === null || v === undefined ? "" : typeof v === "number" ? num(v) : String(v));
+const cellText = (v: unknown) => {
+  if (v === null || v === undefined) return "";
+  return typeof v === "number" ? num(v) : String(v);
+};
 
 /** <Table columns={[{ key: "word", label: "Word" }, { key: "count", label: "Count", num: true }]} rows={rows} caption="…" /> */
 export default function Table({ columns, rows, caption }: TableSpec) {

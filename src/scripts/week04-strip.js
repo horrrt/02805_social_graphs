@@ -41,6 +41,11 @@ export function roomFor(el) {
   return Math.floor(parent.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight));
 }
 
+// Observers by parent. A chart drawn into the same host again (a damping
+// click, a new client pick) retires the observers of charts no longer on the
+// page; a host holding two live charts keeps both.
+const observers = new WeakMap();
+
 /**
  * Draw a chart at its parent's width so one SVG unit is one CSS pixel and the
  * type renders at the sizes the tokens set. build(width) returns the chart;
@@ -49,11 +54,6 @@ export function roomFor(el) {
  * including when a closed <details> opens. A redraw only follows a change of
  * width, so the new chart's height cannot set off another.
  */
-// Observers by parent. A chart drawn into the same host again (a damping
-// click, a new client pick) retires the observers of charts no longer on the
-// page; a host holding two live charts keeps both.
-const observers = new WeakMap();
-
 export function fitted(build, fallback) {
   let chart = build(fallback);
   let drawn = fallback;
@@ -299,14 +299,14 @@ function drawStrip(rows, opts) {
   const svg = node("svg", { viewBox: `0 0 ${width} ${h}`, width, height: h, role: "img", "aria-label": opts.aria, class: "w4-strip" });
   for (const t of L.ticks) {
     svg.append(node("line", { x1: t.x, y1: L.gridTop, x2: t.x, y2: ybot, stroke: token("--w4-grid"), "stroke-width": 1 }));
-    svg.append(node("text", { x: t.x, y: t.y, "font-size": caption, fill: token("--ink-mute"), "text-anchor": "middle" }, t.label));
+    svg.append(node("text", { x: t.x, y: t.y, "font-size": caption, fill: token("--ink-mute-text"), "text-anchor": "middle" }, t.label));
   }
   if (L.zero !== undefined) {
     svg.append(node("line", { x1: L.zero, y1: L.gridTop, x2: L.zero, y2: ybot, stroke: token("--ink-mute"), "stroke-width": 1 }));
   }
   if (L.axisTitle) {
     const { x, y, text } = L.axisTitle;
-    svg.append(node("text", { x, y, "font-size": caption, fill: token("--ink-mute"), "text-anchor": "end" }, text));
+    svg.append(node("text", { x, y, "font-size": caption, fill: token("--ink-mute-text"), "text-anchor": "end" }, text));
   }
   if (L.ref) {
     svg.append(
@@ -334,7 +334,7 @@ function drawStrip(rows, opts) {
       );
     }
     svg.append(node("text", { x: g.label.x, y: g.label.y, "font-size": small, fill: token("--ink"), "font-weight": g.weight }, r.label));
-    if (g.sub) svg.append(node("text", { x: g.sub.x, y: g.sub.y, "font-size": caption, fill: token("--ink-mute") }, r.sub));
+    if (g.sub) svg.append(node("text", { x: g.sub.x, y: g.sub.y, "font-size": caption, fill: token("--ink-mute-text") }, r.sub));
     svg.append(node("line", { x1: x0, y1: cy, x2: x1, y2: cy, stroke: token("--line"), "stroke-width": 1 }));
     if (g.base) {
       svg.append(band(g.base.band, r.baseTip));

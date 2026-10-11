@@ -27,8 +27,10 @@ Method
   several labels takes the first in PRIORITY (killed, family, enemy, ally,
   teammate); negation is not handled. The rest are unlabelled.
 - Precision: SAMPLE sentences per label, drawn with a fixed seed, read by hand;
-  the verdicts sit in analysis/week05_relations_checked.csv and the script
-  stops if any sampled arc has no verdict. `--sample` prints the draw.
+  the verdicts sit in analysis/week05_relations_checked.parquet with the sentence
+  each one judged. The script stops if a sampled arc has no verdict, if its
+  sentence differs from the one read, or if a verdict's arc is no longer
+  drawn. `--sample` prints the draw.
 - Communities: Louvain (week04_staffing.louvain) on weighted(), RUNS seeds
   SEED + i. The partition is unstable (most runs differ), so every number is
   taken over all runs, not one partition.
@@ -46,7 +48,6 @@ Read the corpus and the network only through week05_text.
     python analysis/week05_relations.py --sample   # prints the sentences to read
 """
 
-import csv
 import json
 import random
 import re
@@ -60,10 +61,11 @@ import spacy
 from check_pages import check
 from week04_staffing import louvain
 from week05_text import graph, nodes, pages, weighted
+import tables
 
 ROOT = Path(__file__).resolve().parents[1]
 PAGE = ROOT / "public/weeks/week05/data/relations.json"
-CHECKED = Path(__file__).with_name("week05_relations_checked.csv")
+CHECKED = Path(__file__).with_name("week05_relations_checked.parquet")
 SEED = 2805
 RUNS = 100
 SHUFFLES = 1000
@@ -198,15 +200,23 @@ def sample(rows):
 
 def precision(picked):
     verdicts = {}
-    with CHECKED.open(newline="", encoding="utf-8") as fh:
-        for row in csv.DictReader(fh):
-            verdicts[(row["source"], row["target"], row["label"])] = row
+    for row in tables.rows(CHECKED):
+        verdicts[(row["source"], row["target"], row["label"])] = row
+    drawn = {(r["source"], r["target"], label) for label, rows in picked.items() for r in rows}
+    stale = sorted(set(verdicts) - drawn)
+    if stale:
+        raise SystemExit(f"{CHECKED.name} has verdicts the sample no longer draws: {stale}; delete them")
     out, lines = {}, []
     for label, rows in picked.items():
         read = [verdicts.get((r["source"], r["target"], label)) for r in rows]
         missing = [(r["source"], r["target"]) for r, v in zip(rows, read) if v is None]
         if missing:
             raise SystemExit(f"{CHECKED.name} has no verdict for {label}: {missing}; run --sample and read them")
+        # A verdict holds for the sentence that was read. The same arc can draw
+        # another sentence after a change to the corpus or the matching.
+        changed = [(r["source"], r["target"]) for r, v in zip(rows, read) if v["sentence"] != r["sentence"]]
+        if changed:
+            raise SystemExit(f"{CHECKED.name}: the {label} sentence changed for {changed}; read the new one")
         right = sum(v["verdict"] == "right" for v in read)
         out[label] = {"read": len(read), "right": right, "share": round(right / len(read), 3),
                       "wrong_examples": [{"source": v["source"], "target": v["target"], "note": v["note"]}

@@ -92,7 +92,7 @@
 }
 
 .corridor .w4-entities-status {
-  color: var(--ink-mute);
+  color: var(--ink-mute-text);
   font-size: var(--fs-small);
   left: 50%;
   position: absolute;
@@ -195,7 +195,7 @@
 }
 
 .corridor .w4-entities-facts .axis-note {
-  color: var(--ink-mute);
+  color: var(--ink-mute-text);
   font-size: var(--fs-caption);
   margin: 0 0 6px;
 }
@@ -277,7 +277,7 @@
 }
 
 .corridor .w4-entities-stat span {
-  color: var(--ink-mute);
+  color: var(--ink-mute-text);
   font-size: var(--fs-caption);
 }
 

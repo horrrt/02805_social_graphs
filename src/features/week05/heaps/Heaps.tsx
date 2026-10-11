@@ -8,21 +8,17 @@
 // first, then the curve's own TipBox, which its hover guide shows. A failed
 // heaps.json leaves every part as the server rendered it, the chart hosts
 // swept, and logs one line.
-import { Fragment, useEffect, useMemo, useRef, useState, type PointerEvent } from "react";
+import { Fragment, useMemo, useRef, useState, type PointerEvent } from "react";
 import { Passage, StripChart, Table, TipBox } from "@/kit";
 import type { StripOptions, StripRow } from "@/kit/StripChart";
 import type { TableSpec } from "@/kit/Table";
 import type { Tip } from "@/kit/TipBox";
-import { Drawer } from "@/components/post/Drawer";
-import { Drawers } from "@/components/post/Drawers";
-import { island, useIslandReady } from "@/lib/island";
-import { useData } from "@/lib/useData";
-import { useHydrated } from "@/lib/useHydrated";
+import { island } from "@/lib/island";
 import { useFittedWidth } from "@/lib/useSize";
 import { useTokens, useTypeScale, type TypeScale } from "@/lib/useTypeScale";
-import { asset } from "@/scripts/site.js";
-import { CURVE_TOKENS, HEAPS, TABLE_LABEL, curveLayout, curveTip, gap, passages, samples, table } from "@/scripts/week05-heaps.js";
+import { CURVE_TOKENS, HEAPS, curveLayout, curveTip, gap, passages, samples, table } from "@/scripts/week05-heaps.js";
 import { ChartHost, ServerHost } from "../map/ChartHost";
+import { useSectionPart } from "../map/useSectionPart";
 
 type Data = Parameters<typeof curveLayout>[0];
 type Point = Record<string, number>;
@@ -46,16 +42,8 @@ type Layout = {
   at: (p: Point) => { x: number; ys: number[] };
 };
 
-// heaps.json after hydration, built into one part, with main's one line if it fails.
 function useHeaps<T>(build: (data: Data) => unknown) {
-  const hydrated = useHydrated();
-  const state = useData<Data>(hydrated ? asset(HEAPS) : null);
-  useEffect(() => {
-    if (state.status === "error") console.error("week05 heaps failed", state.error);
-  }, [state]);
-  const part = useMemo(() => (state.data ? (build(state.data) as T) : null), [state.data, build]);
-  useIslandReady(part !== null);
-  return { hydrated, part };
+  return useSectionPart<Data, T>(HEAPS, "heaps", build);
 }
 
 // ---- the curve -------------------------------------------------------------------
@@ -101,7 +89,7 @@ function CurveSvg({ data, scale, tokens }: { data: Data; scale: TypeScale; token
           {L.xTicks.map((k, i) => (
             <Fragment key={`x${i}`}>
               <line x1={k.x} y1={k.y1} x2={k.x} y2={k.y2} stroke={t("--line-soft")} />
-              <text x={k.x} y={k.labelY} fontSize={caption} fill={t("--ink-mute")} textAnchor="middle">
+              <text x={k.x} y={k.labelY} fontSize={caption} fill={t("--ink-mute-text")} textAnchor="middle">
                 {k.label}
               </text>
             </Fragment>
@@ -109,7 +97,7 @@ function CurveSvg({ data, scale, tokens }: { data: Data; scale: TypeScale; token
           {L.yTicks.map((k, i) => (
             <Fragment key={`y${i}`}>
               <line x1={k.x1} y1={k.y} x2={k.x2} y2={k.y} stroke={t("--line-soft")} />
-              <text x={k.labelX} y={k.labelY} fontSize={caption} fill={t("--ink-mute")} textAnchor="end">
+              <text x={k.labelX} y={k.labelY} fontSize={caption} fill={t("--ink-mute-text")} textAnchor="end">
                 {k.label}
               </text>
             </Fragment>
@@ -173,15 +161,7 @@ function GapPart() {
 function TablePart() {
   const { part } = useHeaps<TableSpec>(table);
   return (
-    <div id="heaps-table">
-      {part ? (
-        <Drawers variant="foot">
-          <Drawer label={TABLE_LABEL}>
-            <Table {...part} />
-          </Drawer>
-        </Drawers>
-      ) : null}
-    </div>
+    <div id="heaps-table">{part ? <Table {...part} /> : null}</div>
   );
 }
 
@@ -214,17 +194,12 @@ function SamplesPart() {
   );
 }
 
-const Empty = (id: string) =>
-  function Host() {
-    return <div id={id}></div>;
-  };
-
 const HOSTS = {
   curve: () => <ServerHost id={CURVE} />,
   gap: () => <ServerHost id={GAP} />,
-  table: Empty("heaps-table"),
-  passages: Empty("heaps-passages"),
-  samples: Empty("heaps-samples"),
+  table: () => <ServerHost id="heaps-table" />,
+  passages: () => <ServerHost id="heaps-passages" />,
+  samples: () => <ServerHost id="heaps-samples" />,
 };
 
 // One island per part, so a fault in one leaves the others alone.

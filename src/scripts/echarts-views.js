@@ -1,4 +1,3 @@
-import { asset } from "./site.js";
 // Corridor Control: three views the rest of the post cannot draw.
 //
 // A force layout answers what the globe hides: which countries sit together
@@ -7,33 +6,38 @@ import { asset } from "./site.js";
 // here loads until the reader opens the section.
 //
 // Every number is computed from the same two files the rest of the page reads.
+// The views islands load ECharts and the two extra files, hold the controls,
+// and ask this module to draw and to word each answer.
 
+import { api } from "./corridor.js";
 import { fs, family } from "./type-scale.mjs";
 
-const $ = (id) => document.getElementById(id);
+// The hosts the views islands render and hand to corridor.js.
+const $ = (id) => api.$(id);
 
-// Data files sit in public/assets/data; asset() adds the deploy's build id.
-function dataUrl(name) {
-  return asset(`assets/data/${name}`);
-}
-
-
-let api = null;
 let echarts = null;
-let loading = null;
 const charts = new Map();
+
+/** The ECharts namespace, once its script has loaded. */
+export function setLibrary(lib) {
+  echarts = lib;
+}
 
 /* ------------------------------------------------------------------- setup */
 
 function chart(id) {
   const host = $(id);
-  if (!host) return null;
+  if (!host || !echarts) return null;
   if (!charts.has(id)) {
     const instance = echarts.init(host, null, { renderer: "canvas" });
-    window.addEventListener("resize", () => instance.resize());
     charts.set(id, instance);
   }
   return charts.get(id);
+}
+
+/** Every view resizes with the window. */
+export function resizeViews() {
+  for (const instance of charts.values()) instance.resize();
 }
 
 // Sizes and the family come from the type scale in type.css. ECharts' own
@@ -195,13 +199,10 @@ function drawGraph() {
     ["Country", "Arrived", "Left"],
     ranked.slice(0, CAP).map((n) => [n.name, fmt(n.inn), fmt(n.out)]),
   );
-  answerGraph();
 }
 
 function answerGraph() {
   const { nodes, rows } = graphData();
-  const host = $("v-graph-answer");
-  if (!host) return;
   const people = rows.reduce((sum, r) => sum + r[2], 0);
   const all = yearRows(graphState.year).reduce((sum, r) => sum + r[2], 0);
   const receivers = nodes.filter((n) => n.inn >= n.out).length;
@@ -228,7 +229,7 @@ function answerGraph() {
   // flights, and a country that only has flights was never on this chart.
   const present = new Set(yearRows(graphState.year).flatMap((r) => [r[0], r[1]]));
   const isolated = present.size - nodes.length;
-  host.innerHTML =
+  return (
     `At a floor of <b>${compact(graphState.floor)}</b> people, ` +
     `${graphState.year} leaves <b>${nodes.length}</b> countries and ` +
     `<b>${fmt(rows.length)}</b> corridors on the canvas, carrying ` +
@@ -244,7 +245,8 @@ function answerGraph() {
     (components > 1
       ? `, and the groups are not continents: a bloc here is a hiring ` +
         `relationship or an old border, not a neighbourhood.`
-      : `, which is what the corridors look like before the floor breaks them apart.`);
+      : `, which is what the corridors look like before the floor breaks them apart.`)
+  );
 }
 
 /* ------------------------------------------------------------- stacked area
@@ -292,7 +294,7 @@ function drawArea() {
   const instance = chart("v-area");
   if (!instance) return;
   const { years, keep, rest } = areaData();
-  const { PEOPLE, ACCESS, INK, MUTE, GRID } = api.colours;
+  const { PEOPLE, ACCESS, INK, MUTE, MUTE_TEXT, GRID } = api.colours;
 
   // One ramp, so the stack reads as one quantity split many ways rather than
   // as twelve unrelated series.
@@ -304,29 +306,20 @@ function drawArea() {
     return `rgba(${mix(r1, r2)},${mix(g1, g2)},${mix(b1, b2)},0.88)`;
   };
 
+  const band = (bandName, color, data) => ({
+    name: bandName,
+    type: "line",
+    stack: "people",
+    areaStyle: { color },
+    lineStyle: { width: 0.9, color: paper(), opacity: 0.75 },
+    showSymbol: false,
+    smooth: 0.2,
+    emphasis: { focus: "series" },
+    data,
+  });
   const bands = [
-    ...keep.map(([iso3, row], i) => ({
-      name: name(iso3),
-      type: "line",
-      stack: "people",
-      areaStyle: { color: shade(i, keep.length + 1) },
-      lineStyle: { width: 0.9, color: paper(), opacity: 0.75 },
-      showSymbol: false,
-      smooth: 0.2,
-      emphasis: { focus: "series" },
-      data: row,
-    })),
-    {
-      name: "Everyone else",
-      type: "line",
-      stack: "people",
-      areaStyle: { color: `rgba(${api.rgb(MUTE)},0.35)` },
-      lineStyle: { width: 0.9, color: paper(), opacity: 0.75 },
-      showSymbol: false,
-      smooth: 0.2,
-      emphasis: { focus: "series" },
-      data: rest,
-    },
+    ...keep.map(([iso3, row], i) => band(name(iso3), shade(i, keep.length + 1), row)),
+    band("Everyone else", `rgba(${api.rgb(MUTE)},0.35)`, rest),
   ];
 
   instance.setOption(
@@ -350,7 +343,7 @@ function drawArea() {
       legend: {
         type: "scroll",
         bottom: 0,
-        textStyle: { color: MUTE, fontSize: fs("caption") },
+        textStyle: { color: MUTE_TEXT, fontSize: fs("caption") },
         selectorLabel: { fontSize: fs("caption") },
         itemWidth: 12,
         itemHeight: 8,
@@ -361,11 +354,11 @@ function drawArea() {
         boundaryGap: false,
         data: years,
         axisLine: { lineStyle: { color: GRID } },
-        axisLabel: { color: MUTE, fontSize: fs("caption") },
+        axisLabel: { color: MUTE_TEXT, fontSize: fs("caption") },
       },
       yAxis: {
         type: "value",
-        axisLabel: { color: MUTE, fontSize: fs("caption"), formatter: (v) => compact(v) },
+        axisLabel: { color: MUTE_TEXT, fontSize: fs("caption"), formatter: (v) => compact(v) },
         splitLine: { lineStyle: { color: GRID } },
       },
       textStyle: { ...base().textStyle, color: INK },
@@ -373,11 +366,6 @@ function drawArea() {
     },
     true,
   );
-  const note = $("v-area-note");
-  if (note)
-    note.textContent =
-      `Each band is one country, stacked. Height is ${AREA_MODES[areaState.mode].blurb}; ` +
-      `the twelve are the largest in 2024 and keep their place across every year.`;
   api.chartTable(
     "v-area",
     "people by country and year",
@@ -387,13 +375,18 @@ function drawArea() {
       ["Everyone else", ...rest.map((v) => compact(v))],
     ],
   );
-  answerArea();
+}
+
+/** The line above the stacked area: what a band's height counts. */
+export function areaNote() {
+  return (
+    `Each band is one country, stacked. Height is ${AREA_MODES[areaState.mode].blurb}; ` +
+    `the twelve are the largest in 2024 and keep their place across every year.`
+  );
 }
 
 function answerArea() {
   const { years, keep, rest, totals } = areaData();
-  const host = $("v-area-answer");
-  if (!host) return;
   const first = years[0];
   const last = years.at(-1);
   const grew = [...keep]
@@ -411,19 +404,20 @@ function answerArea() {
   const shares =
     `The grey band is every other country: <b>${restThen.toFixed(0)}%</b> of the total in ` +
     `${first}, <b>${restNow.toFixed(0)}%</b> in ${last}. `;
-  const drift =
-    Math.abs(move) < 3
-      ? shares +
-        `The split barely moved. The whole stack roughly doubled and the named twelve ` +
-        `took their existing share of it.`
-      : move < 0
-        ? shares +
-          `The named twelve are pulling away, though they were picked on their ${last} ` +
-          `size, so some of that is the chart choosing its own winners.`
-        : shares +
-          `The growth went to the countries too small to name here, not to the twelve ` +
-          `that are biggest today.`;
-  host.innerHTML =
+  let drift = shares;
+  if (Math.abs(move) < 3)
+    drift +=
+      `The split barely moved. The whole stack roughly doubled and the named twelve ` +
+      `took their existing share of it.`;
+  else if (move < 0)
+    drift +=
+      `The named twelve are pulling away, though they were picked on their ${last} ` +
+      `size, so some of that is the chart choosing its own winners.`;
+  else
+    drift +=
+      `The growth went to the countries too small to name here, not to the twelve ` +
+      `that are biggest today.`;
+  return (
     `Stacked, this is <b>${compact(totals[0])}</b> people in ${first} and ` +
     `<b>${compact(totals.at(-1))}</b> in ${last}` +
     (areaState.mode === "both" ? ", counting everybody twice" : "") +
@@ -437,7 +431,8 @@ function answerArea() {
           `<b>${compact(-fell.at(-1)[1])}</b>. `
         : "") +
     drift +
-    ` “${mode.label}” counts ${mode.blurb}.`;
+    ` “${mode.label}” counts ${mode.blurb}.`
+  );
 }
 
 /* ------------------------------------------------------- 3. the month grid
@@ -450,35 +445,24 @@ function answerArea() {
 let asylum = null;
 const asylumState = { origin: "SY" };
 
-async function loadAsylum() {
-  if (asylum) return asylum;
-  const url = dataUrl("week03_asylum.json");
-  asylum = await fetch(url).then((r) => r.json());
-  return asylum;
-}
-
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 function asylumRows() {
   const origin = asylum.origins[asylumState.origin];
   const years = [...new Set(asylum.months.map((m) => m.slice(0, 4)))].sort();
-  const cells = [];
-  asylum.months.forEach((month, i) => {
-    const value = origin.months[i];
-    cells.push([
-      Number(month.slice(5, 7)) - 1,
-      years.indexOf(month.slice(0, 4)),
-      value,
-      month,
-    ]);
-  });
+  const cells = asylum.months.map((month, i) => [
+    Number(month.slice(5, 7)) - 1,
+    years.indexOf(month.slice(0, 4)),
+    origin.months[i],
+    month,
+  ]);
   return { origin, years, cells };
 }
 
 function drawAsylum() {
   const instance = chart("v-asylum");
   if (!instance || !asylum?.origins?.[asylumState.origin]) return;
-  const { PEOPLE, INK, MUTE, GRID } = api.colours;
+  const { PEOPLE, INK, MUTE_TEXT, GRID } = api.colours;
   const { origin, years, cells } = asylumRows();
   const reported = cells.filter((c) => c[2] !== null);
   const biggest = Math.max(1, ...reported.map((c) => c[2]));
@@ -503,7 +487,7 @@ function drawAsylum() {
         itemWidth: 12,
         itemHeight: 12,
         itemGap: 6,
-        textStyle: { color: MUTE, fontSize: fs("caption") },
+        textStyle: { color: MUTE_TEXT, fontSize: fs("caption") },
         // Fixed to this origin's own maximum, so the grid is a story about
         // one country's months rather than a comparison with Syria.
         splitNumber: 5,
@@ -519,7 +503,7 @@ function drawAsylum() {
         splitArea: { show: false },
         axisLine: { show: false },
         axisTick: { show: false },
-        axisLabel: { color: MUTE, fontSize: fs("caption") },
+        axisLabel: { color: MUTE_TEXT, fontSize: fs("caption") },
       },
       yAxis: {
         type: "category",
@@ -550,12 +534,10 @@ function drawAsylum() {
     ["Month", "Applications"],
     reported.map((c) => [c[3], fmt(c[2])]),
   );
-  answerAsylum();
 }
 
 function answerAsylum() {
-  const host = $("v-asylum-answer");
-  if (!host || !asylum?.origins?.[asylumState.origin]) return;
+  if (!asylum?.origins?.[asylumState.origin]) return null;
   const { origin, cells } = asylumRows();
   const reported = cells.filter((c) => c[2] !== null && c[2] > 0);
   const blank = cells.length - cells.filter((c) => c[2] !== null).length;
@@ -568,7 +550,7 @@ function answerAsylum() {
     .slice(0, 3)
     .map((d) => `${d.name} (${compact(d.people)})`)
     .join(", ");
-  host.innerHTML =
+  return (
     `<b>${fmt(origin.total)}</b> first-time asylum applications from ` +
     `<b>${origin.name}</b> across ${asylum.reporting} European countries, ` +
     `${asylum.months[0]} to ${asylum.months.at(-1)}. The heaviest month is ` +
@@ -587,27 +569,16 @@ function answerAsylum() {
     `The busiest month in Europe across every origin here is ` +
     `<b>${asylum.months[worldPeak]}</b>, at <b>${fmt(asylum.totals[worldPeak])}</b>. ` +
     `These are applications, not arrivals: one person who applies in Hungary and again ` +
-    `in Germany is counted twice, where the corridor data upstairs would see them once.`;
+    `in Germany is counted twice, where the corridor data upstairs would see them once.`
+  );
 }
 
-function wireAsylum() {
-  const picker = $("v-asylum-origin");
-  if (!picker || picker.dataset.ready || !asylum?.origins) return;
-  picker.dataset.ready = "on";
-  const sorted = Object.entries(asylum.origins).sort((a, b) => b[1].total - a[1].total);
-  picker.innerHTML = sorted
-    .map(
-      ([code, origin]) =>
-        `<option value="${code}"${code === asylumState.origin ? " selected" : ""}>` +
-        `${origin.name} · ${compact(origin.total)}</option>`,
-    )
-    .join("");
-  // This changes the grid and nothing else, the same promise the ring and the
-  // force layout make about their own controls.
-  picker.addEventListener("change", (event) => {
-    asylumState.origin = event.target.value;
-    drawAsylum();
-  });
+/** The origin picker's choices, largest first: code and label. */
+export function asylumOptions() {
+  if (!asylum?.origins) return [];
+  return Object.entries(asylum.origins)
+    .sort((a, b) => b[1].total - a[1].total)
+    .map(([code, origin]) => ({ code, label: `${origin.name} · ${compact(origin.total)}` }));
 }
 
 /* --------------------------------------------------------- 4. the closures
@@ -619,17 +590,10 @@ function wireAsylum() {
 
 let closures = null;
 
-async function loadClosures() {
-  if (closures) return closures;
-  const url = dataUrl("week03_closures.json");
-  closures = await fetch(url).then((r) => r.json());
-  return closures;
-}
-
 function drawClosures() {
   const instance = chart("v-closures");
   if (!instance || !closures?.days) return;
-  const { ACCESS, INK, MUTE, GRID } = api.colours;
+  const { ACCESS, INK, MUTE, MUTE_TEXT, GRID } = api.colours;
   const entries = Object.entries(closures.days);
   const years = [...new Set(entries.map(([d]) => d.slice(0, 4)))].sort();
 
@@ -643,8 +607,8 @@ function drawClosures() {
     splitLine: { show: false },
     itemStyle: { color: "transparent", borderColor: GRID, borderWidth: 1 },
     yearLabel: { show: true, color: INK, fontSize: fs("small"), fontWeight: 700, margin: 34 },
-    monthLabel: { show: i === 0, color: MUTE, fontSize: fs("caption") },
-    dayLabel: { show: true, firstDay: 1, nameMap: ["S", "M", "T", "W", "T", "F", "S"], color: MUTE, fontSize: fs("caption") },
+    monthLabel: { show: i === 0, color: MUTE_TEXT, fontSize: fs("caption") },
+    dayLabel: { show: true, firstDay: 1, nameMap: ["S", "M", "T", "W", "T", "F", "S"], color: MUTE_TEXT, fontSize: fs("caption") },
   }));
 
   instance.setOption(
@@ -670,7 +634,7 @@ function drawClosures() {
         itemWidth: 12,
         itemHeight: 12,
         itemGap: 6,
-        textStyle: { color: MUTE, fontSize: fs("caption") },
+        textStyle: { color: MUTE_TEXT, fontSize: fs("caption") },
         pieces: [
           { min: 0, max: 0, label: "none closed", color: `rgba(${api.rgb(MUTE)},0.12)` },
           { min: 1, max: 9, label: "1–9", color: `rgba(${api.rgb(ACCESS)},0.25)` },
@@ -707,12 +671,10 @@ function drawClosures() {
       String(counts.reduce((a, b) => a + b, 0)),
     ]),
   );
-  answerClosures();
 }
 
 function answerClosures() {
-  const host = $("v-closures-answer");
-  if (!host || !closures) return;
+  if (!closures) return null;
   const entries = Object.entries(closures.days);
   const reporting = (counts) => counts.reduce((a, b) => a + b, 0);
   const peak = entries.reduce((best, e) => (e[1][4] > best[1][4] ? e : best));
@@ -724,7 +686,7 @@ function answerClosures() {
   const everOpen = entries.reduce(
     (best, e) => (open(e[1]) > open(best[1]) ? e : best),
   );
-  host.innerHTML =
+  return (
     `On <b>${peak[0]}</b>, <b>${peak[1][4]}</b> of the ` +
     `<b>${reporting(peak[1])}</b> countries reporting that day were closed to ` +
     `arrivals from everywhere. ` +
@@ -740,122 +702,43 @@ function answerClosures() {
     `largest shock to human movement in living memory happens between two ` +
     `observations and leaves no mark on either. ` +
     `Read the levels as policy, not as traffic. A country at level 4 had closed ` +
-    `its border on paper; who actually crossed it is a different dataset.`;
+    `its border on paper; who actually crossed it is a different dataset.`
+  );
 }
 
 /* ----------------------------------------------------------------- controls */
 
-function wireGraph() {
-  const years = api.state.edges.years;
-  const yearSlider = $("v-graph-year");
-  if (yearSlider && !yearSlider.dataset.ready) {
-    yearSlider.dataset.ready = "on";
-    yearSlider.max = String(years.length - 1);
-    yearSlider.value = String(Math.max(years.indexOf(graphState.year), 0));
-    yearSlider.setAttribute("aria-valuetext", String(graphState.year));
-    yearSlider.addEventListener("input", (event) => {
-      graphState.year = years[Number(event.target.value)] ?? years.at(-1);
-      yearSlider.setAttribute("aria-valuetext", String(graphState.year));
-      $("v-graph-year-now").textContent = String(graphState.year);
-      drawGraph();
-    });
-  }
-  const floor = $("v-graph-floor");
-  if (floor && !floor.dataset.ready) {
-    floor.dataset.ready = "on";
-    // Logarithmic, because the interesting range runs from a hairball at
-    // 50,000 to a dozen corridors at five million.
-    const value = (step) => Math.round(50000 * 10 ** (step / 20));
-    floor.addEventListener("input", (event) => {
-      graphState.floor = value(Number(event.target.value));
-      $("v-graph-floor-now").textContent = compact(graphState.floor);
-      drawGraph();
-    });
-    floor.value = String(Math.round(Math.log10(graphState.floor / 50000) * 20));
-    $("v-graph-floor-now").textContent = compact(graphState.floor);
-  }
+// The two extra files, once the views islands have them.
+/** @param {{ asylum?: object | null, closures?: object | null }} data */
+export function setViewData({ asylum: a, closures: c }) {
+  if (a !== undefined) asylum = a;
+  if (c !== undefined) closures = c;
 }
 
-function wireArea() {
-  const modes = $("v-area-mode");
-  if (!modes || modes.dataset.ready) return;
-  modes.dataset.ready = "on";
-  modes.addEventListener("click", (event) => {
-    const button = event.target.closest("button[data-mode]");
-    if (!button) return;
-    areaState.mode = button.dataset.mode;
-    for (const other of modes.querySelectorAll("button[data-mode]"))
-      other.setAttribute("aria-pressed", String(other === button));
-    drawArea();
-  });
+// The controls each view keeps to itself: the force layout's year and floor,
+// the area's direction, the grid's origin.
+/** @param {{ year?: number, floor?: number, mode?: string, origin?: string }} next */
+export function setViews({ year, floor, mode, origin }) {
+  if (year !== undefined) graphState.year = year;
+  if (floor !== undefined) graphState.floor = floor;
+  if (mode !== undefined) areaState.mode = mode;
+  if (origin !== undefined) asylumState.origin = origin;
 }
 
-function renderAll() {
-  wireGraph();
-  wireArea();
-  wireAsylum();
-  drawGraph();
-  drawArea();
-  drawAsylum();
-  drawClosures();
+// The floor slider is logarithmic, because the interesting range runs from a
+// hairball at 50,000 to a dozen corridors at five million.
+export const floorOf = (step) => Math.round(50000 * 10 ** (step / 20));
+export const floorLabel = (floor) => compact(floor);
+
+/** Draw view `id` (v-graph, v-area, v-asylum, v-closures). */
+export function drawView(id) {
+  const draw = { "v-graph": drawGraph, "v-area": drawArea, "v-asylum": drawAsylum, "v-closures": drawClosures }[id];
+  draw?.();
 }
 
-/* ------------------------------------------------------------------ install */
-
-export function installViews(shared, loadVendor) {
-  api = shared;
-  const drawer = $("views");
-  if (!drawer) return;
-
-  const open = async () => {
-    if (!drawer.open || !api.state?.edges) return;
-    if (!echarts) {
-      if (!loading) {
-        const status = $("v-status");
-        if (status) status.textContent = "Loading the charting library (1 MB)…";
-        loading = loadVendor("echarts-5.5.1.min.js")
-          .then(() => {
-            echarts = window.echarts;
-            if (status) status.textContent = "";
-          })
-          .catch((error) => {
-            if (status)
-              status.textContent =
-                `These views need Apache ECharts, and it did not load (${error.message}). ` +
-                "Everything else on the page is drawn by hand and is unaffected.";
-            throw error;
-          });
-      }
-      try {
-        await loading;
-      } catch {
-        return;
-      }
-    }
-    // Two data files the rest of the page does not load. A failure on one
-    // of them must not take the other three views down.
-    const status = $("v-status");
-    const missing = [];
-    await Promise.all(
-      [
-        ["monthly asylum applications", loadAsylum],
-        ["the border-closure tracker", loadClosures],
-      ].map(([label, load]) =>
-        load().catch(() => {
-          missing.push(label);
-        }),
-      ),
-    );
-    if (missing.length && status)
-      status.textContent = `Could not load ${missing.join(" or ")}; the other views are fine.`;
-    renderAll();
-  };
-
-  drawer.addEventListener("toggle", open);
-  if (drawer.open) open();
-  // The palette and the skin are page-wide, so these repaint with everything
-  // else rather than keeping the colours they were built with.
-  window.addEventListener("week03:restyle", () => {
-    if (echarts && drawer.open) renderAll();
-  });
+/** The answer under view `id`, as HTML, or null while it has nothing to say. */
+export function viewAnswer(id) {
+  if (!api.state?.edges) return null;
+  const answer = { "v-graph": answerGraph, "v-area": answerArea, "v-asylum": answerAsylum, "v-closures": answerClosures }[id];
+  return answer ? answer() : null;
 }

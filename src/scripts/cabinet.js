@@ -238,7 +238,9 @@ export function prediction(host, config) {
   } = config;
   const previous = read().attempts[id];
   let revealed = false;
-  host.innerHTML = `<div class="prediction-label">Make a prediction <span>${weekLabel(week)}</span></div><h2>${esc(prompt)}</h2><form class="guess-form"><label for="guess-${esc(id)}">Your estimate ${esc(unit)} <span>${min}–${max}</span></label><div class="guess-row"><input id="guess-${esc(id)}" name="guess" type="number" min="${min}" max="${max}" step="${step}" value="${previous?.guess ?? Math.round((max + min) / 2 / step) * step}" required><input class="guess-range" type="range" aria-label="Adjust your estimate" min="${min}" max="${max}" step="${step}" value="${previous?.guess ?? Math.round((max + min) / 2 / step) * step}"><button type="submit">${previous ? "Replay reveal" : "Reveal result"}</button></div></form><p class="guess-feedback" role="status" aria-live="polite"></p>`;
+  const start = previous?.guess ?? Math.round((max + min) / 2 / step) * step;
+  const suffix = unit ? " " + unit : "";
+  host.innerHTML = `<div class="prediction-label">Make a prediction <span>${weekLabel(week)}</span></div><h2>${esc(prompt)}</h2><form class="guess-form"><label for="guess-${esc(id)}">Your estimate ${esc(unit)} <span>${min}–${max}</span></label><div class="guess-row"><input id="guess-${esc(id)}" name="guess" type="number" min="${min}" max="${max}" step="${step}" value="${start}" required><input class="guess-range" type="range" aria-label="Adjust your estimate" min="${min}" max="${max}" step="${step}" value="${start}"><button type="submit">${previous ? "Replay reveal" : "Reveal result"}</button></div></form><p class="guess-feedback" role="status" aria-live="polite"></p>`;
   const form = $("form", host),
     number = $("input[type=number]", host),
     range = $("input[type=range]", host),
@@ -254,8 +256,8 @@ export function prediction(host, config) {
     host.classList.add("revealed");
     document.body.classList.add("unlocked");
     feedback.textContent = attempt
-      ? `You guessed ${attempt.guess}${unit ? " " + unit : ""}. Result: ${answer}${unit ? " " + unit : ""}. ${plainLanguage ? "" : `${attempt.score}/100. `}${explain}`
-      : `Result: ${answer}${unit ? " " + unit : ""}. ${explain}`;
+      ? `You guessed ${attempt.guess}${suffix}. Result: ${answer}${suffix}. ${plainLanguage ? "" : `${attempt.score}/100. `}${explain}`
+      : `Result: ${answer}${suffix}. ${explain}`;
     form.hidden = true;
     onReveal(attempt);
     updateProgress();

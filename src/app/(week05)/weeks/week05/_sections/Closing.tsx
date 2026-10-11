@@ -4,7 +4,7 @@ import { PostSection } from "@/components/post/PostSection";
 import { QaDisclosure } from "@/components/post/QaDisclosure";
 import { SectionOpener } from "@/components/post/SectionOpener";
 
-// Closing: the takeaway, the one limit, the next step, then the methods and the AI-use note.
+// Closing: the takeaway, the one limit, then the methods and the AI-use note.
 export function Closing() {
   return (
     <PostSection id="closing" owner="">
@@ -27,15 +27,6 @@ export function Closing() {
             place in the comics, and nothing on this page separates the two.
           </Notice>
         }
-        next={
-          <>
-            <b>Next step.</b>
-            {" "}
-            Next week's TF-IDF weighs a word by how few pages use it. Rerunning the
-            section 3 queries with it tests whether the short-page misses are a counting problem, and the
-            words TF-IDF finds for each community can tell the section 4 groups apart without a guesser.
-          </>
-        }
       >
         <QaDisclosure id="methods" cue="Methods, data and AI use">
           <p className="sub">
@@ -44,6 +35,15 @@ export function Closing() {
             (
             <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week05_text.py">week05_text.py</a>
             ). Every random step has a fixed seed.
+          </p>
+          <p className="sub">
+            Word counts depend on the tokenizer. The course brief quotes about 727,000 tokens and 27,000
+            types for these pages, 36% of them used once, without naming its tokenizer. Our word rule counts
+            713,617 words and 27,754 types, 38% used once: it keeps 14,341 words such as Spider-Man whole and
+            drops numbers and the possessive 's. spaCy's tokenizer with punctuation dropped gives 744,495 tokens, 26,987 types and
+            36% used once (
+            <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/course_reference.py">course_reference.py</a>
+            ).
           </p>
           <ul className="w5-methods">
             <li>

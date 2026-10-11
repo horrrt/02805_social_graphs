@@ -19,7 +19,6 @@ permitting) null.
 
 from __future__ import annotations
 
-import csv
 import json
 import pathlib
 import random
@@ -29,6 +28,7 @@ import time
 import networkx as nx
 
 from week04_staffing import tracked
+import tables
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 FACTS = ROOT / "analysis" / "week03_country_facts.json"
@@ -40,16 +40,14 @@ CLIQUE_BUDGET = 60.0  # seconds, for the real graph's find_cliques
 NULL_CLIQUE_BUDGET = 30.0  # seconds, per null draw
 
 
-def read_tsv(path):
-    with (ROOT / path).open(encoding="utf-8") as fh:
-        body = [line for line in fh if not line.startswith("#")]
-    return list(csv.DictReader(body, delimiter="\t"))
+def read_table(path):
+    return tables.rows(ROOT / path)
 
 
 def stock_network(threshold=0):
     """DESA 2024: arc origin -> destination, weight = people."""
     graph = nx.DiGraph()
-    for row in read_tsv("data/migration_flows.tsv"):
+    for row in read_table("data/migration_flows.parquet"):
         value = int(row["stock_2024"] or 0)
         if value > threshold:
             graph.add_edge(row["origin"], row["destination"], weight=value)
@@ -59,7 +57,7 @@ def stock_network(threshold=0):
 def refugee_network(threshold=0):
     """UNHCR 2024: arc origin -> country of asylum. Same-country rows are IDPs."""
     graph = nx.DiGraph()
-    for row in read_tsv("data/migration_displacement.tsv"):
+    for row in read_table("data/migration_displacement.parquet"):
         origin, asylum = row["origin"], row["asylum"]
         value = int(row["refugees"] or 0)
         if origin and asylum and origin != asylum and value > threshold:

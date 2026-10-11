@@ -1,6 +1,6 @@
 import { FindingsStrip } from "@/components/post/FindingsStrip";
 import { Chart } from "@/features/template/charts";
-import { FindingRow } from "@/features/template/FindingRow";
+import { FindingRow } from "@/components/post/FindingRow";
 
 // Findings: one row per section, each with its answer against the baseline.
 export function Findings() {

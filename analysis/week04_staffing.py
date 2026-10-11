@@ -90,7 +90,7 @@ def resolver():
 def certified(year):
     lca = load(f"lca_fy{year}")
     lca = lca[(lca["CASE_STATUS"] == "Certified") & (lca["VISA_CLASS"] == "H-1B")].copy()
-    lca["positions"] = pd.to_numeric(lca["TOTAL_WORKER_POSITIONS"], errors="coerce").fillna(1)
+    lca["positions"] = lca["TOTAL_WORKER_POSITIONS"].fillna(1)
     # A tax number where there is one; FY2022 and FY2023 names borrow theirs.
     fein = lca["EMPLOYER_FEIN"] if "EMPLOYER_FEIN" in lca else pd.Series("", index=lca.index)
     lca["employer"] = [resolver().employer(n, f) for n, f in zip(lca["EMPLOYER_NAME"], fein)]
@@ -102,7 +102,7 @@ def intermediaries(lca):
     placed filings in the year). A client in this set is a subcontracting chain:
     one outsourcer placing workers with another. An industry code does not do:
     Citigroup and Google file some applications as IT-services firms too."""
-    placed = lca[lca["SECONDARY_ENTITY"].str.upper().str.startswith("Y")]
+    placed = lca[lca["SECONDARY_ENTITY"].fillna(False)]
     counts = placed["employer"].value_counts()
     return set(counts[counts >= MIN_FILINGS].index)
 
@@ -115,11 +115,11 @@ def employer_labels(lca):
 def placements(year, lca):
     """(case, employer, client) rows, and how many raw client rows were placeholders."""
     sites = load(f"worksites_fy{year}")
-    sites = sites[sites["SECONDARY_ENTITY"].str.upper().str.startswith("Y")]
+    sites = sites[sites["SECONDARY_ENTITY"].fillna(False)]
     sites = sites[sites["CASE_NUMBER"].isin(lca["CASE_NUMBER"])]
     # The FY2026 worksites file leaves out about a fifth of the placed filings
     # (FY2022 to FY2025 have every one). Those keep the client on their main row.
-    placed = lca[lca["SECONDARY_ENTITY"].str.upper().str.startswith("Y")]
+    placed = lca[lca["SECONDARY_ENTITY"].fillna(False)]
     missing = placed[~placed["CASE_NUMBER"].isin(sites["CASE_NUMBER"])]
     sites = pd.concat([sites, missing[["CASE_NUMBER", "SECONDARY_ENTITY", "SECONDARY_ENTITY_BUSINESS_NAME"]]])
     sites = sites.assign(client=sites["SECONDARY_ENTITY_BUSINESS_NAME"].map(resolver().client))
@@ -159,7 +159,7 @@ def uscis_outcomes(year=2022, table="uscis"):
     if "NEW_EMPLOYMENT_APPROVAL" in hub:
         counts += ["NEW_EMPLOYMENT_APPROVAL", "NEW_EMPLOYMENT_DENIAL"]
     for col in counts:
-        hub[col] = pd.to_numeric(hub[col].str.replace(",", ""), errors="coerce").fillna(0)
+        hub[col] = hub[col].fillna(0)
     block = {}
     for f in r.major:
         block.setdefault(f[-4:], []).append(f)
@@ -183,7 +183,7 @@ def uscis_outcomes(year=2022, table="uscis"):
     petitions = hub[hub["matched"]].groupby("key")[counts].sum()
 
     lca = certified(year)
-    lca["placed"] = lca["SECONDARY_ENTITY"].str.upper().str.startswith("Y")
+    lca["placed"] = lca["SECONDARY_ENTITY"].fillna(False)
     firms = lca.groupby("employer").agg(filings=("placed", "size"), placed=("placed", "sum"))
     firms = firms[firms["filings"] >= MIN_FILINGS].join(petitions, how="inner")
     firms["kind"] = np.where(firms["placed"] / firms["filings"] >= 0.5, "placing", "direct")
@@ -380,7 +380,7 @@ def main():
     # Q1 · how many workers sit at a client, every year.
     for year in YEARS + [2026]:
         lca = certified(year)
-        placed = lca[lca["SECONDARY_ENTITY"].str.upper().str.startswith("Y")]
+        placed = lca[lca["SECONDARY_ENTITY"].fillna(False)]
         rows, placeholder, site_rows = placements(year, lca)
         grandison = lca[lca["EMPLOYER_NAME"].str.upper().str.contains("GRANDISON")]
         by_filings = placed.groupby("employer").size().sort_values(ascending=False)

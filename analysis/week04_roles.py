@@ -120,7 +120,7 @@ def oct_jun_frames(frames):
     out = {}
     for y in YEARS:
         f = frames[y]
-        decided = pd.to_datetime(f["DECISION_DATE"], errors="coerce")
+        decided = f["DECISION_DATE"]
         start, end = oct_jun_bounds(int(y), "oct_jun")
         out[y] = f[decided.between(start, end)]
     return out
@@ -211,7 +211,7 @@ def build_split(name, frames, oj_frames, key_col, totals, oj_totals, label_of):
 
 
 def build_placement(frames, oj_frames, totals, oj_totals):
-    placed = lambda f: f["SECONDARY_ENTITY"].str.upper().str.startswith("Y")
+    placed = lambda f: f["SECONDARY_ENTITY"].fillna(False)
     placed_full = [int(placed(frames[y]).sum()) for y in YEARS]
     placed_oj = [int(placed(oj_frames[y]).sum()) for y in YEARS]
     direct_full = [totals[y] - p for y, p in zip(YEARS, placed_full)]

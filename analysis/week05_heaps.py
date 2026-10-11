@@ -5,8 +5,7 @@ Question: Do minor characters bring new words, or repeat the famous ones?
 Owner: Niklas
 
 Page section: src/app/(week05)/weeks/week05/page.tsx#heaps
-Output: public/weeks/week05/data/heaps.json (and a copy in analysis/), every
-number the section quotes.
+Output: public/weeks/week05/data/heaps.json, every number the section quotes.
 
 Method
 - Words: words() from week05_text under WORD_RULE, the rule sections 5 to 7
@@ -64,7 +63,6 @@ import numpy as np
 from check_pages import check
 from week05_text import WORD, WORD_RULE, graph, pages, sentences, words
 
-OUT = Path(__file__).with_suffix(".json")
 PAGE_OUT = Path(__file__).resolve().parents[1] / "public/weeks/week05/data/heaps.json"
 SEED = 505
 RUNS = 500
@@ -370,7 +368,6 @@ def main():
     }
     check(PAGE_OUT, payload)
     encoded = json.dumps(payload, indent=2, ensure_ascii=False) + "\n"
-    OUT.write_text(encoded, encoding="utf-8")
     PAGE_OUT.write_text(encoded, encoding="utf-8")
     h, late = payload["heaps"], payload["late"]
     print(f"{total:,} tokens, {len(vocab):,} types; beta {h['beta']:.3f} "

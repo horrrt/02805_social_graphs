@@ -25,16 +25,28 @@ const REPO_URL = "https://github.com/horrrt/02805_social_graphs";
 
 const pad = (n) => String(n).padStart(2, "0");
 
+// Pages that sit under a week's post, by week number.
+const EXTRA = {
+  6: [
+    { path: "weeks/week06/essentials/", group: "week06essentials", label: "Week 6 · Essentials" },
+    { path: "weeks/week06/essentials/story/", group: "week06story", label: "Week 6 · Essentials, data story" },
+  ],
+};
+
 // The lobby and every live week. `group` is the route group whose last commit
 // dates the page in the sitemap.
 const PAGES = [
   { path: "", group: "home", label: "Lobby" },
-  ...liveWeeks().map((w) => ({
-    path: `weeks/week${pad(w.n)}/`,
-    group: `week${pad(w.n)}`,
-    label: `Week ${w.n} · ${w.courseTitle}`,
-    week: w,
-  })),
+  ...liveWeeks().flatMap((w) => [
+    {
+      path: `weeks/week${pad(w.n)}/`,
+      group: `week${pad(w.n)}`,
+      label: `Week ${w.n} · ${w.courseTitle}`,
+      week: w,
+    },
+    // A week's companion pages: the post's data files are listed once, under the post.
+    ...(EXTRA[w.n] ?? []).map((x) => ({ ...x, week: w, extra: true })),
+  ]),
 ];
 
 // Markup an agent cannot read as text, or that only drives the interactive
@@ -83,11 +95,12 @@ function lastCommit(group) {
 // Every data file a page loads, grouped by week: public/weeks/weekNN/data/ and
 // the weekNN_ files in public/assets/data/.
 function dataFiles(n) {
+  const week = `week${pad(n)}`;
   const files = [];
-  const own = join(ROOT, "public/weeks", `week${pad(n)}`, "data");
-  if (existsSync(own)) for (const f of readdirSync(own).sort()) files.push(`weeks/week${pad(n)}/data/${f}`);
+  const own = join(ROOT, "public/weeks", week, "data");
+  if (existsSync(own)) for (const f of readdirSync(own).sort()) files.push(`weeks/${week}/data/${f}`);
   for (const f of readdirSync(join(ROOT, "public/assets/data")).sort()) {
-    if (f.startsWith(`week${pad(n)}_`)) files.push(`assets/data/${f}`);
+    if (f.startsWith(`${week}_`)) files.push(`assets/data/${f}`);
   }
   return files;
 }
@@ -120,6 +133,7 @@ const llms = [
   posts.filter((p) => !p.noindex).map(entry).join("\n"),
   "## Data",
   posts
+    .filter((p) => !p.extra)
     .flatMap((p) => dataFiles(p.week.n).map((f) => `- [${f.split("/").at(-1)}](${SITE_URL + f}): data behind ${p.label}`))
     .join("\n"),
   "## Optional",

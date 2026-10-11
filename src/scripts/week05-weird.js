@@ -12,14 +12,14 @@
 export const WEIRD = "weeks/week05/data/weird.json";
 
 /** The three hosts the islands draw into. */
-export const IDS = { scatter: "chart-weird-scatter", table: "weird-table", passages: "weird-passages" };
+export const IDS = { scatter: "chart-weird-scatter", pages: "weird-pages", table: "weird-table", passages: "weird-passages" };
 
 const pct = (v) => `${(v * 100).toFixed(1)}%`;
 const signed = (v) => `${v < 0 ? "−" : "+"}${Math.abs(v).toFixed(2)}`;
 const count = (v) => v.toLocaleString("en-GB");
 
 /** The colour tokens the scatter reads. */
-export const SCATTER_TOKENS = ["--line-soft", "--ink-mute", "--ink-soft", "--line", "--access", "--people", "--card"];
+export const SCATTER_TOKENS = ["--line-soft", "--ink-mute", "--ink-mute-text", "--ink-soft", "--line", "--access", "--people", "--card"];
 
 // ---- the figure, left panel: MATTR against length, the corpus band behind
 
@@ -56,7 +56,11 @@ export function scatterLayout(data, width, measure) {
   // what the ranking measures against: the mean of each page's length neighbours
   const byLength = [...pts].sort((a, b) => a.tokens - b.tokens || (a.node < b.node ? -1 : 1));
   // dots: every page, the top and bottom five on top
-  const colour = (p) => (top.has(p.node) ? "--access" : bottom.has(p.node) ? "--people" : "--ink-mute");
+  const colour = (p) => {
+    if (top.has(p.node)) return "--access";
+    if (bottom.has(p.node)) return "--people";
+    return "--ink-mute";
+  };
   const marked = (p) => top.has(p.node) || bottom.has(p.node);
   const dots = [...pts.filter((q) => !marked(q)), ...pts.filter(marked)].map((p) => ({
     cx: X(p.tokens).toFixed(1),
@@ -104,7 +108,7 @@ export function scatterLayout(data, width, measure) {
   };
 }
 
-/** The drawer under the scatter: its label and the table of every page. */
+/** The "Table" drawer of the card: its label and the table of every page. */
 export function allPages(data) {
   return {
     label: `Table: all ${data.corpus.pages} pages`,

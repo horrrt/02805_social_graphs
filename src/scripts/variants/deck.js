@@ -9,32 +9,34 @@
 // picture in two projections rather than two pieces of drawing code.
 
 export function install(api, deck) {
-  const { state, node, metrics, topEdges, flightEdges, select, $, colours, rgb, arcSpec, textureURL } = api;
-  const { earthScale, netColour, netNote } = api;
+  const {
+    state, node, metrics, topEdges, flightEdges, select, $, colours, rgb, arcSpec, textureURL,
+    earthScale, netColour,
+  } = api;
   const channels = (hex) => rgb(hex).split(",").map(Number);
   // deck's zoom is logarithmic, so a doubling of the earth-size scale is one
   // whole zoom level.
   const zoomShift = () => Math.log2(earthScale());
+  // GlobeView zoom is logarithmic and framed for a full-screen map; the hero
+  // panel is a third of that, so the whole sphere needs a negative zoom.
+  const globeViewState = () => ({ longitude: 12, latitude: 18, zoom: -1.15 + zoomShift() });
   let lastEarth = null;
   const GlobeView = deck._GlobeView ?? deck.GlobeView;
   if (!GlobeView) throw new Error("this deck.gl build has no GlobeView");
 
   const decks = new Map();
 
+  // The island renders each host after its canvas; the first draw sizes it
+  // from the canvas and hides the canvas.
   function mount(canvasId, view, initialViewState) {
     const canvas = $(canvasId);
-    if (!canvas) return null;
+    const host = $(`${canvasId}-deck`);
+    if (!canvas || !host) return null;
     if (decks.has(canvasId)) return decks.get(canvasId);
-    let host = document.getElementById(`${canvasId}-deck`);
-    if (!host) {
-      host = document.createElement("div");
-      host.id = `${canvasId}-deck`;
-      host.style.position = "relative";
-      host.style.width = "100%";
-      host.style.height = `${Math.round((canvas.clientWidth || 600) * (canvas.height / canvas.width))}px`;
-      canvas.after(host);
-      canvas.style.display = "none";
-    }
+    host.style.position = "relative";
+    host.style.width = "100%";
+    host.style.height = `${Math.round((canvas.clientWidth || 600) * (canvas.height / canvas.width))}px`;
+    canvas.style.display = "none";
     const instance = new deck.Deck({
       parent: host,
       views: [view],
@@ -171,21 +173,13 @@ export function install(api, deck) {
     });
 
   function globe() {
-    // GlobeView zoom is logarithmic and framed for a full-screen map; the hero
-    // panel is a third of that, so the whole sphere needs a negative zoom.
-    const instance = mount("globe-canvas", new GlobeView({ id: "globe" }), {
-      longitude: 12,
-      latitude: 18,
-      zoom: -1.15 + zoomShift(),
-    });
+    const instance = mount("globe-canvas", new GlobeView({ id: "globe" }), globeViewState());
     if (!instance) return;
     // mount only reads the initial view state, so a later change of earth size
     // has to be pushed onto the live deck.
     if (lastEarth !== state.earth) {
       lastEarth = state.earth;
-      instance.setProps({
-        initialViewState: { longitude: 12, latitude: 18, zoom: -1.15 + zoomShift() },
-      });
+      instance.setProps({ initialViewState: globeViewState() });
     }
     instance.setProps({
       layers: [
@@ -236,7 +230,6 @@ export function install(api, deck) {
     if (!instance) return;
     if (state.layer === "net") {
       instance.setProps({ layers: netLayer() });
-      netNote();
       return;
     }
     const layers = [...photoLayer("map-photo"), ...landLayer("map-land", false)];
@@ -250,22 +243,8 @@ export function install(api, deck) {
   return {
     globe,
     map,
-    setupGlobe() {
-      const hint = document.querySelector(".stage-hint");
-      if (hint) hint.textContent = "Drag to spin, scroll to zoom. Click a country. (WebGL)";
-    },
-    setupMap() {
-      const toggle = $("map-toggle");
-      if (!toggle) return;
-      toggle.addEventListener("click", (event) => {
-        const button = event.target.closest("button[data-layer]");
-        if (!button) return;
-        state.layer = button.dataset.layer;
-        for (const b of toggle.querySelectorAll("button")) {
-          b.setAttribute("aria-pressed", String(b === button));
-        }
-        map();
-      });
-    },
+    hint: "Drag to spin, scroll to zoom. Click a country. (WebGL)",
+    // deck.gl's map takes no canvas pointer events: its own controller has them.
+    mapEvents: {},
   };
 }

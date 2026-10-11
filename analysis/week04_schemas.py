@@ -1551,11 +1551,11 @@ class EntityCommunity(Model):
     x: float = Field(ge=0, le=1000)  # the community's disc
     y: float = Field(ge=0, le=1000)
     r: float = Field(gt=0)
+    holds_together: float = Field(ge=0, le=1)  # two of its workers share a group in a seed
 
 
 class EntityItems(Model):
-    profile: list[int]
-    workers: list[int]
+    """Item k is profile k, so profiles carry its counts; items add the name."""
     name: list[str]
 
 
@@ -1581,14 +1581,15 @@ class EntityPage(Model):
             assert len(getattr(p, name)) == n, f"profiles.{name} has a length other than community"
         assert all(-1 <= c < len(self.communities) for c in p.community), "a community outside the list"
         assert [c.id for c in self.communities] == list(range(len(self.communities))), "community ids out of order"
+        names = [c.name for c in self.communities]
+        assert len(set(names)) == len(names), "two communities share a name"
         for name in ("occupation", "place", "sector"):
             size = len(getattr(self.lookups, name))
             assert all(0 <= i < size for i in getattr(p, name)), f"a {name} index outside its lookup"
         assert all(0 <= v < 4 for v in p.level), "a wage level outside I to IV"
         if self.dots == "items":
             assert self.items is not None, "dots per item need the items"
-            assert len(self.items.profile) == len(self.items.workers) == len(self.items.name)
-            assert all(0 <= i < n for i in self.items.profile), "an item on a missing profile"
+            assert len(self.items.name) == n, "items and profiles differ in length"
         return self
 
 

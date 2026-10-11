@@ -22,7 +22,8 @@ import os
 import pathlib
 import subprocess
 import sys
-import urllib.request
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1] / "analysis"))
+import fetch as web  # noqa: E402
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 RAW = ROOT / "build" / "raw"
@@ -129,9 +130,7 @@ def fetch(url: str, target: pathlib.Path, force: bool) -> None:
         return
     print(f"  fetch   {target.name} … ", end="", flush=True)
     target.parent.mkdir(parents=True, exist_ok=True)
-    request = urllib.request.Request(url, headers={"User-Agent": user_agent()})
-    with urllib.request.urlopen(request, timeout=600) as response:
-        target.write_bytes(response.read())
+    target.write_bytes(web.content(web.session(user_agent()), url, timeout=600))
     print(size(target))
 
 
@@ -198,7 +197,7 @@ def main() -> None:
             print(f"  resize  {out.name} ({size(out)})")
 
     print("\n4. derived data")
-    # data/migration_country_indicators.tsv is committed and is not rebuilt
+    # data/migration_country_indicators.parquet is committed and is not rebuilt
     # here: it comes from the World Bank, one row per country, via
     #   python scripts/migration/fetch_country_layer.py --only worldbank
     # which takes a minute and needs the network. The corridor script reads it

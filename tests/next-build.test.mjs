@@ -1,9 +1,9 @@
-// Checks on what Next builds from src/ that the page tests do not see: every
-// page mounts its scripts, and the CSS minifier leaves alone what the scripts
+// Checks on what Next builds from src/ that the page tests do not see: no
+// page loads the retired entry scripts, and the CSS minifier leaves alone what the scripts
 // and the cascade depend on. Reads the source and out/ (npm run build).
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readdirSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { ROOT } from "./built-page.mjs";
 
@@ -12,22 +12,14 @@ const walk = (dir) =>
     e.isDirectory() ? walk(join(dir, e.name)) : [join(dir, e.name)],
   );
 
-test("every page with an entry module mounts it", () => {
-  const entries = new Set(
-    readdirSync(join(ROOT, "src/scripts/entries"))
-      .filter((f) => f !== "run.js")
-      .map((f) => f.replace(/\.js$/, "")),
-  );
-  const registry = readFileSync(join(ROOT, "src/components/PageScripts.tsx"), "utf8");
-  for (const page of walk(join(ROOT, "src/app")).filter((f) => f.endsWith("page.tsx"))) {
-    const group = page.match(/\(([^)]+)\)/)[1];
-    const src = readFileSync(page, "utf8");
-    if (!entries.has(group)) {
-      assert.doesNotMatch(src, /<PageScripts/, `${group} mounts scripts it has no entry for`);
-      continue;
-    }
-    assert.match(src, new RegExp(`<PageScripts page="${group}" />`), `${group}'s page does not run its scripts`);
-    assert.ok(registry.includes(`"${group}": () => import("@/scripts/entries/${group}.js")`), `${group} is not in PageScripts`);
+test("no page loads scripts through the retired entry loader", () => {
+  // Every page renders with React; a page runs a script only when one of its
+  // components imports it.
+  assert.ok(!existsSync(join(ROOT, "src/components/PageScripts.tsx")), "PageScripts.tsx is gone");
+  assert.ok(!existsSync(join(ROOT, "src/scripts/entries")), "src/scripts/entries/ is gone");
+  for (const file of walk(join(ROOT, "src/app")).filter((f) => /\.tsx?$/.test(f))) {
+    const src = readFileSync(file, "utf8");
+    assert.doesNotMatch(src, /<PageScripts|@\/components\/PageScripts|@\/scripts\/entries\//, `${file} still loads the legacy entry`);
   }
 });
 

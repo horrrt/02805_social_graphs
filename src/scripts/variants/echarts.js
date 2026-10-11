@@ -18,6 +18,12 @@ const axis = () => ({
   nameTextStyle: { color: "#7a8fac", fontSize: fs("caption") },
 });
 
+const legend = () => ({
+  top: 0,
+  textStyle: { color: "#46618a", fontSize: fs("caption") },
+  selectorLabel: { fontSize: fs("caption") },
+});
+
 const base = () => ({
   animationDuration: 320,
   textStyle: { fontFamily: family("sans"), fontSize: fs("small") },
@@ -33,19 +39,16 @@ export function install(api, echarts) {
   } = api;
   const charts = new Map();
 
+  // The chart's island renders the host after its canvas; the first draw
+  // sizes it from the canvas and hides the canvas.
   function chart(id) {
     const canvas = $(id);
-    if (!canvas) return null;
-    let host = document.getElementById(`${id}-ec`);
-    if (!host) {
-      host = document.createElement("div");
-      host.id = `${id}-ec`;
+    const host = $(`${id}-ec`);
+    if (!canvas || !host) return null;
+    if (!charts.has(id)) {
       host.style.width = "100%";
       host.style.height = `${Math.round((canvas.clientWidth || 600) * (canvas.height / canvas.width))}px`;
-      canvas.after(host);
       canvas.style.display = "none";
-    }
-    if (!charts.has(id)) {
       const instance = echarts.init(host, null, { renderer: "canvas" });
       instance.on("click", (event) => {
         const iso3 = event.data?.iso3 ?? event.data?.[2];
@@ -65,12 +68,18 @@ export function install(api, echarts) {
       instance.on("mouseout", hideTip);
       host.addEventListener("pointerleave", hideTip);
       charts.set(id, instance);
-      window.addEventListener("resize", () => instance.resize());
     }
     return charts.get(id);
   }
 
   const point = (x, y, iso3, name, tip) => ({ value: [x, y], iso3, name, tip });
+
+  // Rebuilt per draw, so the palette dropdown reaches these charts too.
+  const degreeSeries = () => [
+    ["In-degree", (n, m) => m.in_degree, colours.PEOPLE],
+    ["Out-degree", (n, m) => m.out_degree, colours.OUTBOUND],
+    ["Flight partners", (n) => n.flight_partners, colours.ACCESS],
+  ];
 
   function scatterSeries(name, rows, colour, size = 8) {
     return {
@@ -112,11 +121,7 @@ export function install(api, echarts) {
   function hist() {
     const instance = chart("hist");
     if (!instance) return;
-    const series = [
-      ["In-degree", (n, m) => m.in_degree, colours.PEOPLE],
-      ["Out-degree", (n, m) => m.out_degree, colours.OUTBOUND],
-      ["Flight partners", (n) => n.flight_partners, colours.ACCESS],
-    ].map(([name, pick, colour]) => ({
+    const series = degreeSeries().map(([name, pick, colour]) => ({
       name,
       type: "bar",
       barGap: "8%",
@@ -132,7 +137,7 @@ export function install(api, echarts) {
     instance.setOption(
       {
         ...BASE,
-        legend: { top: 0, textStyle: { color: "#46618a", fontSize: fs("caption") }, selectorLabel: { fontSize: fs("caption") } },
+        legend: legend(),
         grid: { left: 54, right: 16, top: 30, bottom: 44 },
         xAxis: { ...AXIS, type: modeFlags("hist").x ? "log" : "value", name: "Partners", nameLocation: "middle", nameGap: 26 },
         yAxis: { ...AXIS, type: modeFlags("hist").y ? "log" : "value", name: "Countries", nameLocation: "middle", nameGap: 36 },
@@ -149,11 +154,7 @@ export function install(api, echarts) {
     const instance = chart("ccdf");
     if (!instance) return;
     const rows = withMetrics();
-    const series = [
-      ["In-degree", (n, m) => m.in_degree, colours.PEOPLE],
-      ["Out-degree", (n, m) => m.out_degree, colours.OUTBOUND],
-      ["Flight partners", (n) => n.flight_partners, colours.ACCESS],
-    ].map(([name, pick, colour]) =>
+    const series = degreeSeries().map(([name, pick, colour]) =>
       scatterSeries(
         name,
         ccdf(rows.map(({ iso3, n, m }) => ({ k: pick(n, m), iso3 }))).map((d) =>
@@ -168,7 +169,7 @@ export function install(api, echarts) {
     instance.setOption(
       {
         ...BASE,
-        legend: { top: 0, textStyle: { color: "#46618a", fontSize: fs("caption") }, selectorLabel: { fontSize: fs("caption") } },
+        legend: legend(),
         grid: { left: 54, right: 16, top: 30, bottom: 44 },
         xAxis: { ...AXIS, type: modeFlags("ccdf").x ? "log" : "value", name: "Partners", nameLocation: "middle", nameGap: 26 },
         yAxis: { ...AXIS, type: modeFlags("ccdf").y ? "log" : "value", name: "P(K ≥ k)", nameLocation: "middle", nameGap: 40 },
@@ -224,7 +225,7 @@ export function install(api, echarts) {
     instance.setOption(
       {
         ...BASE,
-        legend: { top: 0, textStyle: { color: "#46618a", fontSize: fs("caption") }, selectorLabel: { fontSize: fs("caption") } },
+        legend: legend(),
         grid: { left: 62, right: 18, top: 30, bottom: 46 },
         xAxis: { ...AXIS, type: "log", name: "In-degree", nameLocation: "middle", nameGap: 26 },
         yAxis: {
@@ -274,7 +275,7 @@ export function install(api, echarts) {
     instance.setOption(
       {
         ...BASE,
-        legend: { top: 0, textStyle: { color: "#46618a", fontSize: fs("caption") }, selectorLabel: { fontSize: fs("caption") } },
+        legend: legend(),
         grid: { left: 58, right: 18, top: 30, bottom: 46 },
         xAxis: { ...AXIS, type: "log", name: "In-degree", nameLocation: "middle", nameGap: 26 },
         yAxis: { ...AXIS, type: "value", name: "z-score", nameLocation: "middle", nameGap: 38 },
@@ -374,7 +375,7 @@ export function install(api, echarts) {
       `<span>betweenness rank #${i.betweenness_rank}</span>` +
       `<span>${i.km ? `${format.fmt.format(i.km)} km away` : "the country in question"}</span>`;
     small("dk-nordic", {
-      legend: { top: 0, textStyle: { color: "#46618a", fontSize: fs("caption") }, selectorLabel: { fontSize: fs("caption") } },
+      legend: legend(),
       grid: { left: 40, right: 12, top: 26, bottom: 30 },
       xAxis: { ...AXIS, type: "category", data: focus.peers.map((i) => i.iso3) },
       yAxis: { ...AXIS, type: "value", max: 1, axisLabel: { ...AXIS.axisLabel, show: false } },
@@ -399,6 +400,10 @@ export function install(api, echarts) {
   }
 
   return {
+    // The page calls this on every window resize.
+    resize() {
+      for (const instance of charts.values()) instance.resize();
+    },
     hist,
     ccdf: ccdfChart,
     scatterBetween,

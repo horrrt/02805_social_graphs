@@ -1,29 +1,26 @@
 "use client";
-// Section 7's slots, which week05-weird.js drew into on main: the scatter with
-// its drawer of all pages (#chart-weird-scatter), the top and bottom five as
-// read (#weird-table) and the quoted sentences (#weird-passages). Each renders
+// Section 7's slots, which week05-weird.js drew into on main: the scatter
+// (#chart-weird-scatter), the table of all pages (#weird-pages), which sits in
+// the card's drawer row, the top and bottom five as read (#weird-table) and the
+// quoted sentences (#weird-passages). Each renders
 // as the server did until hydrated and draws once weird.json has loaded, the
 // one file main awaited. The scatter's host is swept as main's hover-tip sweep
 // left it (a hidden tip first); its band, its neighbour line and its 303 dots
 // carry their tips as data-tip. Main's fitted() redrew only the svg at a new
-// width, so the drawer after it keeps its state across a resize. A failed
+// width. A failed
 // weird.json leaves every part as the server rendered it, the chart host
 // swept, and logs one line.
-import { Fragment, useEffect, useMemo, useRef } from "react";
+import { Fragment, useMemo, useRef } from "react";
 import { Passage, Table } from "@/kit";
 import { Tipped } from "@/kit/HoverTipHost";
 import type { Measure } from "@/kit/StripChart";
 import type { TableSpec } from "@/kit/Table";
-import { Drawer } from "@/components/post/Drawer";
-import { Drawers } from "@/components/post/Drawers";
-import { island, useIslandReady } from "@/lib/island";
-import { useData } from "@/lib/useData";
-import { useHydrated } from "@/lib/useHydrated";
+import { island } from "@/lib/island";
 import { useFittedWidth } from "@/lib/useSize";
 import { useTextMeasure, useTokens, useTypeScale, type TypeScale } from "@/lib/useTypeScale";
-import { asset } from "@/scripts/site.js";
 import { IDS, SCATTER_TOKENS, WEIRD, allPages, passages, readTable, scatterLayout } from "@/scripts/week05-weird.js";
 import { ChartHost, ServerHost } from "../map/ChartHost";
+import { useSectionPart } from "../map/useSectionPart";
 
 type Data = Parameters<typeof readTable>[0];
 type Tick = { x?: number; y?: number; x1?: number; x2?: number; y1?: number; y2?: number; labelX?: number; labelY: number; label: string };
@@ -42,16 +39,8 @@ type Layout = {
   labels: { x: number; y: number; anchor: "start" | "end"; text: string }[];
 };
 
-// weird.json after hydration, built into one part, with main's one line if it fails.
 function useWeird<T>(build: (data: Data) => unknown) {
-  const hydrated = useHydrated();
-  const state = useData<Data>(hydrated ? asset(WEIRD) : null);
-  useEffect(() => {
-    if (state.status === "error") console.error("week05 weird failed", state.error);
-  }, [state]);
-  const part = useMemo(() => (state.data ? (build(state.data) as T) : null), [state.data, build]);
-  useIslandReady(part !== null);
-  return { hydrated, part };
+  return useSectionPart<Data, T>(WEIRD, "weird", build);
 }
 
 // ---- the scatter and its drawer ------------------------------------------------------
@@ -70,7 +59,7 @@ function ScatterSvg({ data, scale, measure, tokens }: { data: Data; scale: TypeS
         {L.xTicks.map((k, i) => (
           <Fragment key={`x${i}`}>
             <line x1={k.x} x2={k.x} y1={k.y1} y2={k.y2} stroke={t("--line-soft")} />
-            <text x={k.x} y={k.labelY} fontSize={caption} fill={t("--ink-mute")} textAnchor="middle">
+            <text x={k.x} y={k.labelY} fontSize={caption} fill={t("--ink-mute-text")} textAnchor="middle">
               {k.label}
             </text>
           </Fragment>
@@ -78,7 +67,7 @@ function ScatterSvg({ data, scale, measure, tokens }: { data: Data; scale: TypeS
         {L.yTicks.map((k, i) => (
           <Fragment key={`y${i}`}>
             <line x1={k.x1} x2={k.x2} y1={k.y} y2={k.y} stroke={t("--line-soft")} />
-            <text x={k.labelX} y={k.labelY} fontSize={caption} fill={t("--ink-mute")} textAnchor="end">
+            <text x={k.labelX} y={k.labelY} fontSize={caption} fill={t("--ink-mute-text")} textAnchor="end">
               {k.label}
             </text>
           </Fragment>
@@ -126,19 +115,13 @@ function Scatter({ data }: { data: Data }) {
 
 function ScatterPart() {
   const { hydrated, part } = useWeird<Data>(same);
+  return <ChartHost id={IDS.scatter} hydrated={hydrated}>{part ? <Scatter data={part} /> : null}</ChartHost>;
+}
+
+function PagesPart() {
+  const { part } = useWeird<Data>(same);
   const pages = useMemo(() => (part ? (allPages(part) as { label: string; table: TableSpec }) : null), [part]);
-  return (
-    <ChartHost id={IDS.scatter} hydrated={hydrated}>
-      {part ? <Scatter data={part} /> : null}
-      {pages ? (
-        <Drawers variant="foot">
-          <Drawer label={pages.label}>
-            <Table {...pages.table} />
-          </Drawer>
-        </Drawers>
-      ) : null}
-    </ChartHost>
-  );
+  return <div id={IDS.pages}>{pages ? <Table {...pages.table} /> : null}</div>;
 }
 
 // ---- the top and bottom five, and the passages ------------------------------------------
@@ -164,20 +147,17 @@ function PassagesPart() {
   );
 }
 
-const Empty = (id: string) =>
-  function Host() {
-    return <div id={id}></div>;
-  };
-
 const HOSTS = {
   scatter: () => <ServerHost id={IDS.scatter} />,
-  table: Empty(IDS.table),
-  passages: Empty(IDS.passages),
+  pages: () => <ServerHost id={IDS.pages} />,
+  table: () => <ServerHost id={IDS.table} />,
+  passages: () => <ServerHost id={IDS.passages} />,
 };
 
 // One island per part, so a fault in one leaves the others alone.
 const PARTS = {
   scatter: island("week05/weird/Scatter", ScatterPart, HOSTS.scatter, { roots: [`#${IDS.scatter}`] }),
+  pages: island("week05/weird/Pages", PagesPart, HOSTS.pages, { roots: [`#${IDS.pages}`] }),
   table: island("week05/weird/Table", TablePart, HOSTS.table, { roots: [`#${IDS.table}`] }),
   passages: island("week05/weird/Passages", PassagesPart, HOSTS.passages, { roots: [`#${IDS.passages}`] }),
 };
@@ -194,8 +174,8 @@ function Placeholder({ part }: Props) {
   return <Host />;
 }
 
-// The section renders <Weird part="scatter" />, "table" and "passages": one
+// The section renders <Weird part="scatter" />, "pages", "table" and "passages": one
 // client reference in the page's payload, wrapping each part's own island.
 export const Weird = island("week05/weird/Weird", View, Placeholder, {
-  roots: [`#${IDS.scatter}`, `#${IDS.table}`, `#${IDS.passages}`],
+  roots: [`#${IDS.scatter}`, `#${IDS.pages}`, `#${IDS.table}`, `#${IDS.passages}`],
 });

@@ -16,6 +16,7 @@ export function FindingsStrip({ id, label, caps, real, band = "random baseline, 
   return el(
     "section",
     { "aria-label": label, className: "w4-findings", id },
+    <h2 className="visually-hidden">{label}</h2>,
     <div className="w4-findings-head">
       <p className="w4-caps">{caps}</p>
       <div className="w4-key">

@@ -1,0 +1,2 @@
+# Show Parquet tables as CSV in git diff (see project/DEVELOPMENT.md, Data formats).
+*.parquet diff=parquet

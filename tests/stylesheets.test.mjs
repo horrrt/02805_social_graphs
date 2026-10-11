@@ -14,12 +14,13 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 // built page is checked for inline style blocks.
 const sheets = (page) => pageStyles(page);
 const html = (page) => builtPage(`out/${PAGE_PATHS[page]}index.html`);
-const PAGE_PATHS = { week04: "weeks/week04/", week05: "weeks/week05/", kit: "styleguide/kit/", template: "weeks/_template/" };
+const PAGE_PATHS = { week04: "weeks/week04/", week05: "weeks/week05/", week06: "weeks/week06/", kit: "styleguide/kit/", template: "weeks/_template/" };
 
 // Every page built from post.css, and the extra sheets each may add after it.
 const POSTS = {
   week04: /^week04-[\w-]+\.css$/,
   week05: null,
+  week06: null,
   kit: null,
   template: null,
 };

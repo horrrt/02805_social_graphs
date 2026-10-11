@@ -13,31 +13,6 @@
   margin-top: 2px;
 }
 
-.corridor .w4-vis-legend {
-  align-items: center;
-  color: var(--ink-soft);
-  display: flex;
-  flex-wrap: wrap;
-  font-size: var(--fs-caption);
-  gap: 14px;
-  margin: 0 0 2px;
-}
-
-.corridor .w4-vis-legend span {
-  align-items: center;
-  display: inline-flex;
-  gap: 6px;
-}
-
-.corridor .w4-vis-legend i {
-  background: currentColor;
-  border-radius: 999px;
-  display: inline-block;
-  height: 9px;
-  width: 9px;
-}
-
-.corridor .w4-vis-direct { color: var(--w4-accent); }
 .corridor .w4-vis-client { color: var(--w4-vis-client); }
 
 :root {

@@ -38,8 +38,9 @@ applyTo: "analysis/**"
   "Certified - Withdrawn") and `VISA_CLASS` is "H-1B".
 - Identify companies only through `resolver()` in `analysis/week04_staffing.py`: `employer(name, fein)`,
   `client(name)` and `label(key)`. Do not write your own name cleaning.
-- To merge two company names, add a row to `analysis/week04_client_aliases.csv` that follows the rule at its
-  top, then run `python analysis/week04_names_check.py`. Separately branded subsidiaries (LinkedIn, Optum)
+- To merge two company names, add a row to `analysis/week04_client_aliases.parquet` that follows the rule in its
+  notes (`python analysis/tables.py edit analysis/week04_client_aliases.parquet` opens it as CSV in `$EDITOR`),
+  then run `python analysis/week04_names_check.py`. Separately branded subsidiaries (LinkedIn, Optum)
   stay separate companies.
 - Weight links by filings, not requested positions: one firm asks for 40 positions on every filing.
 - Week 4 scripts validate with `week04_schemas.check`, which does the same as `check_pages.check`.

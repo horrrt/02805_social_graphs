@@ -80,14 +80,3 @@
   font-size: var(--fs-small);
   font-weight: 700;
 }
-
-.corridor .years-alt {
-  margin-top: 4px;
-}
-
-.corridor .years-alt summary {
-  color: var(--ink-soft);
-  cursor: pointer;
-  font-size: var(--fs-small);
-  font-weight: 600;
-}

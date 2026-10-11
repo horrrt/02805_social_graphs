@@ -36,7 +36,7 @@ export default function Page() {
                 needed.
               </p>
               <div className="home-hero-actions">
-                <a className="home-button" href="weeks/week05/">Read the latest post →</a>
+                <a className="home-button" href="weeks/week06/">Read the latest post →</a>
               </div>
             </div>
             <aside aria-label="The course so far" className="home-progress">
@@ -70,16 +70,19 @@ export default function Page() {
                     <i aria-hidden="true">→</i>
                   </a>
                 </li>
-                <li className="live current">
+                <li className="live">
                   <a href="weeks/week05/">
                     <span>W5</span>
                     The language half · NLP I
                     <i aria-hidden="true">→</i>
                   </a>
                 </li>
-                <li>
-                  <span>W6</span>
-                  NLP II
+                <li className="live current">
+                  <a href="weeks/week06/">
+                    <span>W6</span>
+                    NLP II
+                    <i aria-hidden="true">→</i>
+                  </a>
                 </li>
                 <li>
                   <span>W7</span>
@@ -133,10 +136,18 @@ export default function Page() {
                   </a>
                 </li>
                 <li>
-                  <a data-week="5" className="week-card current" href="weeks/week05/">
+                  <a data-week="5" className="week-card" href="weeks/week05/">
                     <span className="week-tag">Week 5 · The language half · NLP I</span>
                     <h3>Marvel in Words</h3>
                     <p className="week-q">Does a character's place in the network show in the words of its page?</p>
+                    <span className="week-go">Read the post →</span>
+                  </a>
+                </li>
+                <li>
+                  <a data-week="6" className="week-card current" href="weeks/week06/">
+                    <span className="week-tag">Week 6 · NLP II</span>
+                    <h3>Marvel Lookalikes</h3>
+                    <p className="week-q">Why do two Marvel pages read alike?</p>
                     <span className="week-go">Read the post →</span>
                   </a>
                 </li>

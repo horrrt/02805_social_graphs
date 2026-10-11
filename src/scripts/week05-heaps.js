@@ -23,7 +23,7 @@ const ORDER = {
 };
 
 /** The colour tokens the curve reads. */
-export const CURVE_TOKENS = ["--line-soft", "--ink-mute", "--ink-soft", "--ink", "--w4-band", "--access", "--people", "--card"];
+export const CURVE_TOKENS = ["--line-soft", "--ink-mute", "--ink-mute-text", "--ink-soft", "--ink", "--w4-band", "--access", "--people", "--card"];
 
 // ---- the figure: types against tokens, log-log, with the random band and the fit
 

@@ -10,8 +10,9 @@ Import three stylesheets in the page's layout, in this order: `type.css`, `corri
 The Week 5 layout already does. See every component drawn with toy data at
 [`src/app/(kit)/styleguide/kit/page.tsx`](../app/(kit)/styleguide/kit/page.tsx) (served at `/styleguide/kit/`).
 
-Week 5 has one script per section, `week05-<section>.js`, already loaded by the page. Each draws into its
-section's slots and reads its data from `public/weeks/week05/data/<section>.json`. `tests/kit.test.mjs` fails
+Week 5 has one script per section, `week05-<section>.js`, imported by that section's React components in
+`src/features/week05/`. Nothing loads a script here on its own: the old `src/scripts/entries/` loader is gone.
+Each script reads its data from `public/weeks/week05/data/<section>.json`. `tests/kit.test.mjs` fails
 when this list and the exports of `kit.js` disagree.
 
 ## Page and data
@@ -85,7 +86,7 @@ One row of `stripChart` without an axis: `{ domain, real, realLabel, base, baseL
 
 ### networkView(host, spec)
 
-Nodes and links as one SVG, in the styles of the course's explorables, coloured from the `--group-*` tokens in
+Nodes and links as one SVG, light or dark, coloured from the `--group-*` tokens in
 `post.css` (eight groups and a grey; `analysis/check_palette.py` checks them for colour blindness). Lay the
 nodes out in the analysis script with a seeded layout and pass `x` and `y` between 0 and 1;
 `analysis/styleguide_graphs.py` shows how. A node is `{ id, x, y, label, group }`, with `group` 0 to 7 or
