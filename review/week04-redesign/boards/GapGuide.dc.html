@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Brief gaps · guide and decisions</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="/_blob/a8b55e0770da9418a2f5ffb4cab631b7">
+<link rel="stylesheet" href="/_blob/b9d3af828667918c0fe07be60c6aec89">
+<link rel="stylesheet" href="/_blob/0b9a7c47e1350e0dffcea5a9b54b4572">
+<link rel="stylesheet" href="/_blob/97d66203c00ace3bbf90e935b5ed45e1">
+<link rel="stylesheet" href="/_blob/94054bb472c9bb561fb6500c796bc7ef">
+<link rel="stylesheet" href="/_blob/81bc858cf62ad205d9adaaea74b42c73">
+<link rel="stylesheet" href="/_blob/d09bedaa7230bae661e51acddd444fed">
+<link rel="stylesheet" href="/_blob/a86452c89a12d8478efd86eb2d9b31b3">
+<link rel="stylesheet" href="/_blob/99372c9f53a87aa53514fce1dc1d11af">
+<link rel="stylesheet" href="/_blob/1d4921daf15eaaa604354f831f8c94be">
+<link rel="stylesheet" href="/_blob/bb046391e9975dbba9317d692ee805fb">
+<link rel="stylesheet" href="/_blob/b88ec2cf6cd06a2f8d6a54d0b8b586e7">
+<link rel="stylesheet" href="/_blob/d499d5aed42057365f4f1c435e636bb6">
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face{font-family:"Condensed";src:url("/_blob/9ad036b9f76606ea91d82e15ebec8da3") format("truetype");font-weight:800;font-style:normal}
+body{margin:0;background:#eef3f9}
+.rx{position:relative}
+/* rec 6: the rail, every name on hover */
+.rx .rx-rail{position:absolute;left:64px;top:96px;width:44px;z-index:30}
+.rx .rx-rail ol{list-style:none;margin:0;padding:6px 0;display:flex;flex-direction:column;align-items:center;gap:16px;background:linear-gradient(#dce5f0,#dce5f0) center/2px 100% no-repeat}
+.rx .rx-rail ol.rx-rail-sub{gap:16px;padding:14px 0 4px;background:none}
+.rx .rx-rail li{display:flex;flex-direction:column;align-items:center;position:relative}
+.rx .rx-sq,.rx .rx-dot{position:relative;display:block;box-sizing:border-box;border-radius:999px;font-size:0;color:transparent;cursor:pointer}
+.rx .rx-sq{width:12px;height:12px;background:#fff;border:2px solid #9fb4cf}
+.rx .rx-sq:hover{border-color:#14618f}
+.rx .rx-sq.is-on{width:18px;height:18px;background:#14618f;border-color:#14618f;box-shadow:0 0 0 4px rgba(20,97,143,.18)}
+.rx .rx-dot{width:8px;height:8px;background:#c9d6e6}
+.rx .rx-dot.is-on{background:#0f2340;box-shadow:0 0 0 3px rgba(15,35,64,.14)}
+/* on hover the rail opens as one contents panel: a card behind the dots, names in one column, questions indented */
+.rx .rx-rail::before{content:"";display:none;position:absolute;left:-12px;top:-14px;bottom:-14px;width:var(--rx-rail-w,340px);background:#fff;border-radius:14px;box-shadow:0 1px 2px rgba(15,35,64,.08),0 12px 32px rgba(15,35,64,.14);z-index:-1}
+.rx .rx-rail:hover::before{display:block}
+.rx .rx-lab{display:none;position:absolute;left:24px;top:50%;transform:translateY(-50%);white-space:nowrap;border-radius:6px;padding:3px 8px;font-size:var(--fs-small);line-height:1.35;font-weight:600;color:#0f2340}
+.rx .rx-sq.is-on>.rx-lab{left:27px;color:#14618f;font-weight:700}
+.rx .rx-dot>.rx-lab{left:34px;font-size:var(--fs-small);font-weight:500;color:#46618a}
+.rx .rx-dot.is-on>.rx-lab{color:#0f2340;font-weight:700}
+.rx .rx-rail:hover .rx-lab{display:block}
+.rx .rx-rail .rx-sq:hover>.rx-lab,.rx .rx-rail .rx-dot:hover>.rx-lab{background:#f7fafd;color:#14618f}
+/* rec 1: drawers */
+.rx .rx-drawers{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.rx details.rx-drawer{border:1px solid #dce5f0;border-radius:10px;background:#f7fafd;margin-top:10px}
+.rx .rx-drawers details.rx-drawer{margin-top:0}
+.rx details.rx-drawer>summary{cursor:pointer;list-style:none;padding:9px 14px;font-size:var(--fs-small);font-weight:700;color:#14618f;display:flex;align-items:center;gap:8px}
+.rx details.rx-drawer>summary::-webkit-details-marker{display:none}
+.rx details.rx-drawer>summary::before{content:"▸";font-size:var(--fs-caption);transition:transform .15s}
+.rx details.rx-drawer[open]>summary::before{transform:rotate(90deg)}
+.rx .rx-drawer-body{padding:0 16px 14px;font-size:var(--fs-body);line-height:1.62;color:#0f2340;max-width:78ch}
+.rx .rx-drawer-body p{margin:0 0 8px}
+/* rec 4: one segmented control */
+.rx .axis-modes,.rx .rx-seg,.rx .staffing-years{display:inline-flex!important;gap:2px!important;padding:3px!important;border-radius:999px!important;background:#eaf0f7!important;border:none!important;box-shadow:none!important;flex-wrap:wrap}
+.rx .axis-modes button,.rx .rx-seg button,.rx .staffing-years button{border:none!important;border-radius:999px!important;padding:6px 14px!important;font:inherit!important;font-size:var(--fs-small)!important;font-weight:600!important;color:#46618a!important;background:transparent!important;box-shadow:none!important;cursor:pointer}
+.rx .axis-modes button[aria-pressed="true"],.rx .rx-seg button[aria-pressed="true"],.rx .staffing-years button[aria-pressed="true"]{background:#fff!important;color:#0f2340!important;font-weight:700!important;box-shadow:0 1px 2px rgba(15,35,64,.12)!important}
+.rx .axis-modes-label,.rx .rx-seg-label{text-transform:none!important;letter-spacing:0!important;font-size:var(--fs-small)!important;font-weight:700!important;color:#46618a!important}
+.rx .rx-seg-row{display:flex;align-items:center;gap:12px;margin:10px 0}
+/* rec 7 placeholder */
+.rx .rx-todo{border:1px dashed #b9cadf;background:#fff;color:#7a8fac}
+/* topic boards */
+.rx .rx-topic-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.rx .rx-tabs{display:flex;flex-direction:column;gap:2px;padding:12px;border-right:1px solid #eaf0f7;background:#f7fafd;border-radius:14px 0 0 14px}
+.rx .rx-tab{display:flex;gap:10px;align-items:baseline;width:100%;padding:9px 10px;border:none;border-radius:8px;font:inherit;font-size:var(--fs-small);line-height:1.4;font-weight:600;text-align:left;color:#0f2340;cursor:pointer;background:transparent}
+.rx .rx-tab:hover{background:#fff}
+
+/* rec 3: section 1 start card */
+.rx .rx-kicker{margin:6px 0 0;font-size:var(--fs-small);color:#46618a}
+.rx .rx-start-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:36px;align-items:start;margin-top:8px}
+.rx .rx-start-grid header.w4-q{margin-bottom:8px}
+.rx .rx-groups{display:flex;flex-direction:column;margin-top:10px}
+.rx .rx-group{padding:10px 0;border-top:1px solid #eaf0f7}
+.rx .rx-group-head{display:flex;align-items:center;gap:8px;font-size:var(--fs-body)}
+.rx .rx-group-head i{width:12px;height:12px;border-radius:50%;display:inline-block}
+.rx .rx-group-head span{font-size:var(--fs-small);color:#46618a}
+.rx .rx-group p{margin:4px 0 0 20px;font-size:var(--fs-small);line-height:1.55;color:#46618a}
+.rx .rx-start-notices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:14px}
+.rx .rx-drawer-body.rx-wide{max-width:none}
+/* topic boards */
+.rx .rx-topic-bar{display:flex;align-items:center;gap:16px;margin:8px 0 16px}
+.rx .rx-back{font-size:var(--fs-small);font-weight:700;text-decoration:none;color:#14618f;padding:6px 12px;border:1px solid #dce5f0;border-radius:999px;background:#fff}
+.rx .rx-topic-mark{flex:none;width:40px;height:40px;border-radius:10px;background:#14618f;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:var(--fs-strong);font-weight:800}
+.rx .rx-topic-title{margin:0;font-size:var(--fs-h3);font-weight:800}
+.rx .rx-topic-holds{margin:2px 0 0;font-size:var(--fs-body);color:#46618a}
+.rx .rx-topic-count{margin-left:auto;font-size:var(--fs-small);color:#46618a}
+.rx .rx-tab-row{display:flex;flex-wrap:wrap;gap:6px;padding:6px;border-radius:14px;background:#eaf0f7;margin-bottom:18px}
+.rx .rx-tab-pill{border:none;border-radius:999px;padding:7px 14px;font:inherit;font-size:var(--fs-small);font-weight:600;cursor:pointer;text-align:left;line-height:1.35}
+.rx .rx-tab-pill b{color:#14618f;margin-right:4px}
+.rx .rx-panel > .card{margin-top:0}
+/* deep-dive catalogue */
+.rx .rx-cut-intro{max-width:68ch}
+.rx .rx-tgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start;margin-top:18px}
+.rx .rx-tcard{background:#fff;border:1px solid #dce5f0;border-radius:14px;padding:16px;box-shadow:0 1px 2px rgba(15,35,64,.06),0 8px 24px rgba(15,35,64,.05)}
+.rx .rx-tcard-data{background:#f7fafd;box-shadow:none}
+.rx .rx-tcard-head{display:flex;gap:12px;align-items:flex-start;text-decoration:none;color:#0f2340;padding-bottom:10px}
+.rx .rx-tcard-head span{display:flex;flex-direction:column;gap:3px}
+.rx .rx-tcard-head b{font-size:var(--fs-strong)}
+.rx .rx-tcard-head em{font-style:normal;font-size:var(--fs-small);line-height:1.45;color:#46618a}
+.rx .rx-tcard ul{list-style:none;margin:0;padding:0}
+.rx .rx-tcard li a{display:flex;gap:10px;align-items:baseline;padding:8px 4px;border-top:1px solid #eaf0f7;text-decoration:none;color:#0f2340;font-size:var(--fs-small);font-weight:600;line-height:1.4}
+.rx .rx-tcard li a b{flex:none;min-width:22px;color:#14618f;font-size:var(--fs-caption)}
+.rx .rx-tcard li a span{flex-grow:1}
+.rx .rx-tcard li a i{font-style:normal;color:#14618f;font-weight:700}
+.rx .rx-tcard li a:hover{background:#d9ecf9}
+.rx .rx-moved{margin:16px 0 0;font-size:var(--fs-small);line-height:1.6;color:#46618a}
+.rx .rx-tile-finding{display:block;margin-top:6px;color:#0f2340}
+.rx .rx-tcard li.rx-uses-li>a{border-top:1px solid #eaf0f7}
+.rx .rx-uses{list-style:none;margin:0 0 4px 6px;padding:0 0 0 12px;border-left:2px solid #dce5f0}
+.rx .rx-tcard .rx-uses li a{flex-direction:column;align-items:flex-start;gap:2px;border-top:none;padding:6px 4px;font-weight:600}
+.rx .rx-tcard .rx-uses li a b{min-width:0;font-size:var(--fs-caption);color:#14618f}
+.rx .rx-tcard .rx-uses li a em{font-style:normal;font-weight:500;font-size:var(--fs-small);line-height:1.45;color:#46618a}
+.rx .rx-tab-group{flex-basis:100%;padding:8px 8px 2px;font-size:var(--fs-small);font-weight:700;color:#46618a}
+.rx .rx-toc{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 32px;padding:14px 16px;background:#fff;border:1px solid #dce5f0;border-radius:14px;margin-bottom:22px}
+.rx .rx-toc-col{display:flex;flex-direction:column;gap:2px}
+.rx .rx-toc-head{margin:2px 0 6px 15px;font-size:var(--fs-small);font-weight:700;color:#7a8fac}
+.rx .rx-toc-item{display:block;width:100%;box-sizing:border-box;text-align:left;border:none;border-left:3px solid transparent;border-radius:0 8px 8px 0;padding:8px 12px;font:inherit;font-size:var(--fs-body);line-height:1.4;font-weight:600;cursor:pointer;background:transparent;color:#46618a}
+.rx .rx-toc-item:hover{background:#f7fafd;color:#0f2340}
+.rx .rx-toc-item b{color:#14618f;margin-right:6px;font-weight:700}
+/* tables */
+.rx main table{width:100%;border-collapse:separate;border-spacing:0;font-size:var(--fs-small);line-height:1.4;background:#fff;border:1px solid #dce5f0;border-radius:10px;overflow:hidden;margin-top:6px}
+.rx main table caption{caption-side:top;text-align:left;font-size:var(--fs-small);font-weight:700;color:#0f2340;padding:0 2px 8px}
+.rx main table th{background:#f7fafd;color:#46618a;font-size:var(--fs-caption);font-weight:600;text-align:left;padding:9px 12px;border-bottom:1px solid #dce5f0;white-space:nowrap}
+.rx main table td{padding:8px 12px;border-top:1px solid #eef3f9;color:#0f2340;vertical-align:middle}
+.rx main table tbody tr:first-child td{border-top:none}
+.rx main table tbody tr:hover td{background:#f7fafd}
+.rx main table td:first-child{font-weight:600}
+.rx main table th.num,.rx main table td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.rx main table td.soft{color:#46618a}
+.rx .rx-cell{display:flex;align-items:center;justify-content:flex-end;gap:10px}
+.rx .rx-bar{flex:none;width:72px;height:6px;border-radius:999px;background:#eef3f9;overflow:hidden;display:flex;justify-content:flex-start}
+.rx .rx-bar i{display:block;height:100%;border-radius:999px;background:#14618f}
+.rx .rx-bar.meter i{background:#7fa9cf}
+.rx .rx-table-block{margin-top:18px}
+.rx .rx-table-block h4{margin:0 0 4px;font-size:var(--fs-small);font-weight:700;color:#0f2340}
+.rx .rx-table-block p{margin:0 0 6px;font-size:var(--fs-small);color:#46618a}
+/* compact drawers: closed ones sit in one row, an open one takes the full width */
+.rx .rx-drawers{flex-direction:row!important;flex-wrap:wrap;align-items:center;gap:8px!important;margin-top:12px}
+.rx .rx-drawers>details.rx-drawer{flex:0 0 auto;margin:0}
+.rx .rx-drawers>details.rx-drawer[open]{flex:1 1 100%;order:10}
+.rx details.rx-drawer:not([open]){width:fit-content}
+.rx details.rx-drawer>summary{padding:6px 12px}
+.rx .rx-drawers>.w4-tip{margin:0}
+.rx .rx-foot{margin-top:14px}
+.rx .rx-drawer-body>p+p{margin-top:8px}
+.rx .rx-fig-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:28px;margin-top:22px;align-items:start}
+.rx .rx-fig-row>figure,.rx .rx-fig-row>.plot{margin:0}
+.rx .rx-fig-row>:only-child{max-width:58%}
+</style>
+</helmet>
+<div class="corridor rx" style="width: 1440px; height: 920px; overflow: hidden; background: #eef3f9"><div class="topbar">
+<div class="shell">
+<a class="brand" href="../../">LOG–LOG <b>LEGENDS</b></a>
+<a class="site-link" href="../../#weeks">All posts</a>
+<nav aria-label="Sections of this post" class="topnav">
+<a href="#opening">Opening</a>
+<a href="#place">Where</a>
+<a href="#jobs">Jobs</a>
+<a href="#who">Staffing</a>
+<a href="#footprint">Giants out</a>
+<a href="#beyond">Beyond</a>
+<a class="here" href="#cut">Deep dive</a>
+</nav>
+</div>
+</div><main id="main"><div class="shell"><section class="step" id="cut">
+<header class="w4-opener"><span aria-hidden="true" class="w4-opener-num">+</span><div><h2>Brief gaps</h2><p>The Week 4 concepts the page does not show yet, worked on our own networks.</p></div></header><p class="sub rx-cut-intro">Each board is drawn as a deep-dive box so it can move to the page as it stands. Every number comes from analysis/week04_brief_gaps.py.</p><div class="rx-tgrid"><div class="rx-tcard"><a class="rx-tcard-head" href="GapModularity.dc.html"><span><b>G1 · Modularity by hand</b><em>Where the hiring is</em></span></a><p style="margin:0;font-size:var(--fs-small);line-height:1.55;color:#0f2340">The per-group sum behind Q = 0.049, and Census regions scoring 0.002: grouped is not right.</p></div><div class="rx-tcard"><a class="rx-tcard-head" href="GapGreedy.dc.html"><span><b>G2 · Greedy merging and the dendrogram</b><em>Where the hiring is</em></span></a><p style="margin:0;font-size:var(--fs-small);line-height:1.55;color:#0f2340">Greedy merging peaks at 2 groups, Q = 0.057. Bottom-up and top-down trees side by side.</p></div><div class="rx-tcard"><a class="rx-tcard-head" href="GapPaths.dc.html"><span><b>G3 · Weighted paths</b><em>Where the hiring is</em></span></a><p style="margin:0;font-size:var(--fs-small);line-height:1.55;color:#0f2340">With 1/w lengths, 85% of pairs take a detour, and Dallas sits on 534 of them.</p></div><div class="rx-tcard"><a class="rx-tcard-head" href="GapEigen.dc.html"><span><b>G4 · Eigenvector centrality</b><em>Jobs and skills</em></span></a><p style="margin:0;font-size:var(--fs-small);line-height:1.55;color:#0f2340">Agrees with PageRank at Spearman 0.71; PageRank lifts the school teachers from about 275th to about 30th.</p></div><div class="rx-tcard"><a class="rx-tcard-head" href="GapResolution.dc.html"><span><b>G5 · Resolution, Leiden, block models</b><em>Where the hiring is</em></span></a><p style="margin:0;font-size:var(--fs-small);line-height:1.55;color:#0f2340">γ from 1 to 1.5 takes Louvain from 3 groups to 27. Leiden agrees with Louvain; no block model fitted.</p></div><div class="rx-tcard"><a class="rx-tcard-head" href="GapDrawing.dc.html"><span><b>G6 · The five drawing rules</b><em>Data and methods</em></span></a><p style="margin:0;font-size:var(--fs-small);line-height:1.55;color:#0f2340">The hero map passes four and a half; green and slate fail for colour-blind readers.</p></div></div><div class="card w4-card" style="margin-top:22px"><h3 style="margin:0 0 4px;font-size:var(--fs-h3)">To decide</h3><ol style="list-style:none;margin:0;padding:0"><li style="padding:12px 0;border-top:1px solid #eaf0f7"><b style="font-size:var(--fs-strong)">Two groups or three in section 1?</b><p style="margin:4px 0 0;font-size:var(--fs-body);line-height:1.6;color:#46618a">The page shows Louvain&#x27;s most frequent split, three groups at Q = 0.049. Louvain&#x27;s other 35 runs, greedy merging and Leiden&#x27;s best all reach Q = 0.057 with two groups: the 12 largest hubs against the rest. Keep three and say why, or switch to two and redo section 1&#x27;s numbers.</p></li><li style="padding:12px 0;border-top:1px solid #eaf0f7"><b style="font-size:var(--fs-strong)">Which boards go to the page?</b><p style="margin:4px 0 0;font-size:var(--fs-body);line-height:1.6;color:#46618a">G1 and G2 fit the community methods box as a formula strip and a fifth tab; G3 and G4 are new boxes; G5 and G6 are notes.</p></li><li style="padding:12px 0;border-top:1px solid #eaf0f7"><b style="font-size:var(--fs-strong)">Change the group colours?</b><p style="margin:4px 0 0;font-size:var(--fs-body);line-height:1.6;color:#46618a">Only if G6&#x27;s fix is wanted: it touches every map that colours by group.</p></li></ol></div>
+</section></div></main></div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 920}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

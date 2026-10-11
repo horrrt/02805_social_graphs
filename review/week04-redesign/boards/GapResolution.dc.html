@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Brief gaps · resolution, Leiden and block models</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="/_blob/a8b55e0770da9418a2f5ffb4cab631b7">
+<link rel="stylesheet" href="/_blob/b9d3af828667918c0fe07be60c6aec89">
+<link rel="stylesheet" href="/_blob/0b9a7c47e1350e0dffcea5a9b54b4572">
+<link rel="stylesheet" href="/_blob/97d66203c00ace3bbf90e935b5ed45e1">
+<link rel="stylesheet" href="/_blob/94054bb472c9bb561fb6500c796bc7ef">
+<link rel="stylesheet" href="/_blob/81bc858cf62ad205d9adaaea74b42c73">
+<link rel="stylesheet" href="/_blob/d09bedaa7230bae661e51acddd444fed">
+<link rel="stylesheet" href="/_blob/a86452c89a12d8478efd86eb2d9b31b3">
+<link rel="stylesheet" href="/_blob/99372c9f53a87aa53514fce1dc1d11af">
+<link rel="stylesheet" href="/_blob/1d4921daf15eaaa604354f831f8c94be">
+<link rel="stylesheet" href="/_blob/bb046391e9975dbba9317d692ee805fb">
+<link rel="stylesheet" href="/_blob/b88ec2cf6cd06a2f8d6a54d0b8b586e7">
+<link rel="stylesheet" href="/_blob/d499d5aed42057365f4f1c435e636bb6">
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face{font-family:"Condensed";src:url("/_blob/9ad036b9f76606ea91d82e15ebec8da3") format("truetype");font-weight:800;font-style:normal}
+body{margin:0;background:#eef3f9}
+.rx{position:relative}
+/* rec 6: the rail, every name on hover */
+.rx .rx-rail{position:absolute;left:64px;top:96px;width:44px;z-index:30}
+.rx .rx-rail ol{list-style:none;margin:0;padding:6px 0;display:flex;flex-direction:column;align-items:center;gap:16px;background:linear-gradient(#dce5f0,#dce5f0) center/2px 100% no-repeat}
+.rx .rx-rail ol.rx-rail-sub{gap:16px;padding:14px 0 4px;background:none}
+.rx .rx-rail li{display:flex;flex-direction:column;align-items:center;position:relative}
+.rx .rx-sq,.rx .rx-dot{position:relative;display:block;box-sizing:border-box;border-radius:999px;font-size:0;color:transparent;cursor:pointer}
+.rx .rx-sq{width:12px;height:12px;background:#fff;border:2px solid #9fb4cf}
+.rx .rx-sq:hover{border-color:#14618f}
+.rx .rx-sq.is-on{width:18px;height:18px;background:#14618f;border-color:#14618f;box-shadow:0 0 0 4px rgba(20,97,143,.18)}
+.rx .rx-dot{width:8px;height:8px;background:#c9d6e6}
+.rx .rx-dot.is-on{background:#0f2340;box-shadow:0 0 0 3px rgba(15,35,64,.14)}
+/* on hover the rail opens as one contents panel: a card behind the dots, names in one column, questions indented */
+.rx .rx-rail::before{content:"";display:none;position:absolute;left:-12px;top:-14px;bottom:-14px;width:var(--rx-rail-w,340px);background:#fff;border-radius:14px;box-shadow:0 1px 2px rgba(15,35,64,.08),0 12px 32px rgba(15,35,64,.14);z-index:-1}
+.rx .rx-rail:hover::before{display:block}
+.rx .rx-lab{display:none;position:absolute;left:24px;top:50%;transform:translateY(-50%);white-space:nowrap;border-radius:6px;padding:3px 8px;font-size:var(--fs-small);line-height:1.35;font-weight:600;color:#0f2340}
+.rx .rx-sq.is-on>.rx-lab{left:27px;color:#14618f;font-weight:700}
+.rx .rx-dot>.rx-lab{left:34px;font-size:var(--fs-small);font-weight:500;color:#46618a}
+.rx .rx-dot.is-on>.rx-lab{color:#0f2340;font-weight:700}
+.rx .rx-rail:hover .rx-lab{display:block}
+.rx .rx-rail .rx-sq:hover>.rx-lab,.rx .rx-rail .rx-dot:hover>.rx-lab{background:#f7fafd;color:#14618f}
+/* rec 1: drawers */
+.rx .rx-drawers{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.rx details.rx-drawer{border:1px solid #dce5f0;border-radius:10px;background:#f7fafd;margin-top:10px}
+.rx .rx-drawers details.rx-drawer{margin-top:0}
+.rx details.rx-drawer>summary{cursor:pointer;list-style:none;padding:9px 14px;font-size:var(--fs-small);font-weight:700;color:#14618f;display:flex;align-items:center;gap:8px}
+.rx details.rx-drawer>summary::-webkit-details-marker{display:none}
+.rx details.rx-drawer>summary::before{content:"▸";font-size:var(--fs-caption);transition:transform .15s}
+.rx details.rx-drawer[open]>summary::before{transform:rotate(90deg)}
+.rx .rx-drawer-body{padding:0 16px 14px;font-size:var(--fs-body);line-height:1.62;color:#0f2340;max-width:78ch}
+.rx .rx-drawer-body p{margin:0 0 8px}
+/* rec 4: one segmented control */
+.rx .axis-modes,.rx .rx-seg,.rx .staffing-years{display:inline-flex!important;gap:2px!important;padding:3px!important;border-radius:999px!important;background:#eaf0f7!important;border:none!important;box-shadow:none!important;flex-wrap:wrap}
+.rx .axis-modes button,.rx .rx-seg button,.rx .staffing-years button{border:none!important;border-radius:999px!important;padding:6px 14px!important;font:inherit!important;font-size:var(--fs-small)!important;font-weight:600!important;color:#46618a!important;background:transparent!important;box-shadow:none!important;cursor:pointer}
+.rx .axis-modes button[aria-pressed="true"],.rx .rx-seg button[aria-pressed="true"],.rx .staffing-years button[aria-pressed="true"]{background:#fff!important;color:#0f2340!important;font-weight:700!important;box-shadow:0 1px 2px rgba(15,35,64,.12)!important}
+.rx .axis-modes-label,.rx .rx-seg-label{text-transform:none!important;letter-spacing:0!important;font-size:var(--fs-small)!important;font-weight:700!important;color:#46618a!important}
+.rx .rx-seg-row{display:flex;align-items:center;gap:12px;margin:10px 0}
+/* rec 7 placeholder */
+.rx .rx-todo{border:1px dashed #b9cadf;background:#fff;color:#7a8fac}
+/* topic boards */
+.rx .rx-topic-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.rx .rx-tabs{display:flex;flex-direction:column;gap:2px;padding:12px;border-right:1px solid #eaf0f7;background:#f7fafd;border-radius:14px 0 0 14px}
+.rx .rx-tab{display:flex;gap:10px;align-items:baseline;width:100%;padding:9px 10px;border:none;border-radius:8px;font:inherit;font-size:var(--fs-small);line-height:1.4;font-weight:600;text-align:left;color:#0f2340;cursor:pointer;background:transparent}
+.rx .rx-tab:hover{background:#fff}
+
+/* rec 3: section 1 start card */
+.rx .rx-kicker{margin:6px 0 0;font-size:var(--fs-small);color:#46618a}
+.rx .rx-start-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:36px;align-items:start;margin-top:8px}
+.rx .rx-start-grid header.w4-q{margin-bottom:8px}
+.rx .rx-groups{display:flex;flex-direction:column;margin-top:10px}
+.rx .rx-group{padding:10px 0;border-top:1px solid #eaf0f7}
+.rx .rx-group-head{display:flex;align-items:center;gap:8px;font-size:var(--fs-body)}
+.rx .rx-group-head i{width:12px;height:12px;border-radius:50%;display:inline-block}
+.rx .rx-group-head span{font-size:var(--fs-small);color:#46618a}
+.rx .rx-group p{margin:4px 0 0 20px;font-size:var(--fs-small);line-height:1.55;color:#46618a}
+.rx .rx-start-notices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:14px}
+.rx .rx-drawer-body.rx-wide{max-width:none}
+/* topic boards */
+.rx .rx-topic-bar{display:flex;align-items:center;gap:16px;margin:8px 0 16px}
+.rx .rx-back{font-size:var(--fs-small);font-weight:700;text-decoration:none;color:#14618f;padding:6px 12px;border:1px solid #dce5f0;border-radius:999px;background:#fff}
+.rx .rx-topic-mark{flex:none;width:40px;height:40px;border-radius:10px;background:#14618f;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:var(--fs-strong);font-weight:800}
+.rx .rx-topic-title{margin:0;font-size:var(--fs-h3);font-weight:800}
+.rx .rx-topic-holds{margin:2px 0 0;font-size:var(--fs-body);color:#46618a}
+.rx .rx-topic-count{margin-left:auto;font-size:var(--fs-small);color:#46618a}
+.rx .rx-tab-row{display:flex;flex-wrap:wrap;gap:6px;padding:6px;border-radius:14px;background:#eaf0f7;margin-bottom:18px}
+.rx .rx-tab-pill{border:none;border-radius:999px;padding:7px 14px;font:inherit;font-size:var(--fs-small);font-weight:600;cursor:pointer;text-align:left;line-height:1.35}
+.rx .rx-tab-pill b{color:#14618f;margin-right:4px}
+.rx .rx-panel > .card{margin-top:0}
+/* deep-dive catalogue */
+.rx .rx-cut-intro{max-width:68ch}
+.rx .rx-tgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start;margin-top:18px}
+.rx .rx-tcard{background:#fff;border:1px solid #dce5f0;border-radius:14px;padding:16px;box-shadow:0 1px 2px rgba(15,35,64,.06),0 8px 24px rgba(15,35,64,.05)}
+.rx .rx-tcard-data{background:#f7fafd;box-shadow:none}
+.rx .rx-tcard-head{display:flex;gap:12px;align-items:flex-start;text-decoration:none;color:#0f2340;padding-bottom:10px}
+.rx .rx-tcard-head span{display:flex;flex-direction:column;gap:3px}
+.rx .rx-tcard-head b{font-size:var(--fs-strong)}
+.rx .rx-tcard-head em{font-style:normal;font-size:var(--fs-small);line-height:1.45;color:#46618a}
+.rx .rx-tcard ul{list-style:none;margin:0;padding:0}
+.rx .rx-tcard li a{display:flex;gap:10px;align-items:baseline;padding:8px 4px;border-top:1px solid #eaf0f7;text-decoration:none;color:#0f2340;font-size:var(--fs-small);font-weight:600;line-height:1.4}
+.rx .rx-tcard li a b{flex:none;min-width:22px;color:#14618f;font-size:var(--fs-caption)}
+.rx .rx-tcard li a span{flex-grow:1}
+.rx .rx-tcard li a i{font-style:normal;color:#14618f;font-weight:700}
+.rx .rx-tcard li a:hover{background:#d9ecf9}
+.rx .rx-moved{margin:16px 0 0;font-size:var(--fs-small);line-height:1.6;color:#46618a}
+.rx .rx-tile-finding{display:block;margin-top:6px;color:#0f2340}
+.rx .rx-tcard li.rx-uses-li>a{border-top:1px solid #eaf0f7}
+.rx .rx-uses{list-style:none;margin:0 0 4px 6px;padding:0 0 0 12px;border-left:2px solid #dce5f0}
+.rx .rx-tcard .rx-uses li a{flex-direction:column;align-items:flex-start;gap:2px;border-top:none;padding:6px 4px;font-weight:600}
+.rx .rx-tcard .rx-uses li a b{min-width:0;font-size:var(--fs-caption);color:#14618f}
+.rx .rx-tcard .rx-uses li a em{font-style:normal;font-weight:500;font-size:var(--fs-small);line-height:1.45;color:#46618a}
+.rx .rx-tab-group{flex-basis:100%;padding:8px 8px 2px;font-size:var(--fs-small);font-weight:700;color:#46618a}
+.rx .rx-toc{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 32px;padding:14px 16px;background:#fff;border:1px solid #dce5f0;border-radius:14px;margin-bottom:22px}
+.rx .rx-toc-col{display:flex;flex-direction:column;gap:2px}
+.rx .rx-toc-head{margin:2px 0 6px 15px;font-size:var(--fs-small);font-weight:700;color:#7a8fac}
+.rx .rx-toc-item{display:block;width:100%;box-sizing:border-box;text-align:left;border:none;border-left:3px solid transparent;border-radius:0 8px 8px 0;padding:8px 12px;font:inherit;font-size:var(--fs-body);line-height:1.4;font-weight:600;cursor:pointer;background:transparent;color:#46618a}
+.rx .rx-toc-item:hover{background:#f7fafd;color:#0f2340}
+.rx .rx-toc-item b{color:#14618f;margin-right:6px;font-weight:700}
+/* tables */
+.rx main table{width:100%;border-collapse:separate;border-spacing:0;font-size:var(--fs-small);line-height:1.4;background:#fff;border:1px solid #dce5f0;border-radius:10px;overflow:hidden;margin-top:6px}
+.rx main table caption{caption-side:top;text-align:left;font-size:var(--fs-small);font-weight:700;color:#0f2340;padding:0 2px 8px}
+.rx main table th{background:#f7fafd;color:#46618a;font-size:var(--fs-caption);font-weight:600;text-align:left;padding:9px 12px;border-bottom:1px solid #dce5f0;white-space:nowrap}
+.rx main table td{padding:8px 12px;border-top:1px solid #eef3f9;color:#0f2340;vertical-align:middle}
+.rx main table tbody tr:first-child td{border-top:none}
+.rx main table tbody tr:hover td{background:#f7fafd}
+.rx main table td:first-child{font-weight:600}
+.rx main table th.num,.rx main table td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.rx main table td.soft{color:#46618a}
+.rx .rx-cell{display:flex;align-items:center;justify-content:flex-end;gap:10px}
+.rx .rx-bar{flex:none;width:72px;height:6px;border-radius:999px;background:#eef3f9;overflow:hidden;display:flex;justify-content:flex-start}
+.rx .rx-bar i{display:block;height:100%;border-radius:999px;background:#14618f}
+.rx .rx-bar.meter i{background:#7fa9cf}
+.rx .rx-table-block{margin-top:18px}
+.rx .rx-table-block h4{margin:0 0 4px;font-size:var(--fs-small);font-weight:700;color:#0f2340}
+.rx .rx-table-block p{margin:0 0 6px;font-size:var(--fs-small);color:#46618a}
+/* compact drawers: closed ones sit in one row, an open one takes the full width */
+.rx .rx-drawers{flex-direction:row!important;flex-wrap:wrap;align-items:center;gap:8px!important;margin-top:12px}
+.rx .rx-drawers>details.rx-drawer{flex:0 0 auto;margin:0}
+.rx .rx-drawers>details.rx-drawer[open]{flex:1 1 100%;order:10}
+.rx details.rx-drawer:not([open]){width:fit-content}
+.rx details.rx-drawer>summary{padding:6px 12px}
+.rx .rx-drawers>.w4-tip{margin:0}
+.rx .rx-foot{margin-top:14px}
+.rx .rx-drawer-body>p+p{margin-top:8px}
+.rx .rx-fig-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:28px;margin-top:22px;align-items:start}
+.rx .rx-fig-row>figure,.rx .rx-fig-row>.plot{margin:0}
+.rx .rx-fig-row>:only-child{max-width:58%}
+</style>
+</helmet>
+<div class="corridor rx" style="width: 1440px; height: 1230px; overflow: hidden; background: #eef3f9"><div class="topbar">
+<div class="shell">
+<a class="brand" href="../../">LOG–LOG <b>LEGENDS</b></a>
+<a class="site-link" href="../../#weeks">All posts</a>
+<nav aria-label="Sections of this post" class="topnav">
+<a href="#opening">Opening</a>
+<a href="#place">Where</a>
+<a href="#jobs">Jobs</a>
+<a href="#who">Staffing</a>
+<a href="#footprint">Giants out</a>
+<a href="#beyond">Beyond</a>
+<a class="here" href="#cut">Deep dive</a>
+</nav>
+</div>
+</div><main id="main"><div class="shell"><section class="step" id="cut">
+<div class="rx-topic-bar"><a class="rx-back" href="GapGuide.dc.html">← Brief gaps</a><div><h2 class="rx-topic-title">Where the hiring is</h2><p class="rx-topic-holds">Would join the Louvain tab as the brief's optional extras: resolution, Leiden and block models.</p></div></div><div class="card w4-card"><header class="w4-q"><span class="w4-num">G5</span><div><h2>How many groups are there if you change what counts as a group?</h2><p class="w4-answer">Anything from one to forty. Below γ = 1 Louvain finds one group; at 1.25 it finds 11 and at 1.5 it finds 27, and those finer groups follow Census regions more closely.</p></div></header><p class="sub">The <span class="w4-term"><button aria-describedby="gap-term-gamma" type="button">resolution γ</button><span class="w4-pop" id="gap-term-gamma" role="tooltip">A dial on modularity: Q<sub>γ</sub> = Σ<sub>c</sub> [ w<sub>c</sub>/W − γ (s<sub>c</sub>/2W)² ]. γ = 1 is standard modularity; a larger γ favours smaller groups.</span></span> scales modularity's chance term. The brief uses it to fix the resolution limit: maximising Q merges groups with fewer than about √(2m) links inside.</p><div class="notice"><span class="ico">💡</span><span><b>What to notice</b> <span>At γ = 1 the finer groups agree with Census regions at NMI 0.14; at γ = 1.5 they reach 0.49, while their agreement with the page drops to 0.41. The resolution limit does not bite at γ = 1: in filing weight √(2W) is 1,571, and the smallest group holds 133,566 inside.</span></span></div><div class="rx-fig-row"><figure class="w4-figure"><figcaption><b>Groups found at each resolution</b><span>Median over 100 Louvain runs, log scale. Dashed: γ = 1.</span></figcaption><div class="w4-figure-body"><svg viewBox="0 0 508 240" width="508" height="240" role="img" aria-label="Groups Louvain finds at each resolution" style="display:block"><line x1="48" x2="492" y1="190.0" y2="190.0" stroke="#e6ecf3"></line><text x="40.0" y="194.0" font-size="11.5" fill="#7a8fac" text-anchor="end">1</text><line x1="48" x2="492" y1="139.4" y2="139.4" stroke="#e6ecf3"></line><text x="40.0" y="143.4" font-size="11.5" fill="#7a8fac" text-anchor="end">3</text><line x1="48" x2="492" y1="83.9" y2="83.9" stroke="#e6ecf3"></line><text x="40.0" y="87.9" font-size="11.5" fill="#7a8fac" text-anchor="end">10</text><line x1="48" x2="492" y1="20.0" y2="20.0" stroke="#e6ecf3"></line><text x="40.0" y="24.0" font-size="11.5" fill="#7a8fac" text-anchor="end">40</text><text x="48.0" y="206.0" font-size="11.5" fill="#46618a" text-anchor="middle">0.25</text><text x="111.4" y="206.0" font-size="11.5" fill="#46618a" text-anchor="middle">0.5</text><text x="174.9" y="206.0" font-size="11.5" fill="#46618a" text-anchor="middle">0.75</text><text x="238.3" y="206.0" font-size="11.5" fill="#46618a" text-anchor="middle">1</text><text x="301.7" y="206.0" font-size="11.5" fill="#46618a" text-anchor="middle">1.25</text><text x="365.1" y="206.0" font-size="11.5" fill="#46618a" text-anchor="middle">1.5</text><text x="428.6" y="206.0" font-size="11.5" fill="#46618a" text-anchor="middle">2</text><text x="492.0" y="206.0" font-size="11.5" fill="#46618a" text-anchor="middle">3</text><text x="270.0" y="228.0" font-size="11.5" fill="#7a8fac" text-anchor="middle">resolution γ (1 = standard modularity)</text><line x1="238.3" x2="238.3" y1="20" y2="190" stroke="#7a8fac" stroke-dasharray="4 3"></line><polyline points="48.0,190.0 111.4,190.0 174.9,190.0 238.3,139.4 301.7,79.5 365.1,38.1 428.6,26.2 492.0,20.0" fill="none" stroke="#0f2340" stroke-width="2.2"></polyline><g><title>γ = 0.25: median 1 groups over 100 runs (range 1 to 1)</title><circle cx="48.0" cy="190.0" r="4.5" fill="#fff" stroke="#0f2340" stroke-width="2"></circle></g><text x="48.0" y="180.0" font-size="12.5" fill="#0f2340" text-anchor="middle" font-weight="700">1</text><g><title>γ = 0.5: median 1 groups over 100 runs (range 1 to 1)</title><circle cx="111.4" cy="190.0" r="4.5" fill="#fff" stroke="#0f2340" stroke-width="2"></circle></g><text x="111.4" y="180.0" font-size="12.5" fill="#0f2340" text-anchor="middle" font-weight="700">1</text><g><title>γ = 0.75: median 1 groups over 100 runs (range 1 to 1)</title><circle cx="174.9" cy="190.0" r="4.5" fill="#fff" stroke="#0f2340" stroke-width="2"></circle></g><text x="174.9" y="180.0" font-size="12.5" fill="#0f2340" text-anchor="middle" font-weight="700">1</text><g><title>γ = 1: median 3 groups over 100 runs (range 2 to 3)</title><circle cx="238.3" cy="139.4" r="4.5" fill="#fff" stroke="#0f2340" stroke-width="2"></circle></g><text x="238.3" y="129.4" font-size="12.5" fill="#0f2340" text-anchor="middle" font-weight="700">3</text><g><title>γ = 1.25: median 11 groups over 100 runs (range 10 to 11)</title><circle cx="301.7" cy="79.5" r="4.5" fill="#fff" stroke="#0f2340" stroke-width="2"></circle></g><text x="301.7" y="69.5" font-size="12.5" fill="#0f2340" text-anchor="middle" font-weight="700">11</text><g><title>γ = 1.5: median 27 groups over 100 runs (range 24 to 27)</title><circle cx="365.1" cy="38.1" r="4.5" fill="#fff" stroke="#0f2340" stroke-width="2"></circle></g><text x="365.1" y="28.1" font-size="12.5" fill="#0f2340" text-anchor="middle" font-weight="700">27</text><g><title>γ = 2: median 35 groups over 100 runs (range 35 to 35)</title><circle cx="428.6" cy="26.2" r="4.5" fill="#fff" stroke="#0f2340" stroke-width="2"></circle></g><text x="428.6" y="16.2" font-size="12.5" fill="#0f2340" text-anchor="middle" font-weight="700">35</text><g><title>γ = 3: median 40 groups over 100 runs (range 40 to 40)</title><circle cx="492.0" cy="20.0" r="4.5" fill="#fff" stroke="#0f2340" stroke-width="2"></circle></g><text x="492.0" y="10.0" font-size="12.5" fill="#0f2340" text-anchor="middle" font-weight="700">40</text></svg></div></figure><figure class="w4-figure"><figcaption><b>What the groups follow</b><span>NMI with the page's three groups and with the four Census regions.</span></figcaption><div class="w4-figure-body"><svg viewBox="0 0 508 240" width="508" height="240" role="img" aria-label="How closely Louvain&#x27;s groups match the page and Census regions at each resolution" style="display:block"><line x1="48" x2="492" y1="190.0" y2="190.0" stroke="#e6ecf3"></line><text x="40.0" y="194.0" font-size="11.5" fill="#7a8fac" text-anchor="end">0.00</text><line x1="48" x2="492" y1="147.5" y2="147.5" stroke="#e6ecf3"></line><text x="40.0" y="151.5" font-size="11.5" fill="#7a8fac" text-anchor="end">0.25</text><line x1="48" x2="492" y1="105.0" y2="105.0" stroke="#e6ecf3"></line><text x="40.0" y="109.0" font-size="11.5" fill="#7a8fac" text-anchor="end">0.50</text><line x1="48" x2="492" y1="62.5" y2="62.5" stroke="#e6ecf3"></line><text x="40.0" y="66.5" font-size="11.5" fill="#7a8fac" text-anchor="end">0.75</text><line x1="48" x2="492" y1="20.0" y2="20.0" stroke="#e6ecf3"></line><text x="40.0" y="24.0" font-size="11.5" fill="#7a8fac" text-anchor="end">1.00</text><text x="48.0" y="206.0" font-size="11.5" fill="#46618a" text-anchor="middle">0.25</text><text x="111.4" y="206.0" font-size="11.5" fill="#46618a" text-anchor="middle">0.5</text><text x="174.9" y="206.0" font-size="11.5" fill="#46618a" text-anchor="middle">0.75</text><text x="238.3" y="206.0" font-size="11.5" fill="#46618a" text-anchor="middle">1</text><text x="301.7" y="206.0" font-size="11.5" fill="#46618a" text-anchor="middle">1.25</text><text x="365.1" y="206.0" font-size="11.5" fill="#46618a" text-anchor="middle">1.5</text><text x="428.6" y="206.0" font-size="11.5" fill="#46618a" text-anchor="middle">2</text><text x="492.0" y="206.0" font-size="11.5" fill="#46618a" text-anchor="middle">3</text><text x="270.0" y="228.0" font-size="11.5" fill="#7a8fac" text-anchor="middle">resolution γ</text><line x1="238.3" x2="238.3" y1="20" y2="190" stroke="#7a8fac" stroke-dasharray="4 3"></line><polyline points="238.3,20.0 301.7,81.7 365.1,120.0 428.6,119.3 492.0,122.2" fill="none" stroke="#6d4fd6" stroke-width="2.2"></polyline><circle cx="238.3" cy="20.0" r="4" fill="#6d4fd6"><title>γ = 1: NMI with the page's 3 groups 1.00</title></circle><circle cx="301.7" cy="81.7" r="4" fill="#6d4fd6"><title>γ = 1.25: NMI with the page's 3 groups 0.64</title></circle><circle cx="365.1" cy="120.0" r="4" fill="#6d4fd6"><title>γ = 1.5: NMI with the page's 3 groups 0.41</title></circle><circle cx="428.6" cy="119.3" r="4" fill="#6d4fd6"><title>γ = 2: NMI with the page's 3 groups 0.42</title></circle><circle cx="492.0" cy="122.2" r="4" fill="#6d4fd6"><title>γ = 3: NMI with the page's 3 groups 0.40</title></circle><text x="488.0" y="140.2" font-size="12.5" fill="#6d4fd6" text-anchor="end" font-weight="700">the page&#x27;s 3 groups</text><polyline points="238.3,166.7 301.7,134.4 365.1,105.8 428.6,100.4 492.0,101.4" fill="none" stroke="#14618f" stroke-width="2.2" stroke-dasharray="6 4"></polyline><circle cx="238.3" cy="166.7" r="4" fill="#14618f"><title>γ = 1: NMI with Census regions 0.14</title></circle><circle cx="301.7" cy="134.4" r="4" fill="#14618f"><title>γ = 1.25: NMI with Census regions 0.33</title></circle><circle cx="365.1" cy="105.8" r="4" fill="#14618f"><title>γ = 1.5: NMI with Census regions 0.49</title></circle><circle cx="428.6" cy="100.4" r="4" fill="#14618f"><title>γ = 2: NMI with Census regions 0.53</title></circle><circle cx="492.0" cy="101.4" r="4" fill="#14618f"><title>γ = 3: NMI with Census regions 0.52</title></circle><text x="488.0" y="91.4" font-size="12.5" fill="#14618f" text-anchor="end" font-weight="700">Census regions</text></svg></div></figure></div><div class="rx-table-block"><h4>Every method on the 40 metros</h4><table><thead><tr><th>Method</th><th class="num">Groups</th><th class="num">Q</th><th>Note</th></tr></thead><tbody><tr><td>Louvain, the page</td><td class="num">3</td><td class="num">0.049</td><td class="soft">65 of 100 runs</td></tr><tr><td>Louvain, other runs</td><td class="num">2</td><td class="num">0.057</td><td class="soft">35 of 100 runs</td></tr><tr><td>Greedy merging</td><td class="num">2</td><td class="num">0.057</td><td class="soft">the same two groups</td></tr><tr><td>Leiden</td><td class="num">2 or 3</td><td class="num">0.049 or 0.057</td><td class="soft">the same two splits as Louvain</td></tr><tr><td>Infomap</td><td class="num">1</td><td class="num">0</td><td class="soft">no split, as the page reports</td></tr><tr><td>Stochastic block model</td><td class="num">not fitted</td><td class="num"></td><td class="soft">needs graph-tool, which pip cannot install</td></tr></tbody></table></div><div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>igraph's community_multilevel with its resolution parameter and community_leiden with the modularity objective, 100 seeds each, on the full weighted network. √(2m) is the brief's rule of thumb for links; with filing weights we use √(2W) as the same yardstick.</p></div></details><details class="rx-drawer"><summary>Why Leiden changes nothing here</summary><div class="rx-drawer-body"><p>Leiden fixes Louvain's disconnected communities. Every metro links to every other in the full network, so no group can come apart, and Leiden returns the same two splits at the same modularity (best 0.057).</p></div></details></div></div>
+</section></div></main></div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 1230}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
