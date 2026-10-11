@@ -1,7 +1,7 @@
 """Catalogue of global migration data sources.
 
 One entry per source. `render_catalogue.py` turns this into
-MIGRATION_DATA_CATALOGUE.md and data/migration_sources.tsv, so the prose and
+MIGRATION_DATA_CATALOGUE.md and data/migration_sources.parquet, so the prose and
 the machine-readable index can never drift apart.
 
 Field notes:

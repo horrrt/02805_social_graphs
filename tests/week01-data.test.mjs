@@ -12,15 +12,13 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { builtPage } from "./built-page.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const packs = JSON.parse(
-  readFileSync(join(ROOT, "docs/assets/data/week01_packs.json"), "utf8"),
+  readFileSync(join(ROOT, "public/assets/data/week01_packs.json"), "utf8"),
 );
-const html = readFileSync(
-  join(ROOT, "docs/weeks/week01/index.html"),
-  "utf8",
-);
+const html = builtPage("out/weeks/week01/index.html");
 
 test("the totalWeight equals the sum of every card's weight", () => {
   const summed = packs.cards.reduce((total, c) => total + c.weight, 0);

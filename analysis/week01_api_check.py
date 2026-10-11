@@ -1,18 +1,18 @@
 """Stretch: re-derive one article's out-links from the live Wikipedia API and
 diff them against the frozen snapshot."""
-import json, re, time, urllib.parse, urllib.request
+import json, re, time
 import pandas as pd, networkx as nx
+import tables
+import fetch as web
 
 UA = "02805-LogLogLegends/1.0 (DTU course project; contact via GitHub horrrt)"
+SESSION = web.session(UA)
 API = "https://en.wikipedia.org/w/api.php"
 
 def wikitext(title):
     q = {"action": "query", "prop": "revisions", "rvprop": "content",
          "rvslots": "main", "format": "json", "formatversion": "2", "titles": title}
-    req = urllib.request.Request(f"{API}?{urllib.parse.urlencode(q)}",
-                                 headers={"User-Agent": UA})
-    with urllib.request.urlopen(req, timeout=30) as r:
-        page = json.load(r)["query"]["pages"][0]
+    page = web.json(SESSION, API, params=q, timeout=30)["query"]["pages"][0]
     return page["revisions"][0]["slots"]["main"]["content"]
 
 LINK = re.compile(r"\[\[([^\[\]|#]+)(?:\|[^\[\]]*)?\]\]")
@@ -21,9 +21,8 @@ def outlinks(text):
     """Every [[Page name]] in the wiki-source, as underscore ids."""
     return {m.group(1).strip().replace(" ", "_") for m in LINK.finditer(text)}
 
-nodes = pd.read_csv("data/week1_nodes.tsv", sep="\t", comment="#")
-edges = pd.read_csv("data/week1_edges.tsv", sep="\t", comment="#",
-                    names=["source", "target"])
+nodes = tables.frame("data/week1_nodes.parquet")
+edges = tables.frame("data/week1_edges.parquet")
 D = nx.DiGraph(); D.add_nodes_from(nodes.node_id)
 D.add_edges_from(edges.itertuples(index=False, name=None))
 roster = set(nodes.node_id)

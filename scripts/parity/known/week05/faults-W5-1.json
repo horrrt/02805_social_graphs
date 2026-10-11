@@ -1,0 +1,79 @@
+{
+  "weeks/week05/data/relations.json": {
+    "expectDiff": [
+      "#chart-hero-fame",
+      "#findings [data-finding=\"2\"]",
+      "#findings [data-finding=\"3\"]",
+      "#findings [data-finding=\"4\"]",
+      "#findings [data-finding=\"5\"]",
+      "#findings [data-finding=\"6\"]",
+      "#findings [data-finding=\"7\"]"
+    ],
+    "fp": "FP01",
+    "reason": "week05-frame.js loaded all six section files with one Promise.all (line 161), so a failed relations.json left the hero and all seven findings empty. The islands isolate per file: finding 1 stays empty, but the hero draws from fame.json, the other findings from their own files, and finding 4, which needs no file, shows its line."
+  },
+  "weeks/week05/data/copying.json": {
+    "expectDiff": [
+      "#chart-hero-fame",
+      "#findings [data-finding=\"1\"]",
+      "#findings [data-finding=\"3\"]",
+      "#findings [data-finding=\"4\"]",
+      "#findings [data-finding=\"5\"]",
+      "#findings [data-finding=\"6\"]",
+      "#findings [data-finding=\"7\"]"
+    ],
+    "fp": "FP01",
+    "reason": "week05-frame.js loaded all six section files with one Promise.all (line 161), so a failed copying.json left the hero and all seven findings empty. The islands isolate per file: finding 2 stays empty, but the hero draws from fame.json, the other findings from their own files, and finding 4, which needs no file, shows its line."
+  },
+  "weeks/week05/data/search.json": {
+    "expectDiff": [
+      "#chart-hero-fame",
+      "#findings [data-finding=\"1\"]",
+      "#findings [data-finding=\"2\"]",
+      "#findings [data-finding=\"4\"]",
+      "#findings [data-finding=\"5\"]",
+      "#findings [data-finding=\"6\"]",
+      "#findings [data-finding=\"7\"]"
+    ],
+    "fp": "FP01",
+    "reason": "week05-frame.js loaded all six section files with one Promise.all (line 161), so a failed search.json left the hero and all seven findings empty. The islands isolate per file: finding 3 stays empty, but the hero draws from fame.json, the other findings from their own files, and finding 4, which needs no file, shows its line."
+  },
+  "weeks/week05/data/heaps.json": {
+    "expectDiff": [
+      "#chart-hero-fame",
+      "#findings [data-finding=\"1\"]",
+      "#findings [data-finding=\"2\"]",
+      "#findings [data-finding=\"3\"]",
+      "#findings [data-finding=\"4\"]",
+      "#findings [data-finding=\"6\"]",
+      "#findings [data-finding=\"7\"]"
+    ],
+    "fp": "FP01",
+    "reason": "week05-frame.js loaded all six section files with one Promise.all (line 161), so a failed heaps.json left the hero and all seven findings empty. The islands isolate per file: finding 5 stays empty, but the hero draws from fame.json, the other findings from their own files, and finding 4, which needs no file, shows its line."
+  },
+  "weeks/week05/data/fame.json": {
+    "expectDiff": [
+      "#findings [data-finding=\"1\"]",
+      "#findings [data-finding=\"2\"]",
+      "#findings [data-finding=\"3\"]",
+      "#findings [data-finding=\"4\"]",
+      "#findings [data-finding=\"5\"]",
+      "#findings [data-finding=\"7\"]"
+    ],
+    "fp": "FP01",
+    "reason": "week05-frame.js loaded all six section files with one Promise.all (line 161), so a failed fame.json left the hero and all seven findings empty. The islands isolate per file: the hero still fails as main does (swept host, hidden tip, nothing drawn) and finding 6 stays empty, but findings 1, 2, 3, 5 and 7 draw from their own files and finding 4, which needs no file, shows its line."
+  },
+  "weeks/week05/data/weird.json": {
+    "expectDiff": [
+      "#chart-hero-fame",
+      "#findings [data-finding=\"1\"]",
+      "#findings [data-finding=\"2\"]",
+      "#findings [data-finding=\"3\"]",
+      "#findings [data-finding=\"4\"]",
+      "#findings [data-finding=\"5\"]",
+      "#findings [data-finding=\"6\"]"
+    ],
+    "fp": "FP01",
+    "reason": "week05-frame.js loaded all six section files with one Promise.all (line 161), so a failed weird.json left the hero and all seven findings empty. The islands isolate per file: finding 7 stays empty, but the hero draws from fame.json, the other findings from their own files, and finding 4, which needs no file, shows its line."
+  }
+}

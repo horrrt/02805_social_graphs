@@ -1,0 +1,12 @@
+[
+  {
+    "key": "weeks/week05/data/search_live.json/*/scroll",
+    "reason": "faults.mjs --data with search_live.json aborted: on main one Promise.all over search.json and search_live.json (week05-search.js:119) left section 3 empty; the islands draw the stat row, the chips, the query table, the detail and the passage from search.json alone (faults-W5-3.json masks those slots). The filled table and detail make section 3 taller, so every element below it sits lower and the scroll position a step leaves differs.",
+    "fp": "FP02"
+  },
+  {
+    "key": "weeks/week05/data/search_live.json/*/pixels",
+    "reason": "faults.mjs --data with search_live.json aborted: on main one Promise.all over search.json and search_live.json (week05-search.js:119) left section 3 empty; the islands draw the stat row, the chips, the query table, the detail and the passage from search.json alone (faults-W5-3.json masks those slots, and the screenshot masks them too). The filled section is taller, so the viewport a step scrolls to shows other content.",
+    "fp": "FP02"
+  }
+]

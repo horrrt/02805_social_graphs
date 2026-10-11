@@ -1,0 +1,1989 @@
+/* Corridor Control — week 3. A light instrument panel: white cards on a cool
+   ground, one colour per network, and nothing decorative that is not carrying
+   a number. Orange is always migration, blue is always flights. */
+
+.corridor {
+  --ink: #0f2340;
+  --ink-soft: #46618a;
+  --ink-mute: #7a8fac;
+  --ink-mute-text: #59708f;
+  --ground: #eef3f9;
+  --card: #ffffff;
+  --line: #dce5f0;
+  --line-soft: #eaf0f7;
+  --people: #f2820c;
+  --people-soft: #fde8cf;
+  --access: #1f8fd6;
+  --access-soft: #d9ecf9;
+  --deep: #0b1f3a;
+  --dtu: #990000;
+  --radius: 14px;
+  --shadow: 0 1px 2px rgba(15, 35, 64, 0.06), 0 8px 24px rgba(15, 35, 64, 0.05);
+
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+.corridor *,
+.corridor *::before,
+.corridor *::after {
+  box-sizing: border-box;
+}
+
+.corridor .shell {
+  margin: 0 auto;
+  max-width: 1180px;
+  padding: 0 24px;
+}
+
+/* ----------------------------------------------------------------- top bar */
+
+/* The bar is the site's: the same wordmark and "All posts" link as the lobby.
+   Its colours follow the skin, so the terminal skin keeps a dark bar. */
+@font-face {
+  font-family: Condensed;
+  src: url("../fonts/barlow-condensed-800.ttf");
+  font-weight: 800;
+}
+
+.corridor .topbar {
+  --bar: rgba(255, 255, 255, 0.92);
+  --bar-text: var(--ink);
+  --bar-muted: var(--ink-soft);
+  --bar-line: var(--line);
+  --bar-accent: #14618f;
+  --bar-hover: var(--line-soft);
+  --bar-here: var(--access-soft);
+  backdrop-filter: saturate(160%) blur(12px);
+  background: var(--bar);
+  border-bottom: 1px solid var(--bar-line);
+  color: var(--bar-text);
+  height: 52px;
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+.corridor .topbar .shell {
+  align-items: center;
+  display: flex;
+  gap: 22px;
+  height: 100%;
+}
+
+.corridor .brand {
+  color: var(--bar-text);
+  font-family: var(--font-display);
+  font-size: var(--fs-h4);
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.corridor .brand::before {
+  color: var(--bar-accent);
+  content: "✳";
+  font-size: var(--fs-h3);
+  margin-right: 8px;
+  vertical-align: -2px;
+}
+
+.corridor .brand b {
+  color: var(--bar-accent);
+  font-weight: inherit;
+}
+
+.corridor .site-link {
+  color: var(--bar-muted);
+  font-size: var(--fs-body);
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.corridor .site-link:hover {
+  color: var(--bar-text);
+}
+
+.corridor .topnav {
+  display: flex;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.corridor .topnav a {
+  border-radius: 999px;
+  color: var(--bar-muted);
+  font-size: var(--fs-body);
+  font-weight: 600;
+  padding: 7px 13px;
+  text-decoration: none;
+}
+
+.corridor .topnav a:hover {
+  background: var(--bar-hover);
+  color: var(--bar-text);
+}
+
+.corridor .topnav a.here {
+  background: var(--bar-here);
+  color: var(--bar-accent);
+}
+
+/* Sticky topbar is 52px; leave room so section titles are not hidden under it. */
+.corridor .hero,
+.corridor section.step,
+.corridor #null {
+  scroll-margin-top: 72px;
+}
+
+/* -------------------------------------------------------------------- hero */
+
+.corridor .hero {
+  background: radial-gradient(
+    120% 130% at 78% 18%,
+    #173f6d 0%,
+    #0b1f3a 55%,
+    #071427 100%
+  );
+  border-radius: 0 0 var(--radius) var(--radius);
+  color: #eaf2fb;
+  overflow: hidden;
+}
+
+.corridor .hero .shell {
+  align-items: center;
+  display: grid;
+  gap: 20px;
+  /* Globe owns the first screen: narrow copy + inspector, wide stage. */
+  grid-template-columns: minmax(200px, 250px) minmax(0, 1.85fr) minmax(220px, 270px);
+  max-width: 1560px;
+  min-height: calc(100dvh - 52px);
+  padding-block: 18px 22px;
+}
+
+.corridor .eyebrow {
+  color: #ffb768;
+  font-size: var(--fs-caption);
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  margin: 0 0 10px;
+  text-transform: uppercase;
+}
+
+.corridor .hero h1 {
+  font-size: var(--fs-display);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 0.98;
+  margin: 0 0 14px;
+}
+
+.corridor .hero .lede {
+  color: #b9cde4;
+  font-size: var(--fs-strong);
+  font-weight: 600;
+  margin: 0 0 16px;
+}
+
+.corridor .hero p.body {
+  color: #93aecd;
+  font-size: var(--fs-body);
+  line-height: 1.55;
+  margin: 0 0 14px;
+}
+
+.corridor .caution {
+  border-left: 2px solid #ffb768;
+  color: #ffd6a8;
+  font-size: var(--fs-small);
+  font-style: italic;
+  font-weight: 600;
+  margin: 0 0 18px;
+  padding-left: 12px;
+}
+
+.corridor .keys {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-bottom: 18px;
+}
+
+.corridor .key {
+  align-items: center;
+  color: #b9cde4;
+  display: flex;
+  font-size: var(--fs-small);
+  gap: 9px;
+}
+
+.corridor .key i {
+  border-radius: 2px;
+  display: block;
+  height: 3px;
+  width: 26px;
+}
+
+.corridor .key.people i {
+  background: var(--people);
+}
+
+.corridor .key.access i {
+  background: var(--access);
+}
+
+.corridor .yearline label {
+  color: #7f9bbd;
+  display: block;
+  font-size: var(--fs-caption);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin-top: 8px;
+  text-transform: uppercase;
+}
+
+.corridor .yearline .ends {
+  color: #b9cde4;
+  display: flex;
+  font-size: var(--fs-small);
+  font-weight: 700;
+  justify-content: space-between;
+}
+
+.corridor input[type="range"] {
+  accent-color: var(--people);
+  width: 100%;
+}
+
+.corridor .stage {
+  aspect-ratio: 1;
+  display: block;
+  height: auto;
+  width: 100%;
+}
+
+.corridor .stage-wrap {
+  aspect-ratio: 1;
+  margin-inline: auto;
+  position: relative;
+  /* Large but always fully visible in the first viewport. */
+  width: min(100%, calc(100dvh - 120px), 720px);
+}
+
+.corridor #globe-gl,
+.corridor [id$="-deck"] {
+  border-radius: 10px;
+  height: 100% !important;
+  overflow: hidden;
+  width: 100% !important;
+}
+
+.corridor .stage-hint {
+  background: rgba(8, 22, 42, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  bottom: 6px;
+  color: #cfe0f2;
+  font-size: var(--fs-caption);
+  left: 50%;
+  padding: 5px 12px;
+  position: absolute;
+  transform: translateX(-50%);
+}
+
+/* -------------------------------------------------------------- side panel */
+
+.corridor .panel {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  color: var(--ink);
+  padding: 14px;
+}
+
+.corridor .panel h2 {
+  color: var(--ink-mute-text);
+  font-size: var(--fs-caption);
+  letter-spacing: 0.1em;
+  margin: 0 0 10px;
+  text-transform: uppercase;
+}
+
+.corridor .who {
+  align-items: center;
+  display: flex;
+  gap: 9px;
+  margin-bottom: 12px;
+}
+
+.corridor .who .flag {
+  font-size: var(--fs-h4);
+  line-height: 1;
+}
+
+.corridor .who strong {
+  font-size: var(--fs-strong);
+  letter-spacing: -0.01em;
+}
+
+.corridor .who .codes {
+  color: var(--ink-mute-text);
+  font-size: var(--fs-caption);
+  font-weight: 600;
+}
+
+.corridor dl.stats {
+  display: grid;
+  margin: 0;
+}
+
+.corridor dl.stats > div {
+  border-bottom: 1px solid var(--line-soft);
+  display: flex;
+  font-size: var(--fs-small);
+  justify-content: space-between;
+  padding: 6px 0;
+}
+
+.corridor dl.stats dt {
+  color: var(--ink-soft);
+}
+
+.corridor dl.stats dd {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  margin: 0;
+}
+
+.corridor .chip {
+  background: var(--people-soft);
+  border-radius: 999px;
+  color: #9a5205;
+  display: inline-block;
+  font-size: var(--fs-caption);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  padding: 3px 10px;
+  text-transform: uppercase;
+}
+
+.corridor .corridor-list {
+  margin: 14px 0 0;
+}
+
+.corridor .corridor-list h3 {
+  align-items: center;
+  color: var(--ink-soft);
+  display: flex;
+  font-size: var(--fs-caption);
+  gap: 6px;
+  margin: 0 0 6px;
+}
+
+.corridor .corridor-list ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.corridor .corridor-list li {
+  display: flex;
+  font-size: var(--fs-small);
+  gap: 8px;
+  justify-content: space-between;
+  padding: 3px 0;
+}
+
+.corridor .corridor-list li span:first-child {
+  color: var(--ink-soft);
+}
+
+.corridor .corridor-list li b {
+  font-variant-numeric: tabular-nums;
+}
+
+.corridor .panel .fineprint {
+  border-top: 1px solid var(--line-soft);
+  color: var(--ink-mute-text);
+  font-size: var(--fs-caption);
+  line-height: 1.45;
+  margin: 12px 0 0;
+  padding-top: 10px;
+}
+
+/* ---------------------------------------------------------------- sections */
+
+.corridor section.step {
+  margin-top: 26px;
+}
+
+.corridor .card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 20px 22px;
+}
+
+/* A step can hold more than one card now that the deeper material sits under
+   one number. Without this they would meet with no gap and read as one panel
+   with a rule through it. */
+.corridor .step .card + .card {
+  margin-top: 18px;
+}
+
+.corridor .step-head {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.corridor .step-head .num {
+  align-items: center;
+  background: var(--access-soft);
+  border-radius: 8px;
+  color: #14618f;
+  display: flex;
+  font-size: var(--fs-small);
+  font-weight: 800;
+  height: 26px;
+  justify-content: center;
+  width: 26px;
+}
+
+.corridor .step-head h2 {
+  font-size: var(--fs-h2);
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.corridor .step-head .year-tag {
+  color: var(--ink-mute-text);
+  font-size: var(--fs-small);
+  font-weight: 600;
+}
+
+.corridor .card > p.sub {
+  color: var(--ink-soft);
+  font-size: var(--fs-body);
+  margin: 6px 0 16px;
+}
+
+/* Headings inside a step's card, below the step title. */
+.corridor .card > h2 {
+  font-size: var(--fs-h4);
+}
+
+.corridor .card > h3 {
+  font-size: var(--fs-strong);
+}
+
+.corridor .grid2 {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: 1fr 1fr;
+}
+
+/* Section 2: stack the two heavy-tail charts so each is wide enough to click. */
+.corridor #tails .grid2 {
+  grid-template-columns: 1fr;
+  gap: 28px;
+}
+
+.corridor .grid-side {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: minmax(0, 1fr) 280px;
+}
+
+/* Sections 4+5: null-model scatter and twin map share one row.
+   Do not force min-height on canvases — surface() sizes them from their
+   intrinsic aspect ratio; a taller CSS box stretches the drawing. */
+.corridor .grid-pair {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  align-items: start;
+}
+
+.corridor .grid-pair .pair-aside {
+  margin-top: 12px;
+}
+
+.corridor .grid3 {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.corridor .grid5 {
+  display: grid;
+  gap: 14px;
+  /* Six labels, and a row of six is too thin to read the rule in each card. */
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.corridor .plot h3 {
+  font-size: var(--fs-body);
+  margin: 0 0 2px;
+}
+
+.corridor .plot p.axis-note {
+  color: var(--ink-mute-text);
+  font-size: var(--fs-caption);
+  margin: 0 0 8px;
+}
+
+.corridor canvas.chart {
+  display: block;
+  width: 100%;
+}
+
+.corridor .legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin: 0 0 8px;
+}
+
+.corridor .legend span {
+  align-items: center;
+  color: var(--ink-soft);
+  display: flex;
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  gap: 6px;
+}
+
+.corridor .legend i {
+  border-radius: 50%;
+  height: 8px;
+  width: 8px;
+}
+
+.corridor .notice {
+  background: #f7fafd;
+  border: 1px solid var(--line-soft);
+  border-radius: 10px;
+  color: var(--ink-soft);
+  display: flex;
+  font-size: var(--fs-small);
+  gap: 9px;
+  line-height: 1.5;
+  margin-top: 12px;
+  padding: 11px 13px;
+}
+
+.corridor .notice b {
+  color: var(--ink);
+  display: block;
+  font-size: var(--fs-small);
+}
+
+.corridor .notice .ico {
+  flex: none;
+  font-size: var(--fs-body);
+  line-height: 1.3;
+}
+
+/* ----------------------------------------------------------------- predict */
+
+.corridor .guess {
+  display: flex;
+  gap: 8px;
+}
+
+.corridor .guess input {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  color: var(--ink);
+  flex: 1;
+  font-size: var(--fs-body);
+  padding: 11px 13px;
+}
+
+.corridor .guess input:focus-visible {
+  border-color: var(--access);
+  outline: 2px solid var(--access-soft);
+}
+
+.corridor .guess button {
+  background: var(--deep);
+  border: 0;
+  border-radius: 10px;
+  color: #fff;
+  cursor: pointer;
+  font-size: var(--fs-body);
+  font-weight: 700;
+  padding: 0 16px;
+}
+
+.corridor .reveal {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.corridor .reveal .box {
+  background: #f7fafd;
+  border: 1px solid var(--line-soft);
+  border-radius: 10px;
+  padding: 11px 13px;
+}
+
+.corridor .reveal h4 {
+  font-size: var(--fs-small);
+  margin: 0 0 2px;
+}
+
+.corridor .reveal p.what {
+  color: var(--ink-mute-text);
+  font-size: var(--fs-caption);
+  margin: 0 0 8px;
+}
+
+.corridor .reveal ol {
+  color: var(--ink-soft);
+  font-size: var(--fs-small);
+  margin: 0;
+  padding-left: 18px;
+}
+
+.corridor .reveal li {
+  padding: 1.5px 0;
+}
+
+.corridor .reveal li b {
+  color: var(--ink);
+}
+
+.corridor .verdict {
+  border-radius: 10px;
+  font-size: var(--fs-small);
+  font-weight: 600;
+  margin-top: 12px;
+  padding: 11px 13px;
+}
+
+.corridor .verdict.hit {
+  background: #e7f6ee;
+  border: 1px solid #b9e3ca;
+  color: #0d6b3a;
+}
+
+.corridor .verdict.miss {
+  background: #fff5e8;
+  border: 1px solid #ffd9ab;
+  color: #8a4d05;
+}
+
+.corridor [hidden] {
+  display: none !important;
+}
+
+/* ---------------------------------------------------------------- typology */
+
+.corridor .type {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 15px;
+}
+
+.corridor .type .badge {
+  align-items: center;
+  border-radius: 9px;
+  display: flex;
+  font-size: var(--fs-body);
+  height: 30px;
+  justify-content: center;
+  margin-bottom: 9px;
+  width: 30px;
+}
+
+.corridor .type h3 {
+  font-size: var(--fs-body);
+  margin: 0 0 7px;
+}
+
+.corridor .type p {
+  color: var(--ink-soft);
+  font-size: var(--fs-caption);
+  line-height: 1.5;
+  margin: 0 0 9px;
+}
+
+.corridor .type .eg {
+  border-top: 1px solid var(--line-soft);
+  color: var(--ink-mute-text);
+  font-size: var(--fs-caption);
+  padding-top: 8px;
+}
+
+.corridor .type .eg b {
+  color: var(--ink);
+}
+
+/* ------------------------------------------------------------ edge inspector */
+
+.corridor .edgebar {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.corridor select {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  color: var(--ink);
+  font-size: var(--fs-body);
+  padding: 8px 11px;
+}
+
+.corridor .facts {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.corridor .fact {
+  background: #f7fafd;
+  border: 1px solid var(--line-soft);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+.corridor .fact dt {
+  color: var(--ink-mute-text);
+  font-size: var(--fs-caption);
+}
+
+.corridor .fact dd {
+  font-size: var(--fs-strong);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  margin: 2px 0 0;
+}
+
+/* ------------------------------------------------------------------ toggle */
+
+.corridor .toggle {
+  background: var(--line-soft);
+  border-radius: 999px;
+  display: inline-flex;
+  padding: 3px;
+}
+
+.corridor .toggle button {
+  background: none;
+  border: 0;
+  border-radius: 999px;
+  color: var(--ink-soft);
+  cursor: pointer;
+  font-size: var(--fs-small);
+  font-weight: 700;
+  padding: 6px 14px;
+}
+
+.corridor .toggle button[aria-pressed="true"] {
+  background: var(--card);
+  box-shadow: var(--shadow);
+  color: var(--ink);
+}
+
+.corridor .map-wrap {
+  background: var(--deep);
+  border-radius: var(--radius);
+  overflow: hidden;
+  position: relative;
+}
+
+.corridor .map-wrap canvas {
+  display: block;
+  width: 100%;
+}
+
+.corridor .map-tools {
+  left: 14px;
+  position: absolute;
+  top: 14px;
+  z-index: 2;
+}
+
+.corridor .map-wrap .toggle {
+  background: rgba(8, 22, 42, 0.68);
+}
+
+.corridor .map-wrap .toggle button {
+  color: #a9c3e0;
+}
+
+.corridor .map-wrap .toggle button[aria-pressed="true"] {
+  background: var(--access);
+  color: #fff;
+}
+
+/* ----------------------------------------------------------------- denmark */
+
+.corridor .dk-head {
+  align-items: center;
+  background: #f7fafd;
+  border: 1px solid var(--line-soft);
+  border-radius: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-bottom: 16px;
+  padding: 12px 14px;
+}
+
+.corridor .dk-head .who {
+  margin: 0;
+}
+
+.corridor .dk-head .metric {
+  display: flex;
+  flex-direction: column;
+}
+
+.corridor .dk-head .metric span {
+  color: var(--ink-mute-text);
+  font-size: var(--fs-caption);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.corridor .dk-head .metric b {
+  font-size: var(--fs-body);
+  font-variant-numeric: tabular-nums;
+}
+
+.corridor table.ego {
+  border-collapse: collapse;
+  font-size: var(--fs-small);
+  width: 100%;
+}
+
+.corridor table.ego caption {
+  color: var(--ink-soft);
+  font-size: var(--fs-small);
+  font-weight: 700;
+  padding-bottom: 6px;
+  text-align: left;
+}
+
+.corridor table.ego th {
+  color: var(--ink-mute-text);
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  padding: 4px 6px 6px;
+  text-align: left;
+}
+
+.corridor table.ego td {
+  border-top: 1px solid var(--line-soft);
+  padding: 4.5px 6px;
+}
+
+.corridor table.ego td:last-child {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+/* ------------------------------------------------------------------ footer */
+
+.corridor footer.foot {
+  border-top: 1px solid var(--line);
+  color: var(--ink-mute-text);
+  font-size: var(--fs-caption);
+  margin-top: 34px;
+  padding: 18px 0 40px;
+}
+
+.corridor footer.foot .shell {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: space-between;
+}
+
+.corridor footer.foot a {
+  color: var(--ink-soft);
+}
+
+.corridor .status-line {
+  color: var(--ink-mute-text);
+  font-size: var(--fs-small);
+  padding: 10px 0;
+}
+
+.corridor .skip {
+  left: -999px;
+  position: absolute;
+}
+
+.corridor .skip:focus {
+  background: #fff;
+  left: 12px;
+  padding: 8px 12px;
+  top: 12px;
+  z-index: 99;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .corridor * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+@media (max-width: 1100px) {
+  .corridor .hero .shell {
+    align-items: stretch;
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .corridor .stage-wrap {
+    width: min(100%, 640px);
+  }
+
+  .corridor .grid-pair {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ------------------------------------------------------- render variants */
+
+.corridor .variants {
+  display: flex;
+  gap: 3px;
+  margin-left: 18px;
+  padding-left: 18px;
+  position: relative;
+}
+
+.corridor .variants::before {
+  background: var(--line);
+  content: "";
+  height: 22px;
+  left: 0;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px;
+}
+
+.corridor .variants .variant {
+  align-items: center;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  color: var(--ink-soft);
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+  padding: 4px 9px;
+  text-decoration: none;
+}
+
+.corridor .variants .variant b {
+  font-size: var(--fs-small);
+  font-weight: 700;
+}
+
+.corridor .variants .variant span {
+  color: var(--ink-mute-text);
+  font-size: var(--fs-caption);
+  font-variant-numeric: tabular-nums;
+}
+
+.corridor .variants .variant:hover {
+  background: var(--line-soft);
+  color: var(--ink);
+}
+
+.corridor .variants .variant.on {
+  background: var(--card);
+  border-color: var(--line);
+  box-shadow: var(--shadow);
+  color: var(--ink);
+}
+
+/* A variant that draws its own legend does not also need the static one. */
+.corridor[data-variant="echarts"] .legend,
+.corridor[data-variant="d3"] .legend {
+  display: none;
+}
+
+/* ===================================================================
+   Style dimensions
+   Four independent choices, each one a URL parameter and a dropdown:
+   the renderer, the palette, the corridor line style and the table
+   style. Everything below is the palette and the tables; the renderer
+   and the lines are the drawing code's business.
+   =================================================================== */
+
+/* --- palettes ----------------------------------------------------- */
+/* Canvas reads these through getComputedStyle, so one definition here
+   drives the CSS, the SVG variants and the 2D canvas alike. */
+
+.corridor[data-palette="ember"] {
+  --people: #ff5a26;
+  --people-soft: #ffe0d3;
+  --access: #14a89a;
+  --access-soft: #d2f1ee;
+}
+
+.corridor[data-palette="iris"] {
+  --people: #9b5de5;
+  --people-soft: #ece0fb;
+  --access: #2f9ee0;
+  --access-soft: #d9edfa;
+}
+
+/* Okabe and Ito's palette: the standard choice when the reader may be
+   colourblind. Both hues stay distinct under every common form. */
+.corridor[data-palette="okabe"] {
+  --people: #e69f00;
+  --people-soft: #fbeccf;
+  --access: #0072b2;
+  --access-soft: #cfe3f1;
+}
+
+/* For printing, and for anyone who would rather the colour carried no
+   meaning at all: the two networks separate by value, not by hue. */
+.corridor[data-palette="slate"] {
+  --people: #14304f;
+  --people-soft: #e2e8f0;
+  --access: #8ea6c0;
+  --access-soft: #eef2f7;
+}
+
+.corridor[data-palette="slate"] .chip {
+  background: var(--people-soft);
+  color: var(--people);
+}
+
+.corridor[data-palette="ember"] .chip {
+  color: #a8320d;
+}
+
+.corridor[data-palette="iris"] .chip {
+  color: #5b21b6;
+}
+
+.corridor[data-palette="okabe"] .chip {
+  color: #8a6000;
+}
+
+/* --- table styles -------------------------------------------------- */
+
+.corridor[data-tables="zebra"] dl.stats > div:nth-child(odd),
+.corridor[data-tables="zebra"] .corridor-list li:nth-child(odd),
+.corridor[data-tables="zebra"] table.ego tr:nth-child(even) td {
+  background: #f4f8fc;
+}
+
+.corridor[data-tables="zebra"] dl.stats > div,
+.corridor[data-tables="zebra"] .corridor-list li {
+  border-bottom: 0;
+  padding-inline: 6px;
+}
+
+.corridor[data-tables="zebra"] table.ego td {
+  border-top: 0;
+}
+
+.corridor[data-tables="cards"] dl.stats > div,
+.corridor[data-tables="cards"] .corridor-list li {
+  background: #f7fafd;
+  border: 1px solid var(--line-soft);
+  border-radius: 8px;
+  margin-bottom: 4px;
+  padding: 7px 10px;
+}
+
+.corridor[data-tables="cards"] table.ego td {
+  background: #f7fafd;
+  border-top: 3px solid #fff;
+}
+
+.corridor[data-tables="cards"] table.ego td:first-child {
+  border-radius: 8px 0 0 8px;
+}
+
+.corridor[data-tables="cards"] table.ego td:last-child {
+  border-radius: 0 8px 8px 0;
+}
+
+.corridor[data-tables="compact"] dl.stats > div,
+.corridor[data-tables="compact"] .corridor-list li {
+  font-size: var(--fs-caption);
+  padding-block: 3px;
+}
+
+.corridor[data-tables="compact"] table.ego {
+  font-size: var(--fs-small);
+}
+
+.corridor[data-tables="compact"] table.ego td {
+  padding-block: 2.5px;
+}
+
+.corridor[data-tables="compact"] .panel {
+  padding: 11px;
+}
+
+/* --- the style menu, opened from the top bar ------------------------ */
+
+.corridor .style-menu {
+  position: relative;
+}
+
+.corridor .style-trigger {
+  align-items: center;
+  background: var(--line-soft);
+  border: 1px solid transparent;
+  border-radius: 999px;
+  color: var(--ink-soft);
+  cursor: pointer;
+  display: flex;
+  font-size: var(--fs-small);
+  font-weight: 700;
+  gap: 6px;
+  padding: 6px 12px;
+}
+
+.corridor .style-trigger:hover,
+.corridor .style-trigger[aria-expanded="true"] {
+  background: var(--card);
+  border-color: var(--line);
+  box-shadow: var(--shadow);
+  color: var(--ink);
+}
+
+.corridor .style-bar {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 18px 44px rgba(15, 35, 64, 0.16);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  left: 0;
+  max-height: min(78vh, 640px);
+  overflow: auto;
+  padding: 16px;
+  position: absolute;
+  top: calc(100% + 9px);
+  width: min(420px, calc(100vw - 32px));
+  z-index: 60;
+}
+
+.corridor .style-group {
+  display: grid;
+  gap: 8px;
+}
+
+.corridor .style-group-label {
+  color: var(--ink-mute-text);
+  font-size: var(--fs-caption);
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.corridor .style-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.corridor .style-chip {
+  background: var(--line-soft);
+  border: 1px solid transparent;
+  border-radius: 999px;
+  color: var(--ink-soft);
+  cursor: pointer;
+  font-size: var(--fs-small);
+  font-weight: 700;
+  padding: 6px 11px;
+}
+
+.corridor .style-chip:hover {
+  background: var(--card);
+  border-color: var(--line);
+  color: var(--ink);
+}
+
+.corridor .style-chip[aria-pressed="true"] {
+  background: var(--access-soft);
+  border-color: transparent;
+  color: #14618f;
+}
+
+.corridor .style-select-proxy {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.corridor .style-more {
+  border-top: 1px solid var(--line-soft);
+  margin: 0;
+  padding-top: 10px;
+}
+
+.corridor .style-more > summary {
+  color: var(--ink-soft);
+  cursor: pointer;
+  font-size: var(--fs-small);
+  font-weight: 700;
+  list-style: none;
+  padding: 4px 0;
+}
+
+.corridor .style-more > summary::-webkit-details-marker {
+  display: none;
+}
+
+.corridor .style-more > summary::after {
+  color: var(--ink-mute-text);
+  content: " ▾";
+  font-size: var(--fs-caption);
+}
+
+.corridor .style-more[open] > summary::after {
+  content: " ▴";
+}
+
+.corridor .style-more-grid {
+  display: grid;
+  gap: 12px 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 12px;
+}
+
+.corridor .style-field {
+  display: grid;
+  gap: 4px;
+}
+
+.corridor .style-field label {
+  color: var(--ink-mute-text);
+  font-size: var(--fs-caption);
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.corridor .style-field select {
+  font-weight: 600;
+  width: 100%;
+}
+
+.corridor .style-bar .style-note {
+  border-top: 1px solid var(--line-soft);
+  color: var(--ink-soft);
+  font-size: var(--fs-caption);
+  line-height: 1.5;
+  margin: 0;
+  padding-top: 11px;
+}
+
+.corridor .style-bar .style-note b {
+  color: var(--ink);
+}
+
+/* --- axis mode switches on the heavy-tail charts --------------------- */
+
+.corridor .qa-controls {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.corridor .qa-controls label {
+  color: var(--ink-soft);
+  font-size: var(--fs-caption);
+  font-weight: 700;
+}
+.corridor .qa-controls .axis-modes {
+  margin-bottom: 0;
+}
+.corridor .axis-modes {
+  background: var(--line-soft);
+  border-radius: 999px;
+  display: inline-flex;
+  margin-bottom: 8px;
+  padding: 2px;
+}
+
+.corridor .axis-modes button {
+  background: none;
+  border: 0;
+  border-radius: 999px;
+  color: var(--ink-soft);
+  cursor: pointer;
+  font-size: var(--fs-small);
+  font-weight: 700;
+  padding: 4px 10px;
+}
+
+.corridor .axis-modes button[aria-pressed="true"] {
+  background: var(--card);
+  box-shadow: var(--shadow);
+  color: var(--ink);
+}
+
+/* --- the ring's year slider, on a light card rather than the dark hero --- */
+
+.corridor .qa-slider {
+  display: grid;
+  gap: 1px;
+  min-width: 220px;
+}
+
+.corridor .qa-slider .ends {
+  color: var(--ink-mute-text);
+  display: flex;
+  font-size: var(--fs-caption);
+  font-weight: 700;
+  justify-content: space-between;
+}
+
+.corridor .qa-slider-now {
+  color: var(--ink);
+  font-size: var(--fs-small);
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+}
+
+/* ------------------------------------------------- chart tooltip and drawer */
+
+.corridor .chart-tip,
+body > .chart-tip {
+  background: rgba(11, 31, 58, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 9px;
+  color: #eaf2fb;
+  font-family: var(--font-sans);
+  font-size: var(--fs-caption);
+  line-height: 1.45;
+  max-width: 260px;
+  padding: 8px 11px;
+  pointer-events: none;
+  position: fixed;
+  z-index: 90;
+}
+
+body > .chart-tip b {
+  display: block;
+  font-size: var(--fs-small);
+  margin-bottom: 2px;
+}
+
+body > .chart-tip span {
+  color: #a9c3e0;
+  display: block;
+}
+
+body > .chart-tip[hidden] {
+  display: none;
+}
+
+.corridor .eg-chip {
+  background: var(--line-soft);
+  border: 0;
+  border-radius: 6px;
+  color: var(--ink);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: var(--fs-caption);
+  font-weight: 700;
+  margin-right: 3px;
+  padding: 2px 6px;
+}
+
+.corridor .eg-chip:hover {
+  background: var(--access-soft);
+  color: #14618f;
+}
+
+.corridor .eg-all {
+  background: none;
+  border: 0;
+  color: var(--access);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: var(--fs-caption);
+  font-weight: 700;
+  margin-top: 8px;
+  padding: 0;
+}
+
+.corridor .type-drawer {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin-top: 16px;
+  max-height: 420px;
+  overflow: auto;
+  padding: 16px 18px;
+}
+
+.corridor .type-drawer[hidden] {
+  display: none;
+}
+
+.corridor .drawer-head {
+  align-items: start;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+.corridor .drawer-head h3 {
+  font-size: var(--fs-body);
+  margin: 8px 0 4px;
+}
+
+.corridor .drawer-head p {
+  color: var(--ink-soft);
+  font-size: var(--fs-small);
+  margin: 0;
+  max-width: 62ch;
+}
+
+.corridor .drawer-close {
+  background: var(--line-soft);
+  border: 0;
+  border-radius: 8px;
+  color: var(--ink-soft);
+  cursor: pointer;
+  font-size: var(--fs-strong);
+  height: 28px;
+  line-height: 1;
+  width: 28px;
+}
+
+.corridor .drawer-note {
+  color: var(--ink-mute-text);
+  font-size: var(--fs-caption);
+  margin: 12px 0 8px;
+}
+
+.corridor .drawer-table {
+  border-collapse: collapse;
+  font-size: var(--fs-small);
+  width: 100%;
+}
+
+.corridor .drawer-table th {
+  border-bottom: 1px solid var(--line);
+  color: var(--ink-mute-text);
+  font-size: var(--fs-caption);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 6px 8px;
+  text-align: right;
+  text-transform: uppercase;
+}
+
+.corridor .drawer-table th:first-child,
+.corridor .drawer-table td:first-child {
+  text-align: left;
+}
+
+.corridor .drawer-table td {
+  border-top: 1px solid var(--line-soft);
+  font-variant-numeric: tabular-nums;
+  padding: 5px 8px;
+  text-align: right;
+}
+
+.corridor .drawer-table tbody tr {
+  cursor: pointer;
+}
+
+.corridor .drawer-table tbody tr:hover td {
+  background: var(--access-soft);
+}
+
+/* --- the country picker in section 8's heading ---------------------- */
+
+.corridor .step-head #dk-country {
+  border-radius: 8px;
+  font-size: var(--fs-small);
+  font-weight: 600;
+  margin-left: auto;
+  max-width: 230px;
+  padding: 5px 9px;
+}
+
+/* ------------------------------------------------- the questions drawer */
+
+.corridor .qa {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.corridor .qa > summary {
+  align-items: baseline;
+  background: #f7fafd;
+  cursor: pointer;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  list-style: none;
+  padding: 13px 16px;
+}
+
+.corridor .qa > summary::-webkit-details-marker {
+  display: none;
+}
+
+.corridor .qa > summary:hover {
+  background: var(--access-soft);
+}
+
+.corridor .qa-cue {
+  color: var(--ink);
+  font-size: var(--fs-body);
+  font-weight: 700;
+}
+
+.corridor .qa-cue::before {
+  color: var(--access);
+  content: "▸";
+  display: inline-block;
+  margin-right: 8px;
+  transition: transform 0.15s ease;
+}
+
+.corridor .qa[open] .qa-cue::before {
+  transform: rotate(90deg);
+}
+
+.corridor .qa-body {
+  border-top: 1px solid var(--line-soft);
+  padding: 4px 16px 16px;
+}
+
+.corridor .qa-item {
+  border-bottom: 1px solid var(--line-soft);
+  padding: 20px 0 4px;
+}
+
+.corridor .qa-item:last-of-type {
+  border-bottom: 0;
+}
+
+.corridor .qa-item h3 {
+  font-size: var(--fs-body);
+  letter-spacing: -0.01em;
+  margin: 0 0 12px;
+}
+
+.corridor .qa-answer {
+  color: var(--ink-soft);
+  font-size: var(--fs-body);
+  line-height: 1.62;
+  margin: 12px auto 4px;
+  max-width: 68ch;
+}
+
+.corridor .qa-answer b {
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.corridor .qa-body .notice a {
+  color: inherit;
+}
+
+/* ===================================================================
+   Skins
+   The same page in four typographic and spatial registers. Only type,
+   spacing and surface change; no skin moves a number or a control.
+   =================================================================== */
+
+/* --- editorial: a display face, a narrower column, numbers on a rail -- */
+
+.corridor[data-skin="editorial"] {
+  --ground: #f6f3ec;
+  --card: #fffdf8;
+  --line: #e2dbcb;
+  --line-soft: #efe9dc;
+  --ink: #1c1a16;
+  --ink-soft: #55504a;
+  --ink-mute: #8b837a;
+  --ink-mute-text: #746d65;
+  --radius: 4px;
+  --shadow: none;
+  font-family: Iowan Old Style, Palatino, "Palatino Linotype", Georgia, serif;
+}
+
+.corridor[data-skin="editorial"] .card,
+.corridor[data-skin="editorial"] .panel,
+.corridor[data-skin="editorial"] .type {
+  border-width: 1px 0 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.corridor[data-skin="editorial"] .step-head h2 {
+  font-size: var(--fs-h3);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+/* The number becomes a rail in the margin rather than a chip in the flow. */
+.corridor[data-skin="editorial"] .step-head {
+  align-items: baseline;
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 8px;
+}
+
+.corridor[data-skin="editorial"] .step-head .num {
+  background: none;
+  color: var(--ink-mute-text);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: var(--fs-h4);
+  height: auto;
+  width: auto;
+}
+
+.corridor[data-skin="editorial"] .card > p.sub,
+.corridor[data-skin="editorial"] .notice span:last-child {
+  font-size: var(--fs-body);
+  line-height: 1.62;
+  max-width: 68ch;
+}
+
+.corridor[data-skin="editorial"] .hero h1 {
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+.corridor[data-skin="editorial"] dl.stats dd,
+.corridor[data-skin="editorial"] .fact dd,
+.corridor[data-skin="editorial"] table.ego td:last-child {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-weight: 500;
+}
+
+.corridor[data-skin="editorial"] .eyebrow,
+.corridor[data-skin="editorial"] .panel h2 {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-weight: 500;
+}
+
+/* --- terminal: monospace, high contrast, no rounding ----------------- */
+
+.corridor[data-skin="terminal"] {
+  --ground: #0b0f14;
+  --card: #111820;
+  --line: #24303d;
+  --line-soft: #1a232d;
+  --ink: #d7e3ef;
+  --ink-soft: #8fa6bd;
+  --ink-mute: #5f7488;
+  --ink-mute-text: #6d8399;
+  --people-soft: #3a2410;
+  --access-soft: #10293a;
+  --radius: 3px;
+  --shadow: none;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.corridor[data-skin="terminal"] .topbar {
+  --bar: rgba(11, 15, 20, 0.94);
+  --bar-accent: #5fb3ea;
+  --bar-hover: #16202b;
+  --bar-here: #10293a;
+}
+
+.corridor[data-skin="terminal"] .card,
+.corridor[data-skin="terminal"] .panel,
+.corridor[data-skin="terminal"] .type,
+.corridor[data-skin="terminal"] .style-bar {
+  box-shadow: none;
+}
+
+.corridor[data-skin="terminal"] .step-head h2 {
+  font-size: var(--fs-body);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.corridor[data-skin="terminal"] .step-head .num::before {
+  content: "[";
+}
+
+.corridor[data-skin="terminal"] .step-head .num::after {
+  content: "]";
+}
+
+.corridor[data-skin="terminal"] .step-head .num {
+  background: none;
+  color: var(--people);
+}
+
+.corridor[data-skin="terminal"] .notice,
+.corridor[data-skin="terminal"] .qa > summary,
+.corridor[data-skin="terminal"] .fact,
+.corridor[data-skin="terminal"] .reveal .box,
+.corridor[data-skin="terminal"] .dk-head {
+  background: #0e151d;
+  border-color: var(--line);
+}
+
+.corridor[data-skin="terminal"] select,
+.corridor[data-skin="terminal"] .guess input {
+  background: #0e151d;
+  border-color: var(--line);
+  color: var(--ink);
+}
+
+.corridor[data-skin="terminal"] .style-trigger {
+  background: #16202b;
+  color: var(--ink-soft);
+}
+
+.corridor[data-skin="terminal"] .axis-modes,
+.corridor[data-skin="terminal"] .toggle {
+  background: #0e151d;
+}
+
+.corridor[data-skin="terminal"] .eg-chip {
+  background: #16202b;
+  color: var(--ink);
+}
+
+/* --- poster: oversized type, colour blocks, high drama --------------- */
+
+.corridor[data-skin="poster"] {
+  --ground: #fdf6e8;
+  --card: #fffdf8;
+  --line: #1c1a16;
+  --line-soft: #e6dcc6;
+  --ink: #16140f;
+  --ink-soft: #3d382d;
+  --ink-mute: #7c7263;
+  --ink-mute-text: #796f61;
+  --radius: 0px;
+  --shadow: 5px 5px 0 rgba(28, 26, 22, 1);
+  font-family: "Helvetica Neue", Helvetica, Inter, system-ui, sans-serif;
+}
+
+.corridor[data-skin="poster"] .card,
+.corridor[data-skin="poster"] .panel,
+.corridor[data-skin="poster"] .type {
+  border: 2px solid var(--ink);
+}
+
+.corridor[data-skin="poster"] .step-head h2 {
+  font-size: var(--fs-h2);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+}
+
+.corridor[data-skin="poster"] .step-head .num {
+  background: var(--people);
+  border-radius: 0;
+  color: #fff;
+  font-size: var(--fs-strong);
+  height: 34px;
+  width: 34px;
+}
+
+.corridor[data-skin="poster"] .hero h1 {
+  font-size: var(--fs-display);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 0.88;
+  text-transform: uppercase;
+}
+
+.corridor[data-skin="poster"] .chip,
+.corridor[data-skin="poster"] .toggle button[aria-pressed="true"],
+.corridor[data-skin="poster"] .axis-modes button[aria-pressed="true"] {
+  border-radius: 0;
+}
+
+.corridor[data-skin="poster"] dl.stats dd,
+.corridor[data-skin="poster"] .fact dd {
+  font-weight: 800;
+}
+
+.corridor[data-skin="poster"] .panel h2,
+.corridor[data-skin="poster"] .eyebrow {
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+
+/* Anything with a definition behind it says so quietly. */
+.corridor .explains {
+  cursor: help;
+  text-decoration: underline dotted var(--line);
+  text-underline-offset: 3px;
+}
+
+.corridor .metric.explains span {
+  text-decoration: inherit;
+}
+
+/* --- the three ECharts views, section 10 ----------------------------- */
+
+.corridor .echart {
+  height: 520px;
+  width: 100%;
+}
+
+.corridor .echart.tall {
+  height: 640px;
+}
+
+.corridor .echart.wide {
+  height: 460px;
+}
+
+.corridor .echart.calendar {
+  height: 820px;
+}
+
+.corridor .echart.grid {
+  height: 420px;
+}
+
+.corridor .echart.closures {
+  height: 380px;
+}
+
+/* --- the net layer's diverging pair ---------------------------------- */
+
+/* Green and red, stepped so that deuteranopia does not collapse them: ΔE 9.1
+   under simulation, against 2.0 for the obvious pair. --outbound is the third
+   categorical slot on the heavy-tail charts, which used to borrow the text
+   ink and so read as furniture. */
+.corridor {
+  --gain: #00875a;
+  --loss: #cc3311;
+  --outbound: #6b4fbb;
+}
+
+/* Okabe-Ito's bluish green and vermillion, further apart again at ΔE 11.0. */
+.corridor[data-palette="okabe"] {
+  --gain: #009e73;
+  --loss: #d55e00;
+}
+
+.corridor[data-palette="slate"] {
+  --gain: #3d6f9e;
+  --loss: #9e5a3d;
+}
+
+/* --- the table under every chart ------------------------------------- */
+
+.corridor .chart-table {
+  border-top: 1px solid var(--line-soft);
+  margin-top: 6px;
+}
+
+.corridor .chart-table > summary {
+  color: var(--ink-soft);
+  cursor: pointer;
+  font-size: var(--fs-caption);
+  font-weight: 700;
+  list-style: none;
+  padding: 7px 2px;
+}
+
+.corridor .chart-table > summary::-webkit-details-marker {
+  display: none;
+}
+
+.corridor .chart-table > summary::before {
+  content: "▸ ";
+}
+
+.corridor .chart-table[open] > summary::before {
+  content: "▾ ";
+}
+
+.corridor .chart-table-scroll {
+  max-height: 320px;
+  overflow: auto;
+}
+
+.corridor .chart-table table {
+  border-collapse: collapse;
+  font-size: var(--fs-small);
+  width: 100%;
+}
+
+.corridor .chart-table th,
+.corridor .chart-table td {
+  border-bottom: 1px solid var(--line-soft);
+  padding: 4px 8px 4px 0;
+  text-align: left;
+}
+
+.corridor .chart-table thead th {
+  background: var(--card);
+  color: var(--ink-mute-text);
+  font-size: var(--fs-caption);
+  letter-spacing: 0.04em;
+  position: sticky;
+  text-transform: uppercase;
+  top: 0;
+}
+
+.corridor .chart-table .num {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+/* --- how many countries each typology label holds -------------------- */
+
+.corridor .type-strip {
+  display: flex;
+  /* The gap is the boundary. Two of the six labels share a colour, and on a
+     continuous bar that put a third of the world in one indivisible block. */
+  gap: 2px;
+  margin-bottom: 14px;
+}
+
+.corridor .type-slice {
+  border-radius: 4px;
+  font-size: var(--fs-caption);
+  font-weight: 700;
+  overflow: hidden;
+  padding: 7px 6px;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

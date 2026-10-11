@@ -8,10 +8,11 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { builtPage } from "./built-page.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const footer = (page) => {
-  const html = readFileSync(join(ROOT, page), "utf8");
+  const html = builtPage(page);
   const start = html.indexOf("<footer");
   assert.ok(start >= 0, `${page} has no footer`);
   return html.slice(start, html.indexOf("</footer>", start)).replace(/\s+/g, " ");
@@ -19,7 +20,7 @@ const footer = (page) => {
 
 const WIKIPEDIA = ["English Wikipedia", 'href="https://creativecommons.org/licenses/by-sa/4.0/"'];
 
-for (const page of ["docs/index.html", "docs/weeks/week01/index.html", "docs/weeks/week02/index.html"]) {
+for (const page of ["out/index.html", "out/weeks/week01/index.html", "out/weeks/week02/index.html"]) {
   test(`${page} credits Wikipedia under CC BY-SA 4.0`, () => {
     const text = footer(page);
     for (const credit of WIKIPEDIA) assert.ok(text.includes(credit), `${page} footer should include ${credit}`);
@@ -27,7 +28,7 @@ for (const page of ["docs/index.html", "docs/weeks/week01/index.html", "docs/wee
 }
 
 test("week 3 credits every source its licence asks for", () => {
-  const text = footer("docs/weeks/week03/index.html");
+  const text = footer("out/weeks/week03/index.html");
   for (const credit of [
     "UNHCR Refugee Population Statistics Database",
     "World Bank, World Development Indicators",
@@ -43,7 +44,7 @@ test("week 3 credits every source its licence asks for", () => {
 });
 
 test("week 4 credits O*NET in USDOL/ETA's prescribed wording", () => {
-  const text = footer("docs/weeks/week04/index.html");
+  const text = footer("out/weeks/week04/index.html");
   for (const credit of [
     "This page includes information from the O*NET® 31.0 Database",
     "O*NET® 25.0 Database",
@@ -56,7 +57,7 @@ test("week 4 credits O*NET in USDOL/ETA's prescribed wording", () => {
 });
 
 test("week 4 credits USCIS for the registrations per lottery draw", () => {
-  const text = footer("docs/weeks/week04/index.html");
+  const text = footer("out/weeks/week04/index.html");
   for (const credit of [
     "Registrations per lottery draw: USCIS",
     'href="https://www.uscis.gov/working-in-the-united-states/temporary-workers/h-1b-specialty-occupations/h-1b-electronic-registration-process"',

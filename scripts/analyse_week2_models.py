@@ -1,9 +1,9 @@
 """Week 2 models and null model, rebuilt from the frozen snapshot.
 
-Writes docs/assets/data/week02_screentest.json, which is the only source the
+Writes public/assets/data/week02_screentest.json, which is the only source the
 Screen Test prototype reads. Nothing here is hand-entered: the three candidate
 models, their layouts, the CCDFs and the whole null distribution are computed
-from docs/assets/data/arcade_graph.json every run.
+from public/assets/data/arcade_graph.json every run.
 
     python scripts/analyse_week2_models.py
 
@@ -27,7 +27,7 @@ sys.path.insert(0, str(ROOT / "analysis"))
 from week04_staffing import tracked  # noqa: E402
 from check_pages import check  # noqa: E402
 
-DATA = ROOT / "docs/assets/data"
+DATA = ROOT / "public/assets/data"
 SEED = 20260914
 SAMPLES = 400
 

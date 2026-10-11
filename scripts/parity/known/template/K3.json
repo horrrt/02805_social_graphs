@@ -1,0 +1,7 @@
+[
+  {
+    "key": "styleguide/data/graphs.json/*/pixels",
+    "reason": "faults.mjs --data with graphs.json aborted: the minis, the strip chart, the passage and the table draw on head (faults-K3.json masks their hosts), and the room they take moves the rest of the page down, so the screenshot differs outside the masks. Main drew nothing once its one load failed.",
+    "fp": "FP11"
+  }
+]

@@ -3,7 +3,7 @@ networks so the design canvas can draw them with real numbers.
 
 Networks
 - Metros: the full weighted 40-metro projection from week04_explore.py
-  (docs/weeks/week04/data/explore.json, 780 links), with the page's three
+  (public/weeks/week04/data/explore.json, 780 links), with the page's three
   Louvain groups and each metro's Census region from week04_place.json.
 - Jobs: the occupation backbone PageRank already runs on
   (week04_pagerank.backbone(), alpha 0.05, 289 occupations).
@@ -53,8 +53,8 @@ from scipy.stats import spearmanr
 from sklearn.metrics import normalized_mutual_info_score as nmi
 
 ROOT = Path(__file__).resolve().parents[1]
-EXPLORE = ROOT / "docs/weeks/week04/data/explore.json"
-PLACE = ROOT / "docs/assets/data/week04_place.json"
+EXPLORE = ROOT / "public/weeks/week04/data/explore.json"
+PLACE = ROOT / "public/assets/data/week04_place.json"
 OUT = Path(__file__).with_suffix(".json")
 GROUP_HEX = {0: "#6d4fd6", 1: "#15896a", 2: "#7a8fac"}  # week04.css --w4-group-0/1/2
 SEEDS = 100

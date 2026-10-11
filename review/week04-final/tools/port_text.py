@@ -40,7 +40,7 @@ from html.parser import HTMLParser
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
-PAGE = ROOT / "docs/weeks/week04/index.html"
+PAGE = ROOT / "out/weeks/week04/index.html"
 BOARDS = ROOT / "review/week04-final/project"
 AUDIT = ROOT / "review/week04-final/audit"
 BOARD_DIR = BOARDS

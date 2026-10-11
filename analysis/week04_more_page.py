@@ -13,7 +13,7 @@ lists each cap fiscal year; its registrations were drawn in March of the year
 before, so cap year 2021 is labelled "March 2020". Selected registrations count
 every selection round of that cap year, not only the March one.
 
-Output: docs/weeks/week04/data/more.json (every number the five figures draw).
+Output: public/weeks/week04/data/more.json (every number the five figures draw).
 """
 
 import json
@@ -24,7 +24,7 @@ from week04_data import RAW
 from week04_schemas import check
 
 ROOT = Path(__file__).resolve().parents[1]
-PAGE = ROOT / "docs/weeks/week04/data/more.json"
+PAGE = ROOT / "public/weeks/week04/data/more.json"
 
 PERM = ROOT / "analysis/week04_perm.json"
 COUNTRIES = ROOT / "analysis/week04_countries.json"

@@ -19,7 +19,7 @@ Method
 - The numerator is section 1's own pipeline: `week04_where.metros()` and
   `week04_where.worksite_metros()`, so a metro's filing count here is the
   same number the page ranks it by. main() asserts that FY2025's top 10 by
-  filings match the page's cities list (docs/assets/data/week04_place.json).
+  filings match the page's cities list (public/assets/data/week04_place.json).
 - The denominator is OEWS's OCC_CODE "00-0000" (All Occupations) TOT_EMP for
   AREA_TYPE 4 (metropolitan), matched to a filing's metro by CBSA code: the
   OEWS AREA code and the Census CBSA code are the same number. OEWS's
@@ -45,7 +45,7 @@ Checks
 - check_match(): every one of section 1's ranking metros (the 40 on the
   page) is in OEWS; reports the CBSA-type split among the unmatched ones.
 
-Output: analysis/week04_oews.json. No page reads this; docs/ is untouched.
+Output: analysis/week04_oews.json. No page reads this; public/ is untouched.
 """
 
 import json
@@ -247,7 +247,7 @@ def main():
     jobs_all = oews.loc[oews["OCC_CODE"] == "00-0000"].set_index("AREA")["TOT_EMP"]
 
     page = json.loads((Path(__file__).resolve().parents[1]
-                        / "docs/assets/data/week04_place.json").read_text())
+                        / "public/assets/data/week04_place.json").read_text())
     top_ids = [c["id"] for c in page["cities"]]  # section 1's 40 ranked metros
 
     filings, occ_filings, lca = metro_filings(lookup, town_lookup, YEAR)

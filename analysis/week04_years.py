@@ -16,7 +16,7 @@ never carries a hand-typed number:
   FY2022-FY2024 caps).
 - analysis/week04_lottery.json: "lotteries" (registrations per approval for
   the March 2022 and March 2023 draws, the two years USCIS's data covers).
-- docs/weeks/week04/data/staffing_clients.json: "min_filings" (the certified-filings
+- public/weeks/week04/data/staffing_clients.json: "min_filings" (the certified-filings
   floor the USCIS denial-rate comparison uses), so the box's caption never types it.
 
 The only arithmetic here is the two changes the box's lead sentence and its
@@ -31,7 +31,7 @@ uscis_series runs FY2022 to FY2026 in order; those are exactly the facts the
 box's lead, notice and captions state. check() runs before the file is
 written, so a rerun that breaks one of them stops here instead of on the page.
 
-Output: docs/weeks/week04/data/years.json.
+Output: public/weeks/week04/data/years.json.
 """
 
 import json
@@ -40,7 +40,7 @@ from pathlib import Path
 from week04_schemas import check
 
 ROOT = Path(__file__).resolve().parents[1]
-PAGE = ROOT / "docs/weeks/week04/data/years.json"
+PAGE = ROOT / "public/weeks/week04/data/years.json"
 
 YEARS = ["2022", "2023", "2024", "2025", "2026"]
 
@@ -54,7 +54,7 @@ def main():
     shift = load("analysis/week04_shift.json")
     countries = load("analysis/week04_countries.json")
     lottery = load("analysis/week04_lottery.json")
-    staffing_clients = load("docs/weeks/week04/data/staffing_clients.json")
+    staffing_clients = load("public/weeks/week04/data/staffing_clients.json")
 
     ys = staffing["years"]
     years = {

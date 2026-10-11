@@ -18,7 +18,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
 DATA = json.loads((ROOT / "analysis/week04_brief_gaps.json").read_text())
-EXPLORE = json.loads((ROOT / "docs/weeks/week04/data/explore.json").read_text())
+EXPLORE = json.loads((ROOT / "public/weeks/week04/data/explore.json").read_text())
 NAMES = {m["id"]: m["name"] for m in EXPLORE["metros"]}
 PAGE = {m["id"]: m["community"] for m in EXPLORE["metros"]}
 
@@ -640,8 +640,10 @@ def main():
     heights = json.loads(hpath.read_text()) if hpath.exists() else {}
     (out / "project").mkdir(parents=True, exist_ok=True)
     (out / "preview").mkdir(parents=True, exist_ok=True)
-    css = "".join(f'<link rel="stylesheet" href="{ROOT}/docs/assets/css/{c}">' for c in (
-        "type.css", "corridor.css", "week04.css", "week04-deep.css", "week04-methods.css", "week04-rx.css"))
+    # Only the sheets the site still ships; week04.css and week04-rx.css went with the React rewrite.
+    css = "".join(f'<link rel="stylesheet" href="{ROOT}/src/styles/{c}">' for c in (
+        "type.css", "corridor.css", "week04.css", "week04-deep.css", "week04-methods.css", "week04-rx.css")
+        if (ROOT / "src/styles" / c).exists())
     style = helmet.replace("<helmet>", "").replace("</helmet>", "")
     for f, (title, body) in boards.items():
         h = heights.get(f, 2400)

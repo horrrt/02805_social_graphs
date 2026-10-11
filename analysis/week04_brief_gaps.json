@@ -2125,238 +2125,238 @@
  },
  "eigenvector": {
   "network": "jobs backbone, alpha 0.05 (as week04_pagerank.py)",
-  "nodes": 289,
-  "edges": 2984,
+  "nodes": 276,
+  "edges": 2733,
   "spearman": {
-   "eigen_pagerank": 0.708,
-   "eigen_degree": 0.839,
-   "eigen_strength": 0.867,
-   "pagerank_degree": 0.934,
-   "pagerank_strength": 0.951
+   "eigen_pagerank": 0.714,
+   "eigen_degree": 0.846,
+   "eigen_strength": 0.877,
+   "pagerank_degree": 0.932,
+   "pagerank_strength": 0.946
   },
-  "top15_overlap_eigen_pagerank": 10,
+  "top15_overlap_eigen_pagerank": 11,
   "top15_eigen": [
    {
     "code": "15-1252",
     "title": "Software Developers",
     "eigen_rank": 1,
     "pagerank_rank": 1,
-    "degree": 164,
+    "degree": 182,
     "degree_rank": 2,
     "strength_rank": 1,
-    "eigen": 0.501,
-    "pagerank": 0.05833
+    "eigen": 0.5019,
+    "pagerank": 0.06392
    },
    {
     "code": "15-2051",
     "title": "Data Scientists",
     "eigen_rank": 2,
     "pagerank_rank": 2,
-    "degree": 203,
+    "degree": 193,
     "degree_rank": 1,
     "strength_rank": 2,
-    "eigen": 0.3975,
-    "pagerank": 0.05241
+    "eigen": 0.3974,
+    "pagerank": 0.05373
    },
    {
     "code": "15-1299",
     "title": "Computer Occupations, All Other",
     "eigen_rank": 3,
     "pagerank_rank": 3,
-    "degree": 115,
-    "degree_rank": 4,
+    "degree": 112,
+    "degree_rank": 3,
     "strength_rank": 3,
-    "eigen": 0.3903,
-    "pagerank": 0.03762
+    "eigen": 0.3897,
+    "pagerank": 0.03884
    },
    {
     "code": "15-1253",
     "title": "Software Quality Assurance Analysts and Testers",
     "eigen_rank": 4,
     "pagerank_rank": 4,
-    "degree": 65,
+    "degree": 64,
     "degree_rank": 18,
     "strength_rank": 4,
-    "eigen": 0.3069,
-    "pagerank": 0.02369
+    "eigen": 0.3061,
+    "pagerank": 0.02466
    },
    {
     "code": "11-3021",
     "title": "Computer and Information Systems Managers",
     "eigen_rank": 5,
     "pagerank_rank": 5,
-    "degree": 71,
-    "degree_rank": 17,
+    "degree": 69,
+    "degree_rank": 15,
     "strength_rank": 5,
-    "eigen": 0.2153,
-    "pagerank": 0.01926
+    "eigen": 0.2146,
+    "pagerank": 0.01997
    },
    {
     "code": "15-1211",
     "title": "Computer Systems Analysts",
     "eigen_rank": 6,
-    "pagerank_rank": 8,
-    "degree": 53,
-    "degree_rank": 30,
+    "pagerank_rank": 9,
+    "degree": 52,
+    "degree_rank": 26,
     "strength_rank": 6,
-    "eigen": 0.1993,
-    "pagerank": 0.01471
+    "eigen": 0.2005,
+    "pagerank": 0.01547
    },
    {
     "code": "15-1242",
     "title": "Database Administrators",
     "eigen_rank": 7,
     "pagerank_rank": 10,
-    "degree": 56,
-    "degree_rank": 28,
+    "degree": 54,
+    "degree_rank": 24,
     "strength_rank": 8,
-    "eigen": 0.1756,
-    "pagerank": 0.01401
+    "eigen": 0.1752,
+    "pagerank": 0.01446
    },
    {
     "code": "15-1243",
     "title": "Database Architects",
     "eigen_rank": 8,
-    "pagerank_rank": 16,
-    "degree": 53,
-    "degree_rank": 31,
-    "strength_rank": 9,
-    "eigen": 0.1596,
-    "pagerank": 0.01285
+    "pagerank_rank": 14,
+    "degree": 49,
+    "degree_rank": 30,
+    "strength_rank": 11,
+    "eigen": 0.1588,
+    "pagerank": 0.01304
    },
    {
     "code": "15-1244",
     "title": "Network and Computer Systems Administrators",
     "eigen_rank": 9,
     "pagerank_rank": 20,
-    "degree": 44,
-    "degree_rank": 37,
+    "degree": 42,
+    "degree_rank": 35,
     "strength_rank": 12,
-    "eigen": 0.1502,
-    "pagerank": 0.01142
+    "eigen": 0.1497,
+    "pagerank": 0.0118
    },
    {
     "code": "15-1251",
     "title": "Computer Programmers",
     "eigen_rank": 10,
-    "pagerank_rank": 37,
-    "degree": 18,
-    "degree_rank": 102,
+    "pagerank_rank": 34,
+    "degree": 19,
+    "degree_rank": 90,
     "strength_rank": 21,
-    "eigen": 0.1356,
-    "pagerank": 0.00771
+    "eigen": 0.1362,
+    "pagerank": 0.00816
    },
    {
     "code": "17-2112",
     "title": "Industrial Engineers",
     "eigen_rank": 11,
-    "pagerank_rank": 7,
-    "degree": 72,
-    "degree_rank": 16,
+    "pagerank_rank": 6,
+    "degree": 71,
+    "degree_rank": 12,
     "strength_rank": 7,
-    "eigen": 0.1283,
-    "pagerank": 0.01606
+    "eigen": 0.1281,
+    "pagerank": 0.0166
    },
    {
     "code": "15-2031",
     "title": "Operations Research Analysts",
     "eigen_rank": 12,
     "pagerank_rank": 11,
-    "degree": 79,
-    "degree_rank": 11,
+    "degree": 76,
+    "degree_rank": 9,
     "strength_rank": 10,
-    "eigen": 0.1213,
-    "pagerank": 0.01391
+    "eigen": 0.1212,
+    "pagerank": 0.01436
    },
    {
     "code": "15-1212",
     "title": "Information Security Analysts",
     "eigen_rank": 13,
-    "pagerank_rank": 27,
-    "degree": 51,
-    "degree_rank": 33,
-    "strength_rank": 13,
-    "eigen": 0.1175,
-    "pagerank": 0.01022
+    "pagerank_rank": 26,
+    "degree": 49,
+    "degree_rank": 29,
+    "strength_rank": 14,
+    "eigen": 0.1172,
+    "pagerank": 0.01056
    },
    {
     "code": "13-1111",
     "title": "Management Analysts",
     "eigen_rank": 14,
-    "pagerank_rank": 29,
-    "degree": 49,
-    "degree_rank": 34,
-    "strength_rank": 17,
-    "eigen": 0.1061,
-    "pagerank": 0.00951
+    "pagerank_rank": 28,
+    "degree": 45,
+    "degree_rank": 33,
+    "strength_rank": 18,
+    "eigen": 0.1052,
+    "pagerank": 0.0096
    },
    {
     "code": "17-2141",
     "title": "Mechanical Engineers",
     "eigen_rank": 15,
-    "pagerank_rank": 12,
-    "degree": 72,
-    "degree_rank": 15,
-    "strength_rank": 11,
-    "eigen": 0.0995,
-    "pagerank": 0.01389
+    "pagerank_rank": 7,
+    "degree": 83,
+    "degree_rank": 7,
+    "strength_rank": 9,
+    "eigen": 0.1027,
+    "pagerank": 0.01631
    }
   ],
   "pagerank_lifts": [
    {
-    "code": "25-2031",
-    "title": "Secondary School Teachers, Except Special and Career/Technical Education",
-    "eigen_rank": 278,
-    "pagerank_rank": 31,
-    "degree": 14,
-    "degree_rank": 132,
-    "strength_rank": 102,
-    "eigen": 0.0,
-    "pagerank": 0.00921
-   },
-   {
     "code": "25-2021",
     "title": "Elementary School Teachers, Except Special Education",
-    "eigen_rank": 271,
-    "pagerank_rank": 25,
-    "degree": 17,
-    "degree_rank": 112,
-    "strength_rank": 94,
+    "eigen_rank": 260,
+    "pagerank_rank": 23,
+    "degree": 16,
+    "degree_rank": 107,
+    "strength_rank": 96,
     "eigen": 0.0,
-    "pagerank": 0.01061
+    "pagerank": 0.01115
+   },
+   {
+    "code": "25-2031",
+    "title": "Secondary School Teachers, Except Special and Career/Technical Education",
+    "eigen_rank": 265,
+    "pagerank_rank": 29,
+    "degree": 13,
+    "degree_rank": 123,
+    "strength_rank": 99,
+    "eigen": 0.0,
+    "pagerank": 0.00958
    },
    {
     "code": "25-2022",
     "title": "Middle School Teachers, Except Special and Career/Technical Education",
-    "eigen_rank": 273,
-    "pagerank_rank": 32,
-    "degree": 16,
-    "degree_rank": 119,
-    "strength_rank": 105,
+    "eigen_rank": 259,
+    "pagerank_rank": 30,
+    "degree": 15,
+    "degree_rank": 113,
+    "strength_rank": 104,
     "eigen": 0.0,
-    "pagerank": 0.00897
+    "pagerank": 0.00932
    },
    {
     "code": "29-1216",
     "title": "General Internal Medicine Physicians",
-    "eigen_rank": 136,
-    "pagerank_rank": 40,
-    "degree": 33,
-    "degree_rank": 48,
-    "strength_rank": 67,
-    "eigen": 0.0018,
-    "pagerank": 0.00648
+    "eigen_rank": 113,
+    "pagerank_rank": 39,
+    "degree": 34,
+    "degree_rank": 44,
+    "strength_rank": 66,
+    "eigen": 0.0033,
+    "pagerank": 0.00666
    },
    {
     "code": "29-1229",
     "title": "Physicians, All Other",
-    "eigen_rank": 79,
+    "eigen_rank": 77,
     "pagerank_rank": 18,
-    "degree": 53,
-    "degree_rank": 32,
+    "degree": 51,
+    "degree_rank": 28,
     "strength_rank": 46,
-    "eigen": 0.0067,
-    "pagerank": 0.01203
+    "eigen": 0.0074,
+    "pagerank": 0.01211
    }
   ],
   "pagerank_drops": [
@@ -2364,56 +2364,56 @@
     "code": "13-1071",
     "title": "Human Resources Specialists",
     "eigen_rank": 37,
-    "pagerank_rank": 89,
-    "degree": 27,
-    "degree_rank": 63,
-    "strength_rank": 58,
-    "eigen": 0.0296,
-    "pagerank": 0.00284
+    "pagerank_rank": 90,
+    "degree": 24,
+    "degree_rank": 66,
+    "strength_rank": 59,
+    "eigen": 0.0291,
+    "pagerank": 0.00283
    },
    {
     "code": "11-1021",
     "title": "General and Operations Managers",
     "eigen_rank": 34,
-    "pagerank_rank": 84,
-    "degree": 27,
-    "degree_rank": 62,
-    "strength_rank": 54,
-    "eigen": 0.0306,
-    "pagerank": 0.00302
+    "pagerank_rank": 81,
+    "degree": 26,
+    "degree_rank": 59,
+    "strength_rank": 52,
+    "eigen": 0.0303,
+    "pagerank": 0.0031
    },
    {
     "code": "11-3051",
     "title": "Industrial Production Managers",
-    "eigen_rank": 38,
-    "pagerank_rank": 86,
-    "degree": 24,
-    "degree_rank": 75,
+    "eigen_rank": 39,
+    "pagerank_rank": 85,
+    "degree": 22,
+    "degree_rank": 77,
     "strength_rank": 56,
-    "eigen": 0.0258,
-    "pagerank": 0.003
-   },
-   {
-    "code": "11-3071",
-    "title": "Transportation, Storage, and Distribution Managers",
-    "eigen_rank": 35,
-    "pagerank_rank": 75,
-    "degree": 28,
-    "degree_rank": 57,
-    "strength_rank": 50,
-    "eigen": 0.0304,
-    "pagerank": 0.00329
+    "eigen": 0.0254,
+    "pagerank": 0.00297
    },
    {
     "code": "27-1024",
     "title": "Graphic Designers",
     "eigen_rank": 33,
-    "pagerank_rank": 70,
-    "degree": 30,
-    "degree_rank": 54,
+    "pagerank_rank": 71,
+    "degree": 27,
+    "degree_rank": 58,
     "strength_rank": 49,
-    "eigen": 0.0346,
-    "pagerank": 0.00355
+    "eigen": 0.0343,
+    "pagerank": 0.00351
+   },
+   {
+    "code": "11-3071",
+    "title": "Transportation, Storage, and Distribution Managers",
+    "eigen_rank": 35,
+    "pagerank_rank": 73,
+    "degree": 28,
+    "degree_rank": 55,
+    "strength_rank": 48,
+    "eigen": 0.0303,
+    "pagerank": 0.00343
    }
   ]
  },
@@ -2438,5 +2438,5 @@
   }
  },
  "sbm": "not fitted: graph-tool is not pip-installable",
- "seconds": 10.3
+ "seconds": 15.0
 }

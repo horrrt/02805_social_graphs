@@ -6,8 +6,8 @@ Services); and renames or mergers into one company (SunTrust into Truist, FCA
 into Stellantis). Separately branded acquisitions stay separate (LinkedIn,
 Aetna, Optum), as do spin-offs once separated (GE HealthCare), and bare names
 that could mean several companies (FIDELITY, CAPITAL) are left unmerged. Every
-merge beyond a shared tax number is written down: week04_client_aliases.csv
-for company families, week04_name_merges.csv for misspellings. Nothing is
+merge beyond a shared tax number is written down: week04_client_aliases.parquet
+for company families, week04_name_merges.parquet for misspellings. Nothing is
 merged by similarity at run time.
 
 The pure name rules:
@@ -28,20 +28,20 @@ that had exactly one FEIN takes that FEIN, so a firm has one key as employer and
 as client. week04_names_check.py tests all of this against tax numbers.
 """
 
-import csv
 import re
 from collections import Counter, defaultdict
 from functools import lru_cache
 from pathlib import Path
+import tables
 
-ALIASES = Path(__file__).with_name("week04_client_aliases.csv")
+ALIASES = Path(__file__).with_name("week04_client_aliases.parquet")
 # Misspellings of a much more common name, found and filtered by
 # week04_names_check.py --build-merges; one row per variant, reviewable.
-MERGES = Path(__file__).with_name("week04_name_merges.csv")
+MERGES = Path(__file__).with_name("week04_name_merges.parquet")
 # SEC industry for listed companies, built by week04_sec.py.
-SEC = Path(__file__).with_name("week04_sec_sectors.csv")
+SEC = Path(__file__).with_name("week04_sec_sectors.parquet")
 # Wikidata industry for companies the SEC doesn't list, built by week04_wikidata.py.
-WIKIDATA = Path(__file__).with_name("week04_wikidata_sectors.csv")
+WIKIDATA = Path(__file__).with_name("week04_wikidata_sectors.parquet")
 
 SUFFIXES = {
     "AND", "INC", "INCORPORATED", "LLC", "L L C", "LTD", "LIMITED", "CORP", "CORPORATION", "CO",
@@ -110,9 +110,7 @@ def aliases():
     """normalized name -> (canonical name, NAICS sector or '')."""
     if not ALIASES.exists():
         return {}
-    with open(ALIASES, newline="", encoding="utf-8") as fh:
-        rows = csv.DictReader(line for line in fh if not line.startswith("#"))
-        return {r["name"]: (r["canonical"], r["naics2"]) for r in rows}
+    return {r["name"]: (r["canonical"], r["naics2"]) for r in tables.rows(ALIASES)}
 
 
 @lru_cache(maxsize=None)
@@ -130,9 +128,7 @@ def merges():
     """misspelt key -> the key it misspells."""
     if not MERGES.exists():
         return {}
-    with open(MERGES, newline="", encoding="utf-8") as fh:
-        rows = csv.DictReader(line for line in fh if not line.startswith("#"))
-        return {r["variant"]: r["target"] for r in rows}
+    return {r["variant"]: r["target"] for r in tables.rows(MERGES)}
 
 
 def family(key):
@@ -152,18 +148,14 @@ def _sectors():
 def _sec_sectors():
     if not SEC.exists():
         return {}
-    with open(SEC, newline="", encoding="utf-8") as fh:
-        rows = csv.DictReader(line for line in fh if not line.startswith("#"))
-        return {r["key"]: r["naics2"] for r in rows if r["naics2"]}
+    return {r["key"]: r["naics2"] for r in tables.rows(SEC) if r["naics2"]}
 
 
 @lru_cache(maxsize=None)
 def _wikidata_sectors():
     if not WIKIDATA.exists():
         return {}
-    with open(WIKIDATA, newline="", encoding="utf-8") as fh:
-        rows = csv.DictReader(line for line in fh if not line.startswith("#"))
-        return {r["key"]: r["naics2"] for r in rows if r["naics2"]}
+    return {r["key"]: r["naics2"] for r in tables.rows(WIKIDATA) if r["naics2"]}
 
 
 def naics2(key):

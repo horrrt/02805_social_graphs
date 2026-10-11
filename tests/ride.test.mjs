@@ -1,11 +1,11 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
-import { graph } from "../docs/assets/js/arcade-core.mjs";
-import { JOURNEYS, journey } from "../docs/assets/js/ride.mjs";
+import { graph } from "../src/scripts/arcade-core.mjs";
+import { JOURNEYS, journey } from "../src/scripts/ride.mjs";
 const data = JSON.parse(
   fs.readFileSync(
-    new URL("../docs/assets/data/arcade_graph.json", import.meta.url),
+    new URL("../public/assets/data/arcade_graph.json", import.meta.url),
   ),
 );
 

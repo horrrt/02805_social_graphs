@@ -73,7 +73,7 @@ landing exactly on the next draw's), which the hash keys rule out by
 construction.
 
 Outputs: analysis/week04_footprint.json (every number) and
-docs/weeks/week04/data/footprint.json (the shape a page figure would draw).
+public/weeks/week04/data/footprint.json (the shape a page figure would draw).
 A crash while assembling the final summary must not discard the (expensive)
 per-variant results, so they are dumped to
 analysis/week04_footprint.partial.json as soon as each half finishes, and that
@@ -105,7 +105,7 @@ from week04_staffing import check_rewire, louvain, resolver
 ROOT = Path(__file__).resolve().parents[1]
 OUT = Path(__file__).with_suffix(".json")
 PARTIAL = Path(__file__).resolve().parent / "week04_footprint.partial.json"
-PAGE = ROOT / "docs/weeks/week04/data/footprint.json"
+PAGE = ROOT / "public/weeks/week04/data/footprint.json"
 YEAR = 2025
 SEED = 2805
 RUNS = 100
@@ -649,7 +649,7 @@ def run_metros():
     check_project_sparse(pairs, top)
     print("checked: sparse metro projection matches week04_where.project", flush=True)
 
-    placed = lca[lca["SECONDARY_ENTITY"].str.upper().str.startswith("Y")]
+    placed = lca[lca["SECONDARY_ENTITY"].fillna(False)]
     shortlist = list(placed["employer"].value_counts().head(where.SHORTLIST).index)
 
     pairs_top = pairs[pairs["metro"].isin(top)]
@@ -755,7 +755,7 @@ def run_jobs():
         "max_weight_change_drop10": 10,
     }
 
-    placed = frame[frame["SECONDARY_ENTITY"].str.upper().str.startswith("Y")]
+    placed = frame[frame["SECONDARY_ENTITY"].fillna(False)]
     shortlist = list(placed.groupby("company").size().sort_values(ascending=False).head(where.SHORTLIST).index)
     by_company = frame.groupby("company").size()
     top10 = list(by_company.sort_values(ascending=False).head(TOP10).index)

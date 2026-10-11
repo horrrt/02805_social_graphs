@@ -253,6 +253,14 @@
       "x": 7600,
       "y": 0
     },
+    "GraphKit.dc.html": {
+      "h": 2720,
+      "page": "graphkit",
+      "title": "networkView() · six styles, dark and light",
+      "w": 1440,
+      "x": 0,
+      "y": 0
+    },
     "LiveBoxData.dc.html": {
       "h": 900,
       "page": "built",
@@ -1388,6 +1396,126 @@
       "w": 1440,
       "x": 1520,
       "y": 19675
+    },
+    "TplClosing.dc.html": {
+      "h": 752,
+      "page": "template",
+      "title": "Template · Closing",
+      "w": 1440,
+      "x": 6080,
+      "y": 0
+    },
+    "TplFirst.dc.html": {
+      "h": 645,
+      "page": "template",
+      "title": "Template · Standard section card",
+      "w": 1440,
+      "x": 3040,
+      "y": 0
+    },
+    "TplOpening.dc.html": {
+      "h": 642,
+      "page": "template",
+      "title": "Template · Opening",
+      "w": 1440,
+      "x": 1520,
+      "y": 0
+    },
+    "TplSecond.dc.html": {
+      "h": 963,
+      "page": "template",
+      "title": "Template · Wide section card",
+      "w": 1440,
+      "x": 4560,
+      "y": 0
+    },
+    "TplTop.dc.html": {
+      "h": 1112,
+      "page": "template",
+      "title": "Template · Hero and findings",
+      "w": 1440,
+      "x": 0,
+      "y": 0
+    },
+    "W5Autocomplete.dc.html": {
+      "h": 1216,
+      "page": "week05",
+      "title": "4 · Community autocomplete",
+      "w": 1440,
+      "x": 4560,
+      "y": 2063
+    },
+    "W5Closing.dc.html": {
+      "h": 1327,
+      "page": "week05",
+      "title": "Week 5 · Closing, methods and AI use",
+      "w": 1440,
+      "x": 3040,
+      "y": 0
+    },
+    "W5Copying.dc.html": {
+      "h": 1030,
+      "page": "week05",
+      "title": "2 · Catch Wikipedia copying itself",
+      "w": 1440,
+      "x": 1520,
+      "y": 2063
+    },
+    "W5Fame.dc.html": {
+      "h": 978,
+      "page": "week05",
+      "title": "6 · Does network fame buy you more words?",
+      "w": 1440,
+      "x": 1520,
+      "y": 4638
+    },
+    "W5Heaps.dc.html": {
+      "h": 1100,
+      "page": "week05",
+      "title": "5 · Heaps' law of the Marvel universe",
+      "w": 1440,
+      "x": 0,
+      "y": 4638
+    },
+    "W5Opening.dc.html": {
+      "h": 625,
+      "page": "week05",
+      "title": "Week 5 · Opening",
+      "w": 1440,
+      "x": 1520,
+      "y": 0
+    },
+    "W5Relations.dc.html": {
+      "h": 1129,
+      "page": "week05",
+      "title": "1 · Turn links into relationships",
+      "w": 1440,
+      "x": 0,
+      "y": 2063
+    },
+    "W5Search.dc.html": {
+      "h": 2155,
+      "page": "week05",
+      "title": "3 · A Marvel search engine in 20 lines",
+      "w": 1440,
+      "x": 3040,
+      "y": 2063
+    },
+    "W5Top.dc.html": {
+      "h": 1643,
+      "page": "week05",
+      "title": "Week 5 · Hero and findings",
+      "w": 1440,
+      "x": 0,
+      "y": 0
+    },
+    "W5Weird.dc.html": {
+      "h": 1007,
+      "page": "week05",
+      "title": "7 · Who has the weirdest Wikipedia page?",
+      "w": 1440,
+      "x": 3040,
+      "y": 4638
     }
   },
   "createdOnFiles": {
@@ -1553,7 +1681,7 @@
     },
     "gaps1": {
       "kind": "title1",
-      "maxW": 10000,
+      "maxW": 8000,
       "page": "gaps",
       "text": "Brief gaps: the Week 4 concepts the page does not show yet, on our own networks",
       "w": 240,
@@ -1568,6 +1696,15 @@
       "w": 240,
       "x": 0,
       "y": 1500
+    },
+    "graphkit1": {
+      "kind": "title1",
+      "maxW": 1440,
+      "page": "graphkit",
+      "text": "Network views: networkView() in six styles, real data",
+      "w": 240,
+      "x": 0,
+      "y": -300
     },
     "rec1": {
       "kind": "title1",
@@ -1712,6 +1849,42 @@
       "w": 520,
       "x": 7600,
       "y": 3476
+    },
+    "template1": {
+      "kind": "title1",
+      "maxW": 7520,
+      "page": "template",
+      "text": "The post template: copy docs/weeks/_template to start a week",
+      "w": 240,
+      "x": 0,
+      "y": -300
+    },
+    "week051": {
+      "kind": "title1",
+      "maxW": 4480,
+      "page": "week05",
+      "text": "Week 5 as built: the frame",
+      "w": 240,
+      "x": 0,
+      "y": -300
+    },
+    "week052": {
+      "kind": "title1",
+      "maxW": 6000,
+      "page": "week05",
+      "text": "Sections 1 to 4",
+      "w": 240,
+      "x": 0,
+      "y": 1763
+    },
+    "week053": {
+      "kind": "title1",
+      "maxW": 4480,
+      "page": "week05",
+      "text": "Sections 5 to 7",
+      "w": 240,
+      "x": 0,
+      "y": 4338
     }
   },
   "order": [
@@ -1879,7 +2052,23 @@
     "GapDrawing.dc.html",
     "RTopicWherePlus.dc.html",
     "RTopicWherePlus-greedy.dc.html",
-    "RTopicWherePlus-modularity.dc.html"
+    "RTopicWherePlus-modularity.dc.html",
+    "W5Top.dc.html",
+    "W5Opening.dc.html",
+    "W5Closing.dc.html",
+    "W5Relations.dc.html",
+    "W5Copying.dc.html",
+    "W5Search.dc.html",
+    "W5Autocomplete.dc.html",
+    "W5Heaps.dc.html",
+    "W5Fame.dc.html",
+    "W5Weird.dc.html",
+    "GraphKit.dc.html",
+    "TplTop.dc.html",
+    "TplOpening.dc.html",
+    "TplFirst.dc.html",
+    "TplSecond.dc.html",
+    "TplClosing.dc.html"
   ],
   "pages": [
     {
@@ -1901,6 +2090,18 @@
     {
       "id": "gaps",
       "name": "Brief gaps: concepts to decide on"
+    },
+    {
+      "id": "week05",
+      "name": "Week 5: the page as built"
+    },
+    {
+      "id": "graphkit",
+      "name": "Components: network views"
+    },
+    {
+      "id": "template",
+      "name": "Template: start a new week here"
     }
   ],
   "title": "Week 4 redesign",

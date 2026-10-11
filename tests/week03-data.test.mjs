@@ -14,7 +14,7 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const load = (name) =>
-  JSON.parse(readFileSync(join(ROOT, "docs/assets/data", name), "utf8"));
+  JSON.parse(readFileSync(join(ROOT, "public/assets/data", name), "utf8"));
 
 const corridors = load("week03_corridors.json");
 const edges = load("week03_edges.json");

@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Template · Closing</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="/_blob/bdbcfe09e54e57045ac6bae8752c2a81">
+<link rel="stylesheet" href="/_blob/4ffd6c535951a1e34a0c3882e96ae51c">
+<link rel="stylesheet" href="/_blob/231c3b9ded5bc685edc4752941113998">
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face{font-family:"Condensed";src:url("/_blob/9ad036b9f76606ea91d82e15ebec8da3") format("truetype");font-weight:800;font-style:normal}
+body{margin:0;background:#eef3f9}
+</style>
+</helmet>
+<div class="corridor" style="width: 1440px; height: 752px; overflow: hidden; background: #eef3f9"><div class="topbar">
+      <div class="shell">
+        <a class="brand" href="../../">LOG–LOG <b>LEGENDS</b></a>
+        <a class="site-link" href="../../#weeks">All posts</a>
+        <nav class="topnav" aria-label="Sections of this post">
+          <a href="#opening">Opening</a>
+          <a href="#first">1</a>
+          <a href="#second">2</a>
+          <a href="#closing">Closing</a>
+        </nav>
+      </div>
+    </div><main id="main"><div class="shell"><section class="step" data-owner="" id="closing">
+          <header class="w4-opener">
+            <span aria-hidden="true" class="w4-opener-num">✓</span>
+            <div>
+              <h2>Closing</h2>
+              <p>The takeaway in one line.</p>
+            </div>
+          </header>
+          <div class="card w4-card w5-stack">
+            <p class="sub">The takeaway with the sections' key numbers, each against its baseline.</p>
+            <div class="notice">
+              <span class="ico">!</span>
+              <span><b>One important limit</b> The limit that applies to the whole post.</span>
+            </div>
+            <p class="sub"><b>Next step.</b> One meaningful next step, such as next week's method applied to this data.</p>
+            <details class="qa" id="methods" open="">
+              <summary><span class="qa-cue">Methods, data and AI use</span></summary>
+              <div class="qa-body">
+                <p class="sub">Data: the source, its licence and the date it was frozen. Every random step has a fixed seed.</p>
+                <ul class="w5-methods">
+                  <li><b>1 · analysis/weekNN_first.py</b> The method and its baseline, in one line.</li>
+                  <li><b>2 · analysis/weekNN_second.py</b> The method and its baseline, in one line.</li>
+                </ul>
+              </div>
+            </details>
+            <details class="qa" id="closing-ai" open="">
+              <summary><span class="qa-cue">AI use and how we checked it</span></summary>
+              <div class="qa-body">
+                <p class="sub">What AI assistants did: code, drafts, revisions, browser tests.</p>
+                <p class="sub">How we checked it: each script writes the numbers its section quotes to a JSON file, a schema check tests the file, the site tests fail when the page and the file disagree, and the scripts rerun identically under two hash seeds.</p>
+              </div>
+            </details>
+          </div>
+        </section></div></main></div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 752}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

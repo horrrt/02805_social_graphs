@@ -11,10 +11,10 @@ from __future__ import annotations
 import json
 import os
 import sys
-import time
-import urllib.error
 import urllib.parse
-import urllib.request
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "analysis"))
+import fetch as web  # noqa: E402
 
 
 def user_agent() -> str:
@@ -35,37 +35,19 @@ WDQS = "https://query.wikidata.org/sparql"
 
 
 MIN_INTERVAL = 0.25  # seconds between requests; the APIs answer 429 above ~5/s
-_last_call = [0.0]
-
-
-def _throttle():
-    gap = time.monotonic() - _last_call[0]
-    if gap < MIN_INTERVAL:
-        time.sleep(MIN_INTERVAL - gap)
-    _last_call[0] = time.monotonic()
+_session = []
 
 
 def _request(url, data=None, headers=None, timeout=90, tries=8):
-    head = {"User-Agent": user_agent()}
-    head.update(headers or {})
-    last = None
-    for attempt in range(tries):
-        _throttle()
-        try:
-            req = urllib.request.Request(url, data=data, headers=head)
-            with urllib.request.urlopen(req, timeout=timeout) as resp:
-                return resp.read()
-        except urllib.error.HTTPError as exc:
-            last = exc
-            wait = int(exc.headers.get("Retry-After") or 0) or min(60, 2 ** attempt)
-            print(f"  retry {attempt + 1}/{tries} in {wait}s: {exc}", file=sys.stderr)
-            time.sleep(wait)
-        except (urllib.error.URLError, OSError) as exc:
-            last = exc
-            wait = min(60, 2 ** attempt)
-            print(f"  retry {attempt + 1}/{tries} in {wait}s: {exc}", file=sys.stderr)
-            time.sleep(wait)
-    raise RuntimeError(f"request failed after {tries} tries: {url}") from last
+    """The response body. fetch.session retries a 429 or 5xx (waiting out any
+    Retry-After), a timeout and a dropped connection, and raises on give-up."""
+    if not _session:
+        _session.append(web.session(user_agent(), tries=tries, min_interval=MIN_INTERVAL))
+    s = _session[0]
+    r = s.post(url, data=data, headers=headers, timeout=timeout) if data is not None else \
+        s.get(url, headers=headers, timeout=timeout)
+    r.raise_for_status()
+    return r.content
 
 
 def api(endpoint, **params):

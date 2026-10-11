@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>5 · Heaps' law of the Marvel universe</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="/_blob/bdbcfe09e54e57045ac6bae8752c2a81">
+<link rel="stylesheet" href="/_blob/4ffd6c535951a1e34a0c3882e96ae51c">
+<link rel="stylesheet" href="/_blob/5b0af5961bb5a81a4a5c5ab494e11fb9">
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face{font-family:"Condensed";src:url("/_blob/9ad036b9f76606ea91d82e15ebec8da3") format("truetype");font-weight:800;font-style:normal}
+body{margin:0;background:#eef3f9}
+</style>
+</helmet>
+<div class="corridor" style="width: 1440px; height: 1100px; overflow: hidden; background: #eef3f9"><div class="topbar">
+      <div class="shell">
+        <a class="brand" href="../../">LOG–LOG <b>LEGENDS</b></a>
+        <a class="site-link" href="../../#weeks">All posts</a>
+        <nav class="topnav" aria-label="Sections of this post">
+          <a href="#opening">Opening</a>
+          <a href="#relations">1</a>
+          <a href="#copying">2</a>
+          <a href="#search">3</a>
+          <a href="#autocomplete">4</a>
+          <a href="#heaps">5</a>
+          <a href="#fame">6</a>
+          <a href="#weird">7</a>
+          <a href="#closing">Closing</a>
+        </nav>
+      </div>
+    </div><main id="main"><div class="shell"><section class="step" data-owner="Niklas" id="heaps">
+          <header class="w4-opener">
+            <span aria-hidden="true" class="w4-opener-num">5</span>
+            <div>
+              <h2>Heaps' law of the Marvel universe</h2>
+              <p>Word for word, the least-linked characters' pages bring more new vocabulary than random pages, and the most-linked pages bring less.</p>
+            </div>
+          </header>
+          <div class="card w4-card w5-card">
+            <header class="w4-q" id="heaps-asked">
+              <span class="w4-num">5A</span>
+              <div>
+                <h2>Do minor characters bring new words, or mostly repeat the famous ones?</h2>
+                <p class="w4-answer">They bring new words.</p>
+              </div>
+            </header>
+            <div class="w4-two">
+              <div id="heaps-did">
+                <p class="sub">We read the pages in three kinds of order: most-linked first, by the number of other pages that link to a page; least-linked first; and 500 <span class="w4-term"><button type="button" aria-describedby="w5-term-heaps-random">random orders</button><span class="w4-pop" id="w5-term-heaps-random" role="tooltip">The same 303 pages shuffled into a random order, 500 times with fixed seeds. Their spread shows how much the count moves by chance.</span></span> as the baseline. The ten most-linked pages hold 84,807 <span class="w4-term"><button type="button" aria-describedby="w5-term-heaps-tokens">tokens</button><span class="w4-pop" id="w5-term-heaps-tokens" role="tooltip">Words as they occur on the page: "the Hulk smashes the tank" has 5 tokens.</span></span> and the ten least-linked only 6,636, so we compare the orders after the same number of tokens, not the same number of pages.</p>
+              </div>
+              <div id="heaps-surprise">
+                <div class="notice"><span class="ico">💡</span><span><b>What to notice</b> After 100,000 tokens the least-linked order has met 11,079 <span class="w4-term"><button type="button" aria-describedby="w5-term-heaps-types">types</button><span class="w4-pop" id="w5-term-heaps-types" role="tooltip">Distinct words: "the Hulk smashes the tank" has 4 types, since "the" comes twice.</span></span>, 509 more than the random mean of 10,570 ± 207 (z = 2.5). After 400,000 tokens the most-linked order has met 20,613, 661 fewer than random (z = −3.5).</span></div>
+              </div>
+            </div>
+            <div class="w5-fig" id="heaps-figure">
+              <div class="rx-start-grid">
+                <div class="plot">
+                  <h3>Types seen against tokens read</h3>
+                  <p class="axis-note">Both axes are logarithmic. Band: the middle 90% of 500 random page orders. Dashed: Heaps' law fitted to their mean. The two ordered lines stay within 11% of the random mean at every point, too close to tell apart at this scale; the right chart shows the gaps.</p>
+                  <div id="chart-heaps-curve"><svg viewBox="0 0 519 374" width="519" height="374" role="img" aria-label="Types seen against tokens read, log-log: most-linked first, least-linked first and 500 random orders"><line x1="46" y1="12" x2="46" y2="334" stroke="#eaf0f7"></line><text x="46" y="350" font-size="11.5" fill="#7a8fac" text-anchor="middle">1k</text><line x1="206.15615050088658" y1="12" x2="206.15615050088658" y2="334" stroke="#eaf0f7"></line><text x="206.15615050088658" y="350" font-size="11.5" fill="#7a8fac" text-anchor="middle">10k</text><line x1="366.31230100177316" y1="12" x2="366.31230100177316" y2="334" stroke="#eaf0f7"></line><text x="366.31230100177316" y="350" font-size="11.5" fill="#7a8fac" text-anchor="middle">100k</text><line x1="46" y1="312.76563366801884" x2="503" y2="312.76563366801884" stroke="#eaf0f7"></line><text x="40" y="316.76563366801884" font-size="11.5" fill="#7a8fac" text-anchor="end">500</text><line x1="46" y1="261.4843105524849" x2="503" y2="261.4843105524849" stroke="#eaf0f7"></line><text x="40" y="265.4843105524849" font-size="11.5" fill="#7a8fac" text-anchor="end">1k</text><line x1="46" y1="210.20298743695093" x2="503" y2="210.20298743695093" stroke="#eaf0f7"></line><text x="40" y="214.20298743695093" font-size="11.5" fill="#7a8fac" text-anchor="end">2k</text><line x1="46" y1="142.41276566752992" x2="503" y2="142.41276566752992" stroke="#eaf0f7"></line><text x="40" y="146.41276566752992" font-size="11.5" fill="#7a8fac" text-anchor="end">5k</text><line x1="46" y1="91.13144255199599" x2="503" y2="91.13144255199599" stroke="#eaf0f7"></line><text x="40" y="95.13144255199599" font-size="11.5" fill="#7a8fac" text-anchor="end">10k</text><line x1="46" y1="39.85011943646206" x2="503" y2="39.85011943646206" stroke="#eaf0f7"></line><text x="40" y="43.85011943646206" font-size="11.5" fill="#7a8fac" text-anchor="end">20k</text><text x="503" y="368" font-size="11.5" fill="#46618a" text-anchor="end">tokens read</text><text x="46" y="10" font-size="11.5" fill="#46618a">types seen</text><path d="M46.0,317.0L57.5,307.9L68.9,297.9L80.3,288.3L91.7,278.6L103.1,269.5L114.5,260.0L126.0,250.5L137.4,241.5L148.8,232.7L160.3,223.6L171.7,215.2L183.1,206.5L194.5,198.2L205.9,189.4L217.4,181.0L228.8,173.1L240.2,164.8L251.7,156.8L263.1,149.0L274.5,141.2L285.9,133.8L297.4,126.4L308.8,119.2L320.2,112.0L331.6,105.1L343.1,98.3L354.5,91.7L365.9,85.1L377.3,78.6L388.8,72.4L400.2,66.2L411.6,60.0L423.0,54.1L434.5,48.2L445.9,42.5L457.3,36.9L468.7,31.4L480.1,25.9L491.6,20.6L503.0,15.6L503.0,15.6L491.6,21.7L480.1,27.5L468.7,33.3L457.3,39.3L445.9,45.1L434.5,51.2L423.0,57.3L411.6,63.5L400.2,70.1L388.8,76.5L377.3,83.1L365.9,89.6L354.5,96.5L343.1,103.4L331.6,110.6L320.2,118.1L308.8,125.4L297.4,133.4L285.9,141.1L274.5,148.9L263.1,156.9L251.7,164.8L240.2,173.1L228.8,181.6L217.4,190.1L205.9,198.7L194.5,207.2L183.1,216.0L171.7,225.4L160.3,234.2L148.8,243.6L137.4,252.7L126.0,262.9L114.5,272.5L103.1,281.7L91.7,290.7L80.3,301.3L68.9,310.9L57.5,320.4L46.0,330.2Z" fill="rgba(185, 196, 210, 0.62)" stroke="none"><title>Middle 90% of 500 random page orders</title></path><path d="M46.0,323.1L57.5,313.4L68.9,303.6L80.3,294.1L91.7,284.5L103.1,274.9L114.5,265.5L126.0,256.2L137.4,246.9L148.8,237.8L160.3,228.8L171.7,219.9L183.1,211.0L194.5,202.3L205.9,193.8L217.4,185.3L228.8,177.0L240.2,168.8L251.7,160.6L263.1,152.6L274.5,144.7L285.9,137.1L297.4,129.5L308.8,122.1L320.2,114.9L331.6,107.8L343.1,100.8L354.5,94.0L365.9,87.3L377.3,80.7L388.8,74.3L400.2,68.0L411.6,61.8L423.0,55.7L434.5,49.7L445.9,43.8L457.3,38.0L468.7,32.3L480.1,26.7L491.6,21.1L503.0,15.6" fill="none" stroke="#7a8fac" stroke-width="1.5"><title>Mean of 500 random page orders</title></path><path d="M217.4,178.7L228.8,172.0L240.2,165.2L251.7,158.4L263.1,151.7L274.5,144.9L285.9,138.2L297.4,131.4L308.8,124.7L320.2,117.9L331.6,111.1L343.1,104.4L354.5,97.6L365.9,90.9L377.3,84.1L388.8,77.3L400.2,70.6L411.6,63.8L423.0,57.1L434.5,50.3L445.9,43.6L457.3,36.8L468.7,30.0L480.1,23.3L491.6,16.5L503.0,9.8" fill="none" stroke="#0f2340" stroke-width="1.5" stroke-dasharray="5 4"><title>Heaps' law fitted to the random mean: V = 16.7 n^0.56, from 11,750 tokens</title></path><path d="M46.0,318.3L57.5,308.7L68.9,302.2L80.3,294.5L91.7,286.2L103.1,274.3L114.5,264.0L126.0,255.4L137.4,247.0L148.8,238.2L160.3,230.6L171.7,228.3L183.1,216.7L194.5,208.5L205.9,197.1L217.4,188.7L228.8,179.4L240.2,170.9L251.7,162.9L263.1,154.2L274.5,145.8L285.9,138.0L297.4,128.5L308.8,121.3L320.2,113.3L331.6,108.1L343.1,101.4L354.5,95.2L365.9,88.7L377.3,83.4L388.8,76.5L400.2,69.6L411.6,62.7L423.0,56.6L434.5,50.7L445.9,45.5L457.3,40.4L468.7,34.2L480.1,28.4L491.6,22.5L503.0,15.6" fill="none" stroke="#1f8fd6" stroke-width="2"><title>Most-linked first</title></path><path d="M46.0,326.7L57.5,314.4L68.9,304.0L80.3,293.5L91.7,284.7L103.1,273.9L114.5,263.9L126.0,256.1L137.4,247.4L148.8,238.5L160.3,227.9L171.7,217.8L183.1,207.0L194.5,198.2L205.9,189.7L217.4,180.7L228.8,172.4L240.2,164.5L251.7,156.4L263.1,148.5L274.5,139.2L285.9,132.2L297.4,124.1L308.8,117.2L320.2,109.8L331.6,103.7L343.1,97.3L354.5,89.9L365.9,83.8L377.3,78.2L388.8,71.6L400.2,65.7L411.6,60.0L423.0,53.8L434.5,48.1L445.9,42.7L457.3,37.3L468.7,32.4L480.1,26.9L491.6,20.9L503.0,15.6" fill="none" stroke="#f2820c" stroke-width="2"><title>Least-linked first</title></path><circle cx="46" cy="323.1088514071486" r="6" fill="transparent" stroke="none"><title>1,000 tokens read
+Most-linked first: 464 types
+Least-linked first: 414 types
+Random: 435 ± 24</title></circle><circle cx="57.45337573170018" cy="313.36256524800456" r="6" fill="transparent" stroke="none"><title>1,179 tokens read
+Most-linked first: 528 types
+Least-linked first: 489 types
+Random: 496 ± 27</title></circle><circle cx="68.85464234516805" cy="303.6267334966834" r="6" fill="transparent" stroke="none"><title>1,389 tokens read
+Most-linked first: 577 types
+Least-linked first: 563 types
+Random: 566 ± 29</title></circle><circle cx="80.2812125144149" cy="294.06528009001505" r="6" fill="transparent" stroke="none"><title>1,637 tokens read
+Most-linked first: 640 types
+Least-linked first: 649 types
+Random: 644 ± 33</title></circle><circle cx="91.6977111932872" cy="284.46181302083113" r="6" fill="transparent" stroke="none"><title>1,929 tokens read
+Most-linked first: 716 types
+Least-linked first: 731 types
+Random: 733 ± 36</title></circle><circle cx="103.11159289649967" cy="274.8892429279058" r="6" fill="transparent" stroke="none"><title>2,273 tokens read
+Most-linked first: 841 types
+Least-linked first: 845 types
+Random: 834 ± 41</title></circle><circle cx="114.54246233090915" cy="265.4775435443139" r="6" fill="transparent" stroke="none"><title>2,679 tokens read
+Most-linked first: 967 types
+Least-linked first: 968 types
+Random: 947 ± 46</title></circle><circle cx="125.98392356113659" cy="256.179775762385" r="6" fill="transparent" stroke="none"><title>3,158 tokens read
+Most-linked first: 1,086 types
+Least-linked first: 1,076 types
+Random: 1,074 ± 51</title></circle><circle cx="137.3946559967551" cy="246.86052756802619" r="6" fill="transparent" stroke="none"><title>3,721 tokens read
+Most-linked first: 1,217 types
+Least-linked first: 1,210 types
+Random: 1,219 ± 55</title></circle><circle cx="148.8312397124036" cy="237.82253313601353" r="6" fill="transparent" stroke="none"><title>4,386 tokens read
+Most-linked first: 1,370 types
+Least-linked first: 1,365 types
+Random: 1,377 ± 61</title></circle><circle cx="160.25644393416428" cy="228.7831994209033" r="6" fill="transparent" stroke="none"><title>5,169 tokens read
+Most-linked first: 1,519 types
+Least-linked first: 1,575 types
+Random: 1,556 ± 67</title></circle><circle cx="171.67270543807956" cy="219.9103863720217" r="6" fill="transparent" stroke="none"><title>6,091 tokens read
+Most-linked first: 1,566 types
+Least-linked first: 1,805 types
+Random: 1,754 ± 74</title></circle><circle cx="183.10390734839987" cy="211.04480581006382" r="6" fill="transparent" stroke="none"><title>7,179 tokens read
+Most-linked first: 1,831 types
+Least-linked first: 2,088 types
+Random: 1,977 ± 80</title></circle><circle cx="194.52406743293966" cy="202.34910429656736" r="6" fill="transparent" stroke="none"><title>8,460 tokens read
+Most-linked first: 2,047 types
+Least-linked first: 2,353 types
+Random: 2,224 ± 87</title></circle><circle cx="205.9471720790683" cy="193.80390228711107" r="6" fill="transparent" stroke="none"><title>9,970 tokens read
+Most-linked first: 2,387 types
+Least-linked first: 2,640 types
+Random: 2,496 ± 97</title></circle><circle cx="217.37314560607928" cy="185.34686985709033" r="6" fill="transparent" stroke="none"><title>11,750 tokens read
+Most-linked first: 2,673 types
+Least-linked first: 2,978 types
+Random: 2,799 ± 111</title></circle><circle cx="228.80015693909695" cy="177.0025526779607" r="6" fill="transparent" stroke="none"><title>13,848 tokens read
+Most-linked first: 3,032 types
+Least-linked first: 3,334 types
+Random: 3,133 ± 121</title></circle><circle cx="240.22459156640232" cy="168.7843997381018" r="6" fill="transparent" stroke="none"><title>16,320 tokens read
+Most-linked first: 3,400 types
+Least-linked first: 3,711 types
+Random: 3,501 ± 127</title></circle><circle cx="251.65164598665504" cy="160.6276702353138" r="6" fill="transparent" stroke="none"><title>19,234 tokens read
+Most-linked first: 3,793 types
+Least-linked first: 4,136 types
+Random: 3,909 ± 134</title></circle><circle cx="263.0746925986739" cy="152.63111680053075" r="6" fill="transparent" stroke="none"><title>22,667 tokens read
+Most-linked first: 4,263 types
+Least-linked first: 4,604 types
+Random: 4,355 ± 141</title></circle><circle cx="274.50101345910934" cy="144.74936021860725" r="6" fill="transparent" stroke="none"><title>26,714 tokens read
+Most-linked first: 4,775 types
+Least-linked first: 5,223 types
+Random: 4,845 ± 150</title></circle><circle cx="285.92610283439114" cy="137.05668311966085" r="6" fill="transparent" stroke="none"><title>31,483 tokens read
+Most-linked first: 5,308 types
+Least-linked first: 5,737 types
+Random: 5,375 ± 159</title></circle><circle cx="297.35050822114835" cy="129.54287544261126" r="6" fill="transparent" stroke="none"><title>37,103 tokens read
+Most-linked first: 6,038 types
+Least-linked first: 6,400 types
+Random: 5,950 ± 169</title></circle><circle cx="308.7745624048665" cy="122.13175400286373" r="6" fill="transparent" stroke="none"><title>43,726 tokens read
+Most-linked first: 6,653 types
+Least-linked first: 7,033 types
+Random: 6,577 ± 173</title></circle><circle cx="320.19966138002474" cy="114.88839259840248" r="6" fill="transparent" stroke="none"><title>51,532 tokens read
+Most-linked first: 7,407 types
+Least-linked first: 7,771 types
+Random: 7,253 ± 179</title></circle><circle cx="331.6252948859569" cy="107.80048481684028" r="6" fill="transparent" stroke="none"><title>60,732 tokens read
+Most-linked first: 7,948 types
+Least-linked first: 8,439 types
+Random: 7,983 ± 184</title></circle><circle cx="343.050467202155" cy="100.80500545444137" r="6" fill="transparent" stroke="none"><title>71,574 tokens read
+Most-linked first: 8,704 types
+Least-linked first: 9,198 types
+Random: 8,774 ± 190</title></circle><circle cx="354.4751976532888" cy="94.0198309930988" r="6" fill="transparent" stroke="none"><title>84,351 tokens read
+Most-linked first: 9,470 types
+Least-linked first: 10,166 types
+Random: 9,617 ± 196</title></circle><circle cx="365.90001183316474" cy="87.26656726093671" r="6" fill="transparent" stroke="none"><title>99,409 tokens read
+Most-linked first: 10,337 types
+Least-linked first: 11,049 types
+Random: 10,536 ± 207</title></circle><circle cx="377.3247705782512" cy="80.70556905659613" r="6" fill="transparent" stroke="none"><title>117,155 tokens read
+Most-linked first: 11,098 types
+Least-linked first: 11,906 types
+Random: 11,513 ± 210</title></circle><circle cx="388.75006955764957" cy="74.3321647764779" r="6" fill="transparent" stroke="none"><title>138,070 tokens read
+Most-linked first: 12,190 types
+Least-linked first: 13,016 types
+Random: 12,549 ± 218</title></circle><circle cx="400.1750123938059" cy="68.0095763605139" r="6" fill="transparent" stroke="none"><title>162,718 tokens read
+Most-linked first: 13,372 types
+Least-linked first: 14,106 types
+Random: 13,669 ± 221</title></circle><circle cx="411.59991345046257" cy="61.81695112596717" r="6" fill="transparent" stroke="none"><title>191,766 tokens read
+Most-linked first: 14,687 types
+Least-linked first: 15,234 types
+Random: 14,862 ± 220</title></circle><circle cx="423.0249454754984" cy="55.68459006377234" r="6" fill="transparent" stroke="none"><title>226,000 tokens read
+Most-linked first: 15,945 types
+Least-linked first: 16,564 types
+Random: 16,147 ± 219</title></circle><circle cx="434.4501232612424" cy="49.67221378029642" r="6" fill="transparent" stroke="none"><title>266,346 tokens read
+Most-linked first: 17,283 types
+Least-linked first: 17,882 types
+Random: 17,513 ± 217</title></circle><circle cx="445.8749346276275" cy="43.79397933717251" r="6" fill="transparent" stroke="none"><title>313,893 tokens read
+Most-linked first: 18,541 types
+Least-linked first: 19,252 types
+Random: 18,962 ± 211</title></circle><circle cx="457.29995352798323" cy="38.010178911275155" r="6" fill="transparent" stroke="none"><title>369,929 tokens read
+Most-linked first: 19,843 types
+Least-linked first: 20,704 types
+Random: 20,504 ± 202</title></circle><circle cx="468.7250498250302" cy="32.31254565647742" r="6" fill="transparent" stroke="none"><title>435,969 tokens read
+Most-linked first: 21,584 types
+Least-linked first: 22,114 types
+Random: 22,145 ± 181</title></circle><circle cx="480.14994172350714" cy="26.653474218425828" r="6" fill="transparent" stroke="none"><title>513,797 tokens read
+Most-linked first: 23,340 types
+Least-linked first: 23,841 types
+Random: 23,905 ± 154</title></circle><circle cx="491.57498951426123" cy="21.095360517787675" r="6" fill="transparent" stroke="none"><title>605,520 tokens read
+Most-linked first: 25,295 types
+Least-linked first: 25,831 types
+Random: 25,771 ± 121</title></circle><circle cx="503" cy="15.609657867484067" r="6" fill="transparent" stroke="none"><title>713,617 tokens read
+Most-linked first: 27,754 types
+Least-linked first: 27,754 types
+Random: 27,754 ± 0</title></circle><line x1="58" y1="22" x2="78" y2="22" stroke="#1f8fd6" stroke-width="2" stroke-dasharray="none"></line><text x="84" y="26" font-size="11.5" fill="#46618a">Most-linked first</text><line x1="58" y1="38" x2="78" y2="38" stroke="#f2820c" stroke-width="2" stroke-dasharray="none"></line><text x="84" y="42" font-size="11.5" fill="#46618a">Least-linked first</text><line x1="58" y1="54" x2="78" y2="54" stroke="#7a8fac" stroke-width="2" stroke-dasharray="none"></line><text x="84" y="58" font-size="11.5" fill="#46618a">Random orders</text><line x1="58" y1="70" x2="78" y2="70" stroke="#0f2340" stroke-width="2" stroke-dasharray="5 4"></line><text x="84" y="74" font-size="11.5" fill="#46618a">Heaps' law fit</text></svg></div>
+                </div>
+                <div class="plot">
+                  <h3>Each order against random, at two points</h3>
+                  <p class="axis-note">Dot: how many more (right) or fewer (left) types an order has than the random mean after the same number of tokens. Band: one standard deviation of the random orders either side of zero. The badge is z.</p>
+                  <div id="chart-heaps-gap"><svg viewBox="0 0 519 300" width="519" height="300" role="img" aria-label="Each order's number of types against the random orders' mean, after the same number of tokens" class="w4-strip"><line x1="199" y1="6" x2="199" y2="250" stroke="#e6ecf3" stroke-width="1"></line><text x="199" y="266" font-size="11.5" fill="#7a8fac" text-anchor="middle">−800</text><line x1="261.5" y1="6" x2="261.5" y2="250" stroke="#e6ecf3" stroke-width="1"></line><text x="261.5" y="266" font-size="11.5" fill="#7a8fac" text-anchor="middle">−400</text><line x1="324" y1="6" x2="324" y2="250" stroke="#e6ecf3" stroke-width="1"></line><text x="324" y="266" font-size="11.5" fill="#7a8fac" text-anchor="middle">0</text><line x1="386.5" y1="6" x2="386.5" y2="250" stroke="#e6ecf3" stroke-width="1"></line><text x="386.5" y="266" font-size="11.5" fill="#7a8fac" text-anchor="middle">+400</text><line x1="449" y1="6" x2="449" y2="250" stroke="#e6ecf3" stroke-width="1"></line><text x="449" y="266" font-size="11.5" fill="#7a8fac" text-anchor="middle">+800</text><line x1="324" y1="6" x2="324" y2="250" stroke="#7a8fac" stroke-width="1"></line><text x="449" y="283" font-size="11.5" fill="#7a8fac" text-anchor="end">types above or below the random mean</text><text x="0" y="35" font-size="12.5" fill="#0f2340" font-weight="700">Least-linked first</text><text x="0" y="51" font-size="11.5" fill="#7a8fac">after 100,000 tokens · 109 pages</text><line x1="199" y1="38" x2="449" y2="38" stroke="#dce5f0" stroke-width="1"></line><g><rect x="291.71484705354845" y="32" width="64.57030589290315" height="12" rx="6" fill="rgba(185, 196, 210, 0.62)"><title>Random orders: one standard deviation, 207 types, either side of their mean</title></rect><line x1="324" y1="29" x2="324" y2="47" stroke="#7a8fac" stroke-width="2"></line></g><circle cx="403.55093750000003" cy="38" r="6.5" fill="#f2820c" stroke="#ffffff" stroke-width="2"><title>Least-linked first, after 100,000 tokens and 109 pages (the last linked from 2): 11,079 types, against 10,570 ± 207 in random orders</title></circle><text x="403.55093750000003" y="25" font-size="12.5" fill="#0f2340" font-weight="700" text-anchor="middle">+509</text><rect x="461" y="27" width="54.6810302734375" height="22" rx="11" fill="#eef3f9"></rect><text x="488.34051513671875" y="42.5" font-size="12.5" fill="#0f2340" font-weight="700" text-anchor="middle">z +2.5</text><text x="0" y="95" font-size="12.5" fill="#0f2340" font-weight="600">Most-linked first</text><text x="0" y="111" font-size="11.5" fill="#7a8fac">after 100,000 tokens · 14 pages</text><line x1="199" y1="98" x2="449" y2="98" stroke="#dce5f0" stroke-width="1"></line><g><rect x="291.71484705354845" y="92" width="64.57030589290315" height="12" rx="6" fill="rgba(185, 196, 210, 0.62)"><title>Random orders: one standard deviation, 207 types, either side of their mean</title></rect><line x1="324" y1="89" x2="324" y2="107" stroke="#7a8fac" stroke-width="2"></line></g><circle cx="289.80093750000003" cy="98" r="6.5" fill="#1f8fd6" stroke="#ffffff" stroke-width="2"><title>Most-linked first, after 100,000 tokens and 14 pages (the last linked from 23): 10,351 types, against 10,570 ± 207 in random orders</title></circle><text x="289.80093750000003" y="85" font-size="12.5" fill="#0f2340" font-weight="700" text-anchor="middle">−219</text><rect x="461" y="87" width="50.66796875" height="22" rx="11" fill="#eef3f9"></rect><text x="486.333984375" y="102.5" font-size="12.5" fill="#0f2340" font-weight="700" text-anchor="middle">z −1.1</text><line x1="0" y1="132" x2="519" y2="132" stroke="#dce5f0" stroke-width="1" stroke-dasharray="2 3"></line><text x="0" y="155" font-size="12.5" fill="#0f2340" font-weight="600">Least-linked first</text><text x="0" y="171" font-size="11.5" fill="#7a8fac">after 400,000 tokens · 253 pages</text><line x1="199" y1="158" x2="449" y2="158" stroke="#dce5f0" stroke-width="1"></line><g><rect x="294.7552252257978" y="152" width="58.48954954840434" height="12" rx="6" fill="rgba(185, 196, 210, 0.62)"><title>Random orders: one standard deviation, 187 types, either side of their mean</title></rect><line x1="324" y1="149" x2="324" y2="167" stroke="#7a8fac" stroke-width="2"></line></g><circle cx="329.3281249999998" cy="158" r="6.5" fill="#f2820c" stroke="#ffffff" stroke-width="2"><title>Least-linked first, after 400,000 tokens and 253 pages (the last linked from 10): 21,308 types, against 21,274 ± 187 in random orders</title></circle><text x="329.3281249999998" y="145" font-size="12.5" fill="#0f2340" font-weight="700" text-anchor="middle">+34</text><rect x="461" y="147" width="54.653564453125" height="22" rx="11" fill="#eef3f9"></rect><text x="488.3267822265625" y="162.5" font-size="12.5" fill="#0f2340" font-weight="700" text-anchor="middle">z +0.2</text><text x="0" y="215" font-size="12.5" fill="#0f2340" font-weight="700">Most-linked first</text><text x="0" y="231" font-size="11.5" fill="#7a8fac">after 400,000 tokens · 74 pages</text><line x1="199" y1="218" x2="449" y2="218" stroke="#dce5f0" stroke-width="1"></line><g><rect x="294.7552252257978" y="212" width="58.48954954840434" height="12" rx="6" fill="rgba(185, 196, 210, 0.62)"><title>Random orders: one standard deviation, 187 types, either side of their mean</title></rect><line x1="324" y1="209" x2="324" y2="227" stroke="#7a8fac" stroke-width="2"></line></g><circle cx="220.73437499999977" cy="218" r="6.5" fill="#1f8fd6" stroke="#ffffff" stroke-width="2"><title>Most-linked first, after 400,000 tokens and 74 pages (the last linked from 7): 20,613 types, against 21,274 ± 187 in random orders</title></circle><text x="220.73437499999977" y="205" font-size="12.5" fill="#0f2340" font-weight="700" text-anchor="middle">−661</text><rect x="461" y="207" width="54.6077880859375" height="22" rx="11" fill="#eef3f9"></rect><text x="488.30389404296875" y="222.5" font-size="12.5" fill="#0f2340" font-weight="700" text-anchor="middle">z −3.5</text></svg></div>
+                </div>
+              </div>
+              <div id="heaps-table"><div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Table: the numbers behind the figure</summary><div class="rx-drawer-body"><table><thead><tr><th scope="col" class="num">Tokens read</th><th scope="col" class="num">Most-linked first</th><th scope="col" class="num">z</th><th scope="col" class="num">Least-linked first</th><th scope="col" class="num">z</th><th scope="col">Random mean ± sd (500 orders)</th></tr></thead><tbody><tr data-rx=""><td class="num">1,000</td><td class="num">464</td><td class="num">1.2</td><td class="num">414</td><td class="num">-0.9</td><td class="soft">435 ± 24</td></tr><tr data-rx=""><td class="num">1,179</td><td class="num">528</td><td class="num">1.2</td><td class="num">489</td><td class="num">-0.3</td><td class="soft">496 ± 27</td></tr><tr data-rx=""><td class="num">1,389</td><td class="num">577</td><td class="num">0.4</td><td class="num">563</td><td class="num">-0.1</td><td class="soft">566 ± 29</td></tr><tr data-rx=""><td class="num">1,637</td><td class="num">640</td><td class="num">-0.1</td><td class="num">649</td><td class="num">0.2</td><td class="soft">644 ± 33</td></tr><tr data-rx=""><td class="num">1,929</td><td class="num">716</td><td class="num">-0.5</td><td class="num">731</td><td class="num">-0.1</td><td class="soft">733 ± 36</td></tr><tr data-rx=""><td class="num">2,273</td><td class="num">841</td><td class="num">0.2</td><td class="num">845</td><td class="num">0.3</td><td class="soft">834 ± 41</td></tr><tr data-rx=""><td class="num">2,679</td><td class="num">967</td><td class="num">0.4</td><td class="num">968</td><td class="num">0.4</td><td class="soft">947 ± 46</td></tr><tr data-rx=""><td class="num">3,158</td><td class="num">1,086</td><td class="num">0.2</td><td class="num">1,076</td><td class="num">0.0</td><td class="soft">1,074 ± 51</td></tr><tr data-rx=""><td class="num">3,721</td><td class="num">1,217</td><td class="num">-0.0</td><td class="num">1,210</td><td class="num">-0.2</td><td class="soft">1,219 ± 55</td></tr><tr data-rx=""><td class="num">4,386</td><td class="num">1,370</td><td class="num">-0.1</td><td class="num">1,365</td><td class="num">-0.2</td><td class="soft">1,377 ± 61</td></tr><tr data-rx=""><td class="num">5,169</td><td class="num">1,519</td><td class="num">-0.5</td><td class="num">1,575</td><td class="num">0.3</td><td class="soft">1,556 ± 67</td></tr><tr data-rx=""><td class="num">6,091</td><td class="num">1,566</td><td class="num">-2.5</td><td class="num">1,805</td><td class="num">0.7</td><td class="soft">1,754 ± 74</td></tr><tr data-rx=""><td class="num">7,179</td><td class="num">1,831</td><td class="num">-1.8</td><td class="num">2,088</td><td class="num">1.4</td><td class="soft">1,977 ± 80</td></tr><tr data-rx=""><td class="num">8,460</td><td class="num">2,047</td><td class="num">-2.0</td><td class="num">2,353</td><td class="num">1.5</td><td class="soft">2,224 ± 87</td></tr><tr data-rx=""><td class="num">9,970</td><td class="num">2,387</td><td class="num">-1.1</td><td class="num">2,640</td><td class="num">1.5</td><td class="soft">2,496 ± 97</td></tr><tr data-rx=""><td class="num">11,750</td><td class="num">2,673</td><td class="num">-1.1</td><td class="num">2,978</td><td class="num">1.6</td><td class="soft">2,799 ± 111</td></tr><tr data-rx=""><td class="num">13,848</td><td class="num">3,032</td><td class="num">-0.8</td><td class="num">3,334</td><td class="num">1.7</td><td class="soft">3,133 ± 121</td></tr><tr data-rx=""><td class="num">16,320</td><td class="num">3,400</td><td class="num">-0.8</td><td class="num">3,711</td><td class="num">1.6</td><td class="soft">3,501 ± 127</td></tr><tr data-rx=""><td class="num">19,234</td><td class="num">3,793</td><td class="num">-0.9</td><td class="num">4,136</td><td class="num">1.7</td><td class="soft">3,909 ± 134</td></tr><tr data-rx=""><td class="num">22,667</td><td class="num">4,263</td><td class="num">-0.7</td><td class="num">4,604</td><td class="num">1.8</td><td class="soft">4,355 ± 141</td></tr><tr data-rx=""><td class="num">26,714</td><td class="num">4,775</td><td class="num">-0.5</td><td class="num">5,223</td><td class="num">2.5</td><td class="soft">4,845 ± 150</td></tr><tr data-rx=""><td class="num">31,483</td><td class="num">5,308</td><td class="num">-0.4</td><td class="num">5,737</td><td class="num">2.3</td><td class="soft">5,375 ± 159</td></tr><tr data-rx=""><td class="num">37,103</td><td class="num">6,038</td><td class="num">0.5</td><td class="num">6,400</td><td class="num">2.7</td><td class="soft">5,950 ± 169</td></tr><tr data-rx=""><td class="num">43,726</td><td class="num">6,653</td><td class="num">0.4</td><td class="num">7,033</td><td class="num">2.6</td><td class="soft">6,577 ± 173</td></tr><tr data-rx=""><td class="num">51,532</td><td class="num">7,407</td><td class="num">0.9</td><td class="num">7,771</td><td class="num">2.9</td><td class="soft">7,253 ± 179</td></tr><tr data-rx=""><td class="num">60,732</td><td class="num">7,948</td><td class="num">-0.2</td><td class="num">8,439</td><td class="num">2.5</td><td class="soft">7,983 ± 184</td></tr><tr data-rx=""><td class="num">71,574</td><td class="num">8,704</td><td class="num">-0.4</td><td class="num">9,198</td><td class="num">2.2</td><td class="soft">8,774 ± 190</td></tr><tr data-rx=""><td class="num">84,351</td><td class="num">9,470</td><td class="num">-0.7</td><td class="num">10,166</td><td class="num">2.8</td><td class="soft">9,617 ± 196</td></tr><tr data-rx=""><td class="num">99,409</td><td class="num">10,337</td><td class="num">-1.0</td><td class="num">11,049</td><td class="num">2.5</td><td class="soft">10,536 ± 207</td></tr><tr data-rx=""><td class="num">117,155</td><td class="num">11,098</td><td class="num">-2.0</td><td class="num">11,906</td><td class="num">1.9</td><td class="soft">11,513 ± 210</td></tr><tr data-rx=""><td class="num">138,070</td><td class="num">12,190</td><td class="num">-1.6</td><td class="num">13,016</td><td class="num">2.1</td><td class="soft">12,549 ± 218</td></tr><tr data-rx=""><td class="num">162,718</td><td class="num">13,372</td><td class="num">-1.3</td><td class="num">14,106</td><td class="num">2.0</td><td class="soft">13,669 ± 221</td></tr><tr data-rx=""><td class="num">191,766</td><td class="num">14,687</td><td class="num">-0.8</td><td class="num">15,234</td><td class="num">1.7</td><td class="soft">14,862 ± 220</td></tr><tr data-rx=""><td class="num">226,000</td><td class="num">15,945</td><td class="num">-0.9</td><td class="num">16,564</td><td class="num">1.9</td><td class="soft">16,147 ± 219</td></tr><tr data-rx=""><td class="num">266,346</td><td class="num">17,283</td><td class="num">-1.1</td><td class="num">17,882</td><td class="num">1.7</td><td class="soft">17,513 ± 217</td></tr><tr data-rx=""><td class="num">313,893</td><td class="num">18,541</td><td class="num">-2.0</td><td class="num">19,252</td><td class="num">1.4</td><td class="soft">18,962 ± 211</td></tr><tr data-rx=""><td class="num">369,929</td><td class="num">19,843</td><td class="num">-3.3</td><td class="num">20,704</td><td class="num">1.0</td><td class="soft">20,504 ± 202</td></tr><tr data-rx=""><td class="num">435,969</td><td class="num">21,584</td><td class="num">-3.1</td><td class="num">22,114</td><td class="num">-0.2</td><td class="soft">22,145 ± 181</td></tr><tr data-rx=""><td class="num">513,797</td><td class="num">23,340</td><td class="num">-3.7</td><td class="num">23,841</td><td class="num">-0.4</td><td class="soft">23,905 ± 154</td></tr><tr data-rx=""><td class="num">605,520</td><td class="num">25,295</td><td class="num">-3.9</td><td class="num">25,831</td><td class="num">0.5</td><td class="soft">25,771 ± 121</td></tr><tr data-rx=""><td class="num">713,617</td><td class="num">27,754</td><td class="num"></td><td class="num">27,754</td><td class="num"></td><td class="soft">27,754 ± 0</td></tr></tbody></table></div></details></div></div>
+            </div>
+            <div class="rx-drawers rx-foot">
+              <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body">
+                <p>A token is one word as it occurs, a type one distinct word: "the Hulk smashes the tank" has 5 tokens and 4 types, since "the" comes twice. We read the 303 pages one after another, 713,617 tokens in all, and counted after every token how many types had appeared so far. The whole corpus holds 27,754 types.</p>
+                <p>Heaps' law says that count grows as a power of the tokens read, V = K n<sup>β</sup>, with β below 1: the more you have read, the more often a word is one you have met before. On Marvel β = 0.56, so reading 4 times as many words turns up about 2.2 times as many types.</p>
+                <p>A word is a run of letters in any alphabet with an inner apostrophe or hyphen kept, lowercased, with a possessive 's removed; digits and punctuation are dropped. So "Spider-Man's" and "Spider-Man" are one type and "Pérez" stays whole. Ties in link count are broken by the page's id. Every curve is read off on 41 token counts spaced evenly on a log scale from 1,000 tokens to the whole corpus.</p>
+                <p>The gap of an ordered curve to random is given in types and in z, the number of standard deviations of the 500 random orders. Every order ends on the same 27,754 types, so the random spread shrinks to nothing near the end; the two token counts we quote stay well short of it.</p>
+                <p>The fit is a straight line through log V against log n on the random orders' mean, over the 26 grid points from 11,750 to 713,617 tokens: K = 16.7, β = 0.56. Fitted to each random order alone, β runs from 0.54 to 0.57 (5th to 95th percentile).</p>
+                <p id="heaps-limit">Pages differ in length, and the most-linked pages are the long ones. Shuffling in-degree only among pages of similar length, in fifths by word count, 500 times, leaves both gaps standing (z = 3.2 for least-linked first at 100,000 tokens, z = −2.8 for most-linked first at 400,000), but fifths hold length only roughly.</p>
+              </div></details>
+              <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body">
+                <p>The gaps hold across the grid, not only at 100,000 and 400,000 tokens. The least-linked order stays 1.6 to 2.9 standard deviations above random from 11,750 to 266,346 tokens, and the most-linked order 2.0 to 3.9 below from 313,893 to 605,520 tokens. Each order leads or lags only while it reads its own end of the list: by 400,000 tokens the least-linked order has begun 253 pages, reached pages linked from 10 others, and sits at random (z = 0.2).</p>
+                <p>Every count rests on one word rule; keeping digits or splitting hyphens would move them. And the link count only covers links among these 303 pages, not a character's fame in the comics: 58 of the pages get no link at all.</p>
+              </div></details>
+              <details class="rx-drawer"><summary>Does the curve flatten?</summary><div class="rx-drawer-body">
+                <p>It bends but never flattens out. The slope on log-log axes is 0.63 below 91,570 tokens and 0.49 above, so new words come more slowly as the corpus grows. In the last tenth of the corpus the random orders still meet 18 new types per 1,000 tokens.</p>
+              </div></details>
+              <details class="rx-drawer"><summary>What we read in the pages</summary><div class="rx-drawer-body" id="heaps-checked">
+                <p>The last 100 pages in most-linked order, each linked from 2 pages or fewer, hold 90,907 tokens and add 2,144 types no earlier page used. 1,055 of them (49%) look like names, words that only ever occur with a capital letter, against 41% ± 1.6% for the last 100 pages of the random orders.</p>
+                <div id="heaps-passages"><p class="fineprint">A new likely name, “Marvelman”, on a page linked from 0 pages, which adds 178 new types</p><blockquote class="kit-passage"><p>The character was revived by Dez Skinn in 1982, with Alan Moore and Garry Leach as the creative team on <mark>Marvelman</mark> in the pages of Warrior.</p><cite><a href="https://en.wikipedia.org/wiki/Miracleman_(character)">Miracleman (character)</a></cite></blockquote><p class="fineprint">A new other word, “reclaimed”, on a page linked from 1 page, which adds 134 new types</p><blockquote class="kit-passage"><p>Following his corruption by Morgan le Fay, his twin sister Betsy <mark>reclaimed</mark> the mantle of Captain Britain, with Brian taking up the moniker Captain Avalon as defender of Avalon.</p><cite><a href="https://en.wikipedia.org/wiki/Brian_Braddock">Brian Braddock</a></cite></blockquote></div>
+                <p>The split is a rough proxy: 53 of those names are capitalised only where they open a sentence or a line.</p><div id="heaps-samples"><p class="fineprint">Most frequent new likely names: miracleman, baymax, marvelman, hazzard, stingray, hiro, bochs, blackwulf, lucian, juniper, solarman, coldblood.</p><p class="fineprint">Most frequent new other words: scarab, charcoal, birthmark, nanotech, synthformer, assimilation, auditioned, booms, miner, mirage, oceanographer, braces.</p></div>
+              </div></details>
+            </div>
+          </div>
+        </section></div></main></div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 1100}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

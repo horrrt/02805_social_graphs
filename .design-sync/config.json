@@ -1,0 +1,102 @@
+{
+  "projectId": "90b493ad-23f8-40f4-9a54-b3d9b491d29b",
+  "shape": "package",
+  "pkg": "log-log-legends-kit",
+  "globalName": "LogLogKit",
+  "buildCmd": ".design-sync/pkg/build.sh",
+  "srcDir": "../../src/kit",
+  "tsconfig": "tsconfig.json",
+  "cssEntry": "gen/site.css",
+  "extraFonts": [
+    "../../src/styles/type.css"
+  ],
+  "componentSrcMap": {
+    "CorridorRoot": "setup/CorridorRoot.tsx",
+    "Anatomy": "../../src/components/post/Anatomy.tsx",
+    "Card": "../../src/components/post/Card.tsx",
+    "ClosingCard": "../../src/components/post/ClosingCard.tsx",
+    "Drawer": "../../src/components/post/Drawer.tsx",
+    "Drawers": "../../src/components/post/Drawers.tsx",
+    "FigRow": "../../src/components/post/FigRow.tsx",
+    "FindingRow": "../../src/components/post/FindingRow.tsx",
+    "FindingsStrip": "../../src/components/post/FindingsStrip.tsx",
+    "HeroStat": "../../src/components/post/HeroStat.tsx",
+    "HowTo": "../../src/components/post/HowTo.tsx",
+    "Notice": "../../src/components/post/Notice.tsx",
+    "Plot": "../../src/components/post/Plot.tsx",
+    "PostHero": "../../src/components/post/PostHero.tsx",
+    "PostSection": "../../src/components/post/PostSection.tsx",
+    "QaDisclosure": "../../src/components/post/QaDisclosure.tsx",
+    "QuestionCard": "../../src/components/post/QuestionCard.tsx",
+    "QuestionHeader": "../../src/components/post/QuestionHeader.tsx",
+    "SectionOpener": "../../src/components/post/SectionOpener.tsx",
+    "SectionRail": "../../src/components/post/SectionRail.tsx",
+    "SegmentedControl": "../../src/components/post/SegmentedControl.tsx",
+    "Term": "../../src/components/post/Term.tsx",
+    "W4Figure": "../../src/components/post/W4Figure.tsx",
+    "BrandMark": "../../src/components/site/BrandMark.tsx",
+    "PostTopbar": "../../src/components/site/PostTopbar.tsx",
+    "SiteFooter": "../../src/components/site/SiteFooter.tsx",
+    "SkipLink": "../../src/components/site/SkipLink.tsx"
+  },
+  "provider": {
+    "component": "CorridorRoot"
+  },
+  "docsDir": "gen/docs",
+  "docsMap": {
+    "CorridorRoot": "setup/CorridorRoot.md"
+  },
+  "readmeHeader": ".design-sync/conventions.md",
+  "overrides": {
+    "DecoratedTable": {
+      "cardMode": "column"
+    },
+    "Table": {
+      "cardMode": "column"
+    },
+    "CorridorRoot": {
+      "cardMode": "column"
+    },
+    "HoverTipHost": {
+      "cardMode": "column"
+    },
+    "SectionRail": {
+      "cardMode": "single",
+      "viewport": "1400x800"
+    },
+    "FindingsStrip": {
+      "cardMode": "column",
+      "viewport": "900x900"
+    },
+    "Anatomy": {
+      "cardMode": "column"
+    },
+    "Card": {
+      "cardMode": "column"
+    },
+    "FigRow": {
+      "cardMode": "column"
+    },
+    "FindingRow": {
+      "cardMode": "column"
+    },
+    "Plot": {
+      "cardMode": "column"
+    },
+    "PostSection": {
+      "cardMode": "column"
+    },
+    "QuestionCard": {
+      "cardMode": "column"
+    },
+    "Term": {
+      "cardMode": "column"
+    },
+    "PostTopbar": {
+      "cardMode": "column"
+    }
+  },
+  "guidelinesGlob": [
+    "gen/guidelines/*.md"
+  ]
+}

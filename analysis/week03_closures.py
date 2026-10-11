@@ -15,7 +15,7 @@ travellers:
     4  ban on all regions, or a total border closure
 
 This bins it into one row per day: how many countries reported, and how many
-of them sat at each level. Writes docs/assets/data/week03_closures.json.
+of them sat at each level. Writes public/assets/data/week03_closures.json.
 
     python analysis/week03_closures.py [--force]
 
@@ -32,13 +32,13 @@ import csv
 import io
 import json
 import pathlib
-import urllib.request
 
 from check_pages import check
+import fetch as web
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 RAW = ROOT / "build" / "raw"
-OUT = ROOT / "docs" / "assets" / "data"
+OUT = ROOT / "public" / "assets" / "data"
 
 SOURCE = (
     "https://raw.githubusercontent.com/OxCGRT/covid-policy-dataset/main/data"
@@ -61,9 +61,7 @@ def fetch(force: bool) -> str:
         print(f"  cached  {CACHE.name} ({CACHE.stat().st_size // 1024 // 1024} MB)")
         return CACHE.read_text(encoding="utf-8")
     print(f"  fetch   {CACHE.name} … ", end="", flush=True)
-    request = urllib.request.Request(SOURCE, headers={"User-Agent": USER_AGENT})
-    with urllib.request.urlopen(request, timeout=600) as response:
-        body = response.read().decode("utf-8", "replace")
+    body = web.content(web.session(USER_AGENT), SOURCE, timeout=600).decode("utf-8", "replace")
     RAW.mkdir(parents=True, exist_ok=True)
     CACHE.write_text(body, encoding="utf-8")
     print(f"{len(body) // 1024 // 1024} MB")

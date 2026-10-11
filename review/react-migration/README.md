@@ -1,0 +1,3148 @@
+# React rewrite: the module map
+
+This file records how the 58 scripts under `src/scripts/` behaved on main at 435d21c, surveyed on 1 Oct 2026. It is generated from [map.json](map.json), which holds the same survey as data. Later batches cite it: before converting a module, read its DOM contract (every element it reads, writes or wires), its state and its hazards here, then the source itself. The survey describes main as it was; when the source and this file disagree, the source wins and the batch says so.
+
+Each module lists:
+
+- **Role**, size and conversion risk (low, medium, high).
+- **Import side effects**: what runs when the module is imported, before any call.
+- **DOM contract**: `#id: READ | WRITE | WIRE | TOGGLE ...` per element.
+- **State**: module singletons and what other modules share through them.
+- **Cross-module**: who imports it and what they rely on.
+- **Hazards**: the surveyor's conversion notes.
+- **Charts** and **tests that read it**.
+
+Gap requests for files a batch does not own go to [requests/](requests/README.md).
+
+## Modules
+
+| module | lines | risk |
+| --- | ---: | --- |
+| [src/scripts/corridor.js](#srcscriptscorridorjs) | 3479 | high |
+| [src/scripts/week03-boot.js](#srcscriptsweek03-bootjs) | 402 | high |
+| [src/scripts/questions.js](#srcscriptsquestionsjs) | 1471 | medium |
+| [src/scripts/echarts-views.js](#srcscriptsecharts-viewsjs) | 861 | medium |
+| [src/scripts/pages/styleguide.js](#srcscriptspagesstyleguidejs) | 29 | low |
+| [src/scripts/variants/d3.js](#srcscriptsvariantsd3js) | 594 | medium |
+| [src/scripts/variants/echarts.js](#srcscriptsvariantsechartsjs) | 412 | low |
+| [src/scripts/variants/globe.js](#srcscriptsvariantsglobejs) | 162 | low |
+| [src/scripts/variants/atlas.js](#srcscriptsvariantsatlasjs) | 361 | medium |
+| [src/scripts/variants/deck.js](#srcscriptsvariantsdeckjs) | 271 | medium |
+| [src/scripts/week04-place.js](#srcscriptsweek04-placejs) | 1249 | high |
+| [src/scripts/week04-frame.js](#srcscriptsweek04-framejs) | 280 | high |
+| [src/scripts/week04-ui.js](#srcscriptsweek04-uijs) | 63 | low |
+| [src/scripts/week04-map-reset.js](#srcscriptsweek04-map-resetjs) | 26 | low |
+| [src/scripts/week04-tables.js](#srcscriptsweek04-tablesjs) | 161 | medium |
+| [src/scripts/week04-questions.js](#srcscriptsweek04-questionsjs) | 990 | medium |
+| [src/scripts/week04-methods.js](#srcscriptsweek04-methodsjs) | 1011 | medium |
+| [src/scripts/week04-cut.js](#srcscriptsweek04-cutjs) | 237 | high |
+| [src/scripts/week04-entities.js](#srcscriptsweek04-entitiesjs) | 1023 | high |
+| [src/scripts/week04-pagerank.js](#srcscriptsweek04-pagerankjs) | 535 | medium |
+| [src/scripts/week04-jobs.js](#srcscriptsweek04-jobsjs) | 489 | medium |
+| [src/scripts/week04-years.js](#srcscriptsweek04-yearsjs) | 486 | medium |
+| [src/scripts/week04-roles.js](#srcscriptsweek04-rolesjs) | 351 | medium |
+| [src/scripts/week04-skills.js](#srcscriptsweek04-skillsjs) | 287 | low |
+| [src/scripts/week04-skills-radar.js](#srcscriptsweek04-skills-radarjs) | 534 | medium |
+| [src/scripts/week04-staffing.js](#srcscriptsweek04-staffingjs) | 367 | high |
+| [src/scripts/week04-strip.js](#srcscriptsweek04-stripjs) | 303 | medium |
+| [src/scripts/week04-vis-intros.js](#srcscriptsweek04-vis-introsjs) | 595 | medium |
+| [src/scripts/week04-vis-more.js](#srcscriptsweek04-vis-morejs) | 406 | low |
+| [src/scripts/week04-vis-staffing.js](#srcscriptsweek04-vis-staffingjs) | 394 | low |
+| [src/scripts/kit.js](#srcscriptskitjs) | 203 | medium |
+| [src/scripts/tips.js](#srcscriptstipsjs) | 69 | medium |
+| [src/scripts/graph.js](#srcscriptsgraphjs) | 401 | high |
+| [src/scripts/week05-frame.js](#srcscriptsweek05-framejs) | 184 | high |
+| [src/scripts/week05-map.js](#srcscriptsweek05-mapjs) | 45 | low |
+| [src/scripts/week05-relations.js](#srcscriptsweek05-relationsjs) | 101 | medium |
+| [src/scripts/week05-copying.js](#srcscriptsweek05-copyingjs) | 130 | medium |
+| [src/scripts/week05-search.js](#srcscriptsweek05-searchjs) | 172 | medium |
+| [src/scripts/week05-autocomplete.js](#srcscriptsweek05-autocompletejs) | 158 | medium |
+| [src/scripts/week05-heaps.js](#srcscriptsweek05-heapsjs) | 200 | medium |
+| [src/scripts/week05-fame.js](#srcscriptsweek05-famejs) | 124 | low |
+| [src/scripts/week05-weird.js](#srcscriptsweek05-weirdjs) | 142 | medium |
+| [src/scripts/week-template.js](#srcscriptsweek-templatejs) | 63 | low |
+| [src/scripts/pages/kit.js](#srcscriptspageskitjs) | 85 | low |
+| [src/scripts/cabinet.js](#srcscriptscabinetjs) | 409 | high |
+| [src/scripts/packs.js](#srcscriptspacksjs) | 402 | high |
+| [src/scripts/transit.js](#srcscriptstransitjs) | 343 | high |
+| [src/scripts/ride.mjs](#srcscriptsridemjs) | 130 | low |
+| [src/scripts/arcade-core.mjs](#srcscriptsarcade-coremjs) | 303 | low |
+| [src/scripts/cards.js](#srcscriptscardsjs) | 30 | low |
+| [src/scripts/lobby.js](#srcscriptslobbyjs) | 174 | low |
+| [src/scripts/collection-model.mjs](#srcscriptscollection-modelmjs) | 9 | low |
+| [src/scripts/weeks.js](#srcscriptsweeksjs) | 110 | low |
+| [src/scripts/type-scale.mjs](#srcscriptstype-scalemjs) | 23 | low |
+| [src/scripts/site.js](#srcscriptssitejs) | 19 | low |
+| [src/scripts/mockups.js](#srcscriptsmockupsjs) | 231 | medium |
+| [src/scripts/signal.js](#srcscriptssignaljs) | 202 | medium |
+| [src/scripts/pages/screen-test.js](#srcscriptspagesscreen-testjs) | 358 | high |
+
+### src/scripts/corridor.js
+
+3479 lines, risk high. Core engine of the Week 3 'Corridor Control' post: it loads five JSON files, holds one page-wide state singleton (year, selected country, hover, style choices), draws every canvas chart through a swappable renderer table R, and fills most of the page's prose, inspector panels, tables, cards, selects and tooltips from the data. week03-boot.js and the variants/questions modules extend it through the exported api.
+
+Imports: `./site.js`, `./type-scale.mjs`.
+
+Exports: `rgb`, `refreshPalette`, `ARC_STYLES`, `arcSpec`, `LINK_ENCODINGS`, `THICKNESS`, `EARTH_SIZES`, `earthScale`, `globeRadius`, `linkSpec`, `rampColour`, `linkAlpha`, `R`, `installRenderer`, `GLOSSARY`, `earthTexture`, `textureURL`, `paintPhotoGlobe`, `api`, `restyle`, `start`.
+
+**Import side effects.** Nothing renders at import. Import does: (1) compute const TEXTURE_URL = asset('assets/textures/earth-day-2048.jpg').href, which builds a URL with the deploy build id; (2) create module singletons for state, R, pickable, tipEl, glossaryWired, texture/texturePending, sphereCache, decoded, flowTimer, SERIES, DEGREE_BINS, TYPES, CANVAS_RENDERER and api. Work begins only when week03-boot.js calls start() (top-level `await start()` at boot line 380). start() fills R with any canvas renderers a variant has not already installed, then main() fetches week03_corridors.json, week03_edges.json, week03_flights.json, week03_cartography.json (optional, .catch -> null) and world_outline.geo.json (optional), all through asset(). main() then wires every listener and does the first full render. On a fetch or parse failure it writes the error into #status and rethrows. refreshPalette() reads `typeof SERIES` and `api` before their declarations. This only works because nobody calls it until after module evaluation. Importing it earlier, for example from a React component body during module init, would throw a TDZ ReferenceError.
+
+**DOM contract.**
+
+- #year-slider: READ value; WRITE .max and .value in main(); WIRE 'input' -> setYear (never removed)
+- #year-now: WRITE textContent (main, setYear)
+- #status: WRITE textContent (summary counts, or the load-error message)
+- #tails-tag: WRITE textContent '(YEAR · follows the slider)' in setYear
+- #globe-canvas: canvas host for R.globe. surface() rewrites style.height, width and height. WIRE pointerdown/pointermove/pointerup for drag-rotate and click-select, with setPointerCapture (setupGlobe)
+- #map-canvas: canvas host for R.map. WIRE click (territory or nearest-dot select), pointermove (hover, cursor style, net-balance tooltip, R.map redraw), pointerleave (hideTip)
+- #map-toggle: WIRE delegated click on button[data-layer]; TOGGLE aria-pressed on each child button; sets state.layer; clears #net-note when leaving the 'net' layer. The buttons are server markup (migration/flights/both, plus net further down)
+- #net-note: WRITE innerHTML, a prose sentence with \<b> counts and the largest surplus and deficit country names, from netNote() during drawNetMap. Cleared via textContent by setupMap
+- #hist, #ccdf, #scatter-between, #scatter-z, #prestige, #cartography, #dk-time, #dk-rank, #dk-nordic: canvas hosts. surface() rewrites style.height, width and height. enablePicking() sets dataset.picking='on' and the title attribute, and WIRES pointermove (cursor, tooltip, state.hover with redraw of 5 charts), pointerleave and click (select)
+- #\<chart>-table (hist-table, ccdf-table, scatter-between-table, scatter-z-table, prestige-table, cartography-table, dk-time-table, dk-rank-table, dk-nordic-table): CREATED by chartTable() as \<details class='chart-table' id=...>, INSERTED with host.after(box) as a sibling of the canvas (outside the chart host), and REPLACED via innerHTML on every redraw while keeping the open state. The JSX page has none of these elements
+- #sel-flag, #sel-name, #sel-codes: WRITE textContent (renderInspector)
+- #sel-stats: REPLACE innerHTML with \<div>\<dt class='explains' data-explain=...>…\</dt>\<dd>…\</dd>\</div> rows, including a Role row with \<span class='chip'> and inline style color:#7a8fac
+- #sel-in, #sel-out: REPLACE innerHTML with \<li>\<span>…\</span>\<b>…\</b>\</li> lists
+- #sc-flag, #sc-name, #sc-codes: WRITE textContent; #sc-stats: REPLACE innerHTML (glossary rows): section 4 mini inspector
+- #pr-flag, #pr-name, #pr-codes: WRITE textContent; #pr-stats, #pr-sources: REPLACE innerHTML; #pr-note: WRITE textContent (renderPrestigePanel, guarded by the existence of #pr-name)
+- #between-note: WRITE textContent, prose with computed zero-betweenness counts (writeBetweennessNote)
+- #prestige-note: WRITE textContent, prose with Spearman rho values (writePrestigeNote)
+- #prestige-movers: WRITE textContent, a two-sentence prose paragraph naming the biggest faller and riser and their top senders (writeMovers)
+- #twin-stats: REPLACE innerHTML with glossary rows; #flight-caveat, #null-method: WRITE textContent (prose); #null-tag, #twin-tag: WRITE textContent, overwriting server placeholders; #z-top: REPLACE innerHTML (top 6 brokers list); #z-floor: WRITE textContent (prose naming the fragile-z countries): all in renderTwinStats
+- #typology-tag: WRITE textContent; #typology-strip: REPLACE innerHTML with span.type-slice[data-type] using inline width/background/color styles
+- #typology-cards: REPLACE innerHTML with seven article.type[data-type] cards (div.badge, h3, p, p.eg with button.eg-chip[data-iso3], button.eg-all[data-type]). WIRE once (dataset.wired='on') delegated pointermove (chip tooltip), pointerleave and click (chip -> select, eg-all -> openTypologyDrawer)
+- #typology-note: REPLACE innerHTML, a prose notice with \<b> headline, top-3 role movers, Venezuela outward stock figures and floor counts. The ISO code VEN is hard-coded in the prose
+- #type-drawer: REPLACE innerHTML (div.drawer-head, button.drawer-close, p.drawer-note, table.drawer-table with tr[data-iso3]); TOGGLE the hidden attribute; WIRE click on .drawer-close and on each tbody tr (new listeners on every open, attached to fresh nodes)
+- #edge-origin, #edge-dest: REPLACE innerHTML with \<option>s; SET .value (ESP/COL defaults); WIRE change -> renderEdge; READ .value
+- #edge-kind: WRITE textContent; #edge-facts: REPLACE innerHTML with div.fact.explains[data-explain] dt/dd
+- #edge-note > span:last-child: WRITE textContent or innerHTML (prose verdict with \<b>). Writes into a child of server markup that contains a separate span.ico
+- #dk-head: REPLACE innerHTML (div.who with flag/name/codes plus div.metric.explains[data-explain] tiles)
+- #dk-in, #dk-out: REPLACE innerHTML of \<table class='ego'> with \<caption>, then bare \<tr>s without \<tbody>. This wipes the server caption, which contains span.dk-name
+- .dk-name (querySelectorAll, 6+ spans scattered through section 8 headings and captions): WRITE textContent = selected country name. These are prose spans outside any chart host
+- #dk-country: REPLACE innerHTML with every country as an \<option>; SET .value on each panel render; WIRE change -> select
+- #dk-verdict > span:last-child: REPLACE innerHTML, a one-line prose verdict with \<b>
+- document (global): WIRE a pointermove listener once (wireGlossary) that shows a tooltip for any [data-explain] element anywhere on the page, and hides the tooltip when the target is not inside a canvas or svg. This is the page-wide term-popup system
+- document.body: APPEND a single div.chart-tip (lazy, hidden toggled). Its innerHTML, style.left and style.top are written on every hover
+- window: WIRE resize -> redraw all 7 renderer entries (never removed). DISPATCH CustomEvent 'week03:restyle' from restyle(), which questions.js and echarts-views.js consume. READ matchMedia('(prefers-reduced-motion: reduce)')
+- getComputedStyle(document.body) READ of the CSS custom properties --people, --access, --ink, --ink-mute, --line-soft, --outbound, --gain, --loss. data-palette and data-skin on body/root are set by week03-boot, and this module rereads them via restyle()
+
+**State.** Module singletons: `state` (data, edges, flights, cart, world, year, selected, layer, arcs, links, thickness, focus, dots, basemap, earth, hover, axisMode{hist,ccdf}, dash, rotation, dragging). Variants, questions.js and week03-boot read and mutate it directly through api.state. Also `R` (the renderer table that installRenderer merges into), `pickable` (Map canvasId -> hit marks; variants push into it via api.collect), palette `let`s (PEOPLE, ACCESS, INK, MUTE, GRID, OUTBOUND, GAIN, LOSS) mirrored into the mutable api.colours object that questions.js destructures at draw time, SERIES colours, tipEl, glossaryWired, texture/texturePending, sphereCache, decoded (texture pixel cache), and flowTimer (setInterval handle). No localStorage, sessionStorage, URL params or history in this file. Those belong to week03-boot (skin/palette/variant choices). Window side: the resize listener, the document pointermove glossary listener, the body-appended .chart-tip, and the 'week03:restyle' CustomEvent. It reads no window globals itself, but boot passes window[renderer.global] (d3/echarts/deck/Globe) into variant installers.
+
+**Cross-module.** Driven entirely by src/scripts/week03-boot.js, which imports {api, installRenderer, restyle, start}. Boot sets api.state style fields, wires the axis-mode buttons (api.state.axisMode plus api.R.hist/ccdf), installs a variant renderer (variants/d3.js, echarts.js, deck.js, globe.js, atlas.js) that overrides R entries before start(), calls restyle() when the style bar changes, then awaits start(). questions.js and echarts-views.js consume api (surface, axes, chartTable, colours, showTip, select, spotlight, netColour and more) and listen for 'week03:restyle'. variants/d3.js also relies on the exemption in wireGlossary for svg targets. The module assumes the full server-rendered week03 page.tsx markup exists before start(), and it never checks the 40+ $() lookups for null except in a few guarded spots (pr-*, net-note, between-note, prestige-*, typology-tag/strip/note, type-drawer, dk-country, canvases). A missing #edge-origin, #sel-stats, #dk-head, #twin-stats, #z-top or #year-slider throws.
+
+**Hazards.** This module is the hardest piece of the site to convert. (1) It is a whole-page controller with one shared selection: select() fans out to the inspector, three side panels, section 8 prose and every chart. A React port needs a page-level context or store (selectedIso3, hoverIso3, year, layer, style options, axisMode) plus a data provider for the five JSON files. Any variant or questions module that mutates api.state directly must be ported in the same pass, or bridged with a mutable store and subscriptions. (2) Much of its output lands outside chart hosts as prose and markup: it writes computed sentences into #net-note, #between-note, #prestige-note, #prestige-movers, #typology-note, #z-floor, #null-method, #flight-caveat, #dk-verdict and #edge-note span:last-child. It renames every .dk-name span in section 8 headings. It overwrites server placeholder text in #null-tag, #twin-tag, #tails-tag, #year-now and #status. It builds the inspector dl/ol lists, the dk-head metric tiles, the ego tables (replacing the server \<caption> and its .dk-name span, with bare \<tr>s that would also break hydration if React owned the table), seven typology cards, the strip, the drawer and the \<option> lists of three selects. All of that becomes JSX driven by derived data. (3) chartTable() inserts \<details id='\<canvas>-table'> siblings after each canvas with host.after(). React does not know these nodes exist, so the conversion should make each table a child component of its chart wrapper. (4) A global document pointermove listener drives tooltips for any [data-explain] element, and one div.chart-tip appended to body is shared by every chart and by the variants and questions modules. This needs a Tooltip context/portal and a GlossaryTerm component. The exemption for canvas and svg targets is a cross-module contract with variants/d3.js. (5) installRenderer/R is a runtime plugin system. Variant renderers replace globe, map, hist, ccdf, scatters, prestige, denmark, setupGlobe and setupMap, while drawCartography, the typology DOM and the inspectors are not routed through R. A React design needs a renderer prop or strategy per chart component, and the canvas fallback must keep that inherit-unless-overridden behaviour. (6) Imperative canvas drawing with per-canvas hit-mark registries (pickable Map keyed by element id), plus picking listeners that redraw five other charts on every hover change. Port each canvas to a component with a ref and a useEffect redraw keyed on [data, year, selected, hover, palette, style, size]. Hover currently forces cross-chart redraws, so throttle or memoize. Element ids are load-bearing: pickable, chartTable ids and enablePicking all key on canvas.id. (7) The palette comes from getComputedStyle CSS variables at draw time, and colours get string-concatenated alpha (`${PEOPLE}66`, SERIES colour + 'cc'). The next-build test enforces six-digit hex, and api.colours is a mutable object other modules destructure. Keep a palette hook that rereads on skin changes. (8) Timers and listeners are never torn down: setInterval flowTimer, the window resize listener, document pointermove, select change and slider input listeners, and drawer row listeners added on every open. In React with StrictMode double-mount or route changes, these would duplicate. They need effect cleanups, and the module-level singletons (state, texture caches, glossaryWired, tipEl) would survive client navigation and leak stale state between visits. (9) A TDZ hazard: refreshPalette references SERIES and api, which are declared later in the module. (10) Tests couple to the source text. tests/migration-docs.test.mjs regex-scans corridor.js for $("id") calls and asserts each id exists in out/weeks/week03/index.html. It harvests class="..." and className = "..." strings from corridor.js for the styleguide coverage test. It slices the source between 'export const ARC_STYLES' and 'export function arcSpec', and between 'export const EARTH_SIZES' and 'export function earthScale'. It matches /function spotlight\(\)/ and /function peersOf\(/, requires getPropertyValue and the literal strings "--people", "--access" and "--ink" in the file. tests/next-build.test.mjs references the `${PEOPLE}66` pattern, and tests/theme.test.mjs lists corridor.js as LEGACY to exempt it from the --cv-* token check. Splitting or renaming the file breaks these tests unless they are rewritten alongside. The pure helpers (rgb, rampColour, arc/link specs, netBand/netColour, haversine/peersOf, degree binning, ccdf, rankCorrelation, withArticle, TYPES/ROLE_ORDER, GLOSSARY) extract cleanly into a lib module first, which is the low-risk opening step.
+
+**Charts.**
+
+- Globe (corridor arcs on an orthographic globe), host `#globe-canvas`, library canvas. Data: week03_corridors.json (nodes, coords, metrics); week03_edges.json (top 500 edges for the year, plus up to 60 of the selected country's); world_outline.geo.json; public/assets/textures/earth-day-2048.jpg (photo basemap, decoded to pixels and reprojected per pixel with a cache). Controls: drag on canvas -> state.rotation; click on canvas -> select territory or nearest dot; #year-slider; style bar in week03-boot (arcs, links, thickness, focus, dots, basemap, earth) via api.state plus restyle(); the 'flow' arc style runs a 50 ms setInterval dash animation (syncFlow). Redraws on: select, year change, drag move, flow timer tick, texture onload, resize, restyle. variants atlas/deck/globe/d3/echarts can replace R.globe and R.setupGlobe
+- Flat twin map (migration and/or flight arcs, or net-balance choropleth with in-canvas legend), host `#map-canvas`, library canvas. Data: week03_corridors.json; week03_edges.json (top 420); week03_flights.json (top 420 routes); world_outline.geo.json; earth texture. Controls: #map-toggle buttons[data-layer] (migration/flights/both/net); hover -> state.hover highlight plus net tooltip; click -> select; #year-slider; style bar via restyle; flow timer. Redraws on: select, year, layer toggle, hover change, flow tick, texture onload, resize, restyle
+- Degree histogram (in/out/flight, binned, three axis modes), host `#hist`, library canvas. Data: week03_corridors.json (in_degree, out_degree, flight_partners). Controls: axis-mode buttons wired in week03-boot that set api.state.axisMode.hist and call R.hist; hover/click picking; #year-slider. Redraws on: year, select, hover, axis-mode change, resize, restyle
+- Degree CCDF (three series), host `#ccdf`, library canvas. Data: week03_corridors.json. Controls: axis-mode buttons (state.axisMode.ccdf) from boot; hover/click picking; #year-slider. Redraws on: year, select, hover, axis mode, resize, restyle
+- Betweenness vs in-degree scatter (migration plus flights, zero baseline row, broker labels), host `#scatter-between`, library canvas. Data: week03_corridors.json (null_year metrics, null_summary, flight_betweenness). Controls: hover/click picking. Redraws on: select, hover, resize, restyle (fixed to null_year, ignores the slider)
+- z-score vs in-degree scatter, host `#scatter-z`, library canvas. Data: week03_corridors.json (null_year z). Controls: hover/click picking. Redraws on: select, hover, resize, restyle
+- Prestige slope chart (rank by people vs rank by PageRank), host `#prestige`, library canvas. Data: week03_corridors.json (pagerank, in_strength ranks, pagerank_sources). Controls: hover/click picking. Redraws on: select, hover, resize, restyle. Each draw also rewrites #prestige-note and #prestige-movers
+- Role cartography scatter (Guimera-Amaral z vs P with thresholds, hub labels and leader lines), host `#cartography`, library canvas. Data: week03_cartography.json (by_year, hub_z, confident, seeds, threshold). Controls: #year-slider (via renderTypology); hover/click picking. Redraws on: year (renderTypology), select (renderInspector->select does NOT redraw it directly, but setYear does), hover does not call it, so the hover halo only shows after another redraw. Not routed through R, so variants cannot replace it
+- Spotlight time series (incoming/outgoing stock by year), host `#dk-time`, library canvas. Data: week03_corridors.json per-country years. Controls: #dk-country select; any page selection; hover picking. Redraws on: select, hover, resize, restyle (R.denmark)
+- Spotlight bridge-rank line, host `#dk-rank`, library canvas. Data: week03_corridors.json. Controls: same as dk-time. Redraws on: same as dk-time
+- Spotlight neighbours small multiples (origins, z, flight partners for the country and its 4 nearest by haversine), host `#dk-nordic`, library canvas. Data: week03_corridors.json (coords, metrics). Controls: same as dk-time; box hit-targets. Redraws on: same as dk-time
+- Typology strip, role cards and drawer (DOM, not a chart), host `#typology-strip, #typology-cards, #type-drawer`, library dom. Data: week03_cartography.json; week03_edges.json (widest corridor below the floor). Controls: button.eg-chip click -> select; button.eg-all -> drawer; drawer row click -> select; drawer close. Redraws on: year (renderTypology)
+- Edge inspector (DOM fact sheet), host `#edge-facts, #edge-kind, #edge-note`, library dom. Data: week03_edges.json; week03_flights.json; week03_corridors.json. Controls: #edge-origin and #edge-dest selects. Redraws on: select change, year change
+
+**Tests that read it.**
+
+- tests/migration-docs.test.mjs (text reads: $() id scan vs built page; class harvest for styleguide; ARC_STYLES/EARTH_SIZES slices; spotlight/peersOf regex; palette getPropertyValue and token strings)
+- tests/next-build.test.mjs (comment-level coupling: `${PEOPLE}66` alpha append requires six-digit hex in built CSS)
+- tests/theme.test.mjs (lists corridor.js in LEGACY exemption by filename)
+
+### src/scripts/week03-boot.js
+
+402 lines, risk high. Week 3 page bootstrap: reads 11 style dimensions from the URL, applies them as body data-attributes and corridor api.state, loads the chosen vendored renderer, builds the top-bar 'Views' menu, wires the axis-mode buttons, starts corridor.js, then installs the questions drawer and the ECharts views drawer.
+
+Imports: `./corridor.js`, `./questions.js`, `./echarts-views.js`, `./site.js`, `./variants/d3.js (dynamic)`, `./variants/echarts.js (dynamic)`, `./variants/globe.js (dynamic)`, `./variants/atlas.js (dynamic)`, `./variants/deck.js (dynamic)`.
+
+Exports: `RENDERERS`, `PALETTES`, `ARCS`, `LINKS`, `THICKNESS`, `FOCUS`, `DOTS`, `BASEMAP`, `EARTH`, `SKINS`, `TABLES`, `readStyle`.
+
+**Import side effects.** Sets window.api = api (corridor.js api object) at import. Calls boot() at import (not awaited): readStyle -> apply (writes body dataset + api.state) -> optionally injects a vendor \<script> into \<head> (loadVendor) and dynamic-imports the variant module, then installRenderer -> wireMenu -> wireAxisModes -> renderBar -> await start() (corridor.js: fetches data, draws the whole page) -> installQuestions(api) -> installViews(api, loadVendor) -> restoreScroll (double rAF then window.scrollTo). Adds document-level click and keydown(Escape) listeners that are never removed.
+
+**DOM contract.**
+
+- document.body: WRITE dataset.variant, dataset.palette, dataset.tables, dataset.skin (data-* attributes on \<body>, which React's layout.tsx owns); rewritten on every non-reload style change
+- #style-trigger (page.tsx line 17, in the top bar): READ; wires click (toggles #style-bar hidden), WRITES aria-expanded
+- #style-trigger-label (span inside #style-trigger, server text 'View'): WRITES textContent 'Views' (twice: wireMenu and renderBar), so post-hydration text diverges from JSX
+- #style-bar (page.tsx line 22, empty \<div hidden role=group>): REPLACES innerHTML with chip groups for variant/basemap (button.style-chip[data-value][aria-pressed] inside .style-chips[data-dimension], plus hidden select.style-select-proxy#style-variant/#style-basemap) and a \<details class=style-more> holding .style-more-grid of .style-field label+select#style-\<key> for palette, arcs, links, thickness, focus, earth, dots, skin, tables; toggles .hidden; stops click propagation; wires click on each .style-chips and change on each select
+- #style-\<key> selects (generated): WRITE .value when a chip is clicked; READ on change. scripts/audit_week03.js drives these ids ($(`style-${key}`), $('style-earth'))
+- document: click listener closes #style-bar; keydown Escape closes it
+- #status (page.tsx line 121, p.status-line aria-live, shared with corridor.js): WRITES textContent only when a renderer library fails to load
+- .axis-modes[data-chart] groups (page.tsx lines 174 'hist' and 223 'ccdf', buttons[data-mode] loglog/semilog/linear): wires click; WRITES aria-pressed on the buttons; writes api.state.axisMode[chart] and calls api.R.hist() / api.R.ccdf() (corridor.js charts)
+- document.head: APPENDS \<script src=asset('assets/vendor/\<file>')> with an expando __ready promise; dedupes by querySelector(script[src=...])
+- window.location / history: reads location.search; history.replaceState on non-reload dimension changes; location.assign (full reload) when variant changes
+- Indirect: installQuestions/installViews (below) and start()/restyle()/installRenderer from corridor.js write most of the page
+
+**State.** window.api (global, used by scripts/audit_week03.js which calls window.api.node and reads api.state). URL params: variant, palette, arcs, links, thickness, focus, basemap, earth, dots, skin, tables (default values removed from URL). sessionStorage key 'week03-scroll' (set before the renderer-swap reload, read+removed on boot). Mutates corridor api.state.{arcs,links,thickness,focus,dots,basemap,earth,axisMode}. Globals read: window[renderer.global] (d3, echarts, Globe, deck) after vendor script load. Body data-attributes act as the global CSS theme switch (palette/skin/tables/variant). Local closure variable `chosen` holds current choices.
+
+**Cross-module.** Hard dependency on corridor.js (api singleton, installRenderer, restyle, start) having been imported; start() must resolve before installQuestions/installViews. corridor.js's restyle() dispatches window event 'week03:restyle', which questions.js and echarts-views.js listen for. Passes its loadVendor to echarts-views. Variant modules receive api and the vendor global.
+
+**Hazards.** This is page chrome plus orchestration, not a chart. A React version would be a StyleMenu client component (chips + selects rendered from DIMENSIONS, open state, outside-click/Escape via useEffect cleanup) and a useStyle() hook/context owning the URL params; body data-attributes would move to an effect on document.body or a wrapper element (CSS keys off body[data-palette] etc. in corridor.css and the styleguide). Hazards: (1) the registries' exact source formatting is parsed by tests with regexes (two-space indent, one key per line, `bytes: N,`, `module: () => import("./variants/...")`, `{ key: "` lines) so moving them to TS/JSON breaks migration-docs tests unless the tests move too; (2) generated ids style-\<key> are an external contract for scripts/audit_week03.js; (3) the generated class names (style-chip, style-group, style-group-label, style-chips, style-select-proxy, style-more, style-more-grid, style-field) are scraped by the styleguide-coverage test; (4) boot sequencing: questions/views must install only after corridor start() resolves, and the renderer must be installed before start(); (5) renderer change does a full page reload with a scroll restore through sessionStorage, which a React version could replace with a re-mount but every variant module draws imperatively into corridor.js DOM; (6) window.api global must be kept for the audit script; (7) it writes into #status, which corridor.js also owns; (8) it mutates the corridor api singleton and triggers corridor redraws, so it cannot be converted independently of corridor.js.
+
+**Tests that read it.**
+
+- tests/migration-docs.test.mjs (text read: slices RENDERERS/PALETTES/ARCS/EARTH/SKINS/TABLES blocks by regex /^\s{2}(\w+): \{$/gm, checks bytes: N, matches script: "file" and module: () => import("./variants/x.js") strings, counts /^\s{2}\{ key: "/gm DIMENSIONS lines against the methods prose 'six renderers'/'eleven style dimensions', collects class="..." strings to require them on the styleguide)
+
+### src/scripts/questions.js
+
+1471 lines, risk medium. The 'Six questions' drawer: on first open of \<details id=questions>, builds a model from corridor api.state (edges, nodes, indicators) for 2024 and draws six canvas charts (chord ring, hosted vs abroad butterfly, distance bands, wealth scatter + reach, income stacks with refugee share, female share), writes a computed prose answer under each, adds data tables, tooltips and click-to-select.
+
+Imports: `./type-scale.mjs`.
+
+Exports: `installQuestions`.
+
+**Import side effects.** None beyond defining module-level state (api, model, drawn, marks Map, ringState). Work starts when week03-boot calls installQuestions(api): attaches toggle listener on #questions, and window listeners 'week03:restyle' and 'resize' (never removed). Nothing computed until the drawer opens.
+
+**DOM contract.**
+
+- #questions (\<details className=qa>, page.tsx line 835): READ .open; wires 'toggle'
+- #q-ring-scope (p.axis-note, line 853): WRITES textContent ('The slider changes this ring only...')
+- #q-ring-year (input range, line 845): READ; WRITES .max, .value, aria-valuetext, dataset.ready; wires 'input'
+- #q-ring-year parentElement .ends (div.ends inside .qa-slider, lines 846-849): REPLACES innerHTML with \<span>firstYear\</span>\<span>lastYear\</span> (same text as JSX)
+- #q-ring-now (b.qa-slider-now, line 851): WRITES textContent year on slider input
+- #q-ring, #q-hosts, #q-distance, #q-wealth, #q-income, #q-sex (\<canvas className=chart> with width/height, lines 854-884): drawn via api.surface(canvas) (corridor.js resizes/DPR-scales the canvas); WRITES dataset.qpick, style.cursor; wires pointermove (api.showTip/hideTip, corridor's shared tooltip element), pointerleave, click (api.select(iso3), which changes the whole page's selection)
+- #q-ring-answer, #q-hosts-answer, #q-distance-answer, #q-wealth-answer, #q-income-answer, #q-sex-answer (p.qa-answer): REPLACE innerHTML with computed HTML prose (\<b>, \<i>), once (guarded by dataset.written), except q-ring-answer which is rewritten on every slider change
+- Sibling after each canvas: api.chartTable(id, ...) (corridor.js) INSERTS \<details class=chart-table id=\<canvasId>-table> via host.after() and replaces its innerHTML with a table; i.e. writes DOM outside the chart host, into the parent React owns
+- document.body computed style --card read (paper()) for text colour; type scale read via font()/fs() from type-scale.mjs (CSS custom properties)
+
+**State.** Module-level: api (corridor api ref), model (built once, cached, never invalidated), drawn flag, marks Map\<canvasId, hit marks>, ringState {year}. Reads api.state.edges, api.state.data, api.colours, api.format.{fmt,compact}; uses api.surface, api.frame, api.linearScale, api.logScale, api.logTicks, api.axes, api.rgb, api.showTip, api.hideTip, api.select, api.chartTable. Listens to window 'week03:restyle' and 'resize'. No storage, no URL params.
+
+**Cross-module.** Requires corridor.js start() to have resolved (api.state.edges populated) and corridor's tooltip/table/selection helpers; installed by week03-boot.js. Repaints on corridor's 'week03:restyle' event. Uses type-scale.mjs which reads CSS tokens from type.css.
+
+**Hazards.** Six self-contained canvas charts are a good fit for \<CanvasChart draw={...}/> components with useRef + useEffect, but: (1) all drawing helpers (surface, axes, scales, tooltip, select, chartTable, colours, format) live on the corridor.js api singleton, so the components need a context exposing that api and a 'restyle' signal instead of the window event; (2) the prose answers are HTML strings written with innerHTML into React-owned \<p> elements; converting means returning JSX (or dangerouslySetInnerHTML) from the answer functions; ~2-3 KB of copy per answer is interleaved with numbers; (3) chartTable inserts unowned \<details> siblings into React-owned parents, which needs a \<ChartTable> component instead; (4) click calls api.select, mutating global selection that corridor.js redraws across the page; (5) the ring slider's max/value/.ends are overwritten from data, while the JSX hardcodes 1990/2024 and max=7; (6) laziness on \<details> toggle should be kept (heavy compute); (7) model cache never invalidates, which is fine for static data. The pure computations (build, ringData, hostsData, distanceData, wealthData, reachData, incomeData, sexData, weightedQuantile, medianInterval, correlation) can be lifted into a pure module unchanged.
+
+**Charts.**
+
+- Q1 directed chord ring of top-14 countries, with year slider, host `#q-ring`, library canvas. Data: api.state.edges (week03 corridor edges loaded by corridor.js); api.state.data.nodes (names). Controls: #q-ring-year range input -> ringState.year -> redrawRing() (chart + answer); hover ribbons/labels: tooltip via api.showTip; click: api.select(iso3). Redraws on: drawer open, slider input, window resize, week03:restyle
+- Q2 hosted vs born-abroad butterfly bars (top 15), host `#q-hosts`, library canvas. Data: api.state.edges for 2024; api.state.data.nodes. Controls: hover tooltip; click selects country. Redraws on: drawer open, resize, week03:restyle
+- Q3 distance-band grouped bars with weighted-median rule, host `#q-distance`, library canvas. Data: api.state.edges (km column) for 2024. Controls: hover tooltip. Redraws on: drawer open, resize, week03:restyle
+- Q4 wealth: log-log GDP vs foreign-born share scatter with fit line + income-band reach ranges, host `#q-wealth`, library canvas. Data: api.state.edges 2024; api.state.data.indicators (gdp, pop, growth). Controls: hover tooltip; click scatter dot selects country. Redraws on: drawer open, resize, week03:restyle
+- Q5 income-tier stacked bars, refugee share hanging bars, origin-vs-destination income stack, host `#q-income`, library canvas. Data: api.state.edges 2024 incl. forced (UNHCR) column; api.state.data.indicators.gdp. Controls: hover tooltip. Redraws on: drawer open, resize, week03:restyle
+- Q6 female share of foreign-born, diverging bars around 50% (bottom 8 / top 8), host `#q-sex`, library canvas. Data: api.state.edges 2024 female column. Controls: hover tooltip; click selects country. Redraws on: drawer open, resize, week03:restyle
+
+**Tests that read it.**
+
+- tests/week03-prose.test.mjs (text read: must not contain '3,950 km'; must contain r.o === "RUS" && r.d === "UKR")
+- tests/migration-docs.test.mjs (text read: class="..." strings scraped for styleguide coverage)
+
+### src/scripts/echarts-views.js
+
+861 lines, risk medium. The 'four extra views' drawer: on first open of \<details id=views> it lazy-loads vendored ECharts (1 MB) and two extra JSON files, then draws a force-directed corridor graph, a stacked area of country stocks over time, a month-by-year asylum heatmap and a calendar heatmap of border closures, each with a computed prose answer and data table.
+
+Imports: `./site.js`, `./type-scale.mjs`.
+
+Exports: `installViews`.
+
+**Import side effects.** None at import beyond module state (api, echarts, loading, charts Map, graphState, areaState, asylum, asylumState, closures). installViews(api, loadVendor) attaches 'toggle' on #views and window 'week03:restyle' listener; each chart() init adds a window 'resize' listener (never removed). On open: injects echarts \<script> via loadVendor, fetches assets/data/week03_asylum.json and week03_closures.json.
+
+**DOM contract.**
+
+- #views (\<details className=qa>, page.tsx line 1609): READ .open; wires 'toggle'
+- #v-status (p.status-line aria-live, line 1614): WRITES textContent (loading message, cleared, library-failure message, missing-data message)
+- #v-graph-year (range, line 1620): WRITES .max, .value, aria-valuetext, dataset.ready; wires 'input'
+- #v-graph-year-now (line 1626): WRITES textContent year
+- #v-graph-floor (range 0-40, line 1630): WRITES .value, dataset.ready; wires 'input' (log scale 50k*10^(step/20))
+- #v-graph-floor-now (line 1636): WRITES textContent compact floor
+- #v-graph (div.echart.tall, line 1643): echarts.init host (ECharts owns its children)
+- #v-graph-answer (p.qa-answer): REPLACES innerHTML on every graph redraw
+- #v-area-mode (div.axis-modes role=group with button[data-mode] in/out/both, line 1649): wires click (dataset.ready guard); WRITES aria-pressed on buttons
+- #v-area-note (p.axis-note, line 1663): WRITES textContent
+- #v-area (div.echart.wide): echarts host
+- #v-area-answer: REPLACES innerHTML
+- #v-asylum-origin (empty \<select>, line 1685): REPLACES innerHTML with \<option>s built from data; WRITES dataset.ready; wires change
+- #v-asylum (div.echart.grid): echarts host
+- #v-asylum-answer: REPLACES innerHTML
+- #v-closures (div.echart.closures): echarts host
+- #v-closures-answer: REPLACES innerHTML
+- Siblings after #v-graph, #v-area, #v-asylum, #v-closures: api.chartTable INSERTS \<details class=chart-table id=\<host>-table> after the host (outside chart host, inside React-owned article)
+- document.head: echarts \<script> appended via the loadVendor passed from week03-boot
+- document.body computed --card read for tooltip/line colours
+
+**State.** Module-level: api, echarts (=window.echarts after vendor load), loading promise, charts Map\<id, echarts instance>, graphState {year: 2024, floor: 400000}, areaState {mode, top: 12}, asylum (cached JSON), asylumState {origin: 'SY'}, closures (cached JSON). Reads window.echarts global. Window listeners: 'week03:restyle', one 'resize' per chart instance. No storage or URL params.
+
+**Cross-module.** Requires corridor.js start() resolved (api.state.edges) and the corridor api helpers (colours, rgb, format, chartTable, select); installed by week03-boot.js, which passes its loadVendor. Repaints on corridor's 'week03:restyle' event. Uses site.js asset() and type-scale.mjs.
+
+**Hazards.** Closest of the four to a clean React conversion: each view is an ECharts instance in its own host div, so an \<EChart option={...} onEvents={...}/> wrapper (init in useEffect, setOption on option change, dispose + ResizeObserver on cleanup) covers the drawing, and the slider/mode/select state moves into useState. Hazards: (1) controls are uncontrolled JSX inputs whose max/value/options the script overwrites, and the asylum \<select> is empty in JSX and filled from fetched data; (2) four answer paragraphs and #v-area-note/#v-status are innerHTML/textContent written outside chart hosts; (3) chartTable siblings inserted into React-owned parents; (4) ECharts is a vendored global loaded by script injection (window.echarts), not an npm import, and the lazy load on drawer open must be preserved for the 1 MB cost; (5) node click calls api.select, which couples to corridor.js; (6) resize listeners leak (never disposed), which React cleanup would fix; (7) colours/fonts are read from CSS at draw time and must re-run on the restyle signal.
+
+**Charts.**
+
+- Force layout of corridors above a floor, host `#v-graph`, library echarts. Data: api.state.edges (all years); api.state.data.nodes. Controls: #v-graph-year range -> graphState.year; #v-graph-floor range (log) -> graphState.floor; roam/drag inside ECharts; node click -> api.select(iso3) (page-wide selection); hover tooltip (ECharts' own). Redraws on: drawer open, slider input, week03:restyle (renderAll), window resize -> instance.resize()
+- Stacked area of top-12 countries' stocks over the years plus 'Everyone else', host `#v-area`, library echarts. Data: api.state.edges (all years). Controls: #v-area-mode buttons in/out/both -> areaState.mode; legend scroll/toggle inside ECharts; axis tooltip. Redraws on: drawer open, mode click, week03:restyle, resize
+- Asylum applications month x year heatmap per origin, host `#v-asylum`, library echarts. Data: public/assets/data/week03_asylum.json (fetched via asset()). Controls: #v-asylum-origin select -> asylumState.origin; hover tooltip. Redraws on: drawer open, select change, week03:restyle, resize
+- Border-closure calendar heatmaps, one calendar per year, host `#v-closures`, library echarts. Data: public/assets/data/week03_closures.json (fetched via asset()). Controls: hover tooltip; visualMap piecewise legend. Redraws on: drawer open, week03:restyle, resize
+
+### src/scripts/pages/styleguide.js
+
+29 lines, risk low. Styleguide page script: syncs every \<select> in the static #style-bar with URL params, mirrors each selection onto a body data-attribute (skin/palette/tables) and opens/closes the style menu from #style-trigger; draws nothing.
+
+Imports: none.
+
+Exports: none.
+
+**Import side effects.** Runs entirely at import: reads location.search, queries #style-bar selects, writes body dataset, adds change listeners, adds click listeners on #style-trigger and #style-bar and a document click listener (never removed). Calls trigger.addEventListener without a null check, so it throws if #style-trigger is missing.
+
+**DOM contract.**
+
+- #style-bar select (styleguide page.tsx lines 32, 50, 60, 71): READ dataset.dimension and options; WRITES .value from URL; wires change. Note: the proxy \<select className=style-select-proxy> at line 32 has no data-dimension, so key is undefined and the script writes body.dataset['undefined'] = 'Canvas' (a stray data-undefined attribute on \<body>) and reads params.get(undefined)
+- select#style-skin, #style-palette, #style-tables (data-dimension skin/palette/tables): the real controls
+- document.body: WRITES dataset[key] for skin, palette, tables (plus the stray 'undefined')
+- #style-trigger (line 17): wires click (toggles #style-bar.hidden), WRITES aria-expanded
+- #style-bar (line 22, server-rendered with full markup, hidden): toggles .hidden; stops click propagation
+- document: click listener hides #style-bar and resets aria-expanded
+- history.replaceState: WRITES ?skin=/?palette=/?tables= on change
+
+**State.** URL params skin, palette, tables (always written, even when default). Body data-attributes data-skin, data-palette, data-tables drive corridor.css specimens. No module state, storage or window globals.
+
+**Cross-module.** None at runtime. The option lists duplicate week03-boot's SKINS/PALETTES/TABLES registries by hand, and tests/migration-docs.test.mjs checks they stay in sync via the built page.
+
+**Hazards.** Trivial to convert: the same StyleMenu component and a useStyle hook as week03-boot's menu (a shared component would serve both pages, which today duplicate the top-bar menu markup: the styleguide hardcodes the menu in JSX while week03 generates it in JS). The tests scrape the built styleguide HTML for \<option value="key"> per SKINS/PALETTES/TABLES key and data-\<attr>="key" specimens, so a component must keep server-rendering those options. Fix the proxy-select bug in passing (filter on data-dimension). Body data-attributes need an effect on document.body or a wrapper element.
+
+### src/scripts/variants/d3.js
+
+594 lines, risk medium. Optional ?variant=d3 renderer for Week 3: install(api, window.d3) returns overrides for R.globe, R.setupGlobe, R.hist, R.ccdf, R.scatterBetween, R.scatterZ, R.scatters and R.denmark that redraw the hero globe and seven charts as SVG beside their hidden \<canvas> elements.
+
+Imports: `../type-scale.mjs (fs, family)`.
+
+Exports: `install(api, d3) -> { globe, setupGlobe, hist, ccdf, scatterBetween, scatterZ, scatters, denmark }`.
+
+**Import side effects.** None at import time. It defines a FONT() helper only. week03-boot.js loads it with a dynamic import() only when ?variant=d3, and only after loadVendor('d3-7.9.0.min.js') has injected a \<script> into \<head>. boot() then calls installRenderer({name:'d3', ...install(api, window.d3)}) before corridor.start(). install() itself touches no DOM. All DOM work happens when the core calls R.*.
+
+**DOM contract.**
+
+- #hist, #ccdf, #scatter-between, #scatter-z, #dk-time, #dk-rank, #dk-nordic (server-rendered \<canvas class=chart> with width/height attrs): READ clientWidth, parent clientWidth and the width/height attribute aspect ratio for sizing; WRITE canvas.style.display='none' on first draw
+- #\<id>-d3 for each of those ids (svg created by the module): APPEND via canvas.after(svg); on every draw it sets viewBox and height attrs, wipes all children (selectAll('*').remove()), then appends axes, rects and circles. Hit discs and rects get click -> api.select(iso3) and pointermove/pointerleave -> api.showTip/hideTip. Nordic bars and globe dots carry \<title> children
+- #globe-canvas (hero \<canvas class=stage> inside .stage-wrap): READ clientWidth/clientHeight; WRITE style.display='none'
+- #globe-canvas-d3 (svg created by the module, inserted after #globe-canvas): REPLACE children on every draw; d3.drag is wired once, and each drag rotates the projection and redraws
+- #globe-canvas-d3-photo (canvas created by the module): INSERTED before the globe svg inside .stage-wrap; WRITE parentElement.style.position='relative' and svg.style.position='relative'; toggles .hidden from state.basemap and paints through api.paintPhotoGlobe
+- OUTSIDE HOST: .stage-hint (\<p> under the globe) gets its textContent replaced with 'Drag to spin. Click a country. (SVG)' in setupGlobe
+- Indirect, through api: showTip appends and positions a body-level .chart-tip div; select() rewrites the inspector panel (#sc-name, #sc-stats and others) and fires every R.* redraw
+
+**State.** Closure state inside install: `projection` (the d3 orthographic projection, created once with the drag handler bound on first globe() call) and `underlay` (the photo canvas). Reads api.state (selected, basemap, data, edges, world, earth) and window.devicePixelRatio. The library arrives as window.d3 from the vendored script. No storage, URL params or globals of its own. week03-boot reads ?variant and sets body[data-variant].
+
+**Cross-module.** Needs corridor.js: the api object, R registry and state, start() filling unreplaced R entries with canvas versions, and the core calling R.* on select, year, resize, restyle and the flow timer. Needs week03-boot.js to load the vendor script and install. Needs the server-rendered canvases, because sizes and aspect come from their width/height attrs. corridor.enablePicking still binds listeners to the hidden canvases, which stay dead. Tests: migration-docs.test.mjs requires an `export function install(`, no fetch( and no CDN URLs except the SVG namespace, and forbids `focus.nordics`; week03-prose.test.mjs forbids flight_degree and 'Flight degree' in variants; type-scale.test.mjs forbids literal font sizes (fs() only); next-build.test.mjs comments that d3.js appends hex alpha (`${PEOPLE}66`-style, here `${colours.ACCESS}99`/`cc`), so --people/--access must stay 6-digit hex.
+
+**Hazards.** Each chart function maps onto a client component that owns a ref'd \<svg> and runs the same D3 code in an effect keyed on (selected, year, axis mode, palette, basemap, earth, resize). The hard parts: (1) The module never owns markup. It finds a canvas, hides it and inserts a sibling svg, so React would have to stop rendering the canvas for this variant, or render both. (2) Redraws are push-driven by corridor's imperative R registry (select, setYear, restyle, resize, the hover loop and the 50 ms flow interval), not by props, so a React version needs that state lifted into a store or context first. (3) It writes .stage-hint text outside its host and changes the .stage-wrap parent's position style. (4) Tooltips and selection go through the body-level .chart-tip and the core's select(), which rewrites the inspector panel imperatively. (5) The drag handler binds once, inside a lazy init, to a module-closure projection. (6) Full wipe-and-rebuild on every draw would fight React reconciliation only if React rendered inside the svg, so keep D3 owning the svg contents. Moderate size and self-contained math. The coupling sits in the shared core.
+
+**Charts.**
+
+- Degree histogram (3 series: in-degree, out-degree, flight partners), host `#hist -> #hist-d3`, library d3. Data: state.data (week03_corridors.json) through api.degreeCounts/node/metrics. Controls: axis-mode buttons [data-mode] next to #hist (wired by week03-boot wireAxisModes) -> api.modeFlags('hist') picks log or linear scales; click a bar-band hit rect -> api.select; hover -> api.showTip. Redraws on: select(), year slider (setYear), restyle (palette/arcs/basemap/earth dropdowns), window resize from corridor, axis-mode button
+- CCDF P(K>=k), 3 series, host `#ccdf -> #ccdf-d3`, library d3. Data: state.data via api.withMetrics/ccdf. Controls: axis-mode buttons -> modeFlags('ccdf'); click point -> select; hover tip. Redraws on: select, year slider, restyle, resize, axis mode
+- Betweenness vs in-degree scatter (migration and flights, zero-baseline row, selected-country ring and label), host `#scatter-between -> #scatter-between-d3`, library d3. Data: state.data metrics at null_year; node().flight_in_degree and flight_betweenness. Controls: click point -> select; hover tip. Redraws on: select, restyle, resize (through R.scatters)
+- z-score vs in-degree scatter, host `#scatter-z -> #scatter-z-d3`, library d3. Data: state.data metrics at null_year (m.z). Controls: click -> select; hover tip. Redraws on: select, restyle, resize
+- Spotlight country strength over time (in and out lines), host `#dk-time -> #dk-time-d3`, library d3. Data: api.spotlight().series. Controls: click point -> select; hover tip. Redraws on: select, restyle, resize (through R.denmark); the spotlight picker in the core also calls R.denmark
+- Spotlight bridge-rank line (inverted y), host `#dk-rank -> #dk-rank-d3`, library d3. Data: spotlight().series.betweenness_rank. Controls: click -> select; hover tip. Redraws on: same as dk-time
+- Nearest-neighbour grouped bars (in-degree, |z|, flights, each normalised), host `#dk-nordic -> #dk-nordic-d3`, library d3. Data: spotlight().peers. Controls: click bar -> select; \<title> tooltip only, no showTip. Redraws on: same as dk-time
+- Hero globe: orthographic projection, graticule, top 260 great-circle arcs, country dots, optional outline land or photo underlay, host `#globe-canvas -> #globe-canvas-d3 (+ #globe-canvas-d3-photo)`, library d3. Data: api.topEdges(260) (week03_edges.json); state.world (world_outline.geo.json) when basemap=outline; earth-day-2048.jpg through api.paintPhotoGlobe when basemap=photo. Controls: d3.drag rotates the globe; click dot -> select; basemap/earth/palette dropdowns through restyle. Redraws on: drag, select, year slider, restyle, resize, AND a 20 fps setInterval from corridor.syncFlow when ?arcs=flow (the whole SVG rebuilds about every 50 ms)
+
+**Tests that read it.**
+
+- tests/migration-docs.test.mjs (reads source text: install export, no fetch, no CDN, no focus.nordics)
+- tests/week03-prose.test.mjs (reads all src/scripts/variants/*.js text: no flight_degree)
+- tests/type-scale.test.mjs (walks src/scripts recursively: no literal font sizes)
+- tests/next-build.test.mjs (comment only; asserts the built CSS hex tokens d3.js relies on)
+
+### src/scripts/variants/echarts.js
+
+412 lines, risk low. Optional ?variant=echarts renderer for Week 3: install(api, window.echarts) returns overrides for R.hist, R.ccdf, R.scatterBetween, R.scatterZ, R.scatters and R.denmark. It draws the seven data charts as ECharts instances in divs inserted after their hidden canvases. The globe and map stay on canvas.
+
+Imports: `../type-scale.mjs (fs, family)`.
+
+Exports: `install(api, echarts) -> { hist, ccdf, scatterBetween, scatterZ, scatters, denmark }`.
+
+**Import side effects.** None. It defines the axis() and base() option factories, and install() calls them once, so fs()/family() read the CSS type tokens at install time. week03-boot loads it lazily after injecting echarts-5.5.1.min.js.
+
+**DOM contract.**
+
+- #hist, #ccdf, #scatter-between, #scatter-z, #dk-time, #dk-rank, #dk-nordic canvases: READ clientWidth and width/height attrs; WRITE style.display='none'
+- #\<id>-ec divs (created): APPEND via canvas.after(div), with inline width 100% and a fixed pixel height computed ONCE at creation; echarts.init(host) owns the contents
+- Events wired once per instance: ECharts 'click' -> select(event.data.iso3), 'mouseover' -> api.showTip at a position computed from host.getBoundingClientRect(), 'mouseout' -> hideTip; host 'pointerleave' -> hideTip
+- window 'resize' listener added per chart -> instance.resize() (never removed)
+- Writes nothing outside its hosts directly. Through api it uses the body-level .chart-tip and select(), which rewrites the inspector
+
+**State.** Closure `charts` Map(id -> ECharts instance) plus AXIS/BASE option objects captured at install. Reads api.state.selected, state.data and the null year. The library is window.echarts from the vendored script. No storage or URL params. It adds one window resize listener per chart and never removes it.
+
+**Cross-module.** Same dependency on corridor.js (api, R registry, the R.* call sites, the hidden canvases left in place) and on week03-boot.js (vendor load, install before start). Note that src/scripts/echarts-views.js is a separate module, imported by week03-boot as installViews; this variant does not use it. Tests: migration-docs install/no-fetch/no-CDN/no focus.nordics; week03-prose no flight_degree; type-scale requires fs() for every fontSize (it uses fs throughout).
+
+**Hazards.** This one is the easiest to turn into React: each chart is a pure option builder over (state, selection, axis mode), and an \<EChart option={...}> client component with a ref, init in an effect, setOption on change, ResizeObserver and dispose on unmount would replace chart(). Hazards: (1) the host height is fixed once from the hidden canvas's clientWidth, so the component needs its own aspect-ratio sizing; (2) event handlers call the core's select() and the shared body-level tooltip, so those must become context callbacks; (3) the leaked window resize listeners and the missing dispose() matter once components mount and unmount; (4) the canvas siblings in page.tsx have to go, or render conditionally per variant; (5) redraw timing is still driven by corridor's imperative R.* calls until selection, year and axis mode move into React state.
+
+**Charts.**
+
+- Degree histogram, 3 bar series with legend, host `#hist -> #hist-ec`, library echarts. Data: state.data via degreeCounts. Controls: axis-mode buttons -> modeFlags('hist') (log or value axis); legend toggles (ECharts built-in); click -> select; hover -> showTip (ECharts' own tooltip disabled). Redraws on: setOption(..., true) on select, year slider, restyle, axis mode, resize from corridor; plus instance.resize on window resize
+- CCDF, 3 scatter series, host `#ccdf -> #ccdf-ec`, library echarts. Data: state.data via withMetrics/ccdf. Controls: axis mode; legend; click; hover tip. Redraws on: same as hist
+- Betweenness vs in-degree (migration, flights, diamond zero-row series, highlight ring and label for the selection), host `#scatter-between -> #scatter-between-ec`, library echarts. Data: state.data metrics at null_year; node flight_in_degree/flight_betweenness. Controls: legend; click; hover tip. Redraws on: select, restyle, resize
+- z-score vs in-degree with dashed markLine at z=0, host `#scatter-z -> #scatter-z-ec`, library echarts. Data: state.data metrics m.z. Controls: legend; click; hover tip. Redraws on: select, restyle, resize
+- Spotlight in/out strength lines (category x = year, area fill), host `#dk-time -> #dk-time-ec`, library echarts. Data: spotlight().series. Controls: click; hover tip. Redraws on: R.denmark callers: select, restyle, resize, spotlight picker
+- Spotlight bridge rank (inverse y), host `#dk-rank -> #dk-rank-ec`, library echarts. Data: spotlight().series. Controls: click; hover tip. Redraws on: same
+- Nearest-neighbour normalised bars, 3 series with legend, host `#dk-nordic -> #dk-nordic-ec`, library echarts. Data: spotlight().peers. Controls: legend; click; hover tip. Redraws on: same
+
+**Tests that read it.**
+
+- tests/migration-docs.test.mjs (source text: install export, no fetch, no CDN, no focus.nordics)
+- tests/week03-prose.test.mjs (source text: no flight_degree)
+- tests/type-scale.test.mjs (source text: no literal font sizes)
+
+### src/scripts/variants/globe.js
+
+162 lines, risk low. Optional ?variant=globe renderer: install(api, window.Globe) replaces R.globe and R.setupGlobe with a globe.gl (three.js WebGL) globe in a div inserted after the hidden hero canvas.
+
+Imports: none.
+
+Exports: `install(api, Globe) -> { globe, setupGlobe }`.
+
+**Import side effects.** None (const NO_TEXTURE = null). Loaded lazily by week03-boot after injecting globe.gl-2.32.0.min.js.
+
+**DOM contract.**
+
+- #globe-canvas: READ (existence); WRITE style.display='none'
+- #globe-gl div (created): APPEND via canvas.after(div) with inline width 100%, aspect-ratio 1, height 100%. corridor.css styles `.corridor #globe-gl` (height/width 100% !important, radius, overflow). Globe()(host) mounts a WebGL canvas and globe.gl's own label/tooltip DOM inside
+- Globe callbacks: onPointClick -> api.select(iso3); polygonLabel/pointLabel use globe.gl's own hover tooltip, not api.showTip
+- OUTSIDE HOST: .stage-hint textContent replaced with 'Drag to spin, scroll to zoom. Click a country.'
+- window 'resize' listener added in setupGlobe -> world.width/height from host size
+- Canvas setupGlobe's pointer handlers on #globe-canvas are NOT wired, because this variant's setupGlobe replaces them
+
+**State.** Closure: `world` (the Globe instance, created once), `host`, `lastEarth`. Reads state.selected, basemap, world, earth, data and edges. matchMedia('(prefers-reduced-motion)'). The library is window.Globe. No storage or URL params.
+
+**Cross-module.** Depends on corridor.js api (topEdges, arcSpec, rgb, textureURL, earthScale, select) and on R.* call sites. Relies on corridor.css #globe-gl rules for size. Tests: migration-docs install/no fetch/no CDN; week03-prose and type-scale walk the file (no font sizes here).
+
+**Hazards.** Small and self-contained. A \<GlobeGL> client component that creates Globe() in an effect on a ref'd div, pushes arcs/points/texture/polygons in effects keyed on (selected, year, basemap, arcs, earth), and disposes on unmount (globe.gl has _destructor; the current code never tears down) would cover it. Hazards: the .stage-hint text write outside the host (make it a prop of the stage component); the window resize listener with no cleanup; the hidden server-rendered #globe-canvas; the WebGL instance must not re-create under React StrictMode double effects; the flow interval re-pushing data and re-aiming the camera, which a React version should drop because globe.gl animates dashes itself.
+
+**Charts.**
+
+- Hero WebGL globe: top 320 animated arcs, country points, optional photo texture or outline polygons, atmosphere, auto-rotate, host `.stage-wrap > #globe-gl (replacing #globe-canvas)`, library globe. Data: api.topEdges(320) (week03_edges.json); state.data countries/metrics; state.world (world_outline.geo.json) for basemap=outline; api.textureURL() -> public/assets/textures/earth-day-2048.jpg for basemap=photo. Controls: globe.gl orbit controls (drag, scroll zoom, autoRotate unless prefers-reduced-motion); point click -> select; basemap dropdown -> globeImageUrl/polygonsData; arcs dropdown -> api.arcSpec() (altitude, dashed, taper); earth dropdown -> camera altitude via earthScale(), pointOfView reset when state.earth changes; selection -> pointOfView flies to the selected country (700 ms). Redraws on: select, setYear, restyle, corridor resize, and the 20 fps syncFlow interval when arcs=flow. Every R.globe() call re-sets arcsData/pointsData and, while a country is selected, re-issues pointOfView(...,700), so the flow timer re-aims the camera about every 50 ms
+
+**Tests that read it.**
+
+- tests/migration-docs.test.mjs (source text)
+- tests/week03-prose.test.mjs (source text)
+- tests/type-scale.test.mjs (source text)
+
+### src/scripts/variants/atlas.js
+
+361 lines, risk medium. Optional ?variant=atlas renderer: install(api, window.Globe) replaces R.globe, R.map, R.setupGlobe and R.setupMap. The hero becomes a textured globe.gl planet (Blue Marble plus bump map, floating label for the selection), and the section-6 twin map redraws on the existing #map-canvas over a photo basemap.
+
+Imports: `../site.js (asset)`.
+
+Exports: `install(api, Globe) -> { globe, map, setupGlobe, setupMap }`.
+
+**Import side effects.** None. It defines the consts DAY='earth-day-2048.jpg' and BUMP='earth-bump-1024.jpg' and the helpers textureURL(file)=asset('assets/textures/'+file).href and loadImage(). Loaded lazily after globe.gl-2.32.0.min.js. It is the only variant that imports site.js.
+
+**DOM contract.**
+
+- #globe-canvas: WRITE style.display='none'
+- #globe-atlas div (created, after #globe-canvas): inline width 100%, aspect-ratio 1, height 100%. No corridor.css rule targets #globe-atlas, unlike #globe-gl and [id$=-deck]. Globe()(host) owns the contents, including globe.gl labels and tooltips
+- OUTSIDE HOST: .stage-hint textContent replaced ('Drag to spin, scroll to zoom. Click a country.')
+- window 'resize' listener (setupGlobe) -> world.width/height
+- #map-canvas (server-rendered \<canvas height=450 width=900>): drawn IN PLACE with no replacement host. map() WRITES canvas.style.height, canvas.width and canvas.height (backing store at DPR) and paints 2D. It wires 'click' (nearest country within 14px -> select) and 'pointermove' (writes canvas.style.cursor)
+- #map-toggle (div[role=group] of button[data-layer] migration|flights|both|net): WIRES a click listener that sets state.layer, toggles aria-pressed on every button and calls map(). It replaces the canvas setupMap, so the canvas version's listeners (territory fill hit test, clearing #net-note) are NOT wired
+- OUTSIDE HOST: when state.layer==='net', map() calls api.drawNet -> corridor drawNetMap -> netNote(), which REPLACES #net-note innerHTML (prose with counts). Unlike the canvas setupMap, the toggle never clears #net-note when leaving the net layer, so stale text stays
+
+**State.** Closure: `world`, `host`, `lastEarth`, `basemap` (the loaded HTMLImageElement), `basemapPending` (Promise). It mutates api.state.layer directly from the toggle. Reads state.basemap, selected, earth, layer, world, data, edges and year (via drawNet), plus window.devicePixelRatio and matchMedia. The library is window.Globe. No storage or URL params.
+
+**Cross-module.** Depends on corridor.js api (drawNet, which writes #net-note through netNote; topEdges, flightEdges, arcSpec, rgb, earthScale, select) and R.* call sites; on site.js asset() for texture URLs (public/assets/textures/); on the server-rendered #map-canvas, #map-toggle buttons and #net-note. Duplicates corridor's setupMap toggle logic and globe.js's mount logic almost line for line.
+
+**Hazards.** Harder than globe.js because it owns two visuals and reaches into shared controls. Issues: (1) it hijacks the server-rendered #map-toggle buttons and writes aria-pressed itself, so in React the toggle should be a controlled component whose layer state the map reads; (2) the net path writes prose into #net-note through the core's netNote(), a write outside the chart host that should become derived JSX; (3) it draws into the original #map-canvas in place and resizes its backing store and inline height, so a React \<MapCanvas> must own that element; (4) it duplicates near-identical code with globe.js and corridor's setupMap, a natural place for a shared GlobeGL component with a 'textured' prop plus a shared MapLayerToggle; (5) no teardown of the globe, the listeners or the image load; (6) the async image load calls map() again from outside any render cycle; (7) #globe-atlas has no CSS rule, so sizing rests on inline styles.
+
+**Charts.**
+
+- Hero photographic globe: top 300 arcs, points, selected-country label pin, optional outline polygons, host `.stage-wrap > #globe-atlas`, library globe. Data: public/assets/textures/earth-day-2048.jpg and earth-bump-1024.jpg; api.topEdges(300); state.world for outline; state.data metrics. Controls: orbit drag and zoom, autoRotate unless reduced motion; point click -> select; basemap dropdown (photo default, none strips the texture, outline adds polygons); arcs dropdown via arcSpec; earth dropdown -> altitude and pointOfView reset. Redraws on: select, year slider, restyle, resize, and the syncFlow 20 fps interval when arcs=flow (re-sets data and re-issues pointOfView 800 ms while a country is selected)
+- Twin flat map on canvas: equirectangular photo basemap with dark wash, curved migration arcs (top 420), flight arcs (top 420), country dots, selection ring; the net layer delegates to the core choropleth, host `#map-canvas (in place)`, library canvas. Data: earth-day-2048.jpg loaded once through new Image() (async; it re-calls map() on load); api.topEdges(420) (week03_edges.json); api.flightEdges(420) (week03_flights.json); state.world plus api.drawNet/netColour for the net layer (year-dependent). Controls: #map-toggle layer buttons; click -> nearest-country select; pointer cursor on hover; basemap dropdown (none hides the photo); year slider (net layer). Redraws on: map-toggle click, select, setYear, restyle, resize, flow interval, image-load callback
+
+**Tests that read it.**
+
+- tests/migration-docs.test.mjs (source text: install, no fetch, no CDN)
+- tests/week03-prose.test.mjs (source text)
+- tests/type-scale.test.mjs (source text)
+
+### src/scripts/variants/deck.js
+
+271 lines, risk medium. Optional ?variant=deck renderer: install(api, window.deck) replaces R.globe, R.map, R.setupGlobe and R.setupMap with two deck.gl Deck instances, a GlobeView hero and a MapView twin map, built from the same arc, dot, land and photo layers.
+
+Imports: none.
+
+Exports: `install(api, deck) -> { globe, map, setupGlobe, setupMap }`.
+
+**Import side effects.** None at import. install() THROWS if the deck build lacks GlobeView/_GlobeView; week03-boot catches the error, writes a failure message into #status and falls back to canvas. Loaded lazily after deck.gl-9.0.30.min.js.
+
+**DOM contract.**
+
+- #globe-canvas and #map-canvas: READ clientWidth and width/height attrs; WRITE style.display='none'
+- #globe-canvas-deck and #map-canvas-deck divs (created, after each canvas): inline position relative, width 100%, height computed once from the canvas aspect. corridor.css `.corridor [id$="-deck"]` forces height/width 100% !important, which overrides that inline height. new deck.Deck({parent: host}) owns a WebGL canvas plus deck's own tooltip DOM (getTooltip -> country name), not api.showTip
+- Deck onClick -> api.select(iso3) for pickable dots
+- OUTSIDE HOST: .stage-hint textContent replaced ('Drag to spin, scroll to zoom. Click a country. (WebGL)')
+- #map-toggle: WIRES its own click listener (sets state.layer, toggles aria-pressed, calls map()), replacing corridor's setupMap. The canvas map-canvas click handlers are therefore not wired, and #net-note is never cleared on leaving the net layer
+- OUTSIDE HOST: when state.layer==='net', map() calls api.netNote(), which REPLACES #net-note innerHTML with year-dependent prose counts
+
+**State.** Closure: `decks` Map(canvasId -> Deck), `lastEarth`, and GlobeView resolved at install. It mutates api.state.layer directly. Reads state.selected, basemap, world, earth, layer, year and data. The library is window.deck. No storage or URL params, and no window listeners (Deck handles its own resize).
+
+**Cross-module.** Depends on corridor.js api (netColour, netNote, topEdges, flightEdges, arcSpec, rgb, textureURL, earthScale, select) and R.* call sites; on the server-rendered #map-toggle buttons and #net-note; on corridor.css [id$=-deck] sizing; on week03-boot's try/catch for the GlobeView throw.
+
+**Hazards.** Layer construction is already declarative, which suits React well: a \<DeckGL> client component (or deck's React bindings, if vendored) taking layers derived from props would replace mount() and setProps(). Hazards: (1) it rewires the shared #map-toggle and writes aria-pressed, the same problem as atlas, so the layer toggle should be React state; (2) netNote() writes prose into #net-note outside the host; (3) it never calls deck.finalize(), so unmount would leak two WebGL contexts; (4) initialViewState pushed through setProps for the earth change should become controlled viewState; (5) .stage-hint text write; (6) throwing from install is the fallback signal, which a component needs to replace with an error boundary; (7) the hidden canvases stay in page.tsx.
+
+**Charts.**
+
+- Hero globe: GlobeView with a SolidPolygonLayer sphere, optional BitmapLayer photo, optional GeoJsonLayer land (_full3d), ArcLayer of the top 320 migration corridors, ScatterplotLayer dots, host `.stage-wrap > #globe-canvas-deck`, library deck. Data: api.topEdges(320) (week03_edges.json); state.data metrics; state.world (world_outline.geo.json); api.textureURL() -> public/assets/textures/earth-day-2048.jpg. Controls: deck controller (drag, zoom); dot click -> select; deck tooltip; basemap dropdown; arcs dropdown via arcSpec (greatCircle, height, taper colours); earth dropdown -> initialViewState zoom via log2(earthScale), pushed through setProps when state.earth changes. Redraws on: setProps({layers}) on select, year slider, restyle, resize, and the 20 fps syncFlow interval when arcs=flow (new layer objects every 50 ms)
+- Twin flat map: MapView (repeat) with photo, land, migration ArcLayer (top 420, PEOPLE colour), flights ArcLayer (top 420, ACCESS colour), dots; net layer is a GeoJsonLayer choropleth coloured by api.netColour with updateTriggers on year and palette, host `#map-canvas -> #map-canvas-deck`, library deck. Data: api.topEdges(420); api.flightEdges(420) (week03_flights.json); state.world; api.netColour (week03_corridors.json stocks by year). Controls: #map-toggle layer buttons; deck controller pan and zoom; dot click -> select; basemap dropdown; year slider (net). Redraws on: map-toggle click, select, setYear, restyle, resize, flow interval
+
+**Tests that read it.**
+
+- tests/migration-docs.test.mjs (source text: install, no fetch, no CDN)
+- tests/week03-prose.test.mjs (source text)
+- tests/type-scale.test.mjs (source text)
+
+### src/scripts/week04-place.js
+
+1249 lines, risk high. Draws every chart in section 1 ('Where the hiring is') plus the dark hero map and its inspector, all bound to one page-wide selected metro, and fills the section's tables, notes, group lists, legend chips, α control and employer select.
+
+Imports: `./site.js`, `./week04-map-reset.js`, `./week04-strip.js`, `./week04-ui.js`.
+
+Exports: `startPlace(echarts) -> {select, data, state}`, `boot()`.
+
+**Import side effects.** Calls boot() at import: writes 'Loading place data…' into #place-status, loads assets/vendor/echarts-5.5.1.min.js via an injected \<script> if window.echarts is missing, then startPlace(window.echarts). startPlace fetches 3 JSON files in parallel, calls echarts.registerMap('USA', ...) (global ECharts registry, filtered to drop Alaska/Hawaii/Puerto Rico), reads CSS tokens off document.body via getComputedStyle, wires click listeners on [data-place-metric]/[data-place-region], rebuilds #place-alpha buttons, fills #place-employer, then renders everything. On error writes 'Place section failed to load: …' into #place-status. Top-level constants DATA_URL/USA_URL/WHERE_WHO_URL computed via asset() at import.
+
+**DOM contract.**
+
+- #place-status (p.status-line, page.tsx:342): WRITE textContent ('Loading…', then scope text like '2025' or 'Scaffold · … · placeholder data', or error message)
+- #place-sel-name, #place-sel-codes, #place-sel-stats: READ/WRITE textContent and innerHTML \<dt>/\<dd> rows in renderInspector; NONE of these ids exist in page.tsx, so renderInspector is dead code (returns early)
+- #chart-hero-map (div.w4-hero-map, page.tsx:97): echarts.init host (init empties it); later APPENDS a button.w4-map-reset and adds class w4-has-reset via resetButton
+- #hero-sel-name (b): WRITE textContent (city name; server markup default 'New York')
+- #hero-sel-codes (span): WRITE textContent '\<state> · 2025'
+- #hero-sel-dot (i): WRITE style.background = group colour token
+- #hero-sel-group (span): WRITE textContent '\<community label> group'
+- #hero-sel-stats (dl): REPLACE children with 5 \<div>\<dt/>\<dd/>\</div> rows (Filings, Companies, Largest filer, Placed at a client, Census region)
+- #hero-sel-links (ol): REPLACE children with top-3 \<li>name\<span>weight\</span>\</li>
+- #chart-rank (div.chart-host.tall, page.tsx:631): echarts.init host, horizontal bar chart
+- #chart-citymap (div.chart-host.map, page.tsx:774, inside closed \<details> 'Maps: groups and Census regions'): echarts.init host; gets reset button appended
+- #chart-regions (div.chart-host.map, page.tsx:783, same drawer): echarts.init host; gets reset button appended
+- #place-region-legend (div.region-legend, page.tsx:765): REPLACE innerHTML with \<span>\<i style=background>\</i>label\</span> chips
+- #chart-gc (div.w4-figure-body, page.tsx:2579): REPLACE innerHTML with a string-built \<svg>; READS host.clientWidth and computed padding; ResizeObserver on it
+- #chart-backbone (div.chart-host.map, page.tsx:2571): echarts.init host; gets reset button appended
+- #chart-longhaul (div.chart-host, page.tsx:2655, inside closed \<details data-box='place-longhaul'>): echarts.init host
+- #chart-arcs (div.chart-host.map, page.tsx:2669): echarts.init host; gets reset button appended
+- #place-null-stats (tbody inside table.ego, page.tsx:702): REPLACE innerHTML with 9 \<tr>\<td/>\<td/>\</tr> rows (null-model stats); week04-tables decorateAll then re-decorates it
+- #place-alpha-table (tbody, page.tsx:2617, inside closed 'Method' drawer): REPLACE innerHTML with one row per α, inline-styled bold row for the active α; decorated by week04-tables
+- #place-snap-note (span inside .notice prose, page.tsx:2587): WRITE textContent = data.backbone.snap_note (replaces server-rendered prose), then termify() wraps 'giant component' in a span.w4-term > button + span.w4-pop#w4-term-place-backbone-giant
+- #place-alpha-choice (span in Method drawer, page.tsx:2620): WRITE textContent = choice_note
+- #place-groups (div.rx-groups, page.tsx:641): READ each .rx-group[data-community]; for each, find or CREATE its direct child \<p> and WRITE textContent with the group's metros sorted by filings (up to 12, then 'and N more'). Server markup ships empty \<p>\</p>
+- [data-place-metric] buttons (page.tsx:617,621 inside div.axis-modes): WIRE click; TOGGLE aria-pressed on all; updates state.metric and redraws bars + citymap
+- [data-place-region] buttons (page.tsx:757,761 inside div.axis-modes): WIRE click; TOGGLE aria-pressed; redraws regions map, backbone and legend chips
+- #place-alpha (div.rx-seg role=group, page.tsx:2563, empty on server): REPLACE children with one \<button data-alpha> per α stop, WIRE click, TOGGLE aria-pressed; week04-frame's segmented keyboard handler and MutationObserver then manage its tabIndex
+- #place-employer (\<select>, page.tsx:2667, empty on server): REPLACE innerHTML with \<option>s from data.longhaul.arc_employers; SET value; WIRE change -> renderArcs
+- #place-draft-banner (div.draft-banner hidden, page.tsx:591): WRITE hidden=false only when data.meta.status === 'placeholder'
+- document.body computed style: READ CSS custom properties --w4-group-{0,1,2}, --w4-group-{0,1,2}-dark, --ink-soft, --ink, --ink-mute, --card, --w4-grid, --w4-hero-lede, --w4-hero-ink, --w4-hero-state, --w4-hero-state-edge, --deep (read once at start, so no live theme switching)
+- document.head: APPENDS \<script> for ECharts if window.echarts is missing
+
+**State.** Closure state inside startPlace: state {metric, alpha, regionMode, employer, selected}; charts Map(id->ECharts instance); resets Map(id->show fn); gcWidth/gcWatch (ResizeObserver). Global: window.echarts (reads, may load), echarts.registerMap('USA') mutates the global ECharts map registry (also used by any other module that relies on 'USA'). Adds one window 'resize' listener per chart instance, never removed. No localStorage, no URL params. startPlace returns {select, data, state} but boot() discards it, so nothing outside can drive the selection.
+
+**Cross-module.** Must run before week04-frame? No ordering dependence on frame for correctness, but entry runs place first, then frame: frame's decorateAll decorates the tables place fills (MutationObserver catches the later async fill), and frame's wireSegments syncs tabIndex on #place-alpha buttons place builds (MutationObserver on aria-pressed/childList). Depends on week04-ui (termify), week04-map-reset (resetButton), week04-strip (fs, family, textWidth from the type scale). tests/theme.test.mjs lists week04-place.js in LEGACY (exempt from the --cv token contract), so renaming/moving the file needs that list updated. tests/week04-prose.test.mjs reads #place-groups heads from the page HTML.
+
+**Hazards.** Hardest of the five. One shared selection (state.selected) fans out across 6 ECharts instances, an SVG chart, the hero inspector, and resets; in React that becomes a context/store at the section+hero level spanning two far-apart parts of the page (hero at top, section 1 cards further down), so the provider must wrap most of the page or use an external store. Writes outside chart hosts: hero inspector name/codes/dot/group/stats/links (overwrites server text 'New York' etc.), #place-status line, #place-snap-note prose (replaces server text and injects a glossary term via termify, the term id w4-term-place-backbone-giant), #place-alpha-choice, #place-groups metro lists (also asserted in tests/week04-prose.test.mjs against the page HTML, so static heads must remain server-rendered and lists could move to build-time render from the JSON), two tables' tbody innerHTML (then mutated again by week04-tables via MutationObserver), #place-region-legend, #place-draft-banner hidden flag, and it builds the #place-alpha buttons and #place-employer options that are empty in the JSX. Controls (metric/region toggles) live in server markup with data-attributes and aria-pressed that the module toggles; React should own these as state. echarts.init empties its host, and resetButton appends a foreign \<button> into that ECharts container afterwards, so React must not render children inside chart hosts. Several hosts sit inside closed \<details> drawers, so charts init at 0 size and depend on window resize; a component needs a ResizeObserver or toggle hook. ECharts is loaded as a classic global script, not an npm import. Dead code: renderInspector targets #place-sel-* ids that no longer exist. Theme tokens are read once from getComputedStyle. All data is static JSON, so much of the prose-filling (group lists, null-stats table, alpha table, snap note, employer options) could become build-time server rendering.
+
+**Charts.**
+
+- Hero map (all 40 metros on a dark US map, backbone links at α 0.2, selected-metro ring), host `#chart-hero-map`, library echarts. Data: public/assets/data/week04_place.json (cities, communities, backbone.graphs['0.2'].edges); public/assets/data/usa.json (GeoJSON registered as 'USA'). Controls: click a scatter dot -> select(city) page-wide; Reset view button (resetButton) clears selection. Redraws on: window resize (instance.resize); any selection change (renderAll); setOption notMerge
+- Top cities bar chart (12 cities by positions or employers), host `#chart-rank`, library echarts. Data: public/assets/data/week04_place.json. Controls: [data-place-metric] buttons switch metric; click a bar -> select(city). Redraws on: window resize; metric change; selection change
+- City bubble map, metric colouring, host `#chart-citymap`, library echarts. Data: week04_place.json; usa.json. Controls: [data-place-metric] buttons; click bubble -> select; Reset view button. Redraws on: window resize; metric change; selection change; effectScatter ripple for selected city. Host sits in a closed \<details>, so ECharts initialises at zero size until resize
+- City bubble map, partition colouring (Louvain communities vs Census regions), host `#chart-regions`, library echarts. Data: week04_place.json (cities, communities, census_colours); usa.json. Controls: [data-place-region] buttons; click bubble -> select; Reset view button. Redraws on: window resize; region-mode change; selection change
+- Giant component vs α line, host `#chart-gc`, library svg-string. Data: week04_place.json (backbone.alphas, gc_size, edges_kept, snap_alpha). Controls: #place-alpha segmented buttons highlight the active α dot. Redraws on: ResizeObserver on host width; α change; selection change (renderAll); uses textWidth() from week04-strip.js for label placement
+- Backbone map at selected α, host `#chart-backbone`, library echarts. Data: week04_place.json (backbone.graphs[alpha]); usa.json. Controls: #place-alpha buttons; [data-place-region] buttons (colouring); click dot -> select; Reset view button. Redraws on: window resize; α change; region-mode change; selection change
+- Distance vs backbone weight scatter (staffing vs other lead employer), host `#chart-longhaul`, library echarts. Data: week04_place.json (longhaul.edges). Controls: click point -> select(edge endpoint a); ECharts legend toggle (legendselectchanged re-filters the label series). Redraws on: window resize; selection change (relabels to selected city's heaviest far links); legend toggle
+- One employer's arc map, host `#chart-arcs`, library echarts. Data: week04_place.json (longhaul.employer_arcs, arc_employers); usa.json. Controls: #place-employer \<select> change; click city -> select; Reset view button. Redraws on: window resize; employer change; selection change; animated line effect
+
+**Tests that read it.**
+
+- tests/theme.test.mjs (filename in LEGACY exemption list, reads src/scripts/ directory)
+- tests/week04-prose.test.mjs (comment-level dependency; asserts #place-groups static markup whose lists this module fills)
+
+### src/scripts/week04-frame.js
+
+280 lines, risk high. Page frame behaviours for week 4: scroll-spy for the left section rail, click/Escape handling for all glossary-term pop-ups, keyboard roving tabindex for every segmented control, table decoration for all of \<main>, and the five mini strips under the hero findings plus the modularity strip beside the place opener.
+
+Imports: `./site.js`, `./week04-strip.js`, `./week04-tables.js`.
+
+Exports: none.
+
+**Import side effects.** At import: queries document 'main'; watchRail() (reads .w4-rail, adds document scroll listener, window resize listener, capturing document 'toggle' listener, rail mouseenter/focusin, runs mark()); wireReveals() (document click + keydown listeners); wireSegments(main) (keydown listener on main + MutationObserver on main subtree attributes aria-pressed and childList, then syncSegments); decorateAll(main) (decorates every table and installs a MutationObserver); drawFindings() and drawOpeners() each fetch JSON and replace host contents. DATA URLs computed via asset() at import. None of these listeners are ever removed.
+
+**DOM contract.**
+
+- nav.w4-rail (page.tsx:120): READ; sets inline CSS var --w4-rail-panel on it; WIRE mouseenter/focusin
+- nav.w4-rail li[data-target] (26 entries): READ data-target; TOGGLE class is-current; on each li's direct child \<a> SET/REMOVE aria-current='true' (ancestor li items marked too)
+- .w4-rail .w4-rail-label: READ bounding rects/offsetParent for panel width
+- document.getElementById(li.dataset.target) for every rail target (section/card ids such as opening, place, place-who, place-break, jobs, jobs-split, who, who-switch, ...): READ getBoundingClientRect and closest('details:not([open])')
+- document scroll / window resize / document toggle (capture): WIRE to re-mark rail
+- document click: WIRE; for '.w4-term > button' TOGGLE class is-open on the parent span.w4-term, and REMOVE is-open from every other .w4-term.is-open (page-wide, including terms injected later by termify in other modules)
+- document keydown Escape: REMOVE is-open from all .w4-term.is-open and blur the focused element inside a .w4-term
+- main keydown: for buttons inside '.rx-seg, .axis-modes, .staffing-years' handle ArrowLeft/Right/Home/End: focus and .click() the next button
+- '.rx-seg, .axis-modes, .staffing-years' buttons under main: WRITE tabIndex (0 on the aria-pressed='true' one, -1 on others), re-synced by MutationObserver on aria-pressed changes and child additions (covers #place-alpha, the [data-place-metric]/[data-place-region] groups, axis-modes at page.tsx:4473+, staffing-years at 3510, and any owned by other modules)
+- main table (all 10 tables in page.tsx plus any scripts add later): delegated to week04-tables.decorateAll (see that module)
+- [data-finding] (div.w4-mini x5, page.tsx:285-336, keys 1-5): REPLACE children with miniStrip(spec) SVG node + \<small> caption text
+- [data-strip='place-modularity'] (div.w4-figure-body, page.tsx:588): REPLACE children with stripChart(...) node; other [data-strip] hosts (25 more) are owned by other modules
+
+**State.** Closure flags (queued booleans, rAF handles) inside watchRail and wireSegments. Page-global document/window listeners (scroll, resize, toggle capture, click, keydown) and two MutationObservers on \<main> (segments + tables) that are never disconnected. No storage or URL params. week04_place.json is fetched twice (findings and openers) in addition to week04-place's own fetch.
+
+**Cross-module.** Runs second in the entry, after week04-place. Its handlers are order-independent through delegation and observers: it decorates and tab-syncs content that later modules (years, roles, methods, skills, pagerank, jobs, staffing, questions, cut, vis-*, entities) build asynchronously. Every module that calls termify depends on wireReveals for click/Escape behaviour. Depends on week04-strip (miniStrip, stripChart) and week04-tables (decorateAll).
+
+**Hazards.** This is page chrome, not a chart, and it acts on the whole page by delegation and observers. Rail scroll-spy maps to a \<Rail> client component with IntersectionObserver or the same scroll logic, but it needs the list of section ids, which the rail markup already carries; it also writes is-current/aria-current on every li, which React should own as state. Glossary terms: the click/Escape delegation covers every .w4-term on the page, including terms injected imperatively by other modules via termify; a React \<Term> component could own its open state, but while any imperative termify remains this global delegate must stay. Segmented controls: the roving tabindex is applied to buttons owned by other scripts and resynced with a MutationObserver; in React each segmented control component should own tabIndex and keys, so this can go only after every .rx-seg/.axis-modes/.staffing-years group is a component. The MutationObservers on \<main> mutate React-rendered nodes (tabIndex, table cell wrappers), which would fight React reconciliation once those subtrees are React-owned. Findings strips and the opener strip are cleanly self-contained (fetch, render into one host) and are easy to turn into components or even build-time SVG since all inputs are static JSON. Tests (week04-structure.test.mjs, week04-roles.test.mjs, type-scale.test.mjs) assert the server-rendered rail markup shape (nav.w4-rail, li[data-target] > a > span.w4-rail-label), so a Rail component must keep that HTML.
+
+**Charts.**
+
+- Five findings mini strips (real value vs null band), host `[data-finding='1'..'5']`, library svg-string. Data: public/assets/data/week04_place.json (null_model); public/weeks/week04/data/jobs.json (quality); public/weeks/week04/data/staffing_moves.json (finding); public/weeks/week04/data/footprint.json (metros.variants); public/weeks/week04/data/beyond.json (q3). Redraws on: none (drawn once after fetch); miniStrip is from week04-strip.js and returns a DOM node
+- Place opener modularity strip, host `[data-strip='place-modularity']`, library svg-string. Data: public/assets/data/week04_place.json (null_model, cities). Redraws on: none; stripChart from week04-strip.js
+
+### src/scripts/week04-ui.js
+
+63 lines, risk low. Pure helper library that builds the week 4 drawer markup (details.rx-drawer, div.rx-drawers.rx-foot) and injects glossary terms (span.w4-term > button + span.w4-pop) into existing text nodes.
+
+Imports: none.
+
+Exports: `drawer(label, body)`, `drawerRow(...drawers)`, `termify(el, phrase, definition, id)`.
+
+**Import side effects.** None; defines the NO_TERM selector constant only.
+
+**DOM contract.**
+
+- drawer(): CREATES \<details class='rx-drawer'>\<summary>label\</summary>\<div class='rx-drawer-body'>…\</div>\</details>; body may be an HTML string set via innerHTML
+- drawerRow(): CREATES \<div class='rx-drawers rx-foot'> and appends drawers
+- termify(el, …): READS el's text nodes via TreeWalker, skipping text inside 'svg, .w4-term, button, summary, h1-h4, legend, .w4-legend, table, caption'; SPLITS the first matching text node and REPLACES the phrase with \<span class='w4-term'>\<button type='button' aria-describedby=id>phrase\</button>\<span class='w4-pop' id=id role='tooltip'>definition\</span>\</span>. Works on detached nodes. Called by week04-place on #place-snap-note, and by roles, methods, skills, years, pagerank, and kit.js (week 5 pages, template) on their own nodes
+
+**State.** None.
+
+**Cross-module.** Imported by week04-place, week04-roles, week04-methods, week04-skills, week04-skills-radar, week04-years, week04-pagerank, and kit.js (re-exported to week05-*.js and week-template.js). Terms it creates rely on week04-frame's wireReveals for click/Escape and on CSS for hover/focus.
+
+**Hazards.** Low risk on its own: drawer/drawerRow map directly to \<Drawer label> and \<DrawerRow> components, and termify maps to a \<Term id definition>phrase\</Term> component that renders the same span.w4-term markup the JSX already contains 200+ times. The difficulty sits in its callers: termify mutates text that is either server-rendered (React-owned after hydration) or JSON-derived prose, so each call site must become JSX with an explicit \<Term>, which means knowing which phrase in which JSON string gets the term. Re-exported through kit.js, so week 5 and the week template depend on it too; keep the function until every caller is converted.
+
+### src/scripts/week04-map-reset.js
+
+26 lines, risk low. Builds the hidden 'Reset view' button that week04-place appends inside a chart host and shows while a metro is selected.
+
+Imports: none.
+
+Exports: `resetButton(host, onReset) -> (show:boolean) => void`.
+
+**Import side effects.** None.
+
+**DOM contract.**
+
+- host: ADDS class w4-has-reset; APPENDS \<button type='button' class='w4-map-reset' hidden> with an inline SVG icon (innerHTML) and text 'Reset view'
+- button click: WIRED; stopPropagation (so document-level handlers such as week04-frame's term click handler and ECharts do not see it), sets hidden=true, calls onReset
+- returned setter: TOGGLES button.hidden
+
+**State.** None beyond the closure over the button.
+
+**Cross-module.** Only imported by week04-place.js (used on #chart-hero-map, #chart-citymap, #chart-regions, #chart-backbone, #chart-arcs).
+
+**Hazards.** Trivial as a React component (\<ResetButton visible onReset/>), but its placement is the catch: it appends into the ECharts container after echarts.init, because init empties the host. A React version should render the button as a sibling overlay of the chart div inside a positioned wrapper rather than a child of the ECharts host; CSS in src/styles/post.css (.corridor .w4-has-reset, .corridor .w4-map-reset) assumes the host itself is the positioned parent, so the class would move to the wrapper.
+
+### src/scripts/week04-tables.js
+
+161 lines, risk medium. Decorates every table under a root: marks numeric columns with class num, softens text columns with class soft, and wraps cells of one 'bar' column and one 'meter' column (or columns named by data-rx-bars) in a bar-plus-content span, re-running whenever a script refills a table.
+
+Imports: none.
+
+Exports: `decorate(table)`, `decorateAll(root)`.
+
+**Import side effects.** None at import; decorateAll(root) runs immediately on all tables under root and installs a MutationObserver (childList, subtree) that is never disconnected.
+
+**DOM contract.**
+
+- table thead last row th: ADD class num on numeric columns (READS header text to pick bar column via /filings|links|weight|registrations|certified|clients|vendors|firms|edges/i and meter column via /share|placed/i)
+- table[data-rx-bars='col:max:class,…']: READS dataset.rxBars to override automatic bar choice (used at page.tsx:4229 data-rx-bars='1:0.04:placing,2:0.04:direct')
+- td: ADD class num or soft; for bar/meter columns REPLACES cell children with \<span class='rx-cell'>\<span class='rx-bar [kind]'>\<i style='width:N%'>\</i>\</span>\<span>original children\</span>\</span>; clearBar unwraps when a value stops being numeric
+- tr (body rows): SETS data-rx=''
+- root (week04-frame passes \<main>; kit.js passes other roots on week 5 / template pages): MutationObserver on childList+subtree; observer disconnects during its own writes and takes records to avoid self-triggering
+
+**State.** Per-call closure: queued Set of tables and rAF frame id. MutationObserver on the root for the page lifetime.
+
+**Cross-module.** Called by week04-frame (decorateAll(main)) and kit.js (decorate, decorateAll, re-exported). Relies on other modules filling tables later, which the observer catches.
+
+**Hazards.** Medium risk. Pure logic (numeric detection, which column gets a bar, bar widths) ports cleanly to a \<DataTable rows columns> component or a helper that computes cell classes and bar widths at render time. The current approach moves a cell's existing children into a new wrapper span, which is incompatible with React owning those cells: once a table is React-rendered, this observer must not touch it or hydration and later updates will break (React would find unknown wrapper nodes, or re-render and drop the bars). Many tables are server JSX and many are innerHTML-filled by scripts, so conversion has to proceed table by table with decorateAll scoped away from converted ones. Also used by kit.js for week 5 and the template, so the module must survive until those pages convert too. CSS in src/styles/post.css (around line 2194) styles the rx-cell/rx-bar/num/soft classes.
+
+**Charts.**
+
+- Inline table bars and meters, host `any table under the root (on week 4: the 10 table.ego/other tables in page.tsx plus tables scripts build, e.g. #place-null-stats, #place-alpha-table)`, library dom. Data: the table's own cell text. Redraws on: MutationObserver on any childList change inside a table under root, batched to one rAF
+
+### src/scripts/week04-questions.js
+
+990 lines, risk medium. Draws the second-round question figures for week 4 sections 1-4 and Beyond: 15 ECharts charts, 3 hand-built SVG figures and 5 table bodies, fed by six JSON files with one fetch per file.
+
+Imports: `./site.js`, `./week04-strip.js`.
+
+Exports: none.
+
+**Import side effects.** Computes 6 asset() URLs at import. Fires 6 independent fetch() chains at import: where_who.json, jobs_split.json, staffing_moves.json, beyond.json, footprint.json and footprint_rank.json. Each .then renders its charts and each .catch calls errorInto on that file's host ids. Adds one window 'resize' listener (line 990) that calls resize() on every ECharts instance in the module-level `charts` array. Relies on window.echarts already being loaded: entries/week04.js injects echarts-5.5.1.min.js as a classic script before run(). This module never loads ECharts itself, so if ECharts is missing, chart() throws inside .then and the catch replaces every host for that file with the error message.
+
+**DOM contract.**
+
+- #chart-where-who (div.chart-host.short, page.tsx:864): echarts.init into it (READ by id); on fetch failure, innerHTML REPLACED with an error \<p>
+- #chart-where-break (div.chart-host.short, :982): echarts.init; error innerHTML on failure
+- #where-break-links (tbody, :969, inside a table in a drawer): innerHTML REPLACED with \<tr> rows (alpha, weight, top employer + optional \<span class="tag">placing firm\</span>, share); on failure, innerHTML = one \<tr>\<td colspan=8> error row
+- #chart-jobs-split-nmi (div.w4-figure-body, :1123): host.replaceChildren(fitted(...)) appends a self-redrawing \<svg> built from week04-strip node(); error innerHTML on failure
+- #chart-jobs-split-mix (div.chart-host, :1131): echarts.init
+- #jobs-linkcom-table (tbody, :1238): innerHTML REPLACED with rows plus an optional \<span class="tag">flagged bridge\</span>
+- #chart-jobs-linkcom-share (div.w4-figure-body, :1188): replaceChildren(fitted svg)
+- #chart-jobs-linkcom-scatter (div.w4-figure-body, :1197): replaceChildren(fitted svg); the svg holds \<title> tooltips per dot group
+- #chart-who-switch (div.chart-host.short, :1480): echarts.init
+- #chart-who-movers (div.chart-host.short, :1565): echarts.init
+- #who-movers-table (tbody, :1553): innerHTML rows
+- #chart-who-overlap (div.chart-host.short, :1639): echarts.init
+- #who-overlap-table (tbody, :1628): innerHTML rows
+- #chart-beyond-law (div.chart-host.short, :1962): echarts.init
+- #chart-beyond-perm (div.chart-host.short, :2050): echarts.init
+- #chart-beyond-wage (div.chart-host.short, :2141): echarts.init
+- #chart-footprint-region (div.chart-host.jobs-nmi, :1712): echarts.init
+- #chart-footprint-nmi (div.chart-host.jobs-nmi, :1702): echarts.init
+- #chart-footprint-single (div.chart-host.jobs-nmi, :1806): echarts.init
+- #chart-footprint-rank (div.chart-host.jobs-nmi, :1799): echarts.init
+- Each host is optional: chart() returns null and the table renderers return early when an id is missing (null is pushed to `charts` and skipped on resize). errorInto also checks for a missing element.
+- Reads CSS tokens via week04-strip token(): --ink, --ink-mute, --ink-soft, --people, --w4-band, --access, --w4-grid, --card, --w4-meter, --w4-inset (SVG figures only; the ECharts charts use hard-coded hex)
+
+**State.** Module-level `charts` array of ECharts instances, never disposed. A single window 'resize' listener, never removed. No window globals written. Reads window.echarts as a global set by the classic \<script> in entries/week04.js. No storage, URL params or history. week04-strip's fitted() keeps its own module-level `observers` Map keyed by parent element, and disconnects observers once their svg leaves the DOM.
+
+**Cross-module.** It needs window.echarts from the classic script loaded in src/scripts/entries/week04.js, and imports node/token/fitted/fs/family/textWidth from week04-strip.js (fs and family come through type-scale.mjs). The charts inside closed \<details> depend on week04-cut.js broadcasting window 'resize' on toggle. The footprint FY2024 table mentioned at line 868 is drawn elsewhere. None of the hosts is shared with another module.
+
+**Hazards.** This is the easiest of the three to convert. Every render function writes only into its own host id and touches no prose, nav or term pop-ups, so each maps to a client component: \<EChart option={...}/> for the 15 ECharts charts, \<FittedSvg draw={...}/> for the 3 SVG figures, and JSX \<tbody> rows for the 5 tables. Data loading becomes one hook per JSON file (useJson(url)) so a failure stays isolated per file, matching the existing errorInto semantics. Hazards: (1) The tables use innerHTML with esc(); in JSX that becomes plain text nodes plus \<span className="tag">. The error row uses colSpan=8, but the tables have 4-5 columns. (2) The hard-coded hex palette is tolerated only because theme.test.mjs exempts this filename (LEGACY). Moving the code to new files means updating that list or switching to CSS tokens. (3) Charts live inside closed \<details> and drawers, so they need a resize when a box opens. Today that works because week04-cut.js dispatches window 'resize' on every \<details> toggle and this module listens globally. A React EChart wrapper must keep listening for window resize or use a ResizeObserver, and must call dispose() on unmount, which the current code never does. (4) The fitted() SVGs rely on node()/token()/textWidth() from week04-strip.js, which reads computed styles and measures text with a canvas. The draw functions are pure apart from that and can be ported to JSX \<svg> while keeping textWidth. (5) Six data files feed one module, but the section markup sits in different parts of page.tsx (sections place, jobs, who, footprint, beyond). The components need to be placed into each section's JSX, or the data fetch lifted into a page-level provider. (6) The server-rendered hosts are empty divs or tbodys, so swapping them for components causes no hydration mismatch.
+
+**Charts.**
+
+- Where/who AMI bars (who-hires labels vs region labels), host `#chart-where-who`, library echarts. Data: weeks/week04/data/where_who.json (finding.q1_scores). Controls: hover tooltip (item). Redraws on: window resize -> chart.resize(); no data redraw
+- Backbone break step line (giant component vs disparity alpha, log x, markArea 0.05-0.1), host `#chart-where-break`, library echarts. Data: where_who.json (backbone_sweep). Controls: hover tooltip (axis). Redraws on: window resize
+- Breaking-links table, host `#where-break-links`, library dom. Data: where_who.json (breaking_links). Redraws on: none
+- Outsourcer/direct NMI vs three random baselines (bars + sd whiskers), host `#chart-jobs-split-nmi`, library svg-string. Data: weeks/week04/data/jobs_split.json (finding.q1_*_nmi*). Controls: native \<title> hover. Redraws on: fitted(): ResizeObserver on the parent redraws at the new width (fallback 560); textWidth() measures labels
+- Top-8 occupation mix, placing vs direct (grouped horizontal bars), host `#chart-jobs-split-mix`, library echarts. Data: jobs_split.json (q1.placing_top_occupations, q1.direct_top_occupations). Controls: legend toggle; axis tooltip. Redraws on: window resize
+- Link-community top-15 table, host `#jobs-linkcom-table`, library dom. Data: jobs_split.json (q2.top15_by_communities_per_link, q2.bridges.in_top15). Redraws on: none
+- Largest link community share (single split bar), host `#chart-jobs-linkcom-share`, library svg-string. Data: jobs_split.json (q2.*, finding.q2_link_clusters_of_3_or_more). Controls: \<title> hover. Redraws on: fitted() ResizeObserver (fallback 520)
+- Links vs communities scatter with rate guides and leader-line labels, host `#chart-jobs-linkcom-scatter`, library svg-string. Data: jobs_split.json (q2.top15_by_communities_per_link, q2.bridges); hard-coded LINK_SHORT, LINK_LABELLED, LEADER, RATE_GUIDES. Controls: \<title> hover per dot group. Redraws on: fitted() ResizeObserver (fallback 520)
+- Switch stays in client's group: observed vs random pairs + whiskers, host `#chart-who-switch`, library echarts. Data: weeks/week04/data/staffing_moves.json (q1_pairs, finding.q1_pooled_*). Controls: item tooltip. Redraws on: window resize
+- Movers vs seed noise floor (3 bars + min/max whiskers), host `#chart-who-movers`, library echarts. Data: staffing_moves.json (finding.q2_*). Controls: tooltip. Redraws on: window resize
+- Top movers table, host `#who-movers-table`, library dom. Data: staffing_moves.json (q2_top_movers). Redraws on: none
+- Two-community clients, real vs rewired, host `#chart-who-overlap`, library echarts. Data: staffing_moves.json (finding.q3_*). Controls: tooltip. Redraws on: window resize
+- Overlap clients table, host `#who-overlap-table`, library dom. Data: staffing_moves.json (q3_top_clients). Redraws on: none
+- Law firms AMI observed vs rewired, host `#chart-beyond-law`, library echarts. Data: weeks/week04/data/beyond.json (finding.q1_ami*). Controls: tooltip. Redraws on: window resize
+- PERM per H-1B ratio with CI whiskers, host `#chart-beyond-perm`, library echarts. Data: beyond.json (q2.placing_firms_20plus_placed, q2.direct_firms_20plus_h1b, q2_top6_communities). Controls: tooltip. Redraws on: window resize
+- Low-wage-level share by occupation, placed vs own site, host `#chart-beyond-wage`, library echarts. Data: beyond.json (q3_top5_soc). Controls: legend toggle; axis tooltip. Redraws on: window resize
+- Giants-out region AMI (4 bars + control whiskers + full-network markLine), host `#chart-footprint-region`, library echarts. Data: weeks/week04/data/footprint.json (metros.variants). Controls: tooltip. Redraws on: window resize
+- Giants-out NMI vs full network, metros and jobs halves (8 bars, markArea), host `#chart-footprint-nmi`, library echarts. Data: footprint.json (metros.variants, jobs.variants). Controls: tooltip. Redraws on: window resize
+- One firm out vs random cut (paired bars, custom offset whisker), host `#chart-footprint-single`, library echarts. Data: weeks/week04/data/footprint_rank.json (single, finding.full_ami_region). Controls: legend; axis tooltip (shadow). Redraws on: window resize
+- Region AMI vs k largest filers removed, with stacked control band, host `#chart-footprint-rank`, library echarts. Data: footprint_rank.json (sweep). Controls: axis tooltip. Redraws on: window resize
+
+**Tests that read it.**
+
+- tests/theme.test.mjs (text-level only: the LEGACY list names week04-questions.js, which exempts it from the no-bare-hex / --cv-* token scan. It has hard-coded hex colours INK/MUTE/LINE/ORANGE/BLUE/GREY at lines 16-21, so a converted copy outside that filename would fail the scan unless it moves to token() or the LEGACY list is updated.)
+
+### src/scripts/week04-methods.js
+
+1011 lines, risk medium. Builds the deep dive's #cut-methods explorable on first open: four tabbed panels (Girvan-Newman stepper, interactive modularity, Louvain stepper, overlapping communities). Each panel has an ECharts US geo map plus a string-built SVG line or strip chart, and the module fills about 30 stat and prose spans from data computed at runtime.
+
+Imports: `./site.js`, `./type-scale.mjs`, `./week04-ui.js`.
+
+Exports: none.
+
+**Import side effects.** Computes the asset() URLs for explore.json, week04_place.json and usa.json. If #w4m-root exists, adds a 'w4m:show' CustomEvent listener on it. If #cut-methods exists, calls build() when the box is already open and adds a 'toggle' listener on it that calls build() on open. No fetch runs until then. build() runs once (guarded by the `built` flag): it loads ECharts through an injected \<script> if window.echarts is missing, fetches 3 JSON files in parallel, registers the 'week04-methods-usa' map in the global echarts registry (with Alaska, Hawaii and Puerto Rico filtered out), builds all 4 panels, wires the tab buttons, un-hides #w4m-root, removes #methods-status and dispatches window 'resize' on the next animation frame.
+
+**DOM contract.**
+
+- #cut-methods (details.rx-panel, page.tsx:2775): READ .open; 'toggle' listener triggers the lazy build
+- #w4m-root (div.w4m[hidden], :2792): listens for the 'w4m:show' CustomEvent; READS and WRITES dataset.want; sets hidden=false after build
+- #methods-status (p.status-line, :2791): textContent WRITTEN with the error message on failure; element REMOVED on success
+- #w4m-tab-gn/-mod/-louvain/-overlap and all .w4m-tab (buttons, :2794-2800): click listeners; aria-pressed toggled; showWanted() calls tab.click() programmatically
+- all .w4m-panel (sections #w4m-panel-gn/-mod/-louvain/-overlap): the `hidden` property toggled by data-panel
+- GN panel: #w4m-gn-map (echarts.init); #w4m-gn-chart (svg: innerHTML REPLACED, viewBox/preserveAspectRatio set, a ResizeObserver redraws it, marker line and dot attributes moved); #w4m-gn-lead (prose \<p>: textContent WRITTEN, then termify() SPLITS a text node and injects a span.w4-term > button + span.w4-pop#w4-term-w4m-panel-gn-modularity); #w4m-gn-caption (figure caption textContent); #w4m-gn-hubs and #w4m-gn-first (spans inside the prose of the 'Background' drawer, textContent WRITTEN; when the data checks fail, the closest \<details> drawer is set hidden=true); #w4m-gn-step, #w4m-gn-comps, #w4m-gn-sizes, #w4m-gn-next, #w4m-gn-bet, #w4m-gn-q (stat textContent on every step); #w4m-panel-gn [data-act=step|back|reset|split] buttons: click listeners
+- Mod panel: #w4m-mod-map (echarts.init plus a chart 'click' handler that cycles a metro's group; the handler is re-bound with off/on on every render); #w4m-mod-strip (svg innerHTML, ResizeObserver, marker cx); #w4m-mod-lead (prose textContent, carries the computed Q); #w4m-mod-q-label (overwrites the server text 'modularity of your three groups' with the edge count appended); #w4m-mod-q, #w4m-mod-sizes, #w4m-mod-last (overwrites the server 'none yet'); #w4m-panel-mod [data-act=reset|one|shuffle] click listeners (shuffle uses Math.random)
+- Louvain panel: #w4m-louvain-map (echarts); #w4m-louvain-chart (svg innerHTML + ResizeObserver); #w4m-louvain-lead (prose textContent); #w4m-louvain-seed, #w4m-louvain-links, #w4m-louvain-q-from, #w4m-louvain-q-to (spans in the 'Method' drawer prose; when checks fail, the closest \<details> is set hidden=true); #w4m-louvain-q, -n, -step, -level, -moved, -gain (stats); #w4m-panel-louvain [data-act=step|back|reset|level] click listeners
+- Overlap panel: #w4m-overlap-map (echarts); #w4m-overlap-lead (prose textContent, then termify() injects a term pop-up for 'Clique percolation' with id w4-term-w4m-panel-overlap-clique); #w4m-overlap-fringe (span in the Method drawer prose: a whole sentence WRITTEN when the fringeOk check passes, empty otherwise); #w4m-overlap-count, -title, -extra, -which, -names (textContent); #w4m-overlap-modes [data-mode] buttons: click handlers and aria-pressed via setPressed; [data-act=next] click
+- Reads CSS custom properties from getComputedStyle(document.body): --w4-tip-bg, --w4-tip-ink, --w4-map-fill, --w4-map-edge, --ink, --ink-soft, --ink-mute, --line, --w4-accent, --card, --w4-band, --w4-group-0/1/2. These are read once at build time, so a later theme change does not restyle the charts.
+- Window: dispatches the 'resize' event after a tab switch and after the build; every chart adds its own window 'resize' listener (4 listeners, never removed)
+
+**State.** Module-level flags `built` and `ready`. Per-panel closure state: GN step `s`, mod partition `g` and `last`, Louvain step `s`, overlap `mode` and `j`. #w4m-root.dataset.want is a DOM-stored cross-module channel that week04-cut.js writes. A global ECharts map registration under the name 'week04-methods-usa'. May set window.echarts by injecting the vendor script if it is missing. ResizeObservers in fitBox are never disconnected. No storage and no URL params; the hash routing lives in week04-cut.js.
+
+**Cross-module.** week04-cut.js (router) drives the active tab through #w4m-root.dataset.want and the 'w4m:show' event, reads .w4m-tab aria-pressed and #w4m-root.hidden, and dispatches window 'resize' on \<details> toggle, which these maps rely on. week04-ui.js provides termify() and the .w4-term pop-up CSS contract. It shares window.echarts with the classic script loaded in entries/week04.js and with week04-place.js. The markup in page.tsx :2775-3060 must contain every w4m-* id or build() throws, and the thrown error is caught and shown in #methods-status.
+
+**Hazards.** This is a self-contained interactive island inside one \<details>, so it converts well to a \<CommunityMethods> client component with four tab child components (GNStepper, ModularityPlayground, LouvainStepper, OverlapExplorer). Each one holds its step or partition index in useState and passes ECharts options to an \<EChartGeo> wrapper. The two SVG line and strip charts become JSX \<svg> sized by a ResizeObserver hook. Hazards: (1) PROSE WRITES. The module fills data-derived sentences into lead paragraphs (#w4m-gn-lead, -mod-lead, -louvain-lead, -overlap-lead), a figure caption, and spans inside drawer prose (#w4m-gn-hubs/-first, #w4m-louvain-seed/-links/-q-from/-q-to, #w4m-overlap-fringe). It also overwrites server text (#w4m-mod-q-label, #w4m-mod-last) and hides whole drawers (closest('details').hidden = true) when its data sanity checks fail. In React, those paragraphs and drawers must move into the component's JSX and render from the computed values. The server-rendered copies in page.tsx (:2802-3060) are currently empty shells. (2) TERM POP-UPS. termify() (week04-ui.js) walks text nodes and splices in span.w4-term > button[aria-describedby] + span.w4-pop[role=tooltip] with fixed ids (w4-term-w4m-panel-gn-modularity, w4-term-w4m-panel-overlap-clique). That DOM surgery would fight React reconciliation, so it needs a \<Term> JSX component placed in the lead text. Ids must stay unique for week04-structure.test. (3) ROUTER COUPLING. week04-cut.js sets root.dataset.want and dispatches a 'w4m:show' CustomEvent on #w4m-root. It reads '.w4m-tab[aria-pressed=true]' and root.hidden to compute the current tab, and a global click listener on '.w4m-tab' calls syncContents. A React version has to expose the active tab back to the router: keep aria-pressed on real buttons and keep listening for w4m:show, or share the state via context/URL hash. showWanted() relies on tab.click(). (4) LAZY BUILD. Nothing loads until #cut-methods opens, and React state would replace the `built` flag. The \<details open> state is owned imperatively by the router, so JSX must not control `open`, or a re-render would close it. (5) HIDDEN SIZING. The maps initialise while #w4m-root and the tab panels are hidden and depend on window 'resize' after a tab switch, a toggle (from cut.js) or a rAF. A ResizeObserver-based wrapper handles this better, but the hidden Browser pane pauses rAF and ResizeObserver (see memory). (6) The ECharts instances are never disposed and each adds a window listener, which leaks across a React remount. (7) It may load ECharts itself through an injected \<script> as a fallback. A converted module should import echarts from npm, or share one loader with the other week 4 modules. (8) Tokens are read once from body computed style.
+
+**Charts.**
+
+- Girvan-Newman geo map (backbone links, dashed once cut, next cut highlighted, top-3 pieces shaded), host `#w4m-gn-map`, library echarts. Data: weeks/week04/data/explore.json (girvan_newman, metros); assets/data/week04_place.json (cities, backbone.graphs['0.2'].edges); assets/data/usa.json (registered as geo map 'week04-methods-usa'). Controls: #w4m-panel-gn [data-act] Step / Next split / Back / Reset; hover tooltip. Redraws on: setOption(notMerge) on every step; window resize
+- GN modularity-per-split line with moving marker, host `svg#w4m-gn-chart`, library svg-string. Data: explore.json girvan_newman.levels Q. Controls: moves with the GN step buttons. Redraws on: ResizeObserver on the svg redraws the whole chart and puts the marker back; marker-only moves on step
+- Modularity playground map (click a metro to cycle its group), host `#w4m-mod-map`, library echarts. Data: explore.json full.edges, full.total_weight, full.Q_page_partition, metros.community; week04_place.json null_model, cities; usa.json. Controls: click on a map dot; #w4m-panel-mod [data-act] reset / shuffle / one; tooltip. Redraws on: setOption(notMerge) on every state change; Q recomputed in JS; window resize
+- Modularity strip (rewired band, Louvain reference, your-Q marker), host `svg#w4m-mod-strip`, library svg-string. Data: week04_place.json null_model.Q_null_mean/std; explore.json full.Q_page_partition. Controls: marker follows the mod map state. Redraws on: ResizeObserver redraw; marker cx on each change
+- Louvain move-by-move map (communities coloured by final group, ring on the moved metro), host `#w4m-louvain-map`, library echarts. Data: explore.json louvain.levels/moves/final, metros; week04_place.json cities, null_model; usa.json. Controls: #w4m-panel-louvain [data-act] Step / Finish this level / Back / Reset; tooltip. Redraws on: setOption(notMerge) per step; window resize
+- Louvain modularity-per-move line with rewired reference, host `svg#w4m-louvain-chart`, library svg-string. Data: explore.json louvain moves Q; week04_place.json null_model.Q_null_mean. Controls: moves with the Louvain step buttons. Redraws on: ResizeObserver redraw; marker move per step
+- Overlap map (k-clique or link-community members, highlighted edges, rings on multi-membership metros), host `#w4m-overlap-map`, library echarts. Data: explore.json k_cliques.by_k['3'..'6'], link_communities (communities, by_metro); week04_place.json backbone.graphs['0.2'].edges, cities; usa.json. Controls: #w4m-overlap-modes [data-mode] link/k3/k4/k5/k6 segment buttons; [data-act=next] Next community; tooltip. Redraws on: setOption(notMerge) per mode or community change; window resize
+
+**Tests that read it.**
+
+- None import or read the file directly. tests/theme.test.mjs scans it as a non-LEGACY script, so it must keep zero bare hex literals (it has none; colours come from CSS tokens). tests/week04-structure.test.mjs requires the ids #w4m-panel-gn/-mod/-louvain/-overlap and #cut-methods in the built HTML (the METHOD targets of week04-cut.js), and that ids stay unique.
+
+### src/scripts/week04-cut.js
+
+237 lines, risk high. The page-chrome router for week 4. It opens and closes deep-dive topic and panel \<details> from URL hashes and contents/catalogue links, maps retired anchors to new ones, sets which script-built box a panel shows, marks the current contents entry, counts boxes per topic, broadcasts window resize when any \<details> opens, and marks the top nav link of the section in view on scroll.
+
+Imports: none.
+
+Exports: none.
+
+**Import side effects.** Everything runs at import. Adds two document-level 'click' listeners: one intercepts a.rx-toc-item and .rx-catalogue a[href^='#'], calls preventDefault and pushState, then route(); the other calls syncContents on any .w4m-tab click. Adds a capture-phase document 'toggle' listener for every \<details>. Adds window 'hashchange' and 'popstate' listeners, a passive window 'scroll' listener, writeCounts(), an immediate route() for the initial location.hash, syncContents() and mark(). It also queries .topnav anchors and their target sections once at import.
+
+**DOM contract.**
+
+- location.hash: READ on load, hashchange and popstate; history.pushState(`#id`) on contents/catalogue clicks
+- ALIAS anchors (cut-place, cut-jobs, cut-who, cut-more, who-first-round, place-inspector) redirect to topic-* / cut / who-q2 / place-start
+- #cut (section.step, page.tsx:2227): route('cut') closes every details.rx-topic[open] and scrollIntoView(#cut)
+- details.rx-topic (#topic-where :2509, #topic-jobs :3063, #topic-outsourcing, #topic-paperwork, #topic-years; name='w4-topic'): open property WRITTEN by openAround and by close-all; on open with no panel open, the first details.rx-panel inside is set open
+- details.rx-panel (e.g. #cut-methods :2775, #cut-skills :3335, #cut-pagerank :3343): open WRITTEN; data-show WRITTEN (SUB targets: #cut-skills -> direct|cluster|radar, #cut-pagerank -> explore|iteration); defaultShow sets the first SUB value on open. post.css:2185-2189 hides the non-shown .w4-card children via [data-show]
+- Script-built boxes #cut-skills-direct/-cluster/-radar and #cut-pagerank-explore/-iteration (created by week04-skills*.js / week04-pagerank.js) are used as scroll targets when present
+- ANY ancestor \<details> of a target (including rx-drawer drawers): open set true by openAround()
+- Every \<details name=…>: on open, closes other open details with the same name (polyfill for exclusive accordions)
+- #w4m-root: dataset.want WRITTEN and the 'w4m:show' CustomEvent DISPATCHED for METHOD targets (w4m-panel-gn/-mod/-louvain/-overlap -> gn/mod/louvain/overlap); hidden READ; .w4m-tab[aria-pressed="true"] dataset.panel READ
+- a.rx-toc-item (30 in page.tsx, inside nav.rx-toc in each topic): aria-current='true' set or removed by syncContents; data-target / hash READ
+- nav.rx-toc: getBoundingClientRect read, scrollIntoView when a contents click opens a box below it
+- span.rx-topic-count (one per topic, e.g. :2517, :3071, :3360): textContent WRITTEN as 'N box(es)', counted from the topic's a.rx-toc-item
+- .rx-catalogue (#cut-catalogue :2235) anchors: click intercepted; a[data-target] with href=#panel for SUB boxes (:2317-2341)
+- nav.topnav a[href^='#'] (page.tsx:16-30: #opening, #place, #jobs, #who, #footprint, #beyond, #cut): class 'here' TOGGLED on scroll; the server markup hard-codes className='here' on the 'Where' link
+- section targets #opening :346, #place :494, #jobs :988, #who :1246, #footprint :1647, #beyond :1829, #cut :2227: getBoundingClientRect READ on every scroll
+- window: dispatches 'resize' on every \<details> open (capture toggle) and on a SUB swap inside an already-open panel. All ECharts and fitted charts on the page rely on this to size when revealed
+- target.scrollIntoView() via requestAnimationFrame after routing
+
+**State.** Module-level `lastRoute` (dedupes the double hashchange+popstate within one frame). Constant tables ALIAS, SUB and METHOD (pinned by the structure test). The DOM serves as shared state: details.open, panel data-show, #w4m-root data-want, aria-current, the topnav .here class. URL hash and history.pushState. The `links` and `sections` arrays are captured once at import. No storage. No window globals beyond listeners.
+
+**Cross-module.** week04-methods.js receives the active tab via #w4m-root dataset.want and the 'w4m:show' event, and this module reads its .w4m-tab aria-pressed and #w4m-root.hidden. The week04-skills*.js and week04-pagerank.js boxes (#cut-skills-*, #cut-pagerank-*) are shown via data-show and post.css. week04-frame.js runs a separate rail (li[data-target] aria-current) that does not overlap this module's selectors but sits on the same page. Every chart module (week04-questions.js, week04-methods.js and others) depends on its window 'resize' broadcast. Load order in entries/week04.js puts it after the methods, skills, pagerank, jobs, staffing and questions modules, so script-built boxes may already exist when the initial route() runs. The vis-*/entities modules load after it.
+
+**Hazards.** This is the hardest of the three because it is page-global chrome. It mutates elements across the whole page (every \<details>, every topic, the top nav, the catalogue, contents lists and a panel inside another module's box) and broadcasts window 'resize' as an implicit contract every chart on the page depends on. A React version would be a client \<DeepDiveRouter> context: a useHashRoute() hook, controlled open state for topics and panels, activeSub per panel replacing data-show, activeMethod shared with the methods component instead of the CustomEvent plus dataset.want, aria-current derived from the route, and a \<TopNav> with an IntersectionObserver or scroll hook for .here. Hazards: (1) Controlled \<details open> in React fights native toggling and the browser's own \<details name> exclusivity. Toggle events must update state, or React will re-close a box the user opened. The capture-phase toggle listener also covers drawers that other scripts inject, which a React context would not see unless those drawers are React too. (2) Charts rely on the synthetic window 'resize' when any details opens; removing it before every chart has its own ResizeObserver will leave hidden charts at 0 width. (3) week04-structure.test.mjs regex-parses ALIAS/SUB/METHOD from this exact file. Converting to TS or moving the tables requires updating the test, or keeping a JS module whose source formatting matches. (4) The SUB boxes are built by other modules (skills, pagerank) and selected via CSS [data-show]. Converting the router before those modules means keeping the data-show attribute API. (5) The initial route() on import depends on running after hydration. Under React, initial hash handling has to happen in an effect, and the server markup's hard-coded 'here' class on the Where link must match the first client render or be set in the effect only. (6) Global document click interception with preventDefault and pushState may clash with Next \<Link> if contents links are later converted. Keep plain \<a href='#…'> or handle it in the router. (7) The topnav part (lines 227-237) is independent of the deep-dive router and can split out as a shared TopNav component for other pages.
+
+**Tests that read it.**
+
+- tests/week04-structure.test.mjs reads the SOURCE TEXT with readFileSync and regex-parses the `const ALIAS = {…};`, `const SUB = {…};` and `const METHOD = {…};` tables (pattern /const NAME = \{([\s\S]*?)\n\};/ with quoted keys). It then checks that every rx-toc-item and catalogue entry in the built week04 HTML lands in the right topic, and that SUB targets link to their panel href. Moving or reformatting these tables (into TS, a different file, unquoted keys or a different closing) breaks the test.
+- tests/theme.test.mjs scans it as a non-LEGACY script (no bare hex allowed; it has none).
+
+### src/scripts/week04-entities.js
+
+1023 lines, risk high. Lazily loads vendored deck.gl and draws the section 3 'Every worker and company' deep dive: a WebGL dot map of workers or companies coloured by Louvain community (or sector, wage level, PageRank), or a node-link backbone of the staffing and law-firm networks, plus the card's answer line, caption, strip charts, CCDF or alpha curve, week 1-4 fact lists and the groups table.
+
+Imports: `./site.js`, `./week04-strip.js`.
+
+Exports: none.
+
+**Import side effects.** Runs `document.querySelector('#entity-communities')` and builds DATA URLs via asset() at import. If root exists, it finds root.closest('details') (the rx-panel data-box='entity-communities'), calls main() at once when the panel is already open or missing, and otherwise adds a 'toggle' listener on the panel that calls main() the first time it opens (one-shot `started` flag). main() injects a \<script src=assets/vendor/deck.gl-9.0.30.min.js> into \<head> (deduped by src, promise stored on script.__ready), reads window.deck, fetches the entity JSON, wires every control listener, and calls show('workers'). It returns nothing and exports nothing.
+
+**DOM contract.**
+
+- #entity-communities (figure.w4-entities): read as root. It wires a keydown (Escape clears focus) listener on it. root.closest('.w4-card') is the scope for $() lookups, so the module reaches OUTSIDE the figure into the card header.
+- root.closest('details') (details.rx-panel[data-box=entity-communities]): reads .open and adds a 'toggle' listener for the lazy start.
+- [data-entities='answer'] (p.w4-answer in the card's \<header class=w4-q>, OUTSIDE the figure): writes textContent. describe() and describeNetwork() rebuild it from data, so the server text 'Loading the filings…' is replaced by data-driven prose.
+- figcaption[data-entities='caption']: writes textContent, and describeNetwork() appends to it with +=.
+- [data-entities-text='labels-head'|'labels-note'|'ccdf-head'|'ccdf-note'] (h4 and p.axis-note headings): slots() caches the server-rendered textContent in module-level SLOT_TEXT on first call, then swaps in NET_TEXT for network views and restores the originals for entity views. This rewrites server-rendered prose.
+- [data-entities='weeks'] (div.w4-entities-weeks): toggles .hidden (hidden in network mode). drawWeeks() replaces its children with built \<section>\<h4>\<ul>\<li> lists of week 1-4 facts (data-driven prose).
+- [data-entities='labels']: replaceChildren with a stripChart (entity mode: NMI per label) or with three div.w4-entities-stat blocks (network mode: links kept, nodes with a link, giant component).
+- [data-entities='strips']: replaceChildren with a stripChart (entity: 5 null-model rows; network: modularity and seed NMI).
+- [data-entities='ccdf']: replaceChildren with a fitted() SVG (entity: log-log CCDF; network: alpha curve).
+- [data-entities='table'] table thead: innerHTML replaced (ENTITY_HEAD for entities, a 5-column head for networks), so it overwrites the server-rendered thead.
+- [data-entities='table'] tbody: replaceChildren with \<tr>s built via innerHTML strings (escaped, inline swatch style with var(--w4-community-n) or color-mix).
+- [data-entities='table'] h4: writes textContent 'The N largest of M groups'.
+- .w4-entities-stage: read. status() appends a created p.w4-entities-status into it on first use, then sets textContent and .hidden on it ('Loading the filings…', error text).
+- .w4-entities-map (div role=img tabIndex=0): host for the deck.gl Deck (parent: host). deck.gl appends its own canvas and tooltip div. Its clientWidth and clientHeight are read in fit().
+- .w4-entities-legend (ul): replaceChildren with \<li>\<button aria-pressed>\<i swatch style=background:rgb()>label\</button>\</li>. Each button gets a click listener that toggles state.focus and redraws.
+- [data-entity] buttons (4: workers, companies, staffing, lawfirms) under root: click listeners call show(entity), and show() sets aria-pressed on all four.
+- .w4-entities-colour (label): toggles .hidden (hidden in network mode). Its select gets a 'change' listener setting state.by and redrawing.
+- .w4-entities-net (div, server-rendered hidden): toggles .hidden. Its \<select> gets its options replaced by new Option('α = a') for each data.alphas, and a 'change' listener sets state.alpha.
+- [data-dropped] buttons (faint, hidden) under root: click listeners set state.dropped, toggle aria-pressed on both, and redraw.
+- .w4-entities-reset button: a click listener resets the deck view state with a 300 ms transition.
+- document.head: appends the deck.gl \<script>, and document.querySelector(`script[src=...]`) dedupes it.
+
+**State.** Module-level: `root`, `DATA`, a `cache` object of fetch promises per entity, the `probe` 2D canvas context for colour parsing, and `SLOT_TEXT` (server heading text captured on first slots() call). Inside main(): `state` {entity, by, focus, alpha, dropped}, `instance` (the deck.Deck), `current` {data, dots}. Window global: reads window.deck (set by the vendored UMD). It stores __ready on the injected \<script> element. No localStorage or URL params. Theme tokens are read once per draw through token() and rgb(), so a theme switch does not recolour until the next control change.
+
+**Cross-module.** Depends on week04-strip.js (stripChart, token, node, fitted, fs, family) and site.js asset(). It relies on week04-cut.js's capture-phase 'toggle' handler, which dispatches window 'resize' when an rx-panel opens, and on \<details name> grouping. Runs last in entries/week04.js; nothing else reads its DOM. src/styles/week04-entities.css styles .w4-entities-tip and the status, legend and stat classes it creates. It falls under theme.test.mjs's token/no-bare-hex scan (not in LEGACY).
+
+**Hazards.** This is the hardest of the three. A React \<EntityCommunities> client component should own the whole card, header answer included, because the module writes the w4-answer in the card header OUTSIDE the figure and rewrites the server-rendered headings (data-entities-text) and the table thead. Those must become state-derived JSX (answer, caption, slot headings, thead variant, weeks list, table rows, legend, stats) instead of DOM writes, or React will fight the mutations on re-render. Keep the deck.gl Deck imperative in a useEffect with a ref on .w4-entities-map, created once and updated through setProps, and finalize() it on unmount (the current code never disposes it). Lazy start: replace the details 'toggle' listener with an onToggle on the panel or an IntersectionObserver, and load deck.gl with a dynamic import or a script-loader hook. Controls are uncontrolled DOM today (aria-pressed toggled by hand, select options injected) and should become controlled state. Tooltips are HTML strings handed to deck, which is fine to keep. stripChart and fitted return detached DOM nodes, so wrap them in a small \<DomChart build={...}/> ref component until week04-strip.js is ported. Hazards: SLOT_TEXT caches the server text on first run, which breaks under StrictMode double-mount or HMR if the text was already swapped; status() appends its own \<p> into the stage; legend click handlers close over `state` in main(); theme tokens are read at draw time with no theme-change listener; the module-level `cache` survives remounts, which is fine.
+
+**Charts.**
+
+- Entity dot map (workers or companies), host `.w4-entities-map`, library deck. Data: public/weeks/week04/data/entities_workers.json; public/weeks/week04/data/entities_companies.json; public/assets/vendor/deck.gl-9.0.30.min.js (window.deck). Controls: [data-entity] buttons switch the dataset (workers or companies); .w4-entities-colour select: community, sector, level or pagerank palette; .w4-entities-legend buttons: focus or highlight one group (alpha 28 vs 215); Escape keydown on #entity-communities clears focus; .w4-entities-reset: refit the view; deck controller: scroll zoom, drag pan, double-click zoom, keyboard; hover: deck getTooltip with HTML profile tooltip (className w4-entities-tip, inline styles from tokens). Redraws on: control change (entity, colour-by, legend focus, Escape). Layers are rebuilt and instance.setProps is called. No resize handling beyond deck's own canvas autosize; fit() runs on show and reset only.
+- Staffing or law-firm backbone network, host `.w4-entities-map`, library deck. Data: public/weeks/week04/data/entities_network_staffing.json; public/weeks/week04/data/entities_network_lawfirms.json. Controls: [data-entity='staffing'|'lawfirms'] buttons; .w4-entities-net select: disparity-filter alpha; .w4-entities-net [data-dropped] buttons: dropped links faint or hidden; legend buttons: focus one community; hover tooltip on nodes. Redraws on: control change (alpha, dropped mode, focus). The same Deck instance is reused through setProps with LineLayer, ScatterplotLayer and TextLayer.
+- Entity null-model strips / network modularity strip, host `[data-entities='strips']`, library svg-string. Data: entities_*.json summary.null, facts.week2, facts.week3; network json louvain and null. Controls: native \<title> tooltips from stripChart. Redraws on: on entity switch (describe or describeNetwork)
+- NMI-per-label strip / network 'what survives' stats, host `[data-entities='labels']`, library svg-string. Data: summary.labels (entity); d.at[alpha], all_links (network). Controls: title tooltips. Redraws on: entity switch. In network mode it also redraws on every draw() (alpha, dropped, focus) through drawNetStats.
+- Attribute degree/strength CCDF (entity) / alpha retention curve (network), host `[data-entities='ccdf']`, library svg-string. Data: facts.week1.ccdf (entity); d.curve and d.at (network). Controls: circle \<title> tooltips. Redraws on: entity switch. The network curve also redraws on every draw() (alpha marker), and fitted() redraws on host resize via ResizeObserver.
+- Week 1-4 facts list, host `[data-entities='weeks']`, library dom. Data: facts.week1-4, summary.robustness, summary.louvain. Redraws on: entity switch
+- Largest-groups table, host `[data-entities='table']`, library dom. Data: communities (top 25). Redraws on: entity switch
+
+**Tests that read it.**
+
+- tests/theme.test.mjs (indirectly: reads every src/scripts/*.js text not in LEGACY for the CSS-token / no bare hex rule; week04-entities.js is scanned)
+
+### src/scripts/week04-pagerank.js
+
+535 lines, risk medium. Lazily builds the whole PageRank deep-dive box: an intro paragraph and two script-generated cards (#cut-pagerank-explore with a damping-factor toggle and a top-15 bar chart; #cut-pagerank-iteration with a power-iteration bump chart and a movers table), all from pagerank.json.
+
+Imports: `./site.js`, `./week04-strip.js`, `./week04-ui.js`.
+
+Exports: none.
+
+**Import side effects.** Calls wire() at import. wire() looks up #cut-pagerank (details), adds a 'toggle' listener, and runs open() at once. When the details is open it calls render() once (`done` flag). render() fetches pagerank.json and replaces the children of #pagerank-body.
+
+**DOM contract.**
+
+- #cut-pagerank (details.qa.cut.rx-panel, data-box=cut-pagerank): reads .open and adds a 'toggle' listener (lazy, one-shot).
+- #pagerank-body (div.qa-body.cut-body): replaceChildren(intro p.w4-box-intro, damping card, iteration card). This wipes the server-rendered #pagerank-status line inside it on success.
+- #pagerank-status (p.status-line inside #pagerank-body): textContent set to an error message on fetch failure only.
+- CREATES div.card.w4-card#cut-pagerank-explore: a header.w4-q with w4-num '6', an h2 and a data-driven p.w4-answer (innerHTML template); div.w4-two; a left column with p.sub, div.axis-modes[role=group] of button[data-d] with aria-pressed, a p.w4-legend, a div.notice with a data-driven 'What to notice' sentence, and a drawerRow of drawers 'Background', 'Method' and 'More numbers' holding data-driven prose; the right column div.plot with h3, p.axis-note and div.w4-figure-body chart host. The toggle has a click listener (event delegation on button[data-d]) that flips aria-pressed and redraws.
+- CREATES div.card.w4-card#cut-pagerank-iteration: header.w4-q with w4-num '7', h2 and p.w4-answer computed from iteration steps (leader, settle rounds); p.sub; a notice; drawers 'Method' and 'More numbers'; div.plot with an h3 whose text is computed ('First place settles by round …'), p.axis-note and the bump chart host; then table.ego with a caption and movers rows built via innerHTML (m.title NOT escaped).
+- termify() injects glossary terms (span.w4-term > button[aria-describedby] + span.w4-pop[role=tooltip]) into created prose. The ids are w4-term-cut-pagerank-explore-pagerank, w4-term-cut-pagerank-explore-degree and w4-term-cut-pagerank-iteration-pagerank.
+- Ids #cut-pagerank-explore and #cut-pagerank-iteration are routing targets: week04-cut.js SUB map routes contents and catalogue links (a.rx-toc-item[data-target], page.tsx ~lines 2335, 2341, 3084, 3086) to them. They do not exist in the server markup until this module runs.
+
+**State.** Module constants only (DATA URL, DEFAULT_D, sizes, SHORT names). Closure state: `done` in wire(). No window globals, storage or URL params. Damping selection lives only in aria-pressed attributes.
+
+**Cross-module.** Uses week04-ui.js (drawer, drawerRow, termify) and week04-strip.js (node, token, fitted, fs, textWidth). week04-cut.js depends on the ids it creates (#cut-pagerank-explore and #cut-pagerank-iteration via SUB), and its capture-phase toggle handler opens the panel and fires the window resize. The TOC links' data-target values point at these script-built ids. Load order: runs after week04-skills-radar and before week04-cut in the entry. It works either way because routing happens on click or toggle, but a hash deep link to #cut-pagerank-explore before render would not find the element.
+
+**Hazards.** This one converts well because it already builds its whole subtree from data. It becomes \<PagerankBox> rendering \<DampingCard data> and \<IterationCard data> inside the #cut-pagerank details, with the fetch in a hook gated on the details being open (onToggle). The damping toggle becomes useState. The bars and bump chart can stay as imperative SVG builders mounted through a ref wrapper, or become JSX SVG. termify() DOM surgery should become a \<Term phrase definition id> component, keeping the w4-term-* ids. Drawers become a \<Drawer> component (shared with page chrome). Hazards: (1) tests/week04-pagerank.test.mjs greps this file's source for two exact template-literal strings. A move to JSX or a rename of `claims`/`n` breaks the test, so update the test to point at the new file or to check the rendered output. (2) The ids #cut-pagerank-explore and #cut-pagerank-iteration must keep existing, because week04-cut.js routing and the TOC data-target values rely on them. (3) The movers table inserts m.title unescaped via innerHTML, which JSX fixes for free. (4) The server-rendered #pagerank-status gets replaced. In React, render the status conditionally.
+
+**Charts.**
+
+- Top-15 occupations by PageRank at chosen damping (bars with degree-rank badge), host `#cut-pagerank-explore .plot .w4-figure-body (script-created)`, library svg-string. Data: public/weeks/week04/data/pagerank.json (rankings[d], damping, finding, meta, movers). Controls: div.axis-modes button[data-d] toggle: d = 0.5 / 0.85 / 0.99 (default 0.85); native \<title> tooltips on labels and bars. Redraws on: control change (damping button), and fitted() redraws on host resize via ResizeObserver
+- Power-iteration bump chart (rank per round for final top 10), host `#cut-pagerank-iteration .plot .w4-figure-body (script-created)`, library svg-string. Data: pagerank.json iteration.steps, iteration.alpha, max_error_vs_nx_pagerank. Controls: \<title> tooltips on lines and dots. Redraws on: resize only (fitted)
+- Movers table, host `#cut-pagerank-iteration table.ego (script-created)`, library dom. Data: pagerank.json movers. Redraws on: none
+
+**Tests that read it.**
+
+- tests/week04-pagerank.test.mjs (reads src/scripts/week04-pagerank.js as TEXT around lines 163-165 and asserts the source contains the literal template strings '${claims.leaderTitle} leads from round ${claims.leaderStep}; the rest of the top ${n} settles by round ${claims.orderStep}.' and 'The grey lines stop crossing by round ${claims.orderStep}'. It also re-implements stablePoint and iterationClaims logic against pagerank.json, and reads jobs.json.)
+- tests/theme.test.mjs (source text scanned for the token rule; not in LEGACY)
+
+### src/scripts/week04-jobs.js
+
+489 lines, risk medium. Fetches jobs.json at import and draws section 2's occupation co-hiring figures: the top job-pairs bar chart, the bridge-rule strips, the clickable occupation network with a bridge-job inspector panel, the cluster composition bars and the NMI scale. It also fills about 30 [data-jobs] number spans scattered through the page prose and sets the #jobs-status line.
+
+Imports: `./site.js`, `./week04-strip.js`.
+
+Exports: none.
+
+**Import side effects.** Fires fetch(asset('weeks/week04/data/jobs.json')) right at import, with no lazy gate. On success it calls renderPairs, renderBridgeStrip, renderNetwork and renderGroups (which calls renderNmi), writes #jobs-status, and fills every [data-jobs] element in the document. On failure it writes the error to #jobs-status.
+
+**DOM contract.**
+
+- #jobs-status (p.status-line aria-live, page.tsx ~1052, between section 2's intro card and #jobs-together): textContent set to a summary ('N certified H-1B filings · N occupations · year') or an error.
+- [data-jobs=KEY] anywhere in document (document.querySelectorAll): textContent replaced. Keys: occupations, null-real, null-null (section 2 intro card ~1003-1018); bridges-pass, bridges-tested, bridges-chance (#jobs-bridges header answer ~3098-3106); nmi, shuffled (~3182-3186); legacy, runs-nmi, null-runs, null-z, lift1, lift1-chance, bb-alpha, bb-links, bb-total, bb-occ, bb-clusters, bb-nmi, bb-base, years, shared, infomap, infomap-louvain, infomap-soc, ami, scored (drawer prose ~3248-3320). These are inline numbers in server prose OUTSIDE any chart host, spread across the intro card, the #jobs-bridges header answer and its drawers.
+- #chart-job-pairs (div.w4-figure-body in #jobs-together): replaceChildren with fitted SVG.
+- #chart-job-bridge-rule (div.w4-figure-body in #jobs-bridges): APPENDS two stripChart nodes. It does not replace them, so a second run would duplicate.
+- #chart-job-network (div.w4-figure-body): replaceChildren with fitted SVG. Each node \<g tabindex=0 role=button> gets click and keydown (Enter/Space) listeners that call inspector() and selectNode().
+- #jobs-node-inspector (aside.panel.jobs-inspector): innerHTML fully replaced. bridgeList() writes an h2 'Bridge jobs', a data-driven p and a new div#jobs-bridge-list. inspector() writes the occupation h2, p.jobs-meta, cluster text, ol.jobs-partners and button.jobs-back (click listener returns to the bridge list). This overwrites the server-rendered aside content.
+- #jobs-bridge-list (recreated inside the inspector by bridgeList): innerHTML set to button[data-job-id] list or a fallback \<p>. Each button gets a click listener that opens the inspector and rings the node.
+- #chart-job-groups (div.w4-figure-body): replaceChildren with fitted SVG (only when every cluster has majors).
+- #chart-job-nmi (div.w4-figure-body): replaceChildren with fitted SVG.
+
+**State.** Module-level mutable: `selectNode` (a function variable reassigned by every drawNetwork call so it closes over the current SVG's ring and positions; inspector and bridgeList call it), and `selectedJob` (the ringed occupation id, kept across resize redraws). No window globals, storage or URL params.
+
+**Cross-module.** Uses week04-strip.js (stripChart, token, node, fitted, fs, textWidth) and site.js. No other script reads its hosts. week04-vis-intros.js draws [data-strip='jobs-modularity'] in the same intro card, and week04-questions.js draws other chart-jobs-* hosts in the same section. Both fetch jobs.json themselves, so the file is fetched at least three times. tests/week04-questions.test.mjs and week04-skills-radar.test.mjs validate jobs.json contents. The panels holding #jobs-bridges are closed \<details>, yet the module draws into them eagerly. fitted() handles the 0-width case through ResizeObserver, and week04-cut.js's toggle fires window resize.
+
+**Hazards.** The charts are self-contained and port easily to \<JobPairs>, \<BridgeRuleStrips>, \<JobNetwork> and \<ClusterGroups>/\<NmiScale>, each wrapping the existing build functions through a ref and fitted(). The hard parts are elsewhere. (1) About 30 [data-jobs] spans sit inline in server-rendered prose across several cards and drawers, so they need a shared data source: a JobsDataProvider context, or a build-time import of jobs.json into the page so the numbers render on the server and the '…' placeholders disappear (a static export allows this and is the cleanest option). (2) The network and the inspector aside are sibling DOM coupled through the module-level selectNode/selectedJob pair, so lift selectedId into a shared parent \<JobsBridges> that renders both. The inspector's innerHTML templates become JSX, and #jobs-bridge-list gets recreated on every view switch. (3) #jobs-status sits outside every card. (4) #chart-job-bridge-rule uses append, not replace, so a StrictMode double effect would duplicate the strips; make the effect idempotent. (5) It fetches eagerly at import with no lazy gate, and the same JSON is fetched by week04-questions.js and week04-vis-intros.js, so a shared cached loader would help. (6) Update theme.test.mjs LEGACY when the file moves.
+
+**Charts.**
+
+- Top 12 job pairs bar chart, host `#chart-job-pairs`, library svg-string. Data: public/weeks/week04/data/jobs.json (nodes, pairs, meta.year). Controls: native \<title> tooltips. Redraws on: resize (fitted ResizeObserver)
+- Bridge rule strips (first rule, strict rule), host `#chart-job-bridge-rule`, library svg-string. Data: jobs.json bridges. Controls: stripChart tooltips. Redraws on: none (appended once)
+- Occupation co-hiring network with ring selection, host `#chart-job-network`, library svg-string. Data: jobs.json nodes (precomputed x,y), edges, clusters. Controls: click / Enter / Space on a node: opens the inspector in #jobs-node-inspector and draws a ring; #jobs-bridge-list buttons: select a bridge occupation; button.jobs-back: return to the bridge list and clear the ring; \<title> tooltips. Redraws on: resize (fitted rebuilds the SVG and reapplies selectedJob through the reassigned selectNode)
+- Cluster composition by SOC major group, host `#chart-job-groups`, library svg-string. Data: jobs.json clusters[].majors, majors lookup. Controls: \<title> tooltips. Redraws on: resize
+- NMI scale (Louvain vs Infomap vs shuffled), host `#chart-job-nmi`, library svg-string. Data: jobs.json quality. Controls: \<title> tooltips. Redraws on: resize
+
+**Tests that read it.**
+
+- tests/theme.test.mjs (lists week04-jobs.js in LEGACY, so it is EXCLUDED from the token/no-bare-hex scan; the list must be updated if the file moves or is renamed)
+
+### src/scripts/week04-years.js
+
+486 lines, risk medium. Lazily builds the whole 'Five years of filings' card (box 1 of the years topic) inside #cut-years: answer sentence, notice, eight titled panels holding 12 string-built SVG charts, a glossary term, and Background/Table drawers.
+
+Imports: `./site.js`, `./cabinet.js`, `./week04-ui.js`, `./week04-strip.js`.
+
+Exports: none.
+
+**Import side effects.** Queries #cut-years, #years-body and #years-status at import. Adds a 'toggle' listener on #cut-years and calls load() at once if the \<details> is already open (deep link). load() fetches weeks/week04/data/years.json once; a `rendered` flag guards it and resets on failure so the next toggle retries.
+
+**DOM contract.**
+
+- #cut-years (\<details>): read .open; 'toggle' listener triggers the lazy load
+- #years-body: REPLACED wholesale via innerHTML with a generated card div#years-card (class 'card w4-card'). The server-rendered #years-status inside it is destroyed on success
+- #years-status: textContent written only on fetch/render failure ('The five years of filings did not load.')
+- Generated inside #years-body: header.w4-q > span.w4-num '1' + h2 + p.w4-answer (answer sentence computed from data); div.notice; div.years-grid of div.years-panel[data-span=2] (h3, p caption with optional b.rx-tile-finding); div.years-split / div.years-firms / div.years-firm wrappers
+- [data-years-chart=N] placeholder divs: written into the innerHTML string, then fillSlots() replaceChildren()s each with fitted(build, fallback) SVG output. The slot index is held in a module-level array
+- termify() on the 'The lottery' panel's \<p> (found by matching h3 textContent) wraps 'Registrations' in a span.w4-term with button + span.w4-pop#w4-term-years-card-registrations
+- #years-card: drawerRow(drawer('Background', html string), drawer('Table: the numbers behind the charts', 5 table.ego HTML strings)) appended
+- Prose in panel captions is partly computed (perApp numbers, top-N count, uscis_min_filings) and partly hard-coded ('HCL leaves the top …')
+
+**State.** Module-level `slots` array (build fns by index, cleared after fillSlots) and `rendered` flag. Colours come from getComputedStyle(document.body) CSS tokens (--ink, --ink-soft, --ink-mute, --people, --access, --w4-grid, --line, --card), read on each render. Uses textWidth() canvas measurer and fitted() WeakMap observers from week04-strip.js. No window globals, storage or URL params.
+
+**Cross-module.** Depends on week04-cut.js: that router opens #cut-years for deep links and contents clicks, and dispatches window 'resize' on every \<details> open. The years chart relies on fitted()'s own ResizeObserver instead. The termify id and drawer markup come from week04-ui.js. week04-vis-staffing.js fetches the same years.json on its own.
+
+**Hazards.** Pure presentation over one JSON file, but the module builds the whole card (header, answer, notice, 8 panels, drawers, tables) as HTML strings, so React would replace all of it with JSX. The chart functions (yearBars, yearLine, twoLines, seasonChart, miniYears) return SVG strings sized to a width; they port to React SVG components cleanly with a width hook in place of fitted(). Hazards: (1) tests/week04-years.test.mjs slices the source text between the literals 'const oj = data.oct_jun.totals;' and '"against the same months a year earlier.";' and evals it with (data, num, change), so moving or renaming that block breaks the test. (2) termify walks text nodes after render; in React the 'Registrations' term must become an explicit \<Term> component in the caption. (3) The server-rendered #years-status gets destroyed on success; React should render loading, error and loaded states. (4) Lazy load on first \<details> open must survive, plus the router-driven opening. (5) Hard-coded prose ('HCL leaves the top') sits beside computed numbers.
+
+**Charts.**
+
+- Certified H-1B filings per fiscal year (bars, 2026 hollow, note on 2023), host `#years-body [data-years-chart] in panel 'Certified H-1B filings'`, library svg-string. Data: weeks/week04/data/years.json: years[Y].certified_filings, oct_jun.totals. Controls: native \<title> tooltips on rects. Redraws on: fitted(): ResizeObserver on the parent's width (incl. \<details> opening); no data redraws
+- Same months compared, Oct-Jun FY24-26 (bars), host `panel 'The same months, compared'`, library svg-string. Data: years.json oct_jun.totals. Controls: \<title> tooltips. Redraws on: fitted() width change
+- Month by month: certified filings season chart (3 lines), host `panel 'Month by month' .years-split first column`, library svg-string. Data: years.json monthly.FY2024/FY2025/FY2026. Controls: \<title> on every month point. Redraws on: fitted() width change
+- Month by month: placed-at-a-client season chart, host `panel 'Month by month' .years-split second column`, library svg-string. Data: years.json monthly.*.placed_filings. Controls: \<title> tooltips. Redraws on: fitted() width change
+- Placed-at-a-client share line, host `panel 'Placed at a client'`, library svg-string. Data: years.json years[Y].placed_share. Controls: \<title> tooltips. Redraws on: fitted() width change
+- USCIS denial rates, two lines, host `panel 'USCIS denials'`, library svg-string. Data: years.json uscis_series, uscis_min_filings. Controls: \<title> tooltips. Redraws on: fitted() width change
+- Four largest placing firms, 4 small multiples (miniYears), host `panel 'The four largest placing firms' .years-firm x4`, library svg-string. Data: years.json years[Y].top_firms_by_filings. Controls: \<title> tooltips. Redraws on: fitted() width change
+- Lottery registrations per draw (bars), host `panel 'The lottery'`, library svg-string. Data: years.json lottery_draws, lottery_funnels. Controls: \<title> tooltips. Redraws on: fitted() width change
+- Clients and placing firms, two lines, host `panel 'Clients and firms'`, library svg-string. Data: years.json years[Y].clients, years[Y].firms. Controls: \<title> tooltips. Redraws on: fitted() width change
+
+### src/scripts/week04-roles.js
+
+351 lines, risk medium. Lazily draws the 'Who filed for which roles' ECharts stacked-area chart in #roles-chart, builds its HTML legend, wires the split/scale/window toggle buttons, and fills the card's server-rendered answer, summary, notice text and drawers.
+
+Imports: `./site.js`, `./cabinet.js`, `./type-scale.mjs`, `./week04-ui.js`.
+
+Exports: none.
+
+**Import side effects.** At import: reads window.echarts into a const; queries #cut-roles, #roles-card, #roles-answer, #roles-summary, #roles-notice-text, #roles-legend, #roles-reveals, #roles-chart; caches getComputedStyle(#roles-card) for tokens. Adds a 'toggle' listener on #cut-roles and calls load() if it is already open. load() fetches weeks/week04/data/roles.json once (`rendered` guard, reset on failure). On success it calls echarts.init, binds chart and toggle events and adds a window 'resize' listener.
+
+**DOM contract.**
+
+- #cut-roles (\<details>): read .open; 'toggle' listener lazy-loads and calls chart.resize()
+- #roles-card: getComputedStyle read for CSS tokens (--w4-area-1..14, --w4-area-other, --people, --access, --w4-band, --ink-mute, --line, --w4-grid, --w4-tip-bg, --w4-tip-ink)
+- #roles-chart: echarts.init host (canvas)
+- #roles-legend: innerHTML cleared, then \<button aria-pressed> children appended (span.sw swatch + label). Each has mouseenter/mouseleave (chart highlight/downplay) and click (toggle hidden series, re-render, refocus button i)
+- #roles-answer: textContent written (computed sentence; error message on failure). Prose outside the chart
+- #roles-notice-text: textContent written (finding sentence from split.finding). Prose outside the chart
+- #roles-summary: textContent written (aria-live summary of the shown series)
+- #roles-reveals: appended once (guard childElementCount) with drawer('Background') and drawer('Method'). The Method \<p> is termified: 'crosswalk' becomes span.w4-term + span.w4-pop#w4-term-roles-card-crosswalk
+- [data-roles-split], [data-roles-scale], [data-roles-window] buttons (document-wide query): click listeners read the attribute value into state and set aria-pressed on the group
+
+**State.** Module-level: data, chart, hovered (series name under the pointer), state {split, scale, window}, hidden {per-split Set; employer starts with 'All other employers' hidden}, rendered flag. Reads window.echarts (vendored classic script loaded by entries/week04.js). Adds a window resize listener. No storage or URL params.
+
+**Cross-module.** Needs window.echarts loaded first by entries/week04.js's classic() loader; if that fails, echarts.init throws inside load(). week04-cut.js opens the \<details> on routing and fires window 'resize' on any \<details> open, and this chart listens for that resize. Uses drawer/termify from week04-ui.js.
+
+**Hazards.** A good fit for a client component: state (split/scale/window/hidden/hovered) maps to useState, the toolbar and legend become JSX buttons, and answer/summary/notice text becomes derived render output. The hazard is that the toolbar buttons and the answer/notice/summary paragraphs sit in server-rendered page.tsx markup outside the chart host. The module writes into them by id and binds to them by data attribute, so the component has to own the whole #roles-card (header answer, toolbar, chart, legend, summary, notice, reveals) or receive those nodes as props. The ECharts instance needs a useRef host plus init/dispose in an effect, ResizeObserver or resize handling, and the hovered-band tooltip trick (mouseover sets a ref the formatter reads). The drawers built by drawer() and the termify 'crosswalk' term should become JSX. Tests only check page structure (ids cut-years before cut-roles in topic-years) and that pageScripts('week04') includes 'week04-roles.js'; that assertion breaks if the module leaves the entry file.
+
+**Charts.**
+
+- Certified filings stacked area by occupation / SOC group / employer / placement, host `#roles-chart`, library echarts. Data: weeks/week04/data/roles.json: splits[split].series[].counts/oct_jun/code/name, totals, oct_jun_totals, partial, legacy_recoded, uncoded, meta.legacy_codes, splits[].finding. Controls: [data-roles-split] buttons: occupations|groups|employer|placement; [data-roles-scale] buttons: count|percent (100% stack); [data-roles-window] buttons: full|oct_jun; #roles-legend buttons: click hides/shows a series (per-split hidden Set), hover highlights it; chart mouseover/mouseout/globalout on line series set `hovered` so the axis tooltip shows a single band; axis tooltip with HTML formatter (compactTip); markArea shading of the partial 2026 year on a hidden helper series. Redraws on: Toggle click (render + renderLegend + renderText, setOption notMerge), legend click (render + renderLegend), window resize (chart.resize), #cut-roles toggle open (chart.resize)
+
+### src/scripts/week04-skills.js
+
+287 lines, risk low. Lazily builds the deep dive's O*NET skills cards 3 and 4 (#cut-skills-direct, #cut-skills-cluster) plus an intro paragraph inside #skills-body, each card with header, notice, glossary terms, drawers and a strip chart.
+
+Imports: `./site.js`, `./week04-strip.js`, `./week04-ui.js`.
+
+Exports: none.
+
+**Import side effects.** Calls wire() at import: finds #cut-skills; if present, adds a 'toggle' listener and calls open(). open() runs render() once, when the \<details> is open. render() fetches weeks/week04/data/skills.json and does not retry on failure (done stays true).
+
+**DOM contract.**
+
+- #cut-skills (\<details>): read .open; 'toggle' listener triggers the one-shot render
+- #skills-body: replaceChildren(p.w4-box-intro, card1, card2), which removes the server-rendered #skills-status and anything already appended (see the race with week04-skills-radar.js)
+- #skills-status: textContent written on failure ('Could not load the O*NET comparison.')
+- Creates div.card.w4-card#cut-skills-direct: header.w4-q (w4-num 3, h2, p.w4-answer via innerHTML with interpolated c.occupations), div.w4-two > left (p.sub lead, div.notice, drawerRow(Background, Method, More numbers)) + div.plot (h3, p.axis-note, div.w4-figure-body > stripChart SVG)
+- Creates div.card.w4-card#cut-skills-cluster with the same structure (w4-num 4, notice, drawerRow(Method, More numbers), stripChart with 2 rows + ref line)
+- termify: 'O*NET' in the lead -> #w4-term-cut-skills-direct-onet; 'similarity' in the notice -> #w4-term-cut-skills-direct-similarity
+- The ids cut-skills-direct / cut-skills-cluster are load-bearing: src/styles/post.css shows one card per #cut-skills[data-show=direct|cluster|radar] via '.w4-card:not(#cut-skills-…)', and week04-cut.js SUB routes #cut-skills-direct/#cut-skills-cluster contents links (rx-toc-item data-target) to them
+
+**State.** Closure `done` flag inside wire(); no module-level mutable state, window globals, storage or URL params.
+
+**Cross-module.** Shares #skills-body with week04-skills-radar.js, which waits (MutationObserver) for #cut-skills-cluster to appear and inserts its card after it. If skills.json resolves more than 5 s after skills_radar.json, the radar's fallback appends its card to #skills-body first, and this module's replaceChildren then deletes it. week04-cut.js sets #cut-skills[data-show] (default 'direct') and routes to the generated ids. post.css hides non-selected cards by those ids. stripChart comes from week04-strip.js.
+
+**Hazards.** Static presentation from one JSON file with no interactive state, so it converts to two JSX card components and a StripChart SVG component without much trouble. Hazards: the generated card ids must stay, because post.css data-show rules and the week04-cut router depend on them. The shared #skills-body container with the radar module and its insertion-order race goes away if a single \<SkillsBox> parent renders intro, card 3, card 4 and the radar card in order. termify-injected glossary terms need explicit \<Term> JSX. tests/week04-skills.test.mjs pins only skills.json numbers and a notice wording claim in a comment; it does not import the script.
+
+**Charts.**
+
+- Skill similarity by hiring tie (direct ties vs random-pair band), host `#cut-skills-direct .plot .w4-figure-body`, library svg-string. Data: weeks/week04/data/skills.json: cohiring.direct_ties{mean,sd,n,examples}, cohiring.all_pairs, cohiring.occupations, meta.descriptors. Controls: native \<title> tooltips from stripChart. Redraws on: stripChart internal fitted() width observer only
+- Skill similarity by cluster membership (same vs different cluster, random-pair reference line), host `#cut-skills-cluster .plot .w4-figure-body`, library svg-string. Data: skills.json: cohiring.same_cluster_other_pairs, cohiring.different_cluster_pairs, cohiring.all_pairs. Controls: \<title> tooltips. Redraws on: stripChart width observer only
+
+### src/scripts/week04-skills-radar.js
+
+534 lines, risk medium. Lazily builds card 5 (#cut-skills-radar), an interactive ECharts radar comparing up to five occupations' O*NET importance ratings, with search/datalist, removable chips, a group toggle, a 'what to notice' list, an aria-live summary and a custom spoke-label tooltip, then inserts the card after #cut-skills-cluster.
+
+Imports: `./site.js`, `./week04-strip.js`, `./week04-ui.js`.
+
+Exports: none.
+
+**Import side effects.** Calls wire() at import: finds #cut-skills, adds a 'toggle' listener and runs render() once when open. render() fetches weeks/week04/data/skills_radar.json, builds the card detached, calls echarts.init on a detached host, then inserts it with insertAfterS2 (MutationObserver on #skills-body plus a 5 s setTimeout fallback). It also adds a second 'toggle' listener on #cut-skills that calls chart.resize(). The chart host gets a ResizeObserver.
+
+**DOM contract.**
+
+- #cut-skills (\<details>): read .open; two 'toggle' listeners (one-shot render, and resize on every open)
+- #skills-body: MutationObserver(childList) waiting for #cut-skills-cluster; fallback body.append(article) after 5 s
+- #skills-status: textContent on failure ('Could not load the O*NET radar.'). It may already be detached by week04-skills.js
+- #cut-skills-cluster (built by week04-skills.js): read, then .after(article)
+- Creates div.card.w4-card#cut-skills-radar: header.w4-q (w4-num 5, h2, p.w4-answer) via innerHTML; div.w4-two > left (p.sub with interpolated descriptor count, drawerRow(drawer('Method'))) + div.plot (h3, p.axis-note, then the controls); div.plot.w4-radar-full holding the chart
+- Controls built into the .plot: div.w4-radar-controls > div.w4-radar-search-row (label.w4-sr-only for #w4-radar-search, input#w4-radar-search[list=w4-radar-datalist], datalist#w4-radar-datalist of every title), p.w4-radar-search-status[aria-live], div.w4-radar-chips[role=list], div.rx-seg-row (span.rx-seg-label#w4-radar-group-label, div.rx-seg[role=group] of button#w4-radar-group-{skills|knowledge|work_activities}[data-group][aria-pressed])
+- Events: input 'change' and Enter keydown commit a title; chip × buttons (disabled when only one left) remove; group buttons set aria-pressed and setGroup
+- Notice: div.notice.w4-radar-notice > span (replaceChildren each render with a span and ul.w4-radar-notice-list of li)
+- p.w4-sr-only[aria-live=polite]: textContent summary each render
+- div.w4-figure-body.w4-radar-host-wrap > div.w4-radar-host (ECharts) + div.w4-radar-tip[role=tooltip][hidden]: innerHTML rows and absolute left/top set from the pointer on spoke-label hover
+- Global ids created at runtime: cut-skills-radar, w4-radar-search, w4-radar-datalist, w4-radar-group-label, w4-radar-group-*. #cut-skills-radar is a week04-cut.js SUB target and a post.css data-show selector, and the page TOC links data-target="cut-skills-radar"
+
+**State.** State lives on a Radar class instance (selected codes, group, chart, els), created once per page; there is no module-level mutable state beyond the closure `done`. Reads window.echarts at build time. Colours from CSS tokens --w4-series-1..5, --line, --w4-inset, --card, --ink-soft via week04-strip token() (document.body). No storage or URL params.
+
+**Cross-module.** Coupled to week04-skills.js: it waits for that module's #cut-skills-cluster card and inserts after it, with a 5 s fallback that the other module's replaceChildren can wipe out. Coupled to week04-cut.js (SUB routing, data-show) and post.css/week04-skills-radar.css by id. Needs window.echarts from entries/week04.js.
+
+**Hazards.** The most interactive module here, and it already reads as a component: the Radar class state (selected, group) maps to useState, and chips, search, toggle, notice and live summary become JSX. The ECharts option depends on chart width and height (it computes the radius and places labels as graphic elements), so the component must re-run setOption on resize, as the ResizeObserver does now. The custom tip positions itself against the host-wrap rect, so it needs a ref. Hard parts: (1) the MutationObserver/setTimeout insertion race with week04-skills.js, which a shared parent component fixes; (2) the runtime-created global ids (#w4-radar-search, datalist) and #cut-skills-radar, which the router/CSS depend on; (3) ECharts graphic onmouseover handlers that hold closures over `this`. tests/week04-skills-radar.test.mjs passes if the built HTML contains id="cut-skills-radar" OR pageScripts('week04') lists week04-skills-radar.js; once React renders the id server-side the first branch will hold, otherwise moving it out of the entry breaks the test.
+
+**Charts.**
+
+- O*NET profile radar, up to 5 occupations, one group of descriptors, host `#cut-skills-radar .w4-radar-full .w4-radar-host`, library echarts. Data: weeks/week04/data/skills_radar.json: occupations[{code,title,ratings,in_network,filings}], default[codes], meta.groups{skills|knowledge|work_activities:{label,ids,names}}. Controls: #w4-radar-search text input + #w4-radar-datalist: add occupation (max 5), status messages; chip × buttons: remove occupation (min 1); #w4-radar-group-* segmented buttons: skills / knowledge / work activities; spoke labels drawn as ECharts graphic text elements with onmouseover/onmouseout that show the custom HTML tip .w4-radar-tip; chart 'mouseover'/'mouseout' on radar axisName do the same. Redraws on: select/remove/setGroup -> renderAll (chips, notice, setOption notMerge); ResizeObserver on the chart host -> chart.resize() + full setOption (the radius and label positions depend on the chart size); #cut-skills toggle open -> chart.resize()
+
+### src/scripts/week04-staffing.js
+
+367 lines, risk high. Draws section 3's client scatter (filings vs largest-vendor share) and vendor-to-client Sankey with year buttons, client search and a selected-client vendor panel, fills the top-25 clients table, and independently fills section 4's #staffing-community-stats table and about twenty inline numbers in its prose and drawers.
+
+Imports: `./site.js`, `./cabinet.js`, `./type-scale.mjs`.
+
+Exports: none.
+
+**Import side effects.** Eager, with no lazy loading. At import: reads window.echarts, queries #staffing-figure and its children, caches getComputedStyle(#staffing-figure), calls echarts.init on both chart hosts immediately (while their \<details> is closed, so at 0 size). Binds chart click, search change, year-button clicks and a window resize listener. Starts two fetches at once: staffing_communities.json (fills #staffing-community-stats) and staffing_clients.json (reads the initially pressed year button, then draw()). Throws at import if #staffing-figure or window.echarts is missing.
+
+**DOM contract.**
+
+- #staffing-figure (figure): root; getComputedStyle read for tokens --w4-sector-finance/-manufacturing/-health/-other/-unknown, --surface, --paper, --muted, --grid, --line, --series-none, --series-1
+- #staffing-figure .staffing-chart .chart-host: echarts.init (scatter)
+- #staffing-figure .staffing-flows .chart-host: echarts.init (sankey)
+- #staffing-figure .staffing-panel: innerHTML replaced with the selected client's h3, p.meta, ol of vendor rows (span.name, span.share, span.track > span.fill with inline width), optional p.rest; textContent error message on fetch failure
+- #staffing-figure .staffing-search input: 'change' listener (case-insensitive name match -> show); placeholder attribute rewritten ('N clients · type a name')
+- #staffing-names (datalist): innerHTML replaced with \<option> per client of the year
+- #staffing-figure .staffing-years button[data-year]: initial year read from [aria-pressed="true"]; click sets year, aria-pressed on all, draw()
+- #staffing-figure tbody (first tbody in the figure, the 'The 25 largest clients' table): innerHTML replaced with 25 rows
+- #staffing-figure .flows-coverage: textContent set to a computed sentence inside the flows caption prose (outside the chart host)
+- #staffing-community-stats tbody: innerHTML replaced with 10 comparison rows (or an error row)
+- #staffing-community-stats prose placeholders, textContent written (outside any chart): .cross, .seeds, .seeds-plain (in the header w4-answer); .vendor, .vendor-plain, .industry, .mod-plain, .null-plain, .mod, .null (in p.sub paragraphs); .im-louvain (Method drawer); .im-modules, .im-vendor, .im-industry, .pieces, .null-weights, .cross-share, .cross-share-null, .multi-links, .multi-filings (More numbers drawer). Each \<b> placeholder holds '…' in page.tsx
+
+**State.** Module-level: data, year, selected (client object), chart and flowsChart instances (created at import). Reads window.echarts at import. Adds a window resize listener. No storage or URL params. Year selection lives in button aria-pressed state.
+
+**Cross-module.** Needs window.echarts loaded by entries/week04.js before import. Both charts init inside a closed \<details data-box="staffing-figure">, so they get a size only through week04-cut.js, which dispatches window 'resize' on every \<details> open. The same #staffing-community-stats card has a strip chart ([data-strip=staffing-community-modularity]) drawn by week04-vis-staffing.js, which also fetches staffing_communities.json. tests/week04-questions.test.mjs regex-reads this source for the SECTORS entries matching /\["[^"]+", "--w4-sector-(\w+)"/ and expects exactly finance, manufacturing, health as coloured sectors, checked against the drawer prose in the built HTML.
+
+**Hazards.** Two separate concerns share one file, and they should split into two components: (1) a StaffingFigure client component owning year, selected client and data, with the scatter and Sankey as ECharts ref hosts and the controls, vendor panel, datalist, top-25 table and flows-coverage sentence rendered from state; (2) the community-stats card, where about twenty numbers are injected by class selector into server-rendered prose, including the header answer and the text inside closed drawers. That card is the hardest part of a React conversion: either the whole card's prose becomes a component that takes staffing_communities.json as props (fetched client-side, or better, imported at build time since the site is a static export), or each \<b> becomes a small \<Num> bound to a shared data context. It should also merge with week04-vis-staffing.js's modularity strip, which fetches the same JSON. The eager echarts.init at 0 size and the reliance on the router's synthetic window resize need replacing with a ResizeObserver or init-on-open. Keep the SECTORS array literal format, or update the regex test in tests/week04-questions.test.mjs.
+
+**Charts.**
+
+- Client scatter: placed filings (log x) vs share from the largest vendor, coloured by sector, host `#staffing-figure .staffing-chart .chart-host`, library echarts. Data: weeks/week04/data/staffing_clients.json: years[Y].shown[{name,sector,filings,vendors,top[[firmIdx,n]],rest}], firms[], min_filings. Controls: .staffing-years buttons (year); .staffing-search input + #staffing-names datalist (select client); chart 'click' on a dot selects a client (ring via the 'selected' series, vendor list in .staffing-panel); ECharts legend toggles sectors; item tooltip HTML formatter. Redraws on: Year button click (draw(): setOption replaceMerge series, table, datalist, flows, panel); selection (setOption on the 'selected' series only); window resize (chart.resize)
+- Vendor -> client flows Sankey (top 8 firms + 'other' vs top 20 clients), host `#staffing-figure .staffing-flows .chart-host`, library echarts. Data: staffing_clients.json years[Y].flows{vendors[{name,placed,other}],clients[{name,placed}],links[[vi,ci,n]],from_top_vendors,client_filings}. Controls: hover adjacency emphasis; item/edge tooltip HTML formatter. Redraws on: Year button click (drawFlows, setOption notMerge); window resize
+- Top-25 clients table (not a chart, data-driven DOM), host `#staffing-figure tbody`, library dom. Data: staffing_clients.json years[Y].shown. Controls: year buttons. Redraws on: year change
+- Community comparison table + inline numbers (not a chart), host `#staffing-community-stats tbody and the prose <b> placeholders`, library dom. Data: weeks/week04/data/staffing_communities.json: modularity{communities_median, weighted_vs_rewired, wiring_only, weights_only, rewired_components_median, weights_check}, weighted_vs_unweighted, industry_or_vendor{…, unweighted{…}}, infomap{modules, nmi_with_louvain, ami_*}. Redraws on: none (filled once at import)
+
+### src/scripts/week04-strip.js
+
+303 lines, risk medium. Shared SVG chart kit for Week 4 (and Week 5): token/node/textWidth/roomFor helpers, the fitted() width-tracking redraw wrapper, and the stripChart (real vs. baseline rows on a shared axis) and miniStrip (one axis-less row) builders.
+
+Imports: `./type-scale.mjs`.
+
+Exports: `fs`, `family`, `font (re-exported from type-scale.mjs)`, `token(name)`, `node(name, attrs, text)`, `textWidth(text, role, weight)`, `roomFor(el)`, `fitted(build, fallback)`, `stripChart(rows, opts)`, `miniStrip(spec)`.
+
+**Import side effects.** None that touch the DOM. It only declares the SVG namespace constant, a lazily created module-level canvas 2D context (`measurer`, created on the first textWidth call) and a module-level WeakMap `observers`. It is not in the run() list in src/scripts/entries/week04.js. It loads transitively through week04-vis-intros/-more/-staffing and also through week04-frame, -jobs, -skills, -skills-radar, -pagerank, -place, -years, -questions, -entities, graph.js, kit.js and week05-frame.js.
+
+**DOM contract.**
+
+- document.body: reads computed style for CSS custom properties through token(name) (--ink, --ink-soft, --ink-mute, --line, --card, --ground, --w4-band, --w4-grid and any '--' color a row passes)
+- el.parentElement of every chart it builds: roomFor() reads getComputedStyle (display, flexDirection, padding) and clientWidth. Returns 0 for a hidden parent or a row-direction flex parent.
+- fitted(): attaches a ResizeObserver to the chart's parentElement after a queueMicrotask, retrying with requestAnimationFrame up to 20 frames until the chart has a parent. On a width change it calls build(width) and chart.replaceWith(next), so it swaps its own SVG node in the live DOM outside React's control.
+- Builds detached SVG only: \<svg class="w4-strip" role="img" aria-label> with \<line>, \<text>, \<rect>, \<circle>, \<g> and \<title> tooltips. It never queries the page by id or selector.
+
+**State.** Module-level `measurer` (a cached CanvasRenderingContext2D) and `observers` (WeakMap from parent element to [ResizeObserver, isLive] pairs). A later chart drawn into the same parent uses the map to disconnect the observers of charts no longer connected. No window globals, storage or URL params.
+
+**Cross-module.** Depended on by week04-vis-intros, week04-vis-more, week04-vis-staffing, week04-frame, week04-jobs, week04-skills, week04-skills-radar, week04-pagerank, week04-place, week04-years, week04-questions, week04-entities, graph.js, kit.js and week05-frame.js. It depends on type-scale.mjs (fs/font/family read --font-* custom properties).
+
+**Hazards.** The pure drawing code (drawStrip, drawMini, band, interval, dot, smartText) maps cleanly onto JSX \<svg> components that take width as a prop. Two hazards: (1) fitted() mutates the DOM itself (chart.replaceWith) and finds its parent through a microtask/rAF poll. In React this becomes a useElementWidth hook (ResizeObserver on a ref'd wrapper) feeding width state, and fitted() must go. Until every consumer is converted, though, ~14 other modules still call fitted(), so the old API must stay alongside a React one. (2) token() reads computed styles from document.body at draw time. Under React this needs a client-only hook, and the colors will not follow a theme toggle unless the hook re-reads on theme change (today they do not either). textWidth needs a canvas, so it can only run on the client: render nothing or a placeholder on the server, then measure after mount. The SVG markup carries no ids. Moving to it is a shared-dependency migration: changing it touches Weeks 4 and 5 everywhere.
+
+**Charts.**
+
+- stripChart (real vs. random-baseline rows, shared axis), host `caller-supplied; returned SVG is placed by the caller (replaceChildren) and then re-placed by fitted() on resize`, library svg-string. Data: none; rows passed in by caller. Controls: native \<title> hover tooltips on dots, bands, intervals and reference lines. Redraws on: parent width change via ResizeObserver plus rAF, including a closed \<details> opening. Initial draw at opts.width ?? 556.
+- miniStrip (single axis-less row: dot, band, ref, CI), host `caller-supplied`, library svg-string. Data: none; spec passed in by caller. Controls: native \<title> tooltips. Redraws on: parent width change via fitted(); fallback width spec.width ?? 300
+
+**Tests that read it.**
+
+- none import it. tests/type-scale.test.mjs scans every src/scripts/week04-*.js file as text for literal font sizes, this one included. tests/theme.test.mjs scans all non-legacy src/scripts/*.js files for hex color literals.
+
+### src/scripts/week04-vis-intros.js
+
+595 lines, risk medium. Draws the section-intro figures that have no chart of their own (jobs modularity, the who-staffs-whom modularity plus an interactive client ego explorer, the beyond summary) and the closing's recap and two 'what surprised us' charts.
+
+Imports: `./site.js`, `./week04-strip.js`.
+
+Exports: none.
+
+**Import side effects.** Five async draws fire at import and never get awaited: drawJobsIntro(), drawWhoIntro(), drawBeyondIntro(), drawClosingRecap() and drawClosingSurprises(), each ending in .catch(console.error). Each one queries the DOM, fetches JSON and then replaces its host's children. DATA (asset() URLs) is computed at import.
+
+**DOM contract.**
+
+- [data-strip="jobs-modularity"] (page.tsx:1048, figure in the section 2 intro): read, then replaceChildren with a stripChart
+- [data-strip="who-modularity"] (page.tsx:1330): read, then replaceChildren with a 3-row stripChart
+- [data-strip="who-ego"] (page.tsx:1339): read, then replaceChildren with a built control UI: div.rx-ego-ctrl > div.rx-seg[role=group][aria-label=Year] holding button[data-year][aria-pressed] per year, and label.rx-ego-search > span + input[type=search][aria-controls=who-ego-matches][aria-expanded]; then div.rx-ego-matches#who-ego-matches[role=group], p.rx-ego-none[aria-live=polite] and a chart div. It wires click, input and keydown listeners. It toggles aria-pressed and aria-expanded and sets inline style.display on the matches and none boxes, because the CSS display rule beats the hidden attribute. It calls input.focus() and moves button focus with the arrow keys.
+- OUTSIDE HOST: host.closest('figure').querySelector('figcaption span') for who-ego (page.tsx:1334-1336): overwrites textContent with a sentence built from the picked client, year and vendor count on every update, replacing the server-rendered caption
+- [data-strip="beyond-summary"] (page.tsx:1882): read, then replaceChildren with div.w4-mini-stack holding three div.w4-mini-row (p.w4-mini-label, miniStrip, small)
+- [data-strip="closing-recap"] (page.tsx:2164): read, then replaceChildren with div.w4-mini-stack holding five w4-mini-rows
+- [data-strip="closing-switches"] (page.tsx:2174, inside .w4-surprise): read, then replaceChildren with a miniStrip
+- [data-strip="closing-backbone"] (page.tsx:2179): read, then replaceChildren with the backbone step chart
+- Every chart goes through fitted(), which later swaps SVG nodes inside these hosts on resize
+
+**State.** Ego explorer closure state per call: `year` and `client`, both mutable. The module-level constant EGO_DEFAULT is 'Bank of America'. No window globals, storage or URL params. It fetches jobs.json, staffing_communities.json and beyond.json, which other Week 4 modules also fetch, with no shared cache beyond the browser's HTTP cache.
+
+**Cross-module.** Depends on week04-strip.js (stripChart, miniStrip, fitted, node, token, fs, textWidth) and site.js asset(). In the entry, week04-vis-more.js runs before it and week04-vis-staffing.js after it, but it does not rely on DOM built by either. It writes the who-ego figcaption, which no other module touches. The [data-strip="place-modularity"] host on the same page belongs to week04-frame.js, not to this module.
+
+**Hazards.** Mostly straightforward: each draw* becomes a client component with a data fetch (or static import) and SVG JSX, and the closing recap and beyond rows become a \<MiniRow> component. Hazards: (1) the ego explorer builds a whole accessible combobox-like widget imperatively, with focus management, keyboard handling and inline display toggles. It should become a React component with state for year, client, query and matches, and the 'rx-ego-*' class names and the #who-ego-matches id must survive for CSS and aria-controls. (2) It rewrites the server-rendered figcaption \<span> outside its host. In React, lift the caption into the same component, or render the figure (figcaption plus body) as one component so the text is derived state. Otherwise React's hydrated text and the DOM drift apart, and any re-render restores the static text. (3) Seven hosts live in separate parts of a 4,000+ line page.tsx (section intros, the closing w4-surprise blocks), so each needs its own small client island placed at that spot in the JSX. (4) Fire-and-forget fetches at import must move into effects or a shared data loader. Several files are shared with other modules (jobs.json, staffing_communities.json), so a shared cache or context would avoid duplicate loads.
+
+**Charts.**
+
+- Jobs intro modularity strip, host `[data-strip="jobs-modularity"]`, library svg-string. Data: public/weeks/week04/data/jobs.json (meta.occupations, quality.louvain.clusters, quality.null.{real,null,null_sd,z}). Controls: \<title> tooltips. Redraws on: parent width via fitted()
+- Who-staffs-whom modularity + AMI strip, host `[data-strip="who-modularity"]`, library svg-string. Data: public/weeks/week04/data/staffing_communities.json (modularity.wiring_only, industry_or_vendor.unweighted.ami_*). Controls: \<title> tooltips. Redraws on: parent width via fitted()
+- Client ego diagram (vendors to one client, bezier links sized by filings), host `[data-strip="who-ego"] > inner chart div`, library svg-string. Data: public/weeks/week04/data/staffing_clients.json (years[y].{months,shown[{name,filings,vendors,top,rest}]}, firms, min_filings). Controls: year segmented buttons (button[data-year]): change year and keep the client when present, else the largest; search input: substring match, at most 6 results, prefix matches first; Enter picks the first, ArrowDown/ArrowUp move focus, Escape clears; match buttons pick a client; \<title> tooltips on links and names. Redraws on: year click, client pick, and parent width via fitted(). Default client is 'Bank of America' in the latest full year.
+- Beyond summary (3 miniStrips: 5A law firms AMI, 5B green cards ratio with CI, 5C wage odds ratio), host `[data-strip="beyond-summary"]`, library svg-string. Data: public/weeks/week04/data/beyond.json (finding.q1_ami*, q2_*, q3_odds_ratio*). Controls: \<title> tooltips. Redraws on: parent width via fitted() per miniStrip
+- Closing recap (5 miniStrips, one per section), host `[data-strip="closing-recap"]`, library svg-string. Data: public/assets/data/week04_place.json (null_model); public/weeks/week04/data/jobs.json (quality); public/weeks/week04/data/staffing_moves.json (finding.q1_pooled_*); public/weeks/week04/data/footprint.json (metros.variants drop_top10_filings/control_top10_filings/full); public/weeks/week04/data/beyond.json (q3). Controls: \<title> tooltips. Redraws on: parent width via fitted()
+- Closing vendor-switch miniStrip, host `[data-strip="closing-switches"]`, library svg-string. Data: public/weeks/week04/data/staffing_moves.json (finding.q1_pooled_observed_share, null_mean, null_sd). Controls: \<title> tooltips. Redraws on: parent width via fitted() (fallback 440)
+- Backbone step chart (metros connected vs. log alpha), host `[data-strip="closing-backbone"]`, library svg-string. Data: public/weeks/week04/data/where_who.json (backbone_sweep[{alpha,gc_size}]). Controls: \<title> tooltip on the step path. Redraws on: parent width via fitted() (fallback 470)
+
+**Tests that read it.**
+
+- none import it. tests/type-scale.test.mjs (font-size literal scan of week04-*.js) and tests/theme.test.mjs (hex-literal scan) read it as text.
+
+### src/scripts/week04-vis-more.js
+
+406 lines, risk low. Draws one figure into each [data-more] host in the Week 4 deeper-* boxes (PERM ratio strip, countries top-share bars and modularity strip, metro density bars, client strength bars, lottery slope chart, every-draw line chart) from a single more.json.
+
+Imports: `./site.js`, `./week04-strip.js`.
+
+Exports: none.
+
+**Import side effects.** Computes DATA = asset('weeks/week04/data/more.json') and calls render() at import. render() queries all [data-more] hosts, fetches more.json once, and for each host dispatches to DRAWERS[host.dataset.more] with data[section]. Section is 'countries' for countries-*, 'lottery' for draws, otherwise the key. Errors are logged with console.error('week04-vis-more', err).
+
+**DOM contract.**
+
+- [data-more] (all, via querySelectorAll): reads dataset.more
+- [data-more="density"] (page.tsx:2770, in #deeper-density inside a closed details.rx-drawer): replaceChildren with hbars SVG
+- [data-more="strength"] (page.tsx:3875, in #deeper-strength inside details.rx-drawer): replaceChildren with hbars SVG
+- [data-more="draws"] (page.tsx:4165, in #deeper-lottery): replaceChildren with the every-draw line chart. Leaves the host empty if all_draws is missing or has fewer than 2 entries.
+- [data-more="lottery"] (page.tsx:4172, in #deeper-lottery): replaceChildren with slope chart SVG
+- [data-more="perm"] (page.tsx:4350, in #deeper-perm inside details.rx-drawer): replaceChildren with stripChart
+- [data-more="countries-top"] (page.tsx:4388): replaceChildren with hbars
+- [data-more="countries-modularity"] (page.tsx:4395): replaceChildren with stripChart
+- No writes outside the hosts: no prose numbers, no captions, no events beyond the \<title> tooltips
+
+**State.** None mutable at module level. DRAWERS is a constant dispatch table keyed by the data-more attribute value. No globals, storage or URL params.
+
+**Cross-module.** Depends on week04-strip.js (node, token, stripChart, fitted, fs, textWidth) and site.js asset(). It runs first of the three vis modules in entries/week04.js but nothing depends on that order. The colors --w4-more-client and --w4-more-employer come from src/styles/week04-vis-more.css.
+
+**Hazards.** The cleanest of the four. Every write stays inside its own host, the one data file comes in a single fetch, and no control state exists. It converts to a \<MoreFigure kind="perm"/> (or one component per chart) that takes its slice of more.json and renders SVG at a measured width. The local hbars, slope, dodge and smartText helpers duplicate the ones in week04-strip.js and week04-vis-staffing.js, so they should merge into one shared React chart kit. Several hosts sit inside closed \<details> drawers, so the width hook must handle a 0 width while closed and re-measure on open; fitted() does this today through ResizeObserver. The hidden-pane rAF caveat also applies to any width hook. Keep the 'March 2024' by-worker logic and the all_draws guard, because the test above depends on that data contract.
+
+**Charts.**
+
+- PERM green cards per 100 H-1B filings (strip, dashed median ref), host `[data-more="perm"]`, library svg-string. Data: public/weeks/week04/data/more.json .perm (rows[{label,lca_filings,ratio}], median_ratio). Controls: \<title> tooltips. Redraws on: parent width via fitted()
+- Countries top shares (hbars), host `[data-more="countries-top"]`, library svg-string. Data: more.json .countries.top[{country,share}]. Controls: \<title> tooltips. Redraws on: parent width via fitted()
+- Country network modularity vs rewired (strip, signed z badges), host `[data-more="countries-modularity"]`, library svg-string. Data: more.json .countries.modularity.{unweighted,weighted}. Controls: \<title> tooltips. Redraws on: parent width via fitted()
+- Filings per 1,000 jobs by metro (hbars, national ref, metro 41940 bold, New York outlined), host `[data-more="density"]`, library svg-string. Data: more.json .density (rows, new_york, national_rate). Controls: \<title> tooltips. Redraws on: parent width via fitted(); first drawn at the 556 fallback because the host sits in a closed \<details>, redrawn when it opens
+- Clients with the most single-firm filings (hbars, health care bold), host `[data-more="strength"]`, library svg-string. Data: more.json .strength.rows[{label,strength,health_care}]. Controls: \<title> tooltips. Redraws on: parent width via fitted()
+- Registrations per approval, March 2022 vs 2023 (slope chart, dodged labels), host `[data-more="lottery"]`, library svg-string. Data: more.json .lottery (series[{label,values}], draws). Controls: \<title> tooltips per series. Redraws on: parent width via fitted()
+- Every H-1B draw: eligible per selected (polyline, highlighted band, by-worker dashed divider at March 2024), host `[data-more="draws"]`, library svg-string. Data: more.json .lottery (all_draws[{label,eligible,selected,multiple}], draws). Controls: \<title> tooltips per point group. Redraws on: parent width via fitted() (fallback 556)
+
+**Tests that read it.**
+
+- none import it. tests/week04-questions.test.mjs:127 refers to it in a comment only; that test recomputes the per-draw ratios and checks that the #deeper-lottery prose matches more.json, and it assumes the chart marks the March 2024 draw. tests/type-scale.test.mjs and tests/theme.test.mjs scan it as text.
+
+### src/scripts/week04-vis-staffing.js
+
+394 lines, risk low. Draws every Section 3 deep-dive figure (who-q1 to who-q4, the paperwork/lawyers box, community-stats modularity, strong/weak ties, lottery mates) into [data-strip] hosts from three staffing JSON files.
+
+Imports: `./site.js`, `./week04-strip.js`.
+
+Exports: none.
+
+**Import side effects.** At import it computes three asset() URLs and starts Promise.all over fetches of staffing_communities.json, staffing_deep.json and years.json. On success it calls drawQ1, drawQ2, drawQ3, drawQ4, drawLawyers, drawCommunityStats, drawTies and drawLottery in order. On failure it writes an error message into every .w4-vis-error element, un-hides them, and logs the error.
+
+**DOM contract.**
+
+- [data-strip="who-q1-split"] (page.tsx:1393, in #who-q1 .w4-vis-stack): replaceChildren with stacked rows
+- [data-strip="who-q1-denial"] (page.tsx:1394): replaceChildren with stripChart
+- [data-strip="who-q1-funnel-registrations"] (page.tsx:1381): replaceChildren with hbars
+- [data-strip="who-q1-funnel-petitions"] (page.tsx:1382): replaceChildren with hbars
+- [data-strip="who-q2-modularity"] (page.tsx:3413, inside details.rx-panel[data-box=who-q2]): replaceChildren with stripChart
+- [data-strip="who-q2-ami"] (page.tsx:3431): replaceChildren with stripChart
+- [data-strip="who-q3-concentration"] (page.tsx:3471): replaceChildren with stacked rows
+- [data-strip="who-q3-topshare"] (page.tsx:3480): replaceChildren with miniStrip
+- [data-strip="who-q4-stability"] (page.tsx:4548, inside details.rx-panel[data-box=who-q4]): replaceChildren with stripChart
+- [data-strip="who-q4-shift"] (page.tsx:4558): replaceChildren with stripChart
+- [data-strip="who-q4-vendor-changed"] (page.tsx:4559): replaceChildren with miniStrip
+- [data-strip="staffing-community-modularity"] (page.tsx:3746, in #staffing-community-stats details.rx-drawer): replaceChildren with stripChart
+- [data-strip="staffing-ties-overlap"] (page.tsx:3788): replaceChildren with stripChart
+- [data-strip="staffing-ties-wage"] (page.tsx:3805): replaceChildren with stacked rows
+- [data-strip="staffing-lawyers-outsourcing"] (page.tsx:4014, in details.rx-panel[data-box=staffing-lawyers]): replaceChildren with stripChart
+- [data-strip="staffing-lawyers-top5"] (page.tsx:4021): replaceChildren with hbars
+- [data-strip="staffing-lottery-mates"] (page.tsx:4099): replaceChildren with stripChart
+- [data-strip="staffing-lottery-ami"] (page.tsx:4106): replaceChildren with stripChart
+- OUTSIDE HOSTS, error path only: .w4-vis-error (querySelectorAll) gets textContent set and hidden=false. No element in page.tsx (or anywhere under src/) has this class, so the path is dead today and a fetch failure shows nothing on the page.
+- A missing host is skipped silently (draw() returns early)
+
+**State.** None mutable at module level, and no globals, storage or URL params. It fetches staffing_communities.json, which week04-vis-intros.js also fetches separately.
+
+**Cross-module.** Depends on week04-strip.js (node, token, stripChart, miniStrip, fitted, fs, textWidth) and site.js asset(). It runs last of the three vis modules in entries/week04.js but needs no DOM from the others. Colors such as --w4-vis-client, --w4-accent and --w4-level-1..4 come from src/styles/week04-vis-staffing.css and post.css.
+
+**Hazards.** Straightforward per chart: 18 static figures with no controls. It needs three React primitives (StripChart, MiniStrip, plus local HBars and StackedRows, which should merge with vis-more's hbars into one kit) and a shared loader for the three JSON files. The one coupling: a single Promise.all gates all 18 charts, so one failed file blanks every figure. A React version can load per figure or keep one provider. The .w4-vis-error error path writes outside the hosts, but no such element exists on the page. Replace it with a per-figure error state rather than porting it. Hosts sit across #who-q1, the who-q2, who-q3 and who-q4 panels (details.rx-panel[name] accordions), #staffing-community-stats, #staffing-lawyers, and the ties and lottery cards, many inside closed \<details>. Each needs its own client island in page.tsx, and width measurement must cope with closed drawers. Note the stripChart rows pass refTip, which drawStrip ignores (only the ref label is used).
+
+**Charts.**
+
+- who-q1 split: placed at a client / names a client company (stacked rows), host `[data-strip="who-q1-split"]`, library svg-string. Data: public/weeks/week04/data/years.json (years['2025'].placed_share, certified_filings); public/weeks/week04/data/staffing_deep.json (q1.client_company_share). Controls: \<title> tooltips. Redraws on: parent width via fitted()
+- who-q1 denial: placing vs direct first-time denial rate, 2022 and 2026 (strip with dashed ref), host `[data-strip="who-q1-denial"]`, library svg-string. Data: years.json uscis_series[{year,placing_initial_denial_rate,direct_initial_denial_rate}] (2022, 2026). Controls: \<title> tooltips. Redraws on: parent width via fitted()
+- who-q1 funnel: registrations per approval (hbars), host `[data-strip="who-q1-funnel-registrations"]`, library svg-string. Data: staffing_deep.json q1.by_kind.{direct,placing,small}.registrations_per_approval. Controls: \<title> tooltips. Redraws on: parent width via fitted()
+- who-q1 funnel: drawn tickets that became petitions (hbars), host `[data-strip="who-q1-funnel-petitions"]`, library svg-string. Data: staffing_deep.json q1.by_kind.*.selected_that_became_petitions. Controls: \<title> tooltips. Redraws on: parent width via fitted()
+- who-q2 modularity: unweighted and weighted vs rewired (strip), host `[data-strip="who-q2-modularity"]`, library svg-string. Data: staffing_communities.json modularity.{wiring_only,weighted_vs_rewired}. Controls: \<title> tooltips. Redraws on: parent width via fitted(); first drawn at the fallback inside a closed details.rx-panel
+- who-q2 AMI: main vendor vs industry, unweighted and weighted (strip, hollow dots), host `[data-strip="who-q2-ami"]`, library svg-string. Data: staffing_communities.json industry_or_vendor (unweighted.* and weighted ami_*). Controls: \<title> tooltips. Redraws on: parent width via fitted()
+- who-q3 single-vendor concentration (stacked rows), host `[data-strip="who-q3-concentration"]`, library svg-string. Data: staffing_deep.json q3.{single_vendor_clients,clients,single_vendor_filing_share}. Controls: \<title> tooltips. Redraws on: parent width via fitted()
+- who-q3 median top-vendor share (miniStrip, 90% ref), host `[data-strip="who-q3-topshare"]`, library svg-string. Data: staffing_deep.json q3.{big_clients_median_top_vendor_share,big_clients_over_90pct_one_vendor,big_clients}. Controls: \<title> tooltips. Redraws on: parent width via fitted()
+- who-q4 year-to-year NMI stability (strip with same-year ref), host `[data-strip="who-q4-stability"]`, library svg-string. Data: staffing_communities.json stability[{from,to,shared_clients,unweighted_nmi,unweighted_same_year_nmi}]. Controls: \<title> tooltips. Redraws on: parent width via fitted()
+- who-q4 Jan-Jun change vs a year earlier (strip, zero line), host `[data-strip="who-q4-shift"]`, library svg-string. Data: staffing_deep.json q4.jan_jun_change.{certified_filings_percent,client_company_filings_percent}. Controls: \<title> tooltips. Redraws on: parent width via fitted()
+- who-q4 main vendor changed share (miniStrip), host `[data-strip="who-q4-vendor-changed"]`, library svg-string. Data: staffing_deep.json q4.jan_jun_change.main_vendor_changed_share.{before,after}. Controls: \<title> tooltips. Redraws on: parent width via fitted()
+- Lawyers: no outside firm / top-5 share, outsourcing vs direct (strip), host `[data-strip="staffing-lawyers-outsourcing"]`, library svg-string. Data: staffing_deep.json lawyers.outsourcing.{placing,direct}. Controls: \<title> tooltips. Redraws on: parent width via fitted()
+- Lawyers: top five law firms by filings (hbars, hard-coded pretty-name map), host `[data-strip="staffing-lawyers-top5"]`, library svg-string. Data: staffing_deep.json lawyers.top_firms_by_filings[[name,filings]]. Controls: \<title> tooltips. Redraws on: parent width via fitted()
+- Community stats: modularity with and without filing counts (3-row strip), host `[data-strip="staffing-community-modularity"]`, library svg-string. Data: staffing_communities.json modularity.{wiring_only,weighted_vs_rewired,weights_only}. Controls: \<title> tooltips. Redraws on: parent width via fitted()
+- Ties: Spearman filings vs overlap against shuffled (strip, zero line), host `[data-strip="staffing-ties-overlap"]`, library svg-string. Data: staffing_deep.json ties.{spearman_weight_overlap_rho,defined_links,weight_shuffle_null}. Controls: \<title> tooltips. Redraws on: parent width via fitted()
+- Ties: wage level distribution, outsourcing vs direct (stacked rows, --w4-level-1..4), host `[data-strip="staffing-ties-wage"]`, library svg-string. Data: staffing_deep.json ties.wage_distribution_placing_vs_direct_filings.{placing,direct}['1'..'4']. Controls: \<title> tooltips. Redraws on: parent width via fitted()
+- Lottery: high firms' group share vs shuffled (strip), host `[data-strip="staffing-lottery-mates"]`, library svg-string. Data: staffing_deep.json lottery.{high_mates_share,high_mates_share_shuffled}. Controls: \<title> tooltips. Redraws on: parent width via fitted()
+- Lottery: AMI with the groups, median and range of 100 runs (strip with interval), host `[data-strip="staffing-lottery-ami"]`, library svg-string. Data: staffing_deep.json lottery.{ami_median,ami_min,ami_max}. Controls: \<title> tooltips. Redraws on: parent width via fitted()
+
+**Tests that read it.**
+
+- none import it. tests/type-scale.test.mjs (font-size literal scan of week04-*.js) and tests/theme.test.mjs (hex-literal scan) read it as text.
+
+### src/scripts/kit.js
+
+203 lines, risk medium. The component barrel every Week 5, template and styleguide-kit script imports: it re-exports Week 4 helpers (strip charts, tables, drawers, termify), graph.js and tips.js, and adds loadData, slot, table, figure, an ECharts wrapper, concordance, passage and wikiLink, all returning detached DOM nodes.
+
+Imports: `./site.js`, `./type-scale.mjs`, `./week04-strip.js`, `./week04-tables.js`, `./week04-ui.js`, `./graph.js`, `./tips.js`.
+
+Exports: `loadData`, `slot`, `table`, `figure`, `loadECharts`, `palette`, `echart`, `concordance`, `passage`, `wikiLink`, `family`, `font`, `fs`, `fitted`, `miniStrip`, `node`, `roomFor`, `stripChart`, `textWidth`, `token`, `decorate`, `decorateAll`, `drawer`, `drawerRow`, `termify`, `networkView`, `hoverTips`, `tipBox`.
+
+**Import side effects.** None at import beyond declaring `let echartsLoading`. ECharts is not loaded until loadECharts()/echart() is first called.
+
+**DOM contract.**
+
+- slot(section, part): reads document.getElementById(`${section}-${part}`) and throws if it is missing. No Week 5 script calls it, though the template test describes the ids as the ones slot() finds.
+- table(): builds a detached \<table> with caption, thead th[scope=col] (.num for numeric columns) and tbody, formats numbers with toLocaleString('en-GB'), then runs week04-tables decorate(t), which adds bar spans to numeric cells.
+- figure(host, …): calls host.replaceChildren(figure.kit-figure) with div.kit-stage, a figcaption and drawerRow(drawer(label, table(data))). The chart is either appended to the stage or drawn by calling chart(stage).
+- echart(host, option): appends div.kit-echart with an inline height to host, calls echarts.init(el, null, {renderer:'svg'}) and setOption, which merges the theme from CSS tokens (--access, --people, --ink-soft, --ink-mute, --dtu, --ink, --line, --line-soft) read through getComputedStyle(document.body). A ResizeObserver on el calls chart.resize() and is never disconnected.
+- loadECharts(): appends \<script src=asset('assets/vendor/echarts-5.5.1.min.js')> to document.head and resolves to window.echarts.
+- concordance(): detached table.kit-kwic with td.kit-kwic-page/left/right cells, a \<mark> on each hit and Wikipedia \<a> links.
+- passage(): detached blockquote.kit-passage holding p (the highlight split by regex into \<mark>s) and cite > a.
+- wikiLink(): detached \<a href='https://en.wikipedia.org/wiki/…'>.
+
+**State.** Module-level `echartsLoading` promise. window.echarts global set by the vendored script, plus a \<script> tag injected into document.head. CSS tokens are read from document.body at draw time, so a theme switch does not restyle charts already drawn. No storage and no URL params.
+
+**Cross-module.** Re-exports week04-strip.js, week04-tables.js and week04-ui.js, which the Week 4 page also uses (one shared copy). termify (week04-ui.js) is the main helper that edits prose outside a chart host: it splits a text node inside a server-rendered element and replaces it with span.w4-term > button[aria-describedby] + span.w4-pop#id[role=tooltip]. drawer(label, body) uses innerHTML when body is a string.
+
+**Hazards.** This module would become the React component library: \<Figure>, \<DataTable> (decorate() needs porting or a ref effect), \<EChart> (useRef + useEffect with init/dispose; today nothing ever disposes the instance or disconnects the observer), \<Concordance>, \<Passage>, \<WikiLink> and \<Drawer>/\<DrawerRow>. loadData becomes a fetch hook or a build-time import. The script-tag loading of ECharts should become an npm import or next/script. token() reads computed styles from body at draw time, so a React chart needs a mount effect, which rules out server rendering. The README export test pins the export list, so it has to change along with the module. Hazard: termify mutates prose React rendered. It works today only because React never re-renders that static subtree; the conversion should replace it with a \<Term> component in the JSX.
+
+**Charts.**
+
+- echart() generic ECharts wrapper, host `any host element passed in; draws into a div.kit-echart it appends`, library echarts. Data: option passed by the caller. Controls: ECharts' own tooltip and toolbox; nothing else. Redraws on: ResizeObserver on its own div calls chart.resize(); the option is set once and never changes
+
+**Tests that read it.**
+
+- tests/kit.test.mjs (reads kit.js as text: the export list must equal the ### headings in src/scripts/README.md)
+
+### src/scripts/tips.js
+
+69 lines, risk medium. Instant tooltips: tipBox(host) appends a positioned div.kit-tip to a host, and hoverTips(host) turns every SVG \<title> under the host into data-tip/aria-label, highlights the hovered mark with .kit-hot and shows the tip, using a MutationObserver to catch charts drawn later.
+
+Imports: none.
+
+Exports: `tipBox`, `hoverTips`.
+
+**Import side effects.** None.
+
+**DOM contract.**
+
+- tipBox(host): host.classList.add('kit-tip-host'), then appends div.kit-tip[hidden]. show() calls tip.replaceChildren(b + spans), sets style.left/top from host.getBoundingClientRect() and re-appends the tip when a chart redraw has removed it from host.
+- hoverTips(host): for every `svg title` under host, sets parentElement.dataset.tip and aria-label to the title text, then removes the \<title>.
+- hoverTips: a MutationObserver(childList, subtree) on host re-runs that conversion after every DOM change and is never disconnected.
+- hoverTips: pointerover/pointermove/pointerout/pointerleave listeners on host toggle .kit-hot on the closest [data-tip] element and show or hide the tip.
+
+**State.** Closure state per call (`hot` element). No globals and no storage.
+
+**Cross-module.** week05-frame.js calls hoverTips on every [id^="chart-"] on the page, so it decorates SVG that relations, copying, heaps, fame and weird draw. week05-heaps.js calls tipBox on #chart-heaps-curve directly, which means that host gets two tip divs (one from heaps and one from frame's hoverTips).
+
+**Hazards.** In React this becomes a \<Tooltip> component, or a useTooltip hook that the chart components render themselves, passing tooltip text as props instead of \<title> elements. The MutationObserver pattern that deletes \<title> nodes and writes data-tip onto nodes React or D3 own does not survive a conversion: React would re-add the \<title> on re-render. It is small, but its page-wide use by week05-frame couples every chart to this module.
+
+### src/scripts/graph.js
+
+401 lines, risk high. networkView(host, spec): an imperative SVG network renderer used by Week 5 (maps, copying network), the template and the styleguide kit. It draws a legend, group-coloured nodes and links, hub rings and name pills, side or inside labels, weight pills, movable nodes, and an explore mode with hover lighting, a tooltip and d3 zoom/pan.
+
+Imports: `./site.js`, `./type-scale.mjs`, `./week04-strip.js`.
+
+Exports: `networkView`.
+
+**Import side effects.** None at import beyond declaring `let d3Loading`. d3 loads only when an explore view is drawn.
+
+**DOM contract.**
+
+- host.replaceChildren() then appends div.gv(.gv-dark)(.gv-explore) > [p.gv-note] [p.gv-legend] div.gv-stage.
+- Under explore: appends div.gv-tip[hidden] and div.gv-tools with three buttons (+, −, Reset, with aria-labels) to the stage; a keydown Escape listener on the wrapper clears the lighting.
+- Legend: replaceChildren on p.gv-legend with span or button.gv-key items (\<i class=gN>, text '\<group> (n pages)'); legend buttons click → light the group. Redrawn after each move.
+- SVG built through fitted(build, width), which replaces itself on parent resize (a ResizeObserver on the parent, scheduled with requestAnimationFrame). The SVG carries role=img and an aria-label, with g > g of line.gv-link (classes gN, gv-mark, gv-faint, gv-on, gv-dashed, gv-strong, optional \<title>); line.gv-hit with a \<title> and a pointerenter listener that sets focus and redraws when weights are on; g[data-id] node groups (circle/path.gv-node gN, gv-hollow, gv-tone; text.gv-inside; g.gv-badge; \<title> when not exploring); g.gv-side text labels; g.gv-hub[data-hub] (ring, leader line, rect.gv-pill, text.gv-name); g.gv-weight pill.
+- movable: g[data-movable][tabindex=0][role=button][aria-label] with click and Enter/Space handlers. A move mutates the node's group, redraws the legend, calls redraw(id) to refocus the node, and calls opts.onChange(state).
+- explore: pointerenter/move/leave/click on each g[data-id]; click/keydown/focus/blur on .gv-hub; click on the svg clears. The handlers toggle svg.gv-lit and .gv-hi on nodes, lines and hubs, and fill and position div.gv-tip.
+- explore zoom: loadD3() appends \<script src=asset('assets/vendor/d3-7.9.0.min.js')> to the head; d3.zoom on the svg writes the transform attribute on the inner \<g> view; the zoom buttons call transitions.
+
+**State.** Module-level `d3Loading` promise; the window.d3 global and an injected \<script>. Per view: the mutable `state` copy of the nodes, `focus`, `chart`, `live`, `pinned`. No storage or URL.
+
+**Cross-module.** Depends on fitted/node/textWidth from week04-strip.js and on the .gv CSS in post.css. week05-frame's hoverTips converts any link \<title>s networkView draws (copying network, non-explore views), so those views end up with two tooltip systems.
+
+**Hazards.** This is the biggest piece of shared drawing logic. A React version would be a \<NetworkView> component that renders the SVG from props, with the layout computed in useMemo, lighting in state, and width from a ResizeObserver hook, plus d3-zoom applied by ref in an effect (or react-zoom-pan-pinch). The movable mode mutates a state copy and reports through onChange; that becomes controlled state. The label-placement collision passes (side labels, hub pills) are pure functions and port easily. Event wiring per node and class toggling for lighting need restructuring to avoid re-rendering 300 nodes on each hover: keep CSS-class lighting through refs, or use memoised node components. The graph.test text checks (no hex, fs() font sizes, no innerHTML) must keep matching the new file.
+
+**Charts.**
+
+- networkView node-link SVG, host `the host element passed in (e.g. #chart-relations-map, #chart-autocomplete-map, #chart-copying-network, #chart-hero, #chart-second-left, [data-demo=net-*])`, library svg-string (hand-built SVG through node()) + d3 (zoom only). Data: spec.nodes / spec.links / spec.groups from the caller (network.json, copying.json, styleguide/data/graphs.json). Controls: legend .gv-key buttons (explore): light a group; zoom buttons +, −, Reset; Ctrl/⌘ with the wheel, pinch, drag to pan; node hover/click (explore): light the node's neighbours and pin the tooltip; hub click/focus/Enter: light the hub's group; Escape: clear; movable nodes: click/Enter moves the node to the next group; gv-hit link hover (weights): highlight the link and show its weight pill. Redraws on: a parent resize (fitted), a node move (movable), hovering a weight link (focus); returns {nodes, redraw} for external redraws
+
+**Tests that read it.**
+
+- tests/graph.test.mjs (reads graph.js as text: no hex colours, no numeric "font-size", no innerHTML; validates public/styleguide/data/graphs.json and the post.css group rules)
+
+### src/scripts/week05-frame.js
+
+184 lines, risk high. Draws the Week 5 hero scatter (words against 1 + in-degree) and the seven mini strips in the findings strip, and attaches instant tooltips to every chart host on the page.
+
+Imports: `./site.js`, `./kit.js`, `./week04-strip.js`.
+
+Exports: none.
+
+**Import side effects.** Calls boot() at import with no top-level await: it fetches six JSON files in parallel (relations, copying, search, heaps, fame, weird), the same files the section scripts also fetch. Also at import, synchronously: document.querySelectorAll('[id^="chart-"]').forEach(hoverTips), which adds tip divs, the kit-tip-host class, MutationObservers and pointer listeners to every chart host on the page.
+
+**DOM contract.**
+
+- #chart-hero-fame (server-rendered div.w5-hero-plot[role=img][aria-label]): replaceChildren(fitted SVG). The SVG is aria-hidden, the dots carry \<title>s, and the two outliers are labelled in ink.
+- #findings [data-finding] (div.w4-mini × 7, data-finding 1–7): replaceChildren(miniStrip(spec), \<small> caption). Finding 4 has no spec and gets the placeholder text 'No guesses collected yet, so no baseline to draw.' The caption text carries computed numbers (z, p, counts), so it writes data into the findings cards.
+- Every [id^="chart-"] on the page (chart-hero-fame, chart-relations-crossing, chart-relations-map, chart-copying-linked, chart-copying-network, chart-autocomplete-map, chart-autocomplete-modularity, chart-heaps-curve, chart-heaps-gap, chart-fame-scatter, chart-weird-scatter): hoverTips adds the kit-tip-host class, a div.kit-tip and listeners, and rewrites the SVG \<title>s other modules drew into data-tip/aria-label.
+
+**State.** None at module level apart from constants. CSS tokens --w4-hero-ink, --w4-hero-label, --w4-hero-body and --w4-hero-state-edge are read from body.
+
+**Cross-module.** The page-wide hoverTips call reaches into every other section's chart host. It works because the frame's import runs synchronously while the others await their JSON, and the MutationObserver picks up their later draws. The hero and findings duplicate the section modules' JSON fetches. The entry runs all modules `together`, so order is not guaranteed beyond this.
+
+**Hazards.** Split into \<HeroFame> (SVG component), \<FindingsStrip>/\<MiniStrip> per card (the spec mapping from JSON is pure and ports easily), and a shared JSON cache (React context or build-time import) so the six files load once. The global hoverTips sweep has to go: each chart component should own its tooltip. The findings cards hold prose in page.tsx with a data-finding slot. The caption text under each strip is computed from data, so the card component needs the data passed in or must stay a slot. The test pins the file name through pageScripts.
+
+**Charts.**
+
+- hero fame scatter, host `#chart-hero-fame`, library svg-string (node()) via fitted(). Data: public/weeks/week05/data/fame.json (points, fit, outliers). Controls: hover tooltips via hoverTips on dot \<title>s. Redraws on: parent resize (fitted)
+- findings mini strips (6 drawn, 1 placeholder), host `#findings [data-finding="1"…"7"]`, library svg-string (week04-strip miniStrip). Data: relations.json (crossing enemy); copying.json (headline); search.json (summary); heaps.json (checkpoints at 100k); fame.json (fit); weird.json (several). Redraws on: none
+
+**Tests that read it.**
+
+- tests/week05-frame.test.mjs (pageScripts('week05') must include 'week05-frame.js'; pins the page copy to the JSON)
+- tests/kit.test.mjs (indirectly, through the entry list)
+
+### src/scripts/week05-map.js
+
+45 lines, risk low. The shared Marvel map helper for sections 1 and 4: loadNetwork() fetches network.json once, and marvelMap(host, net, {mark, …}) maps it onto networkView with explore, hubs, a fade for marked relations and a name-first tooltip.
+
+Imports: `./site.js`, `./kit.js`.
+
+Exports: `loadNetwork`, `marvelMap`.
+
+**Import side effects.** None; it declares `let loading` and the WORDS constant.
+
+**DOM contract.**
+
+- No ids of its own. marvelMap writes into whatever host it is given (networkView replaceChildren); callers pass #chart-relations-map and #chart-autocomplete-map.
+
+**State.** Module-level `loading` promise caches network.json across the two sections.
+
+**Cross-module.** Imported by week05-relations.js and week05-autocomplete.js, not by the entry, so pageScripts() does not list it.
+
+**Hazards.** Becomes a \<MarvelMap net mark … /> wrapper over \<NetworkView> plus a useNetwork() hook or a context cache. Low effort once NetworkView exists. The regex test must keep matching.
+
+**Charts.**
+
+- Marvel community map, host `caller's host (#chart-relations-map, #chart-autocomplete-map)`, library svg-string + d3 zoom (via graph.js networkView). Data: public/weeks/week05/data/network.json (nodes, links, groups, hubs, ratio, relations[kind].pairs). Controls: all networkView explore controls. Redraws on: each marvelMap call rebuilds the view from scratch (relations calls it again when the kind toggles)
+
+**Tests that read it.**
+
+- tests/week05-network.test.mjs (reads the file as text: asserts /n\.name,/ so the tooltip leads with the page name)
+
+### src/scripts/week05-relations.js
+
+101 lines, risk medium. Section 1: draws the crossing-share strip chart, builds the label chips and the concordance table of hand-read sentences with verdict cells, wraps two glossary terms in the 'did' prose, and draws the Marvel map with the fight/family toggle.
+
+Imports: `./site.js`, `./kit.js`, `./week05-map.js`.
+
+Exports: none.
+
+**Import side effects.** Top-level await of loadData(relations.json), then synchronous DOM writes, then a second top-level await of loadNetwork() inside the map block. The rest of the module waits for the first fetch.
+
+**DOM contract.**
+
+- #chart-relations-crossing: append(stripChart(rows …)). The bars carry realTip/baseTip, which become \<title>s that frame's hoverTips converts.
+- #relations-chips (server-rendered empty div.w5-chips[role=group]): appends five \<button data-label> elements with text 'Enemy · r/n' and click → show(label); show() toggles aria-pressed on them.
+- #relations-lines: replaceChildren(concordance table) with an extra td.w5-mark (✓/✗ with a title) and td.w5-verdict cell per row, captioned with precision counts. Starts on 'enemy'.
+- #relations-did (prose): termify('Louvain', #w5-term-relations-louvain) and termify('communities', #w5-term-relations-communities). This splits text nodes in server-rendered prose and injects span.w4-term > button + span.w4-pop.
+- #relations-map-kind (server-rendered buttons[data-kind=enemy|family] with aria-pressed): reads data-kind, adds click listeners, and rewrites aria-pressed on toggle.
+- #chart-relations-map: marvelMap(...) → networkView replaceChildren on each toggle, with an aria string that depends on the kind.
+
+**State.** None at module level apart from `data` and constants; the selected label lives only in aria-pressed.
+
+**Cross-module.** Uses week05-map.js and the network.json cache shared with autocomplete. Its chart \<title>s are converted by week05-frame's hoverTips.
+
+**Hazards.** Natural React: useState for the selected label and map kind, a \<StripChart>, \<Concordance> with extra columns, and \<MarvelMap mark={kind}>. The server-rendered toggle buttons in page.tsx would move into the component. The termify calls need \<Term> elements written into the JSX prose (ids w5-term-relations-*). The section ids are pinned by tests.
+
+**Charts.**
+
+- crossing share by label, host `#chart-relations-crossing`, library svg-string (week04-strip stripChart). Data: public/weeks/week05/data/relations.json (crossing, communities.runs). Controls: hover tips (via frame hoverTips). Redraws on: stripChart's own fitted resize
+- relations map (fight/family words), host `#chart-relations-map`, library svg-string + d3 zoom (networkView). Data: public/weeks/week05/data/network.json. Controls: #relations-map-kind buttons[data-kind] (enemy/family); networkView explore controls. Redraws on: kind toggle (full rebuild), resize
+- concordance by label, host `#relations-lines`, library dom. Data: relations.json (concordance, precision). Controls: #relations-chips buttons (generated). Redraws on: chip click
+
+**Tests that read it.**
+
+- tests/week05-relations-copying.test.mjs (pins the page copy to relations.json)
+- tests/week05-network.test.mjs (markup: #chart-relations-map and the two-button switch)
+- tests/kit.test.mjs (pageScripts must include week05-relations.js; #relations-{asked,did,figure,surprise,checked,limit} ids must stay)
+
+### src/scripts/week05-copying.js
+
+130 lines, risk medium. Section 2: draws the copying network (networkView with side labels, dashed non-linking pairs and link quotes as titles), the linked-share strip, the clusters table and the checked passages, and wraps two glossary terms.
+
+Imports: `./site.js`, `./kit.js`.
+
+Exports: none.
+
+**Import side effects.** Top-level await of loadData(copying.json), then all DOM writes run synchronously at import.
+
+**DOM contract.**
+
+- #chart-copying-network: networkView(...) replaceChildren. Explore is on; links carry \<title> quotes, which frame's hoverTips converts into its own tooltip on top of networkView's node tooltip.
+- #chart-copying-linked: append(stripChart(3 rows)).
+- #copying-clusters (inside a drawer in the markup): append(table(...)).
+- #copying-passages: append p.fineprint headings + passage() blockquotes (3 largest pairs + optional templated-lead group).
+- #copying-did (prose): termify('8-gram', #w5-term-copying-ngram) and termify('house style', #w5-term-copying-house).
+
+**State.** None beyond module constants and data.
+
+**Cross-module.** Relies on week05-frame's hoverTips for its link tooltips; without it the link \<title>s fall back to native browser tooltips.
+
+**Hazards.** Mostly declarative output: a NetworkView with computed labels (the pair-label logic is pure), a StripChart, a DataTable and a list of Passages. The termify calls become \<Term> in the prose. The link tooltips should move into NetworkView instead of relying on the frame. Moderate effort once the kit components exist.
+
+**Charts.**
+
+- copying network, host `#chart-copying-network`, library svg-string + d3 zoom (networkView). Data: public/weeks/week05/data/copying.json (nodes, links, clusters). Controls: networkView explore (hover/click nodes, zoom buttons); link hover tooltips via frame's hoverTips. Redraws on: resize (fitted)
+- linked-share strip, host `#chart-copying-linked`, library svg-string (stripChart). Data: copying.json headline. Controls: hover tips. Redraws on: resize
+
+**Tests that read it.**
+
+- tests/week05-relations-copying.test.mjs (pins the copy to copying.json)
+- tests/kit.test.mjs (pageScripts includes week05-copying.js; copying-* part ids)
+
+### src/scripts/week05-search.js
+
+172 lines, risk medium. Section 3: a live cosine-similarity search engine in the browser plus the query table, detail panel, example chips, stats row and checked passage.
+
+Imports: `./site.js`, `./kit.js`.
+
+Exports: none.
+
+**Import side effects.** Calls boot() at import with no top-level await; boot returns early if #search is missing, then fetches search.json and search_live.json.
+
+**DOM contract.**
+
+- #search (section): read only, as a presence check.
+- #search-stats (div.w5-statrow): replaceChildren with 4 div.w5-stat > b + span.
+- #search-tbody (server-rendered empty tbody): replaceChildren with tr[data-id] rows: td>button.linkish (click → pick), expected name, rank td.w5-ok/w5-fail, rank_nostop, top hit. pick() sets aria-selected on each tr.
+- #search-chips (div.w5-chips[role=group]): appends 6 button.w5-chip[data-id]; pick() sets aria-pressed.
+- #search-detail (aria-live): replaceChildren with p elements (status, top hit, overlap, failure reason, p.w5-caption chance line).
+- #search-input (input type=search): reads .value, sets .value on pick, keydown Enter → run.
+- #search-run (button): click → run().
+- #search-live-ranks (ol.w5-rank, aria-live): replaceChildren with li (.w5-hit when target) > span.w5-pos, span.w5-name, span.w5-score, or a 'no page shares a word' item.
+- #search-passage: append(passage(...)).
+- #search-did (prose): termify × 4 ('Bag of Words', 'cosine similarity', 'document-term matrix', 'stopwords'; ids w5-term-search-bow/cosine/dtm/stop).
+
+**State.** Closure state in boot: `selected` query. No globals or storage. Initial selection is the 'storm' query.
+
+**Cross-module.** None.
+
+**Hazards.** A good React candidate: the model() function is pure (move it into useMemo), and selected query, input text and results are plain state. The server-rendered shells (table head, input, button, ol) would move into the component. The model should run on the client only, since the JSON is large; it could also be imported at build time. The aria-live regions must be kept. termify → \<Term>.
+
+**Charts.**
+
+- live search ranking, host `#search-live-ranks`, library dom. Data: public/weeks/week05/data/search_live.json (vocab, stopwords, pages idx/val, top). Controls: #search-input Enter; #search-run click; #search-chips buttons; #search-tbody row buttons. Redraws on: each query run / pick
+- query table + detail, host `#search-tbody, #search-detail`, library dom. Data: public/weeks/week05/data/search.json (queries, summary, checked). Controls: row buttons, chips. Redraws on: pick
+
+**Tests that read it.**
+
+- tests/week05-search.test.mjs (pins the copy to search.json and search_live.json; pageScripts includes week05-search.js)
+- tests/kit.test.mjs
+
+### src/scripts/week05-autocomplete.js
+
+158 lines, risk medium. Section 4: the visitor quiz over masked fake pages (select a group, lock in, reveal, keep a score), the community map with legend, the modularity strip and one fake's copied run beside its source.
+
+Imports: `./site.js`, `./kit.js`, `./week05-map.js`.
+
+Exports: none.
+
+**Import side effects.** Top-level await of loadData(autocomplete.json). It then starts loadNetwork() without awaiting it, fills the select, wires listeners, calls show(0) and writes the run and the glossary terms, all at import. There are no null guards on the quiz elements, so a missing #ac-select or #ac-submit throws.
+
+**DOM contract.**
+
+- #chart-autocomplete-map: marvelMap(...) with colorLinks, legend and noneLabel (networkView replaceChildren), drawn once network.json resolves.
+- #chart-autocomplete-modularity (inside a 'More numbers' drawer): append(stripChart(1 row)).
+- #ac-select (server-rendered empty \<select>): appends a placeholder \<option value=''> and one option per group. Reads .value and sets .value/.disabled.
+- #ac-submit (button): click → lock the guess; sets .disabled.
+- #ac-next / #ac-prev (buttons data-kind=ghost): click → show(index±1); focus() moves to #ac-next after a lock.
+- #ac-char, #ac-text, #ac-progress: textContent written per fake.
+- #ac-scoreboard (aria-live): textContent score line or validation note.
+- #ac-reveal (div[aria-live][hidden]): toggles .hidden; replaceChildren with verdict p (span.w5-ok/w5-fail), p.w5-hubs phrases, note, blockquote.w5-quote.
+- #autocomplete-run: append(p with sentence text, passage(...)).
+- #autocomplete-did (prose): termify × 3 ('Louvain', 'normalised mutual information', 'trigram model'; ids w5-term-autocomplete-louvain/nmi/trigram).
+
+**State.** Module-level `locked` Map (fake id → chosen group) and `index`. They live in memory only: the comment says quiz clicks stay in the browser, and there is no localStorage. A reload clears the score.
+
+**Cross-module.** Shares the network.json cache with week05-relations through week05-map.
+
+**Hazards.** The quiz is a textbook useState/useReducer component: locked map, index and the select value. Its markup now lives in page.tsx as empty shells with ids, and all of it would move into the component. Focus management after a lock needs a ref. The two text tests (no em dash, no innerHTML) must keep passing on the new file. The module-level state means the quiz cannot remount cleanly today; the React version fixes that.
+
+**Charts.**
+
+- community map with legend, host `#chart-autocomplete-map`, library svg-string + d3 zoom (networkView via marvelMap). Data: public/weeks/week05/data/network.json. Controls: legend .gv-key buttons, hubs, zoom, node hover. Redraws on: resize
+- modularity strip, host `#chart-autocomplete-modularity`, library svg-string (stripChart). Data: public/weeks/week05/data/autocomplete.json (partition). Controls: hover tips. Redraws on: resize
+- visitor quiz, host `#ac-* elements in #autocomplete-figure`, library dom. Data: autocomplete.json (fakes, options, n_fakes, summary.example). Controls: #ac-select; #ac-submit; #ac-prev; #ac-next. Redraws on: each lock/prev/next
+
+**Tests that read it.**
+
+- tests/week05-autocomplete.test.mjs (reads the file as text: no em dashes, no innerHTML; pageScripts includes week05-autocomplete.js; pins the copy to autocomplete.json and communities.json)
+- tests/week05-network.test.mjs (markup has #chart-autocomplete-map)
+- tests/kit.test.mjs
+
+### src/scripts/week05-heaps.js
+
+200 lines, risk medium. Section 5: draws the log-log Heaps curve (random band, fit, two orders, a hover guide with its own tooltip), the gap strip, the numbers table in a drawer, the late-page word samples and passages, and wraps four glossary terms, one of them in the 'surprise' notice.
+
+Imports: `./site.js`, `./kit.js`.
+
+Exports: none.
+
+**Import side effects.** Top-level await of loadData(heaps.json); everything else runs synchronously at import.
+
+**DOM contract.**
+
+- #chart-heaps-curve: tipBox(curve) adds the kit-tip-host class and a div.kit-tip, then append(fitted SVG). The SVG holds the band path, mean, dashed fit, two order lines, a legend, and a hover overlay rect whose pointermove/pointerleave move the guide line and dots and show or hide the tip. Frame's hoverTips adds a second tip div to the same host.
+- #chart-heaps-gap: append(stripChart(4 rows with a divider and zeroLine)).
+- #heaps-table: append(drawerRow(drawer('Table: …', table(grid)))). The script builds this drawer itself rather than filling a drawer from the markup.
+- #heaps-samples: append 2 p.fineprint word lists.
+- #heaps-passages: append p.fineprint + passage() pairs.
+- #heaps-did (prose): termify 'Heaps' law', 'tokens', 'random orders' (ids w5-term-heaps-law/tokens/random).
+- #heaps-surprise (the 'What to notice' notice prose): termify 'types' (#w5-term-heaps-types).
+
+**State.** None beyond constants (the ORDER colour tokens --access/--people).
+
+**Cross-module.** Its curve host gets a second tooltip from week05-frame's hoverTips.
+
+**Hazards.** The curve is hand-written SVG with simple scales, so a \<HeapsCurve> component that renders JSX SVG with a hover state is easy (or d3-scale for the maths). The table drawer, samples and passages are plain lists. The termify on #heaps-surprise reaches into the notice text, so the prose needs \<Term>. Width-responsive drawing needs a ResizeObserver hook in place of fitted().
+
+**Charts.**
+
+- Heaps curve (types against tokens, log-log), host `#chart-heaps-curve`, library svg-string (node()) via fitted(). Data: public/weeks/week05/data/heaps.json (grid, heaps fit, meta.runs). Controls: pointer hover over the plot area: guide line, dots and a 4-line tooltip at the nearest grid point. Redraws on: parent resize (fitted)
+- gap to random strip, host `#chart-heaps-gap`, library svg-string (stripChart). Data: heaps.json checkpoints. Controls: hover tips. Redraws on: resize
+
+**Tests that read it.**
+
+- tests/week05-heaps.test.mjs (pins the copy to heaps.json; pageScripts includes week05-heaps.js)
+- tests/kit.test.mjs
+
+### src/scripts/week05-fame.js
+
+124 lines, risk low. Section 6: draws the ECharts log-log scatter of page length against in-degree with fit line, labelled outliers, ctrl-wheel zoom and a reset button; builds the outliers table and the per-outlier passages; wraps three glossary terms.
+
+Imports: `./site.js`, `./kit.js`.
+
+Exports: none.
+
+**Import side effects.** Top-level await of loadData(fame.json). echart() then loads the vendored ECharts script on first use, without being awaited. The table, passages and terms are written synchronously.
+
+**DOM contract.**
+
+- #chart-fame-scatter: echart(host, option, {height: 440}) appends div.kit-echart (SVG renderer). The frame's hoverTips also attaches to this host.
+- #fame-outliers (inside a drawer): append(table(... caption)).
+- #fame-passages: append p.fineprint (a \<b> label plus the reason text) + passage().
+- #fame-did (prose): termify 'in-degree', 'isolates', 'residual' (ids w5-term-fame-indegree/isolates/residual).
+
+**State.** window.echarts (via kit.loadECharts).
+
+**Cross-module.** kit.echart / loadECharts.
+
+**Hazards.** Once an \<EChart option> component exists this is easy: the option builder is pure. Outliers become a DataTable and the passages a list. The tooltip formatter returns an HTML string, which ECharts allows. termify → \<Term>.
+
+**Charts.**
+
+- fame scatter, host `#chart-fame-scatter`, library echarts. Data: public/weeks/week05/data/fame.json (points, outliers, fit, corpus). Controls: ECharts dataZoom inside (Ctrl/⌘ wheel zoom, drag pan) on both axes; toolbox restore button ('Reset the zoom'); ECharts item tooltip (HTML formatter). Redraws on: ResizeObserver → chart.resize(); never re-set
+
+**Tests that read it.**
+
+- tests/week05-fame.test.mjs (pins the copy to fame.json; pageScripts includes week05-fame.js)
+- tests/kit.test.mjs
+
+### src/scripts/week05-weird.js
+
+142 lines, risk medium. Section 7: draws the MATTR-against-length SVG scatter with the corpus band, a length-neighbour line, labelled top and bottom five and dot titles; appends an all-pages table drawer under it; builds the top/bottom table and quoted passages; wraps three glossary terms.
+
+Imports: `./site.js`, `./kit.js`.
+
+Exports: none.
+
+**Import side effects.** Top-level await of loadData(weird.json); all writes are synchronous after that.
+
+**DOM contract.**
+
+- #chart-weird-scatter: append(fitted SVG), then append(drawerRow(drawer('Table: all N pages', table(...)))), so a drawer lands inside the chart host. The SVG dots, band and line carry \<title>s that frame's hoverTips converts into tooltips and .kit-hot highlights.
+- #weird-table (inside a drawer in the markup): append(table(top + bottom five with reading notes)).
+- #weird-passages: append p.fineprint + passage() pairs.
+- #weird-did (prose): termify 'MATTR', 'z-score', 'House phrasing' (ids w5-term-weird-mattr/z/house).
+
+**State.** None beyond constants.
+
+**Cross-module.** Its tooltips come only from week05-frame's hoverTips.
+
+**Hazards.** Same shape as heaps: a JSX SVG component with label-collision placement (pure) and a tooltip it owns. The test requires the literal id strings in this file and no \<table> in the server HTML. A React component that server-renders the table would break the second assertion, so the test or the rendering has to change. termify → \<Term>.
+
+**Charts.**
+
+- MATTR against length scatter, host `#chart-weird-scatter`, library svg-string (node()) via fitted(). Data: public/weeks/week05/data/weird.json (points, band, corpus, meta, top, bottom). Controls: hover tooltips via frame's hoverTips on \<title>s. Redraws on: parent resize (fitted)
+
+**Tests that read it.**
+
+- tests/week05-weird.test.mjs (reads the file as text: it must contain the literal strings "chart-weird-scatter", "weird-table" and "weird-passages"; the built section must hold no \<table>; pageScripts includes week05-weird.js)
+- tests/kit.test.mjs
+
+### src/scripts/week-template.js
+
+63 lines, risk low. The post template's toy charts: a dark karate network hero, two findings mini strips, a strip chart, a passage, a movable karate network, a toy table and one glossary term, all with toy data so a copied template shows the finished look.
+
+Imports: `./site.js`, `./kit.js`.
+
+Exports: none.
+
+**Import side effects.** Calls boot() at import with no top-level await; boot fetches styleguide/data/graphs.json. There are no null guards, so missing ids throw inside boot.
+
+**DOM contract.**
+
+- #chart-hero (div.w5-hero-plot[role=img]): networkView dark + legend (replaceChildren).
+- #findings [data-finding] (1, 2): replaceChildren(miniStrip, \<small>). A data-finding value without a minis entry would throw on destructuring.
+- #chart-first: append(stripChart).
+- #first-passage: append(passage()).
+- #chart-second-left: networkView with labels inside, badges, movable and legend (click/Enter moves members).
+- #chart-second-right: append(table(...)).
+- #second-did p (first \<p> in the prose): termify('term', #tpl-term).
+
+**State.** None.
+
+**Cross-module.** None besides the kit.
+
+**Hazards.** Simple once the kit components exist. It also becomes the reference for how a new post wires sections, so convert it together with the kit. The template test discovers the script through the entry module's imports and regex-scans its aria strings, so moving to TSX components means rewriting that test.
+
+**Charts.**
+
+- hero karate network, host `#chart-hero`, library svg-string (networkView). Data: public/styleguide/data/graphs.json (karate). Redraws on: resize
+- findings mini strips, host `#findings [data-finding]`, library svg-string (miniStrip). Data: inline toy numbers. Redraws on: none
+- toy strip chart, host `#chart-first`, library svg-string (stripChart). Data: inline toy rows. Redraws on: resize
+- movable karate network, host `#chart-second-left`, library svg-string (networkView movable). Data: graphs.json karate. Controls: click/Enter on a member moves it to the next group; the legend updates. Redraws on: move, resize
+
+**Tests that read it.**
+
+- tests/template.test.mjs (pageScripts('template')[0] must exist on disk; every `aria: "…"` string in it must start with 'Toy'; the page keeps the six part ids)
+
+### src/scripts/pages/kit.js
+
+85 lines, risk low. The /styleguide/kit/ demo page script: renders one demo of each kit component (figure + echart, strip, table, concordance, passage, glossary term + drawers) and eight networkView variants into [data-demo] slots.
+
+Imports: `../kit.js`, `../site.js`.
+
+Exports: none.
+
+**Import side effects.** All rendering runs at import. A top-level await of graphs.json comes before the network demos, so the first six demos draw before the fetch and the networks after it. echart triggers the ECharts script load.
+
+**DOM contract.**
+
+- [data-demo=figure]: figure() replaceChildren (div.kit-stage with echart bar chart, figcaption, table drawer).
+- [data-demo=strip]: append(stripChart).
+- [data-demo=table]: append(table).
+- [data-demo=kwic]: append(concordance).
+- [data-demo=passage]: append(passage).
+- [data-demo=term]: termify(its \<p>, 'hapax', #kit-term-hapax) and append(drawerRow(drawer('Method', '\<p>Toy drawer body.\</p>'), drawer('More numbers', …))). These drawers take HTML strings, which drawer() sets through innerHTML.
+- [data-demo=net-hubs|net-links|net-both|net-weight|net-karate|net-overlap|net-hubs-light|net-karate-light]: networkView(...) replaceChildren each.
+
+**State.** None (window.echarts through the kit).
+
+**Cross-module.** Exercises the whole kit; tests/graph.test.mjs validates the graphs.json data it draws.
+
+**Hazards.** Once the kit is React this becomes plain JSX: one component per demo. The drawer demos with HTML strings should become JSX children. Good first proving ground for the component library.
+
+**Charts.**
+
+- figure demo bar chart, host `[data-demo=figure] .kit-stage`, library echarts. Data: inline toy counts. Controls: ECharts tooltip. Redraws on: resize
+- strip demo, host `[data-demo=strip]`, library svg-string (stripChart). Data: inline. Redraws on: resize
+- eight network demos, host `[data-demo=net-*]`, library svg-string + d3 (networkView). Data: public/styleguide/data/graphs.json (marvel, pair, karate, overlap). Controls: weights hover (net-weight); movable members (net-karate, net-karate-light); legend. Redraws on: move, link hover, resize
+
+### src/scripts/cabinet.js
+
+409 lines, risk high. Shared runtime for the Week 1/2 'arcade' pages: DOM helpers ($, $$, esc, shortName), the JSON loader, canvas sizing (canvasStage), the network painter (drawNetwork), CSS-token colour reader (tone), the page chrome and logbook dialog (setupChrome), the prediction widget, the article \<select> filler and a file download helper.
+
+Imports: `./site.js`, `./arcade-core.mjs`, `./weeks.js`, `./type-scale.mjs`.
+
+Exports: `SITE`, `url`, `tone`, `$`, `$$`, `esc`, `shortName`, `reduced`, `load`, `errorMessage`, `migrate`, `summarise`, `progress`, `updateProgress`, `revealHashTarget`, `setupChrome`, `prediction`, `articleOptions`, `download`, `canvasStage`, `drawNetwork`.
+
+**Import side effects.** None that touch the DOM. Creates module-level `cache` (Map of fetch promises keyed by data file name) and `memory` ({attempts:{}}) state. Safe to import in node (tests import it); week04-roles/years/staffing import it only for esc().
+
+**DOM contract.**
+
+- setupChrome(): reads location.hash and calls revealHashTarget -> walks ancestors of document.getElementById(hash) and sets \<details>.open = true, then scrollIntoView in rAF (mutates React-rendered \<details> open state)
+- setupChrome(): #app-status READ + MutationObserver on its `hidden` attribute; when hidden, waits for document.fonts.ready and re-runs revealHashTarget(forceScroll)
+- setupChrome(): window 'hashchange' listener, document-level 'click' listener on every a[href] (same-page hash links re-open disclosures), window 'storage' listener -> updateProgress; none are ever removed
+- setupChrome(): #arcade-chrome REPLACE innerHTML with wordmark link (url('')) + \<nav> with Posts (url('#weeks')), The data (url('#network')) and button#open-logbook[data-progress] 'LOGBOOK 0/N'. This discards the React-rendered children of the \<header> (JSX has 'LOG–LOG ARCADE' + 'The post' link) and replaces them with different content
+- setupChrome(): if no #logbook, APPEND \<dialog id=logbook> to document.body (outside any React-owned subtree but inside the React-rendered \<body>) containing h2#logbook-title, p#score-mean, ol#score-list, p#storage-note, buttons #close-logbook, #export-logbook, #reset-logbook
+- setupChrome(): wires click on #open-logbook (updateProgress + showModal), #close-logbook (close), #reset-logbook (confirm(), write empty state, location.reload()), #export-logbook (download JSON)
+- updateProgress(): every [data-progress] WRITE textContent 'LOGBOOK x/y'; #score-list REPLACE innerHTML with \<li> rows per live week + FREE PLAY; #score-mean WRITE textContent
+- write(): on storage failure #storage-note WRITE textContent
+- errorMessage(error, target=#app-status): sets target.hidden=false, textContent=message, role=alert; adds body.unlocked class when target is #app-status
+- prediction(host, config): host REPLACE innerHTML with label, h2 prompt, form.guess-form (number input #guess-\<id>, range input, submit button), p.guess-feedback; wires input sync and submit; optional appended 'Just show me' button.skip-prediction; on reveal adds host.revealed class, document.body.unlocked class, hides form, writes feedback text, calls onReveal and updateProgress. Called repeatedly on the same host (transit.js) - each call rebuilds innerHTML; the 'revealed' class is never removed
+- articleOptions(select,...): REPLACE innerHTML of a \<select> with \<option>s for every node
+- canvasStage(canvas, paint): reads getBoundingClientRect, resizes canvas backing store (DPR capped at 2), new ResizeObserver(draw).observe(canvas) never disconnected; returns draw() for manual redraws
+- tone(name): getComputedStyle(document.body) custom property (body theme-* classes decide palette)
+- download(): creates a detached \<a download> and clicks it
+
+**State.** localStorage key 'loglog-arcade-v1-20260826' (prediction logbook {attempts:{[id]:{id,week,prompt,guess,answer,score,date}}}); module-level `memory` mirror and `cache` Map of load() promises (shared across all importers, e.g. packs.js and lobby.js both load arcade_graph.json once); reads location.hash/pathname/search; window listeners hashchange, storage; document click listener; reads process.env-derived SITE via site.js; matchMedia prefers-reduced-motion via reduced().
+
+**Cross-module.** Every arcade page module (packs.js, transit.js, lobby.js) must call setupChrome() first; prediction() relies on updateProgress()/the logbook DOM that setupChrome appended. cards.js imports esc/shortName. week04-roles/years/staffing import esc only.
+
+**Hazards.** Split into (1) pure utilities that stay as-is (esc, shortName, load, summarise, migrate, tone, drawNetwork, canvasStage or a useCanvas hook), (2) a \<ArcadeChrome> server/client component that renders the header nav and the logbook \<dialog> in JSX instead of innerHTML-replacing #arcade-chrome and appending to \<body>, (3) a LogbookContext/store (useSyncExternalStore over localStorage + 'storage' event) so the [data-progress] counter, score list and every \<Prediction> share state instead of DOM writes, (4) a \<Prediction> client component taking the same config props. Hazards: setupChrome currently overwrites React-rendered header children with different markup (JSX says 'LOG–LOG ARCADE'/'The post', script swaps to 'LOG–LOG LEGENDS'/Posts/The data/LOGBOOK), so the converted JSX must adopt the script's version; revealHashTarget mutates \<details>.open on React-rendered nodes (fine if \<details> stay uncontrolled); global listeners have no cleanup (needs useEffect teardown once it lives in React); body.unlocked class and #app-status are page-global toggles other CSS ([data-gated]) depends on; reset uses location.reload(). Tests import it from node with no DOM, so keep the pure exports in a DOM-free module (theme.test also scans only top-level .js files, so moving tone() calls into .tsx silently drops them from the token-contract check).
+
+**Charts.**
+
+- drawNetwork (shared painter), host `any canvas passed in via canvasStage (used by lobby.js network scene)`, library canvas. Data: arcade_graph.json node x/y (930x630 layout space) and links. Redraws on: whatever canvasStage triggers (ResizeObserver / caller)
+
+**Tests that read it.**
+
+- tests/disclosure.test.mjs (revealHashTarget with a fake document)
+- tests/site.test.mjs (summarise, migrate)
+- tests/theme.test.mjs (SITE, url, tone, drawNetwork with a fake 2D context; also scans every top-level src/scripts/*.js for tone() token/fallback pairs and bare hex literals)
+- tests/type-scale.test.mjs scans its text for font literals
+
+### src/scripts/packs.js
+
+402 lines, risk high. Week 1 'Hero Packs' page: opens weighted five-card packs, keeps a saved collection, renders the card tray and card index, the equal-odds comparison bars, the degree-distribution canvas chart with table, the draw-your-own-histogram sketch canvas, and the w1-packs prediction.
+
+Imports: `./cabinet.js`, `./type-scale.mjs`, `./collection-model.mjs`, `./arcade-core.mjs`, `./cards.js`.
+
+Exports: none.
+
+**Import side effects.** Everything runs at import: setupChrome() (rewrites #arcade-chrome, appends logbook dialog, global listeners), then top-level await Promise.all([load('arcade_graph.json'), load('week01_packs.json')]), reads localStorage, queries ~30 ids, wires all listeners, builds charts and HTML, calls metrics(). All wrapped in try/catch -> errorMessage(). Loaded by src/scripts/entries/week01.js via run().
+
+**DOM contract.**
+
+- #app-status: set hidden=true after data loads (also observed by setupChrome)
+- #prediction: REPLACE innerHTML via prediction() (id w1-packs, week 1, answer packs.collector.expectedPacksRounded)
+- #compare-packs (select, server-rendered disabled): sets disabled=false, READ value, 'change' listener
+- #weighted-unique, #uniform-unique: WRITE textContent (server HTML pre-fills 70.5 / 85.3 for 20 packs)
+- #weighted-bar, #uniform-bar: WRITE style.width % (server JSX pre-fills inline widths 23.27% / 28.15%)
+- #odds-explanation: WRITE textContent (prose sentence with computed numbers; server pre-fills the 20-pack sentence)
+- #pack-seed (number input, defaultValue 7): WRITE .value from saved seed, READ value, reportValidity/checkValidity, 'change' listener reseeds RNG
+- #pack-status: WRITE textContent (and += on storage failure)
+- #collection-search (input), #collection-filter (select): READ value, 'input' listeners reset limit
+- #collection-grid: REPLACE innerHTML with card() \<article.hero-card> strings or \<p.empty>
+- #collection-count: WRITE textContent
+- #more-cards: toggles disabled, 'click' adds 24 to limit
+- #collection-insight: WRITE textContent (prose with computed expectations)
+- #unique-count, #pull-count, #rare-count: WRITE textContent (server pre-fills '0 / 303', '0', '0 / 58')
+- #open-pack (server disabled): sets disabled=false, 'click' draws a pack
+- #pack-tray: REPLACE innerHTML with 5 card() strings (simple, NEW stamp) or the reset placeholder
+- #reset-packs: 'click' -> window.confirm(), clears collection
+- #degree-scale (select linear/log): READ value, 'change' -> redraw degree chart
+- #degree-chart (canvas): canvasStage paint
+- #degree-table: REPLACE innerHTML with a full \<table> of the histogram
+- #sketch-inputs: REPLACE innerHTML with 7 \<label>\<input type=number data-bin=i>\</label>; then $$('#sketch-inputs input') 'input' listeners; sketch() WRITES $(`[data-bin="${i}"]`).value via a document-wide query
+- #sketch-chart (canvas): canvasStage paint; sets style.touchAction='none'; pointerdown/move/up/cancel listeners with setPointerCapture; READ getBoundingClientRect for hit-testing
+- #compare-sketch: 'click' sets compare=true, redraw
+- #sketch-feedback: WRITE textContent
+
+**State.** localStorage 'loglog-packs-20260826' = {counts:{[id]:n}, randomState, seed}; logbook key via cabinet.js prediction(); module-scoped mutable counts, pulls, limit (24 step), random (mulberry32 rng with resumable state), compare flag, guess[7], sketching flag. Uses window.confirm.
+
+**Cross-module.** Requires cabinet.js setupChrome + shared load() cache; card() from cards.js; expectedDistinct from collection-model.mjs; rng from arcade-core.mjs.
+
+**Hazards.** Natural split: \<PackMachine> (open/reset/seed/tray/metrics/insight), \<OddsComparison>, \<DegreeChart> (+table), \<SketchHistogram>, \<CardIndex>, all sharing one collection state (useReducer + localStorage persistence) because opening a pack updates the tray, metrics, insight, card index and degree chart rings at once. The card index and tray become \<HeroCard> JSX instead of card() strings. Hazards: the module writes computed numbers into prose that the server already renders with static defaults (odds sentence, bar widths, metric strings) and tests pin those static defaults, so the components must render identical initial output; #collection-insight and #odds-explanation are prose sentences built in JS; #sketch-inputs uses a document-wide [data-bin] query; the RNG's resumable state must persist exactly ('randomState') or returning visitors' sequences change; top-level await means nothing renders until both JSON files arrive (#app-status gating). Hydration mismatch risk if localStorage is read during render rather than in an effect.
+
+**Charts.**
+
+- Equal-odds comparison bars, host `#weighted-bar / #uniform-bar (span widths) + #weighted-unique / #uniform-unique / #odds-explanation`, library dom. Data: week01_packs.json cards[].probability, packSize; arcade_graph.json nodes count. Controls: #compare-packs select (change). Redraws on: control change; initial call on load
+- Incoming-link degree distribution (snapshot dots + orange rings for your draws after 20 pulls), host `#degree-chart`, library canvas. Data: week01_packs.json histogram[{degree,count}]; arcade_graph.json nodes[].kin; in-memory counts from opened packs. Controls: #degree-scale select linear/log; #open-pack click; #reset-packs click. Redraws on: ResizeObserver; degree-scale change; after every pack and reset (drawChart())
+- Degree histogram table, host `#degree-table`, library dom. Data: week01_packs.json histogram. Redraws on: none (built once)
+- Sketch-your-own histogram (7 bins, your guess vs actual), host `#sketch-chart`, library canvas. Data: arcade_graph.json nodes[].kin binned into 7 ranges; user guesses. Controls: #sketch-inputs number inputs (input); pointer drag on canvas; #compare-sketch click. Redraws on: ResizeObserver; input change; pointer drag; compare click
+- Pack tray and card index, host `#pack-tray, #collection-grid`, library dom. Data: arcade_graph.json nodes (name,url,kin,kout,component); week01_packs.json cards weights. Controls: #open-pack; #collection-search; #collection-filter; #more-cards; #reset-packs. Redraws on: on each control
+
+**Tests that read it.**
+
+- none import it; tests/built-page.mjs pageScripts('week01') resolves it from the entry; tests/theme.test.mjs scans its tone() calls and hex literals; tests/type-scale.test.mjs scans it for raw font sizes; tests/site.test.mjs scans its text for forbidden future-week words
+- tests/week01-data.test.mjs and week01-prose.test.mjs check the server-rendered numbers that this module later overwrites (≈ expected packs, 20-pack comparison sentence)
+
+### src/scripts/transit.js
+
+343 lines, risk high. Week 2 'Transit Authority' page: station-closure challenge (prediction + journey ride), disruption results with the rewired-null histogram, the 16-hub schematic transit map with line chips, and the full 303-article BFS route planner.
+
+Imports: `./cabinet.js`, `./type-scale.mjs`, `./ride.mjs`, `./arcade-core.mjs`.
+
+Exports: none.
+
+**Import side effects.** setupChrome() at import; top-level await load('arcade_graph.json') + load('week02_transit.json'); then fills selects, builds chips, mounts the ride, wires listeners and calls challenge() + describe(). Wrapped in try/catch -> errorMessage(). Loaded by src/scripts/entries/week02.js via run().
+
+**DOM contract.**
+
+- #app-status: hidden=true after load
+- #route-from, #route-to (empty \<select>s): REPLACE innerHTML via articleOptions (303 options, Spider-Man / Hulk selected); READ value; #route-isolate and #route-island WRITE .value then plan()
+- #route-direction: READ value
+- #route-form: 'submit' listener (preventDefault) -> plan()
+- #route-status: WRITE textContent; #route-strip: REPLACE innerHTML with \<li>name\<small>Start/Hop n/Arrive\</small>\</li>
+- #line-chips: REPLACE innerHTML with a button per line + 'All tracks'; each button: click (sets aria-pressed on all chips), mouseenter/mouseleave/focus/blur hover highlight
+- #transit-map (canvas): canvasStage paint
+- #line-description: WRITE textContent
+- #ride: passed to mountRide (see ride.mjs); presence of #ride also sets prediction autoReveal=false
+- #closure-select: READ value, 'change' -> challenge(); #compare-station toggles its value, focus(), scrollIntoView
+- #service-state: WRITE textContent ('NORMAL SERVICE' / 'ONE CLOSURE') inside a departure-board \<details> in the prose evidence area
+- #disruption-results: toggle hidden
+- #numeric-guess (\<details>): toggle hidden
+- #prediction: REPLACE innerHTML via prediction() on every challenge() (id w2-close-\<station>, allowSkip, plainLanguage, onReveal -> revealSelectedClosure)
+- #disruption-headline, #disruption-detail: WRITE textContent (also on #restore-service)
+- #stranded-list: REPLACE innerHTML (\<p> with escaped names) or clear
+- #null-verdict: WRITE textContent (sentence comparing observed vs null)
+- #compare-station: WRITE textContent ('Try Hulk next' / 'Try Spider-Man next'), click listener
+- #null-explanation: WRITE textContent
+- #null-hist: REPLACE innerHTML with div.hist-row bars (inline width style, .observed class) and optional insertAdjacentHTML \<p.fine>
+- #restore-service: 'click' resets closure, rewrites headline/detail, clears stranded list, ride.update(null), redraws map/planner
+
+**State.** Module-scoped mutable closed (station id|null), selectedLine (1; 0 = all tracks), hoverLine, drawMap, revealSelectedClosure closure re-created on every challenge(). Logbook localStorage via prediction() (ids w2-close-\<station>). No URL params.
+
+**Cross-module.** Needs cabinet.js setupChrome/prediction/articleOptions/canvasStage; ride.mjs mountRide operating on #ride; arcade-core graph/bfs/outcome. Tight two-way coupling with ride: ride's buttons call back onClose -> revealSelectedClosure and onRestore -> challenge, and transit calls ride.reset/update.
+
+**Hazards.** One closure state drives five regions spread across the page (ride, prediction, disruption results + null insight, departure-board #service-state inside a later \<details>, the transit map and the route planner), so a conversion needs a page-level ClosureContext/useReducer lifted above all of them; the pieces sit in different \<details>/sections of the JSX, not one subtree. #service-state and #compare-station text live in prose/evidence markup. The prediction is re-mounted per station (give \<Prediction key={station}>). Map canvas can become \<TransitMap selectedLine closed/>; line chips become JSX buttons with aria-pressed. Route planner becomes a controlled form. The 303-option selects are filled client-side (could be server-rendered from JSON at build time). Hazards: revealSelectedClosure is a mutable callback swapped on each challenge; ordering of reveal side effects (drawMap, describe, plan, ride.update, numeric-guess hidden) matters; #numeric-guess and #disruption-results are toggled via hidden attribute on server-rendered nodes.
+
+**Charts.**
+
+- 16-hub schematic transit map, host `#transit-map`, library canvas. Data: week02_transit.json stations[{id,x,y}] (1030x780 layout space), lines[{id,stations[]}]; arcade_graph.json node names; --cv-transit-lines token (7 comma-separated colours). Controls: #line-chips buttons (click select line, hover/focus highlight); closure state from the challenge (dashed segments, crossed station). Redraws on: ResizeObserver; chip click/hover/focus/blur; challenge(), reveal, restore
+- Null-model stranded-count histogram, host `#null-hist`, library dom. Data: week02_transit.json closures[].null {histogram[{value,count}], mean}; outcome() on arcade_graph.json core. Controls: #closure-select; prediction reveal / ride close. Redraws on: each reveal
+- Route planner strip, host `#route-strip / #route-status`, library dom. Data: arcade_graph.json links (directed or undirected BFS, minus closed station). Controls: #route-form submit; #route-isolate; #route-island; closure state. Redraws on: submit, preset buttons, challenge/reveal/restore
+- Journey ride (delegated), host `#ride`, library dom. Data: arcade_graph.json. Controls: see ride.mjs. Redraws on: challenge() -> ride.reset, reveal/restore -> ride.update
+
+**Tests that read it.**
+
+- none import it; tests/built-page.mjs pageScripts('week02'); theme.test scans tone()/hex; type-scale.test scans fonts; site.test scans text
+- tests/arcade.test.mjs checks week02_transit.json closures and lines against arcade-core (data contract the map and null histogram rely on)
+
+### src/scripts/ride.mjs
+
+130 lines, risk low. Week 2 journey 'ride' widget: for a chosen closure station, shows a fixed set of example journeys, the shortest route before closure, and after the reader predicts, the surviving route or 'cut off' verdict; exports JOURNEYS and a pure journey() for tests.
+
+Imports: `./arcade-core.mjs`.
+
+Exports: `JOURNEYS`, `journey`, `mountRide`.
+
+**Import side effects.** None; pure exports. mountRide(root, data, {onClose,onRestore}) does the DOM work when transit.js calls it.
+
+**DOM contract.**
+
+- root (#ride): WRITE dataset.outcome ('waiting' | 'arrived' | 'cut-off'); returns no-op API if root missing
+- #ride-journey (select): REPLACE children with \<option>s per journey on reset(); READ value; 'change' listener re-renders
+- #ride-title, #ride-station, #ride-before-label, #ride-after-label, #ride-result, #ride-after-note: WRITE textContent (prose verdict sentences)
+- #ride-before, #ride-after (\<ol>): replaceChildren with \<li>(.closed-stop)\<button.ride-stop aria-label> per stop; each button 'click' writes #ride-inspector text
+- #ride-inspector: WRITE textContent
+- #ride-after-panel, #ride-choices, #ride-reset: toggle hidden
+- [data-arrive] buttons (yes/no/skip) inside root: 'click' sets guess and calls onClose()
+- #ride-reset: 'click' -> onRestore()
+- All queries are scoped to root via root.querySelector
+
+**State.** Closure-scoped station, closed, guess per mount. No storage, no globals.
+
+**Cross-module.** Driven entirely by transit.js through reset/update and the onClose/onRestore callbacks.
+
+**Hazards.** Cleanest candidate: already root-scoped and callback-driven. Becomes \<Ride station closed onClose onRestore/> with local state for journey index, guess and inspector text; keep JOURNEYS/journey() in a pure .mjs for ride.test. Only hazard is the callback loop with transit (onRestore re-runs challenge which calls reset) which a lifted closure state removes.
+
+**Charts.**
+
+- Before/after route lines, host `#ride-before / #ride-after`, library dom. Data: arcade_graph.json (core graph BFS with and without the closed station); JOURNEYS constant. Controls: #ride-journey select; [data-arrive] buttons; #ride-reset; stop buttons (inspector). Redraws on: reset(id) from transit challenge, update(id) on reveal/restore, journey select change
+
+**Tests that read it.**
+
+- tests/ride.test.mjs (JOURNEYS, journey)
+
+### src/scripts/arcade-core.mjs
+
+303 lines, risk low. Pure graph and game maths shared by the arcade pages: seeded RNG, adjacency builder, BFS, components, closure outcome, degree-preserving rewire, triangles, coverage, random walk, node name resolution, TF-IDF index, prediction scoring and a command tokenizer.
+
+Imports: none.
+
+Exports: `rng`, `graph`, `bfs`, `reachable`, `components`, `outcome`, `undirectedEdges`, `rewire`, `triangles`, `coverage`, `randomWalk`, `resolveNode`, `tokens`, `tfidfIndex`, `predictionScore`, `tokenizeCommand`.
+
+**Import side effects.** None (defines a STOP word Set).
+
+**DOM contract.**
+
+- none
+
+**State.** None. rng() returns a closure exposing .state() which packs.js persists.
+
+**Cross-module.** Imported by cabinet.js (predictionScore), packs.js (rng), transit.js (graph, bfs, outcome), ride.mjs (graph, bfs). Several exports (rewire, triangles, coverage, randomWalk, resolveNode, tfidfIndex, tokenizeCommand) have no remaining importer in src/scripts outside tests.
+
+**Hazards.** No conversion needed; keep as a plain library imported by components/hooks. Optionally prune the exports only tests use, but arcade.test pins them.
+
+**Tests that read it.**
+
+- tests/arcade.test.mjs
+- tests/ride.test.mjs (graph)
+
+### src/scripts/cards.js
+
+30 lines, risk low. Builds the HTML string for one hero card (monogram, name link, link-count stats, community, collected count, NEW stamp) used in the Week 1 pack tray and card index.
+
+Imports: `./cabinet.js`.
+
+Exports: `metricLabels`, `metricValue`, `card`.
+
+**Import side effects.** None.
+
+**DOM contract.**
+
+- No DOM access itself; returns an \<article class=hero-card> HTML string that packs.js injects into #pack-tray and #collection-grid via innerHTML
+
+**State.** None.
+
+**Cross-module.** Consumed only by packs.js.
+
+**Hazards.** Direct port to a \<HeroCard node index count full fresh simple community/> component; metricLabels/metricValue stay as plain helpers. Must keep class names (hero-card, uncollected, card-id, new-stamp, card-monogram, stat-pair) for arcade.css.
+
+**Tests that read it.**
+
+- none (scanned as text by theme/type-scale/site tests)
+
+### src/scripts/lobby.js
+
+174 lines, risk low. Old home-page lobby: paints an arcade room with one cabinet per course week on #lobby-canvas (click a live cabinet to navigate), or a plain network scene when the canvas has data-scene="network".
+
+Imports: `./cabinet.js`, `./type-scale.mjs`, `./weeks.js`.
+
+Exports: none.
+
+**Import side effects.** Would run setupChrome(), add body.unlocked, query #lobby-canvas and paint immediately. In the current tree it never runs: no entry in src/scripts/entries imports it, PageScripts has no 'home' entry, and src/app/(home)/page.tsx has no #lobby-canvas, so the module is orphaned.
+
+**DOM contract.**
+
+- #lobby-canvas: READ dataset.scene; canvasStage paint; 'click' -> location.href = cabinet.href; 'mousemove' writes style.cursor
+- #app-status: hidden=true after load / errorMessage target
+- document.body: classList.add('unlocked')
+- via setupChrome: #arcade-chrome innerHTML, appended #logbook dialog, global listeners
+
+**State.** Closure-scoped boxes array for hit-testing; navigates with location.href.
+
+**Cross-module.** Would depend on cabinet.js setupChrome/load/canvasStage/drawNetwork and weeks.js.
+
+**Hazards.** Dead code under Next: decide to delete (and update the theme.test 'lobby' assertion and README references) rather than convert. If kept, it would be a \<LobbyCanvas> client component using next/link-style navigation instead of location.href.
+
+**Charts.**
+
+- Arcade room of week cabinets, host `#lobby-canvas`, library canvas. Data: weeks.js WEEKS manifest; arcade_graph.json (loaded only to clear #app-status). Controls: canvas click (navigate); mousemove cursor. Redraws on: ResizeObserver
+- Network scene (top-5 kin lit, isolates hollow), host `#lobby-canvas[data-scene=network]`, library canvas. Data: arcade_graph.json. Redraws on: ResizeObserver
+
+**Tests that read it.**
+
+- tests/theme.test.mjs reads its source text (asserts dataset.scene === "network" and the drawNetwork call) and asserts out/index.html has no data-scene; also scanned by theme/type-scale/site text tests
+
+### src/scripts/collection-model.mjs
+
+9 lines, risk low. Pure maths: expected number of distinct cards after n independent weighted draws.
+
+Imports: none.
+
+Exports: `expectedDistinct`.
+
+**Import side effects.** None.
+
+**DOM contract.**
+
+- none
+
+**State.** None.
+
+**Cross-module.** Used by packs.js.
+
+**Hazards.** Keep as-is; usable from server components to render the comparison numbers at build time instead of hard-coding them in JSX.
+
+**Tests that read it.**
+
+- tests/collection-model.test.mjs
+- tests/week01-prose.test.mjs (recomputes the 20-pack comparison numbers the page prose states)
+
+### src/scripts/weeks.js
+
+110 lines, risk low. The course schedule manifest (GROUP, WEEKS with status and cabinet name/marquee/href/blurb), the free-play prediction id set, and small helpers (liveWeeks, currentWeek, weekLabel, shortDate).
+
+Imports: none.
+
+Exports: `GROUP`, `WEEKS`, `FREE_PLAY_PREDICTIONS`, `liveWeeks`, `currentWeek`, `weekLabel`, `shortDate`.
+
+**Import side effects.** None.
+
+**DOM contract.**
+
+- none
+
+**State.** None (constant data).
+
+**Cross-module.** Read by cabinet.js (logbook rows, LOGBOOK x/N label, nav) and lobby.js. The home page JSX (src/app/(home)/page.tsx #weeks .week-grid, a[data-week] cards with names, tags and current class) duplicates this manifest by hand, and site.test checks the built HTML against it.
+
+**Hazards.** Prime source for a shared \<WeekGrid>/\<SiteNav>/\<Footer> server component: render the home week cards and per-week prev/next footers from WEEKS at build time instead of hand-written JSX. Keep it a plain .js module so node tests import it. Note the home cards' question lines are not in the manifest (cabinet.blurb differs), so a 'question' field would need adding.
+
+**Tests that read it.**
+
+- tests/site.test.mjs (manifest vs course index, live weeks vs pages on disk, lobby cards vs manifest, logbook)
+
+### src/scripts/type-scale.mjs
+
+23 lines, risk low. Reads the type.css font tokens (--fs-\<role>, --font-\<name>) at call time so canvas and chart code use the same sizes as page text.
+
+Imports: none.
+
+Exports: `fs`, `family`, `font`.
+
+**Import side effects.** None; each call does getComputedStyle(document.documentElement).
+
+**DOM contract.**
+
+- READ computed style of document.documentElement (:root custom properties); no writes
+
+**State.** None.
+
+**Cross-module.** Used by cabinet.js, packs.js, transit.js, lobby.js and many week03/04/05 chart modules.
+
+**Hazards.** Keep as a utility (or wrap in a useTypeScale hook). Must only be called client-side after styles load. The type-scale test only scans src/scripts/**/*.m?js, so chart code moved into .tsx components escapes the guard unless the test's walker is widened.
+
+**Tests that read it.**
+
+- none import it; tests/type-scale.test.mjs scans every other src/scripts .js/.mjs (except week04-* and pages/screen-test.js) for raw font-size literals and expects fs()/font() instead
+
+### src/scripts/site.js
+
+19 lines, risk low. Resolves the site root (NEXT_PUBLIC_BASE_PATH) and builds cache-busted URLs for files under public/ (asset()).
+
+Imports: none.
+
+Exports: `SITE`, `asset`.
+
+**Import side effects.** Computes SITE from process.env.NEXT_PUBLIC_BASE_PATH and globalThis.location?.origin at import (falls back to http://localhost in node).
+
+**DOM contract.**
+
+- READ globalThis.location.origin; no DOM writes
+
+**State.** Build-time env NEXT_PUBLIC_BASE_PATH and NEXT_PUBLIC_BUILD_ID (adds ?v=\<build> to non-vendor assets).
+
+**Cross-module.** Imported by cabinet.js and by almost every week03/04/05 module and entries/week04.js.
+
+**Hazards.** Keep. Because SITE is computed at module load from location.origin, importing it in a server component yields the localhost fallback; server code should build paths from the base path only. Fine for client components.
+
+**Tests that read it.**
+
+- indirectly via cabinet.js in tests/theme.test.mjs ('links and data both resolve against the site root'); tests/built-page.mjs pageScripts() deliberately skips '../site.js' when listing entry imports
+
+### src/scripts/mockups.js
+
+231 lines, risk medium. Drives the /mockups/ design-review gallery: collection filters, a localStorage favourites shortlist with copy-to-clipboard, and a modal \<dialog> image viewer with prev/next, fit-page, deep-linkable #mockup-N hashes and ?collection= filter URLs.
+
+Imports: none.
+
+Exports: none.
+
+**Import side effects.** Whole file is a sync IIFE that runs at import. It immediately JSON.parses #mockup-data textContent, snapshots querySelectorAll('.mockup-card') and '[data-filter]', reads localStorage, wires ~12 click listeners plus keydown/close on the dialog, 'error' on #viewer-image, and window 'hashchange' and 'popstate' (never removed). It then unhides every [data-js-only], writes filter counts, applies the ?collection= filter and calls readHash(), which can open the dialog with showModal() on load. No fetch and no await. Imported via entries/mockups.js -> run([() => import('../mockups.js')]) from \<PageScripts page="mockups" />.
+
+**DOM contract.**
+
+- #mockup-data (script type=application/json, rendered via dangerouslySetInnerHTML at page.tsx:1482): READ textContent once, the source of all mockup metadata (48 entries: number, name, image, thumbnail, width, height, collection, kind, alt, inspiration, referenceUrl, uxSummary, uxSources[{title,url}], reviewNote, rationaleLabel, correctionNotice)
+- article.mockup-card[data-mockup] (48 server-rendered cards, ids card-N; number 21 is absent): READ dataset.mockup; WRITE .hidden per filter
+- button[data-filter] (10 in .filters: all, data-stories, disney, netflix, marvel, comedy, ux, reference, original, saved): READ dataset.filter; TOGGLE aria-pressed; click -> setFilter, then status text; filters[0] and the 'saved' button receive focus()
+- button[data-filter] .filter-count: WRITE textContent with per-collection counts on init (skips 'saved'). The server-rendered numbers are hard-coded duplicates
+- #shortlist-count (the .filter-count inside the 'saved' filter button): WRITE textContent = favourites.size
+- [data-favourite] (48 card buttons with data-favourite=N, plus #viewer-favourite with an empty value): WRITE aria-pressed, textContent ('Saved'/'Save favourite') and aria-label; click -> toggleFavourite. #viewer-favourite resolves to currentId
+- #copy-shortlist: WRITE .disabled; click -> builds the shortlist text and calls the clipboard
+- #shortlist-hint: WRITE textContent
+- #visible-count: WRITE textContent 'Showing X of 48 visual concepts'; READ back into #review-status on filter click
+- #empty-shortlist: WRITE .hidden
+- #show-all: click -> setFilter('all'), focus filters[0]
+- #review-status (sr-only live region): WRITE textContent
+- #copy-fallback and #viewer-copy-fallback: WRITE .hidden; their inner textarea (#shortlist-text / #mockup-link-text) gets .value, focus() and select()
+- [data-js-only] (section.review-tools, #shortlist-hint, card favourite buttons): WRITE hidden=false on init (progressive enhancement)
+- [data-open-mockup] (144 anchors, 3 per card; href points at images/NN-*.webp): click -> preventDefault and openMockup unless a modifier key is held or showModal is missing
+- #mockup-viewer (\<dialog>): showModal()/close(); READ .open; keydown ArrowLeft/ArrowRight navigation; 'close' event restores the URL and focus
+- #viewer-canvas: TOGGLE class 'fit-page'; WRITE aria-label and scrollTop
+- #viewer-image: WRITE src, width, height, alt; 'error' listener
+- #viewer-title, #viewer-origin, #viewer-note, #viewer-position: WRITE textContent
+- #previous-mockup / #next-mockup: WRITE .disabled; click -> openMockup(neighbour)
+- #open-image: WRITE href
+- #viewer-reference: WRITE hidden and href
+- #viewer-rationale (\<details>): WRITE hidden and open=false
+- #viewer-rationale-label, #viewer-ux-summary, #viewer-review-note: WRITE textContent
+- #viewer-correction: WRITE textContent and hidden (null-guarded)
+- #viewer-ux-sources: replaceChildren(), then APPEND \<a target=_blank> links separated by ' · ' text nodes
+- #viewer-status: WRITE textContent (live region)
+- #copy-mockup-link: click -> copies location.href
+- #close-viewer: click -> dialog.close()
+- #fit-page: click -> toggles fitPage; WRITE aria-pressed and textContent
+- document.body (owned by (mockups)/layout.tsx, className 'mockups'): ADD/REMOVE class 'viewer-open'
+- document.activeElement: captured as opener and refocused on close unless it sits inside [hidden]
+
+**State.** Module closure state: favourites (Set), activeFilter, currentId, fitPage, opener. localStorage key 'log-log-legends-mockup-shortlist-v1' (JSON array of mockup numbers; reads and writes are try/catch-guarded). URL: ?collection=\<filter> via history.replaceState; #mockup-\<N> via pushState on first open and replaceState while open; the hash is stripped on dialog close. window 'hashchange' re-reads the hash; 'popstate' re-applies ?collection. navigator.clipboard.writeText. No window globals.
+
+**Cross-module.** None. It is the only script on /mockups/. It depends on the server-rendered DOM from src/app/(mockups)/mockups/page.tsx and on the body element from src/app/(mockups)/layout.tsx. Styling for .viewer-open, .fit-page and the [hidden] states comes from src/styles/mockups.css. Images are relative URLs (images/…, thumbs/…) under public/mockups/.
+
+**Hazards.** This is a UI controller with no charts, so it maps cleanly to React state: a \<MockupGallery> client component holding favourites, filter and currentId, a \<MockupCard> rendered from the data array instead of 48 hand-written articles, and a \<MockupViewer> wrapping the \<dialog> through a ref plus useEffect for showModal()/close(). Hazards: (1) the data lives twice, as the inline JSON blob and as 48 hard-coded JSX cards and 10 filter buttons with hard-coded counts. React should render cards and counts from one imported JSON module and drop the dangerouslySetInnerHTML script. (2) It writes outside any single component: body.classList 'viewer-open' (body belongs to layout.tsx), history and hash, window hashchange/popstate listeners, and focus management. Each of these needs an effect with cleanup. (3) Progressive enhancement uses hidden plus data-js-only. In React, render the controls hidden on the server and reveal them after mount, or the server and client markup will disagree. (4) The ?collection and #mockup-N state must be read in an effect, not during render, or hydration will mismatch under static export. (5) Stale copy that JS used to mask: the server markup says 'Browse all 49', 'All 49 concept images' and dialog '1 / 49', while the data holds 48. The JS overwrites only visible-count, position and the counts. (6) Listeners are never removed. That works today only because every link is a plain \<a> that triggers a full reload; under client-side navigation the module would not re-run, because dynamic imports are cached. The logic is self-contained and has no external libraries, so conversion is moderate work at modest risk.
+
+**Tests that read it.**
+
+- tests/site.test.mjs (does not import it; sitePages() excludes files ending in mockups.js and paths under /mockups/ from the forbidden-text scans)
+- tests/theme.test.mjs (does not import it; lists mockups.js in LEGACY so the --cv-* canvas-token check skips it)
+- tests/type-scale.test.mjs (does not import it; skips mockups.css; mockups.js uses no font literals)
+
+### src/scripts/signal.js
+
+202 lines, risk medium. Runs the /play/ 'Give Baymax a voice' game: it fetches the Marvel snapshot, verifies hypothetical-link scenarios by BFS reachability, draws a string-built SVG network map into #signal-map and runs a two-mission state machine that recolours nodes and rewrites the mission prose, counters and progress steps.
+
+Imports: none.
+
+Exports: none.
+
+**Import side effects.** Sync IIFE that calls the async init() without awaiting it. init() fetches document.body.dataset.signalSrc. On success it validates the graph (303 nodes, 1784 links, Baymax kin=kout=0) and builds and self-checks the four scenarios against graph.signal; a mismatch throws. It then wipes and redraws #signal-map, starts a ResizeObserver on it (never disconnected), calls render('snapshot'), enables and wires the [data-edit] buttons and wires #next-mission, #add-return, [data-replay] and #restart-mission. On failure it writes an error into #signal-load and hides #first-choices.
+
+**DOM contract.**
+
+- document.body[data-signal-src] (set in src/app/(play)/layout.tsx as '../assets/data/marvel_story.json'): READ, the fetch URL. It is page-relative and bypasses asset() and its ?v= cache-busting
+- #signal-map (\<svg viewBox 0 0 1000 630>): REPLACE all children (replaceChildren with new \<title id=signal-map-title> and \<desc id=signal-map-desc>, which discards the server-rendered title and desc), then APPEND \<defs> with markers #arrow-to and #arrow-from, an edge \<g>, the added-link layer \<g>, a node \<g> of circle.scene-node[data-scene-node] each with a \<title>, plus ring circles and text labels (.baymax-label 'BAYMAX', text#baymax-scene-status.scene-label, .spider-label, three .scene-label captions with hard-coded '277 ARTICLES', '16 OTHER ISOLATES' and 'THE ISLAND / 9'). READ getBoundingClientRect and viewBox.baseVal for type fitting; ResizeObserver
+- svg text.scene-label/.baymax-label/.spider-label: WRITE style.fontSize and fontFamily from :root --fs-caption/--fs-h3/--fs-small and --font-mono/--font-display/--font-sans, divided by the viewBox scale
+- #signal-map-title, #signal-map-desc, #baymax-scene-status (created by the module): WRITE textContent each render
+- circle[data-scene-node]: WRITE fill attribute each render (palette to/from/both/none)
+- addedLayer \<g>: replaceChildren, then APPEND path.added-link.signal-pulse with marker-end per hypothetical edge
+- #reach-to, #reach-from (\<strong> counters in prose cards): WRITE textContent
+- #edit-label: WRITE textContent ('REAL SNAPSHOT / NO EDITS' or 'WHAT IF / N IMAGINED LINK(S) ADDED'); the server text uses ' · ' and is overwritten
+- [data-edit] (two buttons in #first-choices, out/in, server-rendered disabled): WRITE disabled=false; TOGGLE aria-pressed; click -> choose(); [data-edit][0] receives focus on restart
+- [data-replay] (four buttons in #replay-controls: snapshot/out/in/both): TOGGLE aria-pressed; click -> render, then rewrite the mission prose
+- #mission-feedback: TOGGLE class 'success'; WRITE .feedback-kicker textContent and the first \<p> textContent (prose)
+- #mission-label, #mission-title, #mission-copy: WRITE textContent (headline and body prose for each mission phase, containing hard-coded numbers 274, 231 and 229)
+- #progress-found, #progress-reply (\<li> steps): TOGGLE class 'complete', SET/REMOVE aria-current='step', WRITE the inner \<span> textContent ('01'/'02' or a check mark)
+- #first-choices: WRITE hidden
+- #next-mission, #add-return, #mission-finish, #replay-controls, #restart-mission: WRITE hidden; #next-mission, #add-return and #restart-mission get click handlers; #add-return and #mission-finish receive focus({preventScroll})
+- #signal-load (role=status): WRITE textContent ('' on success, an error message on failure)
+
+**State.** Module closure state: graph, scenarios, nodes, positions (Map), mapDots (Map), addedLayer, map, phase (1-3), mode ('snapshot'|'out'|'in'|'both'), plus the constants edits and palette. No window globals, storage, or URL params. It reads CSS custom properties from document.documentElement.
+
+**Cross-module.** None. It is the only script on /play/. It depends on src/app/(play)/layout.tsx for body[data-signal-src], on page.tsx markup, and on src/styles/signal.css (.scene-node, .added-link, .signal-pulse animation, .complete, .success) and type.css (--fs-*, --font-*).
+
+**Hazards.** The SVG is small and declarative, so it converts well to a \<BaymaxMap mode={mode}> component that renders circles, lines and paths from data, with layout positions memoised. The game becomes a reducer: phase plus mode drive every label, prose string, hidden flag, aria-pressed and progress state. Hazards: (1) it writes a lot outside its chart host. Mission headline, copy and feedback prose, the reach counters, the edit label, progress-step classes and aria-current, button visibility, and focus moves all live in the surrounding page markup in page.tsx, so the whole mission panel (lines ~40-155) must become one client component sharing state with the map. (2) It replaces the server-rendered \<title>/\<desc> of #signal-map, so server and client copies of that text can drift. (3) The data URL comes from a body data attribute set in layout.tsx, as a relative path that skips asset(). Switch to asset('assets/data/marvel_story.json'). (4) The scenario self-check throws on any data drift; keep it but surface it as an error state. (5) fitSceneType depends on ResizeObserver and getComputedStyle CSS variables, so it needs a ref and an effect with cleanup. The hidden-pane ResizeObserver caveat applies when verifying. (6) Numbers are hard-coded in prose (274, 231, 229, 277 ARTICLES, 16 OTHER ISOLATES, THE ISLAND / 9) even though they could come from graph.signal. The type-scale test scans this file, so the converted component must keep deriving sizes from tokens. A self-contained page with no third-party library, at moderate risk because the state machine and prose live outside the chart.
+
+**Charts.**
+
+- Baymax reachability map, host `#signal-map`, library svg-string. Data: public/assets/data/marvel_story.json (nodes with id/name/grp/x/y/kin/kout, links {s,t}, signal.{snapshot,out,in,both}.{to,from,roundTrip,added}). Controls: [data-edit] out/in: mission 1 choice; recolours nodes and draws the hypothetical arrow; #next-mission: advance to phase 2 (prose only); #add-return: render('both'), phase 3; [data-replay] snapshot/out/in/both: replay any scenario after completion; #restart-mission: reset to phase 1 / snapshot; title elements on circles give native hover tooltips. Redraws on: Full scene draw once on load. render() on every control click recolours fills and rebuilds the added-link layer. ResizeObserver on #signal-map refits only the label font sizes.
+
+**Tests that read it.**
+
+- tests/theme.test.mjs (does not import it; signal.js is in LEGACY so the --cv-* token check skips it)
+- tests/site.test.mjs (does not import it; sitePages() includes src/scripts/signal.js in the forbidden-text and TODO scans)
+- tests/type-scale.test.mjs (does not import it; otherChartScripts() scans signal.js for raw font-size literals, and it passes by deriving sizes from --fs-* tokens)
+
+### src/scripts/pages/screen-test.js
+
+358 lines, risk high. Fills almost the whole /prototypes/screen-test/ page from week02_screentest.json: vitals list, model audition scoreboard, four canvas charts (network thumbnails, CCDF, live degree-preserving shuffle rig, null-clustering histogram), a stats table, a friendship-paradox draw game, and computed verdict and receipt prose.
+
+Imports: `../site.js`.
+
+Exports: none.
+
+**Import side effects.** Top-level await of fetch(asset('assets/data/week02_screentest.json')); it throws if the response is not ok, which run() catches and logs. A sync IIFE then writes #snap, builds #vitals, starts five canvas stages, each with a ResizeObserver (never disconnected) and an immediate draw, plus a cv.__draw expando. It builds the #cast buttons, #score-body, #ccdf-keys buttons and #null-body rows; sets innerHTML on #verdict-01, #verdict-03, #verdict-04 and #stats-plain; writes the captions, receipts and #foot; and wires the click handlers (rig run/reset, stats toggle, draw one/many/reset). Any missing id throws partway through and leaves the page half-filled.
+
+**DOM contract.**
+
+- #snap: WRITE textContent 'Snapshot \<meta.snapshot>'
+- #vitals (\<dl>): APPEND six \<div>\<dt>\<dd> rows (Articles, Links, Mean degree, Mean path, Clustering, Largest hub). It appends without clearing, so a second run would duplicate them
+- #cv-marvel (\<canvas>): canvas stage; WRITE width/height; __draw expando
+- #cap-marvel: WRITE textContent with a hard-coded '277 articles' and 'largest hub 106'
+- #cv-cand (\<canvas>): canvas stage redrawn on candidate pick
+- #cap-cand: WRITE textContent per pick
+- #cast: APPEND three button.cand[aria-pressed] (er/ws/ba) with span.nm and span.mech; click TOGGLES aria-pressed across box.children and repaints
+- #score-body (\<tbody>): replaceChildren, then APPEND four \<tr> rows (marvel gets data-real='yes') with inline styles, value spans and span.stamp.p/.f PASS/FAIL
+- #verdict-01 (div.finding): REPLACE innerHTML with a computed prose paragraph
+- #cv-ccdf (\<canvas>): canvas stage; redraw via __draw on legend clicks
+- #ccdf-keys: APPEND four button.go.ghost legend toggles with inline border-color, color and opacity
+- #cv-rig (\<canvas>): canvas stage animated through requestAnimationFrame during a shuffle
+- #rig-c, #rig-swaps: WRITE textContent (clustering recomputed in JS; swap count)
+- #rig-run: WRITE disabled; click -> rAF loop of ~34 frames to meta.swaps
+- #rig-reset: click -> reset the rig
+- #rig-note: WRITE textContent
+- #cv-hist (\<canvas>): canvas stage, static histogram
+- #cap-hist: WRITE textContent
+- #null-body (\<tbody>): APPEND one \<tr> per D.rows with td.z.hi/.z.no
+- #null-note: WRITE textContent
+- #stats-plain: REPLACE innerHTML with headline prose; WRITE hidden
+- #stats-full: WRITE hidden
+- #verdict-03 (div.finding): REPLACE innerHTML with prose
+- #stats-toggle: delegated click on child button[data-mode=full|plain]; TOGGLE aria-pressed on children
+- #who-a, #who-b (div.who): REPLACE innerHTML ('' then appended p.nm/p.k/p.bio; reset writes a literal HTML string)
+- #draw-one, #draw-many, #draw-reset: click handlers
+- #draw-tally: WRITE textContent
+- #verdict-04 (div.finding.warn): REPLACE innerHTML with prose
+- #rec-pop, #rec-models, #rec-null, #rec-control (\<p> in receipts): WRITE textContent (methods prose with numbers)
+- #foot (\<p> in footer): WRITE textContent
+- Unused ids present in the markup: #score (table), #score-note, #cap-rig (static text)
+
+**State.** Module-level: D (the fetched JSON) and, inside the IIFE, pick, hidden (CCDF series map), rig (a closure with edges, adjacency sets and swap count), running, drawn, para. Expando property __draw on each canvas element. D.nets.marvel.__real is mutated onto the fetched data. Math.random drives the rig and the paradox draws (unseeded). No window globals, storage, or URL params.
+
+**Cross-module.** Imports asset() from src/scripts/site.js (NEXT_PUBLIC_BASE_PATH and NEXT_PUBLIC_BUILD_ID cache-busting). It is the only script on the page, via entries/screen-test.js. It relies on all its markup in src/app/(screen-test)/prototypes/screen-test/page.tsx and on CSS classes (.stamp, .z.hi, .cand, .who, .go.ghost, .finding) defined inline in src/app/(screen-test)/layout.tsx.
+
+**Hazards.** This module is the hardest of the three to convert because it does far more than draw charts: it authors most of the page's content. It writes computed prose into five verdict and headline blocks with innerHTML (#verdict-01, #verdict-03, #verdict-04, #stats-plain), four receipts paragraphs, the footer, the snapshot label, the captions and the vitals, and it builds the cast buttons, legend buttons and two tables. In React, all of this should become server-rendered JSX computed from the imported JSON at build time. That would change the built HTML that week02-prose.test.mjs reads, which is acceptable, but tests that scan built prose may then see new numbers, and the rows[0]-is-clustering contract tested in week02-data.test.mjs must be kept or replaced with a lookup by key. Charts: five canvas painters behind a shared stage() helper map to one useCanvas(paint, deps) hook with a ResizeObserver and cleanup. Redraws currently go through the cv.__draw expando and closure globals (pick, hidden), which become props or state. The shuffle rig keeps mutable edge and adjacency arrays and runs a rAF loop, so it needs a ref and cancelAnimationFrame on unmount. The paradox draw uses innerHTML and Math.random and must run client-only. Other hazards: the top-level await means the page shows empty shells until the fetch resolves; the page's styles are an inline \<style> block in (screen-test)/layout.tsx rather than a stylesheet; hard-coded '277 articles'/'largest hub 106' and the fixed pmin=1/277 duplicate data values; #vitals appends without clearing, so it is not idempotent; and a missing element throws mid-script, leaving the page partly filled. The page is a prototype outside the type scale, so it can be converted last or left as is.
+
+**Charts.**
+
+- Marvel network thumbnail, host `#cv-marvel`, library canvas. Data: week02_screentest.json nets.marvel {pos, edges, deg}. Redraws on: ResizeObserver on the canvas
+- Candidate model network, host `#cv-cand`, library canvas. Data: week02_screentest.json nets.er / nets.ws / nets.ba. Controls: #cast button.cand (er, ws, ba) picks the model. Redraws on: ResizeObserver; candidate click via __draw
+- Degree CCDF, log-log, host `#cv-ccdf`, library canvas. Data: week02_screentest.json nets.*.ccdf and nets.*.deg. Controls: #ccdf-keys buttons toggle each series (marvel, er, ws, ba). Redraws on: ResizeObserver; legend click
+- Live degree-preserving shuffle rig, host `#cv-rig`, library canvas. Data: week02_screentest.json nets.marvel edges/pos/deg, meta.swaps. Controls: #rig-run animates double-edge swaps in requestAnimationFrame and recomputes clustering into #rig-c each frame; #rig-reset restores Marvel. Redraws on: ResizeObserver; every rAF tick while running; reset
+- Null clustering histogram, host `#cv-hist`, library canvas. Data: week02_screentest.json null.clus (samples), models.marvel.clus, meta.samples. Redraws on: ResizeObserver
+- Audition scoreboard table, host `#score-body`, library dom. Data: week02_screentest.json models.{marvel,er,ws,ba}.{path,clus,kmax}; TOL thresholds 0.20/0.25/0.40 hard-coded. Redraws on: none (built once)
+- Null-model stats table, host `#null-body`, library dom. Data: week02_screentest.json rows[] {key,label,real,mu,sd,z,p}. Controls: #stats-toggle switches between #stats-full and #stats-plain. Redraws on: none
+- Friendship-paradox draw, host `#who-a, #who-b, #draw-tally`, library dom. Data: week02_screentest.json chars[] ([name, degree, neighbour avg, _, bio]) and adj[]. Controls: #draw-one; #draw-many (200 draws); #draw-reset. Redraws on: each click
+
+**Tests that read it.**
+
+- tests/type-scale.test.mjs (does not import it; lists 'pages/screen-test.js' in OUTSIDE_SCALE so its literal canvas font sizes and inline 12px are allowed)
+- tests/week02-prose.test.mjs (does not import it; reads the built out/prototypes/screen-test/index.html and asserts the static prose contains 'The \<paradox.real*100>% quoted below'. JS-written prose is not in the built HTML today)
+- tests/week02-data.test.mjs (does not import it; asserts week02_screentest.json keeps clustering at rows[0] and exactly one paradox row, because this script reads D.rows[0] as clustering)
+
+## Server markup
+
+Two read-only surveys of the page JSX: each page's body sections, then the structures repeated across pages.
+
+### Survey 1
+
+#### src/app/(week03)/weeks/week03/page.tsx (2157 lines; layout body.corridor; css type+corridor)
+
+Body class `corridor`.
+
+- a.skip
+- div.topbar (brand, site-link, div.style-menu#style-trigger/#style-bar, nav.topnav: #globe(here) #twin #typology #denmark)
+- main#main
+- section.hero#globe (eyebrow, h1, lede, body, caution, p#question, .keys, .yearline#year-slider, .stage-wrap canvas#globe-canvas, aside.panel#inspector)
+- div.shell > p.status-line#status
+- section.step#tails (card > step-head 2)
+- section.step#bridge (step-head 3, two .grid-side with aside.panel inspectors)
+- section.step#twin (step-head 4)
+- section.step#typology (step-head 5)
+- section.step#edge (step-head 6)
+- section.step#denmark (step-head 7)
+- section.step#asks (step-head 8; details.qa#questions with 6 article.qa-item; .card#gravity; .card#communities with details.qa#cliques; .card#surprise; .card#more with details.qa#views)
+- section.step#methods (step-head ✓; details.qa#methods-drawer)
+- footer.foot (INSIDE main)
+- PageScripts week03
+
+#### src/app/(week04)/weeks/week04/page.tsx (4723 lines; layout imports 13 stylesheets, robots noindex, empty \<head> comment)
+
+Body class `corridor`.
+
+- a.skip
+- div.topbar (topnav: #opening, #place(here), #jobs, #who, #footprint, #beyond, #cut)
+- main#main
+- section.hero.w4-hero#top (eyebrow, h1, w4-hero-grid: w4-hero-text with body+terms, caution, .rx-legend, .w4-hero-stats x2; figure.w4-hero-stage#chart-hero-map; aside.w4-inspector#hero-inspector)
+- nav.w4-rail (nested ol/li[data-target]/a[aria-label]/span.w4-rail-label, 25 labels)
+- div.shell > section.w4-findings#findings (5 w4-finding)
+- div.shell: p.status-line#place-status
+- section.step#opening (opener 0, card w4-card with w4-anatomy (dl with w4-tag) + w4-howto (7 swatches))
+- section.step#place (opener 1, w4-two.w4-intro + w4-figure, .draft-banner, cards #place-start(Start) #place-who(1A) #place-break(1B))
+- section.step#jobs (opener 2, intro card, status-line#jobs-status, cards #jobs-together(Start) #jobs-split(2A) #jobs-linkcom(2B))
+- section.step#who (opener 3, intro card with rx-fig-row, cards #who-q1(Start) #who-switch(3A) #who-movers(3B) #who-overlap(3C))
+- section.step#footprint (opener 4, rx-fig-row, card #footprint-which(4A))
+- section.step#beyond (opener 5, intro card with 5A/5B/5C list, cards #beyond-law #beyond-perm #beyond-wage)
+- section.step#closing (opener ✓, card: w4-figure + .w4-surprises, notice limit, details.qa#closing-ai, fineprint, drawers)
+- section.step#cut (opener +, .rx-catalogue#cut-catalogue with 6 rx-tcard; details.rx-topic #topic-where #topic-jobs #topic-outsourcing #topic-paperwork #topic-years each with .rx-topic-bar, nav.rx-toc, details.rx-panel[data-box] > card; details.qa.cut.rx-panel #cut-methods #cut-skills #cut-pagerank #cut-years #cut-roles; details.qa.cut.rx-topic#evidence with dl.w4-sources)
+- footer.foot (INSIDE main, 4 credit spans)
+- PageScripts week04
+
+#### src/app/(week05)/weeks/week05/page.tsx (1207 lines; css type+corridor+post)
+
+Body class `corridor`.
+
+- a.skip
+- div.topbar (topnav: #opening, #relations 1 .. #weird 7, #closing; no 'here')
+- main#main
+- section.hero.w4-hero#top (w4-hero-grid w5-hero-grid; 2 w4-stat; figure.w4-hero-stage.w5-hero-stage > div.w5-hero-plot#chart-hero-fame + figcaption.w5-hero-caption)
+- div.shell > section.w4-findings#findings (7 w4-finding)
+- div.shell: section.step[data-owner=''] #opening (opener 0, card w4-card: w4-two with drawer 'What counts as a word' + w4-anatomy + w4-howto)
+- section.step[data-owner=Gyula]#relations (1A, side-by-side did/surprise + w5-fig w5-two)
+- section.step[data-owner=Gyula]#copying (2A, stacked did+surprise beside #copying-figure)
+- p.status-line#w5-boot-status[hidden] (between sections 2 and 3)
+- section.step[data-owner=Àngela]#search (3A, w5-fig with w5-statrow + two w5-panel, table.w5-table)
+- section.step[data-owner=Àngela]#autocomplete (4A, w5-fig w5-two quiz + map; nested rx-drawer inside drawer body)
+- section.step[data-owner=Niklas]#heaps (5A, w5-fig rx-start-grid two plots + #heaps-table)
+- section.step[data-owner=Niklas]#fame (6A, stacked layout)
+- section.step[data-owner=Niklas]#weird (7A, stacked layout)
+- section.step[data-owner='']#closing (opener ✓, card w4-card w5-stack: takeaway, notice limit, next step, details.qa#methods with ul.w5-methods, details.qa#closing-ai)
+- footer.foot (AFTER main)
+- 7 {" "} text nodes then PageScripts week05
+
+#### src/app/(template)/weeks/%5Ftemplate/page.tsx (392 lines; layout noindex, long how-to-copy comment)
+
+Body class `corridor`.
+
+- a.skip
+- div.topbar (topnav: #opening, #first 1, #second 2, #closing)
+- main#main
+- section.hero.w4-hero#top (same shape as week05; #chart-hero)
+- div.shell > section.w4-findings#findings (2 rows)
+- section.step[data-owner='']#opening (same as week05 opening without the drawer; notice 'Read the scope carefully')
+- section.step[data-owner='']#first (1A, stacked layout; ids first-asked/did/surprise/figure/limit/checked/passage; #chart-first)
+- section.step[data-owner='']#second (2A, side-by-side layout + w5-fig w5-two; #chart-second-left/right)
+- section.step[data-owner='']#closing (w5-stack closing, details.qa#methods, details.qa#closing-ai)
+- footer.foot (AFTER main)
+- PageScripts template
+
+#### src/app/(kit)/styleguide/kit/page.tsx (103 lines; noindex)
+
+Body class `corridor`.
+
+- main.shell#main (no topbar, no skip link)
+- h1 + p.w5-hint
+- section.step#demo-figure/#demo-strip/#demo-table/#demo-kwic/#demo-passage/#demo-term each: h2 + div[data-demo]
+- section.step#demo-network (p.sub + 4x div.w4-two of two {h3 + div[data-demo]})
+- footer.foot (AFTER main, one span)
+- PageScripts kit
+
+#### src/app/(styleguide)/styleguide/page.tsx (1244 lines; layout has inline \<style> with .sg-* rules)
+
+Body class `corridor`.
+
+- a.skip
+- div.topbar (brand href='../', site-link '../#weeks', style-menu with full static style-bar contents, nav with aria-label BEFORE className: #tokens(here) #components #skins #palettes)
+- main#main
+- section.hero.sg-hero#hero (week03 hero copy: eyebrow, h1, lede, body, caution, keys, yearline; aside.panel static inspector)
+- div.shell > p.status-line
+- section.step#tokens (card step-head 1)
+- section.step#components (step-head 2; specimens of every week03 class)
+- section.step#skins (step-head 3; div.sg-specimens.four with 4 div.corridor.sg-scope[data-skin])
+- section.step#palettes (step-head 4; sg-specimens five)
+- section.step#tables (step-head; sg-specimens four with 4 table.ego)
+- footer.foot (INSIDE main)
+- PageScripts styleguide
+
+#### layouts: src/app/(home|kit|mockups|play|screen-test|styleguide|template|week01..05)/layout.tsx + src/app/global-not-found.tsx
+
+Body class `varies: corridor (kit, styleguide, template, week03, week04, week05, 404), 'corridor home' (home), mockups, signal-story[data-signal-src], theme-packs/theme-transit guided-post visual-design (week01/02), none (screen-test)`.
+
+- each: metadata export + \<html lang=en suppressHydrationWarning>\<body className=…>{children}\</body>\</html>
+- week01/02: \<head>\<script>document.documentElement.classList.add('js')\</script>
+- styleguide, screen-test: \<head>\<style> inline
+- week04: \<head> with comment only
+- CSS imports are literal top-level lines per layout
+
+#### Repeated structures (survey 1)
+
+- **SkipLink + PostTopbar**
+  - occurrences:
+    - week03 page.tsx:6-34 (with style-menu, topnav here=#globe)
+    - week04 page.tsx:6-32 (topnav here=#place)
+    - week05 page.tsx:6-36
+    - template page.tsx:6-26
+    - styleguide page.tsx:6-108 (brand ../, site-link ../#weeks, full style-bar, nav aria-label before className)
+    - home page.tsx:4-18 (brand ./, no site-link, nav label 'Sections of this page', here=#weeks)
+  - markupShape: \<a className="skip" href="#main">Skip to content\</a>\<div className="topbar">\<div className="shell">\<a className="brand" href={root}>LOG–LOG{" "}\<b>LEGENDS\</b>\</a>{" "}\<a className="site-link" href={root+"#weeks"}>All posts\</a>[style-menu]\<nav className="topnav" aria-label="Sections of this post">{links joined by {" "}: \<a [className="here"] href="#id">label\</a>}\</nav>\</div>\</div>
+  - variations: props: root ('../../' posts, '../' styleguide, './' home), showSiteLink (home has none and no {" "} after brand), navLabel ('Sections of this post' / 'of this guide' / 'of this page'), links [{href,label,here?}], optional children slot for the week03/styleguide style-menu (week03 renders an empty #style-bar[hidden] that week03-boot.js fills; styleguide renders it fully static). Attribute order differs: styleguide nav emits aria-label then class; others class then aria-label.
+  - scriptDependencies: week04-cut.js:228 queries `.topnav a[href^='#']` and toggles class `here`; initial className="here" in SSR must survive (week03 #globe, week04 #place, styleguide #tokens, home #weeks). week03-boot.js/pages/styleguide.js use ids style-trigger, style-trigger-label, style-bar, and `#style-bar select`; the button needs aria-controls="style-bar" aria-expanded="false". template.test checks href="#first"/"#second" exist (nav or strip). migration-docs.test requires every week03 class (style-menu, style-trigger, style-bar, topbar, brand, site-link, topnav, here, skip) to also appear on the styleguide.
+  - worthExtracting: true
+- **SiteFooter**
+  - occurrences:
+    - week03 page.tsx:2118 (inside main; sources span + title span)
+    - week04 page.tsx:4666 (inside main; 4 spans: sources, O*NET licence, USCIS registrations, title)
+    - week05 page.tsx:1178 (after main; Wikipedia CC BY-SA credit + title)
+    - template page.tsx:374 (after main)
+    - kit page.tsx:89 (after main; single span)
+    - styleguide page.tsx:1225 (inside main; second span is 'Log–Log Legends · DTU 02805' with no link)
+    - home page.tsx:178 (inside main; span + a.home-github svg) - different tail
+  - markupShape: \<footer className="foot">\<div className="shell">{credit spans joined by {" "}}{" "}\<span>{postTitle} ·{" "}\<a href="../../">Log–Log Legends\</a>{" "}· DTU 02805\</span>\</div>\</footer>
+  - variations: children = credit \<span>s (free JSX with links); title prop for the last span (kit's single span is 'Toy data for the component gallery ·…'); root href for the Log–Log Legends link. Placement is NOT uniform: weeks 3, 4, styleguide and home render it inside \<main>, weeks 5, template and kit after \</main>; keep each page's placement or the built HTML moves.
+  - scriptDependencies: credits.test.mjs slices from the first '\<footer' to '\</footer>' and checks licence strings (Wikipedia CC BY-SA on week05; UN DESA/UNHCR/OpenFlights/NASA etc. on week03; O*NET and USCIS wording on week04). Text must stay word-for-word.
+  - worthExtracting: true
+- **PostHero (w4-hero) + HeroStat**
+  - occurrences:
+    - week04 page.tsx:35-118 (w4-hero-grid; body with term + inline-styled link; rx-legend; 2 stats; figure.w4-hero-stage > div.w4-hero-map#chart-hero-map + figcaption.w4-hint; aside.w4-inspector#hero-inspector)
+    - week05 page.tsx:38-76 (w4-hero-grid w5-hero-grid; 2 stats; figure.w4-hero-stage.w5-hero-stage > div.w5-hero-plot#chart-hero-fame[role=img][aria-label] + figcaption.w5-hero-caption)
+    - template page.tsx:29-65 (identical to week05 shape, #chart-hero)
+  - markupShape: \<section className="hero w4-hero" id="top">\<div className="shell">\<p className="eyebrow">…\</p>\<h1>…\</h1>\<div className="w4-hero-grid[ w5-hero-grid]">\<div className="w4-hero-text">\<p className="body">\<b>question\</b>{" "}…\</p>\<p className="caution">…\</p>[extra]\<div className="w4-hero-stats">{\<p className="w4-stat">\<b>{value}\</b>\<span>{label}\</span>\</p>}\</div>\</div>{figure}{aside?}\</div>\</div>\</section>
+  - variations: eyebrow, title, body (children; week04 has no \<b> question and contains a Term and a styled link), caution, stats [{value,label}], gridClass ('w4-hero-grid' vs 'w4-hero-grid w5-hero-grid'), figure slot (w5: div.w5-hero-plot with id/aria-label + w5-hero-caption children; w4: map + w4-hint), optional legend slot (week04 .rx-legend between caution and stats) and inspector slot (week04 aside). Week03 and styleguide heroes are a different design (corridor hero with lede, keys, yearline, stage, panel) and should be a separate Week3Hero if anything.
+  - scriptDependencies: ids top, chart-hero-fame, chart-hero, chart-hero-map, hero-inspector, hero-sel-name/-codes/-dot/-group/-stats/-links; week05-frame.test says('top') checks the stats text '713,617 words on 303 pages' and caption 'Pearson r = …'; week04-prose.test region('top') checks hero numbers and legend text. CSS: .w4-hero-stats, .w4-stat, .w5-hero-plot.
+  - worthExtracting: true
+- **FindingsStrip + FindingRow**
+  - occurrences:
+    - week04 page.tsx:262-340 (5 rows, 'Five sections, five findings', key 'the real network'; row 3 text contains a Term)
+    - week05 page.tsx:77-170 (7 rows, aria-label 'Seven findings', key 'the real pages')
+    - template page.tsx:67-101 (2 rows, aria-label 'Findings', key 'the real data')
+  - markupShape: \<div className="shell">\<section aria-label={label} className="w4-findings" id="findings">\<div className="w4-findings-head">\<p className="w4-caps">{caps}\</p>\<div className="w4-key">\<span>\<i className="w4-key-real">\</i>{realLabel}\</span>\<span>\<i className="w4-key-band">\</i>random baseline, mean ± 1 sd\</span>\</div>\</div>{rows: \<div className="w4-finding">\<span className="w4-num">{n}\</span>\<div>\<h3>{title}\</h3>\<p>{children}\</p>\</div>\<div className="w4-mini" data-finding={n}>\</div>\<a href={"#"+id}>Section {n} →\</a>\</div>}\</section>\</div>
+  - variations: ariaLabel, caps text, realLabel, rows [{n, title, href, text(children, may include Term)}]. Row text is a JSX child because week04 row 3 holds a Term. Note SSR attribute order is aria-label, className, id.
+  - scriptDependencies: week05-frame.js:167 and week-template.js:27 query `#findings [data-finding]`; week04-frame.js:160 queries `[data-finding]` and draws into .w4-mini. week05-frame.test counts class="w4-finding" == 7 inside block('findings') and requires href="#\<section>" for all seven; it matches row sentences after flatten(). CSS: .w4-finding + .w4-finding, .w4-finding > a (post.css 869/919) need the \<a> as a direct child.
+  - worthExtracting: true
+- **PostSection (section.step) + SectionOpener (w4-opener)**
+  - occurrences:
+    - week04: #opening 346, #place 494, #jobs 988, #who 1246, #footprint 1647, #beyond 1829, #closing 2146 (✓), #cut 2227 (+); no data-owner
+    - week05: #opening 172, #relations 269, #copying 378, #search 478, #autocomplete 588, #heaps 723, #fame 838, #weird 940, #closing 1036; data-owner on every one ('' for opening/closing)
+    - template: #opening 104, #first 179, #second 251, #closing 313; data-owner=""
+  - markupShape: \<section className="step" [data-owner={owner}] id={id}>\<header className="w4-opener">\<span aria-hidden="true" className="w4-opener-num">{num}\</span>\<div>\<h2>{title}\</h2>\<p>{lede}\</p>\</div>\</header>{children}\</section>
+  - variations: id, num (0..7, ✓, +), title, lede (children; week04 opening lede contains a Term), owner: must distinguish omitted (week04: no attribute) from empty string (week05/template opening and closing emit data-owner=""). Children are cards, intros, status lines.
+  - scriptDependencies: Attribute ORDER must be class, data-owner, id: template.test matches /\<section class="step" data-owner="[^"]*" id="(\w+)">/, week05-frame.test /\<section class="step" data-owner="[^"]+" id="/ (count 7), week05-heaps/fame/weird match `^<section class="step" data-owner="Niklas" id="heaps">` literally; week05-prose checks data-owner="Àngela". text-budget uses the nearest \<section id> to name a card. Section ids are scroll targets for topnav, rail (data-target), findings and week04-cut.js scroll-spy.
+  - worthExtracting: true
+- **OpeningCard: AnatomyList (w4-anatomy) + HowToRead (w4-howto)**
+  - occurrences:
+    - week04 page.tsx:412-484 (anatomy 'What one filing names' with 6 rows each carrying span.w4-tag; howto 7 swatches incl. w4-sw-people, w4-sw-access, w4-sw-groups with 3 b.g0/g1/g2)
+    - week05 page.tsx:224-265 (4 rows Question/Did/Figure/Drawers; 3 swatches)
+    - template page.tsx:132-173 (same as week05)
+  - markupShape: \<div className="w4-anatomy">\<h3>{title}\</h3>\<p>{intro}\</p>\<dl>{\<div>\<dt>{term}\</dt>\<dd>{def}\</dd>[\<span className="w4-tag[ access]">{tag}\</span>]\</div>}\</dl>\</div>\<div className="w4-howto">\<h3>How to read the charts\</h3>{\<div>\<i className={swatchClass}>[children]\</i>\<b>{label}\</b>\<span>{text}\</span>\</div>}\</div>
+  - variations: anatomy: title, intro, rows [{dt, dd, tag?, tagClass?}]; howto: rows [{swatch: 'w4-sw-real'|'w4-sw-band'|'w4-sw-ref'|'w4-sw-people'|'w4-sw-access'|'w4-sw-groups', swatchChildren?, label, text}]. Week05 and template share the same four anatomy rows except the last dd text ('the passages we read' vs 'what we read in the data').
+  - scriptDependencies: No script hooks. CSS relies on direct-child structure: .w4-anatomy > p, .w4-anatomy dl div + div, .w4-howto > div, .w4-howto > div > b, .w4-howto > div > span (post.css 1377-1443). week05-frame.test says('opening') checks the left-column prose, not these blocks.
+  - worthExtracting: true
+- **Notice**
+  - occurrences:
+    - week03: 18 (e.g. 197, 231, 403, 439, 519, 672, 677, 717#edge-note, 819#dk-verdict, 887 with ico 📄, 994, 1128, 1253, 1274, 1379, 1561, 1667); headline variants 'What to notice', 'What to notice, in 2020', or no \<b>
+    - week04: 26 (377, 670, 680, 803, 891, 1105, closing 2181, …)
+    - week05: 9 (opening drawer 209, each card's #\<id>-surprise, closing 1052)
+    - template: 4 (opening 122, first-surprise 203, second-surprise 272, closing 323)
+    - styleguide: 1
+    - scripts also build notices: week04-pagerank.js:148/421, week04-skills.js:66/175, week04-years.js:441 (string), week04-skills-radar.js
+  - markupShape: \<div className="notice" [id]>\<span className="ico">{icon}\</span>[{" "}]\<span>\<b>{headline}\</b>{" "}{children}\</span>\</div>
+  - variations: icon ('!' scope/limit, '💡' what to notice, '📄'), headline (optional; 'What to notice', 'Read the scope carefully', 'One important limit', 'Preprocessing changes the counts'…), children (may hold Terms, links, span#prestige-movers), optional id. Whitespace is NOT uniform: week03/04 and week05/template opening+closing put {" "} between .ico and the text span; week05/template 'What to notice' boxes in cards have none. flatten() hides that but the bytes differ; make it a prop or accept a byte change after diffing.
+  - scriptDependencies: week04-html.mjs notices(html,id) scans for the literal '\<div class="notice"' (class must be exactly 'notice', first attribute) and flattens it; used by week04-prose, week04-questions, week05-heaps, week05-weird tests. week04-vis-intros.css:89 `#closing .w4-card > .notice` needs it as a direct child of the closing card. corridor.css:1700 `.notice span:last-child` (editorial skin). corridor.js comment: `.notice b` is the headline style. week03 class 'notice'/'ico' must stay on the styleguide.
+  - worthExtracting: true
+- **QuestionHeader (header.w4-q)**
+  - occurrences:
+    - week04: 36 headers (place-start 'Start' with p.rx-kicker and no h2; nested numberless headers in #place-rank/#place-regions 607/635; 1A 791, 1B 870, Start 1054, 2A 1072, 2B 1157, Start 1362, 3A-3C, 4A 1766, 5A-5C, deep-dive panel cards numbered 1..7 per topic)
+    - week05: 7 (#relations-asked 280 … #weird-asked 951)
+    - template: 2 (#first-asked, #second-asked)
+    - scripts build the same shape as strings: week04-pagerank.js:98/398, week04-skills.js:41/159, week04-skills-radar.js:436, week04-years.js:439
+  - markupShape: \<header className="w4-q" [id={section+"-asked"}]>[\<span className="w4-num">{num}\</span>]\<div>\<h2>{question}\</h2>\<p className="w4-answer">{answer}\</p>\</div>\</header>
+  - variations: num optional (two week04 sub-headers omit it), id optional (week05/template put it on the header; week04 puts the id on the card instead), question may be replaced by p.rx-kicker (#place-start), answer optional. Week05 has 1A..7A; week04 Start/1A/…/numbers.
+  - scriptDependencies: week04-structure.test 'deep-dive card numbers' matches the literal `<span class="w4-num">([^<]*)</span>` inside each details.rx-panel and requires the number to equal the panel's position in its rx-toc; total w4-num count per topic must equal panel-held count. template.test requires id="\<section>-asked". Script-built headers in week04-*.js are a second source of this markup that React will not replace.
+  - worthExtracting: true
+- **W5Card (QuestionCard: card w4-card w5-card)**
+  - occurrences:
+    - week05: relations 279 (layout B), copying 388 (A), search 488 (B), autocomplete 598 (B), heaps 733 (B), fame 848 (A), weird 950 (A)
+    - template: first 187 (A), second 259 (B)
+  - markupShape: \<div className="card w4-card w5-card">{QuestionHeader id=s-asked}\<div className="w4-two">LAYOUT\</div>[\<div className="w5-fig" id={s+"-figure"}>{figure children}\</div>]{Drawers}\</div>  Layout A (stacked text beside figure): \<div className="w4-two">\<div>\<div id=s-did>\<p className="sub">…\</p>\</div>\<div id=s-surprise>{Notice}[extra e.g. #chart-copying-linked]\</div>\</div>\<div id=s-figure>{Plot}\</div>\</div>.  Layout B (did beside surprise, figure below): \<div className="w4-two">\<div id=s-did>…\</div>\<div id=s-surprise>{Notice}\</div>\</div>\<div className="w5-fig" id=s-figure>{w5-two of two Plots | w5-statrow + w5-panels | rx-start-grid + table host}\</div>
+  - variations: section id prefix (drives ids -asked, -did, -surprise, -figure, -checked, -limit), num, question, answer, did paragraph, surprise notice text, layout ('stacked' | 'below'), figure children, drawers children. Copying's surprise slot also holds div#chart-copying-linked. Some drawers hold nested drawers (autocomplete) or Plots (autocomplete modularity, weird table).
+  - scriptDependencies: Exact class literal 'card w4-card w5-card' (template.test, week05-heaps/autocomplete/network/weird tests). kit.js slot(section, part) does getElementById(`${section}-${part}`); template.test PARTS = asked, did, figure, surprise, checked, limit must all exist for each section. text-budget.test: each div whose class contains w4-card must show \<=350 words outside \<details>/w4-pop; each #\<x>-did may hold at most one \<p>. CSS: .w5-card > .w5-fig, .w5-card > .w4-two (post.css 2354-2355) require those to be direct children; .w4-two > div (1173); .w5-card .w5-two > *. termify() in week05-*.js inserts span.w4-term into #\<s>-did text after hydration.
+  - worthExtracting: true
+- **W4Card (card w4-card, Week 4 question card)**
+  - occurrences:
+    - week04: ~36 cards. Main path: #place-start, #place-who, #place-break, #jobs-together (card jobs-card w4-card), #jobs-split, #jobs-linkcom, #who-q1, #who-switch, #who-movers, #who-overlap, #footprint-which, #beyond-law, #beyond-perm, #beyond-wage; intro cards without id in #opening/#jobs/#who/#beyond/#closing; deep-dive cards inside rx-panel (#place-backbone, #place-longhaul, #deeper-density, #jobs-bridges, #jobs-groups (jobs-card), #staffing-*, #deeper-*, #roles-card, and three cards wrapping div.w4-q-block#who-q2/#who-q3/#who-q4)
+  - markupShape: \<div className="card w4-card" [id]>{QuestionHeader}[p.sub]\<div className="w4-two">\<div>{p.sub with Terms}{Notice}{Drawers}\</div>{Plot | W4Figure}\</div> | [\<div className="rx-fig-row">{figures}\</div>]{Drawers}\</div>
+  - variations: class string variants: 'card w4-card', 'card jobs-card w4-card'; id on the card (not the header) or on an inner div.w4-q-block; drawers sit either inside the left column of w4-two (place-who/place-break) or as the card's last child; figure is a .plot, figure.w4-figure, rx-fig-row, rx-start-grid, figure.staffing, or figure.w4-entities. Less regular than W5Card: treat as the same Card shell with children rather than a fixed layout.
+  - scriptDependencies: text-budget per-card 350-word cap. week04-entities.js closest('.w4-card'); post.css '#\<panel>[data-show="…"] .w4-card:not(#id)' rules checked by week04-structure.test; `.w4-card > details.qa` (post.css 1478). week04-html block(html,id) is used by many prose tests on these ids (place-start, beyond-perm, deeper-perm, deeper-strength, staffing-ties, footprint, footprint-which…).
+  - worthExtracting: true
+- **Drawers + Drawer (rx-drawers / rx-drawer)**
+  - occurrences:
+    - week04: 40 rows, 84 drawers
+    - week05: 8 rows (opening + 7 cards), ~29 drawers plus one nested drawer in #autocomplete-checked
+    - template: 2 rows, 5 drawers
+    - script-built: week04-ui.js drawer()/drawerRow(); kit.js drawer()
+  - markupShape: \<div className="rx-drawers rx-foot">{\<details className="rx-drawer">\<summary>{label}\</summary>\<div className="rx-drawer-body" [id]>{children}\</div>\</details>}\</div>
+  - variations: label (week04 fixed set in order: Background, Method, More numbers, 'Table: …'/'Maps: …', plus catalogue 'Which ones'; week05 adds 'What we read in the pages', 'Table: …', 'Does the curve flatten?', 'What counts as a word'), optional body id (#\<s>-checked), children. Nested drawer appears without its own rx-drawers row (week05 712).
+  - scriptDependencies: week05-autocomplete.test asserts /\<details class="rx-drawer">\<summary>/: no extra attributes, no whitespace/text node between \<details> and \<summary>; and no `open`. week04-structure.test: rows found by class token rx-drawers; labels ranked Background\<Method\<More numbers\<Table/Maps, unknown label fails. text-budget hides everything inside \<details> except \<summary>. week05-network.test matches `<summary>More numbers</summary>[\s\S]*id="chart-autocomplete-modularity"`. CSS: .rx-drawers > details.rx-drawer, details.rx-drawer > summary, .rx-drawer-body > p + p (post.css 1569-1617). Must be uncontrolled \<details> (no React open state) so SSR stays closed and native toggling works.
+  - worthExtracting: true
+- **Term (w4-term glossary popup)**
+  - occurrences:
+    - week04 only in JSX: 69 terms, ids w4-term-\<scope>-\<slug> (e.g. w4-term-top-fiscal-year 50, w4-term-findings-vendor 305, w4-term-opening-specialty 355, w4-term-place-louvain 509, …, w4-term-evidence-foia)
+    - week05/template: none in JSX; week05-*.js call kit.js termify() at runtime (ids w5-term-…)
+    - week04 scripts call week04-ui.js termify() for script-built cards (ids w4-term-w4m-…, w4-term-cut-…, w4-term-roles-card-…)
+  - markupShape: \<span className="w4-term">\<button aria-describedby={id} type="button">{word}\</button>\<span className="w4-pop" id={id} role="tooltip">{definition}\</span>\</span>
+  - variations: word, definition (plain text only), id (explicit prop, never useId). Surrounding {" "} text nodes are the caller's.
+  - scriptDependencies: Attribute order matters: button emits aria-describedby then type; pop must emit class first (text-budget regex `<span class="w4-pop"[^>]*>[\s\S]*?</span>`, flatten regex `<span class="w4-term">\s*<button[^>]*>([^<]*)</button>\s*<span class="w4-pop"[^>]*>[^<]*</span>\s*</span>` requires the definition to have no nested tags). week04-frame.js:70-84 handles clicks via closest('.w4-term > button') and toggles .is-open. week04-structure.test: ids unique, no .w4-tip left. CSS .w4-term > button, .w4-term > .w4-pop, :hover/:focus-within/.is-open (post.css 1245-1263). termify() must keep producing the same shape.
+  - worthExtracting: true
+- **Plot (div.plot chart frame)**
+  - occurrences:
+    - week03: 9 (plot with h3, one or more p.axis-note, optional .legend, .axis-modes, canvas.chart, trailing notice/qa)
+    - week04: 25 (h3, p.axis-note, div.chart-host[.tall|.short|.map|.jobs-nmi]#chart-* or div.w4-figure-body#chart-*)
+    - week05: ~14 (h3, p.axis-note, optional chips group, div#chart-*)
+    - template: 3
+    - styleguide: 5
+    - scripts build it: week04-pagerank.js:200/461, week04-skills.js:109/211, week04-skills-radar.js:454
+  - markupShape: \<div className="plot" [style]>\<h3>{title}\</h3>{\<p className="axis-note" [id]>{note}\</p>}[controls]\<div [className=chart-host…] id={chartId}>\</div>[after]\</div>
+  - variations: title, note(s) (week04 notes contain Terms; week03 has several notes and an id'd empty note), host element/class/id (div vs canvas.chart with width/height vs div.echart), controls slot (legend, axis-modes, w5-chips), trailing children (notice, details.qa). week04 one plot has inline style marginTop:18px.
+  - scriptDependencies: Chart ids (chart-*, canvas ids hist/ccdf/scatter-between/prestige/…) are the draw targets; scripts look them up by id, so the host must render as an empty element with that id and React must never re-render its children (hydration-then-imperative). CSS: .w4-two > .plot .chart-host, .rx-fig-row > .plot, .w5-card .plot > *.
+  - worthExtracting: true
+- **W4Figure + RxFigRow (figure.w4-figure with b/span figcaption)**
+  - occurrences:
+    - week04: 31 figures (583 'Weak but real', 1041, 1183/1190, 1323/1332 in rx-fig-row, 1373/1385 with w4-vis-stack, 1875, closing 2157, deep-dive 2763, 3124, 3390/3417, 3464/3473, 3739, 3766/3790, 3870, 4007/4016, 4094/4101, 4158/4167, 4343, 4383/4390, 4534/4550); rx-fig-row 12 rows (some hold two .plot instead)
+  - markupShape: \<figure className="w4-figure">\<figcaption>\<b>{title}\</b>\<span>{caption}\</span>\</figcaption>{\<div className="w4-figure-body" data-strip={key}>\</div> | \<div className="w4-figure-body" id=…>\</div> | \<div className="w4-vis-stack">{2 bodies}\</div>}\</figure>; row: \<div className="rx-fig-row">{2 figures or plots}\</div>
+  - variations: title, caption (may contain Terms), bodies: list of data-strip keys (one, or two inside w4-vis-stack) or an id'd host.
+  - scriptDependencies: data-strip="…" hooks used by week04-frame.js:243, week04-vis-intros.js, week04-vis-staffing.js; w4-figure-body also created by scripts. CSS: .rx-fig-row > figure, > figure > figcaption, > :only-child; .w4-vis-stack .w4-figure-body + .w4-figure-body.
+  - worthExtracting: true
+- **QaDisclosure (details.qa with qa-cue) incl. MethodsNote and AiUseNote**
+  - occurrences:
+    - week03: details.qa 241 (no id), #questions 835, #cliques 1416, #views 1609, #methods-drawer 1721
+    - week04: #closing-ai 2192; details.qa.cut.rx-panel #cut-methods 2775, #cut-skills 3335, #cut-pagerank 3343, #cut-years 4448, #cut-roles 4456 (qa-body cut-body with ids methods-body/skills-body/…); details.qa.cut.rx-topic#evidence 4594
+    - week05: #methods 1070, #closing-ai 1155
+    - template: #methods 337, #closing-ai 359
+    - styleguide: 1
+  - markupShape: \<details className="qa[ cut rx-panel|rx-topic]" [data-box] [id] [name]>\<summary>\<span className="qa-cue">{label}\</span>\</summary>[topic bar]\<div className="qa-body[ cut-body]" [id]>{children}\</div>\</details>
+  - variations: extra classes, id, name (week04 exclusive accordions), data-box, body class/id. AiUseNote: label 'AI use and how we checked it', two p.sub (what AI did / how we checked) - week04, week05, template. MethodsNote: label 'Methods, data and AI use', p.sub data line + ul.w5-methods - week05, template.
+  - scriptDependencies: migration-docs.test: #questions and #methods-drawer must be \<details> and not ship open. week04-cut.js uses details.rx-panel/details.rx-topic and their name groups; week04-structure.test reads data-box on rx-panel. template.test requires ids methods and closing-ai. CSS .qa > summary, .w4-card > details.qa, #cut details.qa.cut + details.qa.cut, details.qa.rx-topic > .qa-body, .w5-stack .qa-body > *. Must stay uncontrolled native details.
+  - worthExtracting: true
+- **ClosingCard (w5-stack) + MethodsList**
+  - occurrences:
+    - week05 page.tsx:1036-1175
+    - template page.tsx:313-371
+    - week04 closing 2146-2224 is a different shape (w4-two with figure + w4-surprises, notice, qa#closing-ai, fineprint, drawers)
+  - markupShape: \<div className="card w4-card w5-stack">\<p className="sub">{takeaway}\</p>{Notice icon='!' headline='One important limit'}\<p className="sub">\<b>Next step.\</b>{" "}{next}\</p>\<details className="qa" id="methods">…\<ul className="w5-methods">{\<li>\<b>{n} ·{" "}{links}\</b>{" "}{text}\</li>}\</ul>\</details>{AiUseNote}\</div>
+  - variations: takeaway, limit, nextStep, data paragraph, methods [{n, scripts:[{href,name}], text}] (week05 links to GitHub; template plain text 'analysis/weekNN_first.py'; week05 item 4 has two links joined by ','; item 5 has \<sup>), AI paragraphs.
+  - scriptDependencies: ids methods, closing-ai (template.test); week05-frame.test pins closing prose numbers via flatten(block('closing')). Exact class 'card w4-card w5-stack' falls under the text-budget card cap.
+  - worthExtracting: true
+- **StatusLine**
+  - occurrences:
+    - week03 #status 90ish, #v-status 1613
+    - week04 #place-status 342, #jobs-status 1052, #methods-status 2791, #skills-status 3340, #pagerank-status 3348, #years-status 4453
+    - week05 #w5-boot-status[hidden] 477
+    - styleguide 1 (no id)
+  - markupShape: \<p aria-live="polite" className="status-line" id={id} [hidden]>{initial text}\</p>
+  - variations: id, initial text, hidden
+  - scriptDependencies: Scripts write load/error text into these ids; keep them as server-rendered empty or seeded nodes React will not reconcile again.
+  - worthExtracting: false
+- **W4Rail (section rail nav)**
+  - occurrences:
+    - week04 page.tsx:120-260 only (8 top-level items, 17 sub-items)
+  - markupShape: \<nav aria-label="Contents of this post" className="w4-rail">\<ol>{\<li data-target={id}>\<a aria-label={label} href={"#"+id}>\<span aria-hidden="true" className="w4-rail-label">{label}\</span>\</a>[\<ol>{children}\</ol>]\</li>}\</ol>\</nav>
+  - variations: data-driven tree [{id, label, children?}]; label repeated in aria-label and span.
+  - scriptDependencies: week04-frame.js:16/28 queries .w4-rail and .w4-rail-label; week04-structure.test regex `<li data-target="…">\s*<a(…)>\s*<span[^>]*class="w4-rail-label"[^>]*>` (li must carry only data-target; a must have aria-label), labels must equal rx-tcard titles for deep-dive topics, no ' · ', no leading section numbers, and every topic plus evidence must be listed.
+  - worthExtracting: true
+- **DeepDive: TopicCard (rx-tcard), RxTopic, RxToc, RxPanel**
+  - occurrences:
+    - week04 #cut 2227-4660: 6 rx-tcard in .rx-tgrid (2240, 2296, 2348, 2400, 2446 + Data); 5 details.rx-topic (2509 topic-where, 3063 topic-jobs, 3352 topic-outsourcing, 3973 topic-paperwork, 4431 topic-years) + details.qa.cut.rx-topic#evidence; ~25 details.rx-panel
+  - markupShape: tcard: \<div className="rx-tcard">\<a className="rx-tcard-head" href="#topic-x">\<span>\<b>{title}\</b>\<em>{holds}\</em>\</span>\</a>\<ul>{\<li [className="rx-uses-li"]>\<a href=#box>\<span>{q}\</span>\<i aria-hidden="true">→\</i>\</a>[\<ul className="rx-uses">…\</ul>]\</li>}\</ul>\</div>; topic: \<details className="rx-topic" id name="w4-topic">\<summary>{title}\</summary>\<div className="rx-topic-bar">\<a className="rx-back" href="#cut">← Deep dive\</a>\<div>\<h2 className="rx-topic-title">{title}\</h2>\<p className="rx-topic-holds">{holds}\</p>\</div>\<span className="rx-topic-count">\</span>\</div>\<nav aria-label="Boxes in this topic" className="rx-toc">{\<div className="rx-toc-col">\<p className="rx-toc-head">…\</p>{\<a className="rx-toc-item" href>…\</a>}\</div>}\</nav>{panels}\</details>; panel: \<details className="rx-panel" name={"w4-panel-"+topic} data-box={boxId}>\<summary>{question}\</summary>{W4Card id=boxId}\</details>
+  - variations: topic id/title/holds, toc columns and items, panels (card inside, or a qa.cut.rx-panel variant). Titles repeat across tcard, topic bar, summary and rail: one data source would keep them in step.
+  - scriptDependencies: week04-cut.js: details.rx-topic, .rx-topic-count, nav.rx-toc, a.rx-toc-item, details.rx-panel[open], ALIAS/SUB/METHOD tables keyed by these ids; week04-structure.test: toc items must land in their topic, catalogue has topics+1 cards, w4-num in each panel equals toc position, data-box attribute read. Attribute order on rx-panel: className, name, data-box (qa variant: className, data-box, id, name).
+  - worthExtracting: true
+- **Week3 StepCard (step > card > step-head)**
+  - occurrences:
+    - week03: #tails 127 (2, year-tag#tails-tag), #bridge 351 (3), #twin 472 (4, h2#null, year-tag#null-tag), #typology 617 (5, empty year-tag#typology-tag), #edge 700 (6), #denmark 725 (7), #asks 828 (8), #methods 1715 (✓)
+    - styleguide: sections #tokens 236, #components 355, #skins 987, #palettes 1066, #tables 1132, plus specimen step-heads 380, 610, 1010-1054
+  - markupShape: \<section className="step" id={id}>\<div className="card">\<div className="step-head">\<span className="num">{num}\</span>\<h2 [id]>{title}\</h2>[\<span className="year-tag" [id]>{tag}\</span>]\</div>{children}\</div>{extra cards}\</section>
+  - variations: num, title (may hold \<br/>-free multi-line JSX), optional h2 id, optional year-tag text/id, children; #asks section holds further div.card siblings (#gravity, #communities, #surprise, #more) after the first card.
+  - scriptDependencies: week03-boot.js/corridor.js write into year-tag ids (tails-tag, null-tag, typology-tag). migration-docs.test requires every week03 class (step-head, num, year-tag, card, …) to appear on the styleguide, so a shared component should be used on both pages.
+  - worthExtracting: true
+- **Week3 InspectorPanel (aside.panel)**
+  - occurrences:
+    - week03 hero #inspector ~98 (sel-*), #bridge 390 (sc-*), 449 (pr-*), #twin aside.panel.pair-aside 517/568
+    - styleguide hero aside.panel (static Denmark sample with filled dl.stats)
+  - markupShape: \<aside className="panel[ pair-aside]" [id]>\<h2>{title}\</h2>\<div className="who">\<span className="flag" id={p+"-flag"}>🌍\</span>{" "}\<span>\<strong id={p+"-name"}>Pick a country\</strong>\<br/>{" "}\<span className="codes" id={p+"-codes"}>, \</span>\</span>\</div>\<dl className="stats" id={p+"-stats"}>\</dl>{\<div className="corridor-list">\<h3>{heading}\</h3>\<ol id>\</ol>\</div>}{children}\</aside>
+  - variations: id prefix (sel, sc, pr), title, list headings and ids, trailing notice/fineprint; styleguide renders filled values without ids.
+  - scriptDependencies: corridor.js fills sel-/sc-/pr- flag, name, codes, stats, sel-in/sel-out/pr-sources by id.
+  - worthExtracting: true
+- **Week3 QaItem + QaSlider**
+  - occurrences:
+    - week03 #questions: 6 article.qa-item 840-885; #views: 4 article.qa-item 1615-1708; qa-slider 845, 1619, 1629
+    - styleguide: 1 qa-item, 1 qa-slider
+  - markupShape: \<article className="qa-item">\<h3>{n} · {title}\</h3>[\<div className="qa-controls">{\<label htmlFor>…\</label>\<div className="qa-slider">\<input defaultValue aria-label id max min step="1" type="range"/>\<div className="ends">\<span>{lo}\</span>\<span>{hi}\</span>\</div>\</div>\<b className="qa-slider-now" id>{now}\</b>}\</div>][p.axis-note]{\<canvas className="chart" height width id/> | \<div className="echart …" id/>}\<p className="qa-answer" id={id+"-answer"}>\</p>\</article>
+  - variations: title, controls (sliders, axis-modes), host (canvas dims or echart class), answer id.
+  - scriptDependencies: questions.js and echarts-views.js fill q-*-answer / v-*-answer and read slider ids (q-ring-year, v-graph-year, v-graph-floor) and *-now labels.
+  - worthExtracting: true
+- **SegmentedControl (axis-modes / w5-chips)**
+  - occurrences:
+    - week03: .axis-modes x5 (data-chart=hist/ccdf…, data-mode), #v-area-mode
+    - week04: .axis-modes x5 (data-place-metric, data-place-region, …)
+    - week05: .w5-chips#relations-map-kind (static buttons), #relations-chips, #search-chips (empty, script-filled)
+    - styleguide: specimens
+  - markupShape: \<div className="axis-modes" [data-chart] role="group" aria-label={label}>{\<button aria-pressed={i===0?"true":"false"} data-{key}={value} type="button">{label}\</button>} joined by {" "}\</div>
+  - variations: class (axis-modes vs w5-chips), data attribute name per button (data-mode, data-place-metric, data-place-region, data-kind), label, options; attribute order differs (week05 aria-label, className, id, role).
+  - scriptDependencies: week04-structure.test: every .axis-modes needs role="group", an aria-label or aria-labelledby that resolves, and at most 5 buttons. Scripts flip aria-pressed and read data-* values; keep aria-pressed as the strings "true"/"false".
+  - worthExtracting: true
+- **Week3 Legend**
+  - occurrences:
+    - week03: 5 div.legend inside plots (tails, bridge x2, …)
+    - styleguide: 1
+  - markupShape: \<div className="legend">{\<span>\<i style={{background: colour}}>\</i>{" "}{label}\</span>} joined by {" "}\</div>
+  - variations: items [{colour,label}]
+  - scriptDependencies: none beyond the styleguide class-coverage test
+  - worthExtracting: false
+- **DataTable shells (table.ego / table.w5-table)**
+  - occurrences:
+    - week04 table.ego with empty tbody#place-null-stats 701, thead+tbody#where-break-links 959, tbody#place-alpha-table, more in deep dive
+    - week05 table.w5-table in div.w5-table-wrap with tbody#search-tbody 534
+    - styleguide 4 static table.ego specimens
+  - markupShape: \<table className="ego">[\<thead>\<tr>{\<th [style={{textAlign:"right"}}]>…\</th>}\</tr>\</thead>]\<tbody id={id}>\</tbody>\</table>
+  - variations: columns [{label, align}], tbody id; week05 wraps in .w5-table-wrap and uses class w5-table
+  - scriptDependencies: week04-tables.js / week05-search.js fill tbody by id. Note the most tables (heaps-table, fame-outliers, weird-table, copying-clusters) are built entirely by kit.js table() into a div host, so they are chart-host slots, not JSX tables.
+  - worthExtracting: false
+- **Week4 Surprise list and GroupHead (minor)**
+  - occurrences:
+    - week04 closing .w4-surprises with 2 .w4-surprise (2167-2179)
+    - week04 #place-groups 3 div.rx-group[data-community] 642-665
+    - week04 anatomy w4-tag x6
+  - markupShape: \<div className="w4-surprise">\<p className="w4-surprise-before">…\</p>\<p className="w4-surprise-after">…\</p>\<div className="w4-figure-body" data-strip=…>\</div>\</div>; \<div className="rx-group" data-community={n}>\<div className="rx-group-head">\<i style={{background:`var(--w4-group-${n})`}}>\</i>\<b>{name}\</b>\<span>{lead}\</span>\</div>\<p>\</p>\</div>
+  - variations: text, strip key; group n/name/lead
+  - scriptDependencies: data-strip closing-switches/closing-backbone; week04-place.js fills rx-group \<p> by data-community
+  - worthExtracting: false
+- **Styleguide Specimen (sg-scope)**
+  - occurrences:
+    - styleguide skins 1006-1062 (4 identical cards differing only by data-skin), palettes 1088 (5), tables 1144-1222 (4 identical tables differing by data-tables)
+  - markupShape: \<div className="corridor sg-scope" data-{dimension}={key}>\<p className="sg-name">{Name}\</p>{sample children}\</div>
+  - variations: dimension (skin/palette/tables), key, name; sample children identical within a group, so map over the registry
+  - scriptDependencies: migration-docs.test checks every SKINS/PALETTES/TABLES key from week03-boot.js has its own scoped block on the guide; tests also need '\<body class="corridor">'.
+  - worthExtracting: true
+- **RootLayout shell**
+  - occurrences:
+    - all 11 layout.tsx files + global-not-found.tsx
+  - markupShape: export const metadata = {…}; export default function Layout({children}) { return \<html lang="en" suppressHydrationWarning>[\<head>…\</head>]\<body className={…}>{children}\</body>\</html> }
+  - variations: metadata, viewport (mockups, play), body className and data attributes, optional head content (js-class script, inline style, preconnect/font link, comment).
+  - scriptDependencies: tests/built-page.mjs pageStyles() regex-parses literal `^import "@/styles/…";$` lines from each (page)/layout.tsx, and stylesheets.test checks the allowed set per page (template/kit/week05: type, corridor, post only). The CSS imports must stay as literal lines in each layout; a shared \<PostDocument bodyClass> component for the html/body is fine. robots noindex meta is asserted by template.test.
+  - worthExtracting: true
+
+#### Surveyor notes (survey 1)
+
+Read-only survey. No files were edited.
+
+Biggest wins: SkipLink+PostTopbar (6 pages), SiteFooter (7), PostSection+SectionOpener (week04, week05, template), FindingsStrip, Notice (~58 in JSX), QuestionHeader (45), W5Card with two layouts, Drawers/Drawer (~120), Term (69 in week04), Plot, W4Figure/RxFigRow, QaDisclosure with AiUseNote/MethodsNote, and ClosingCard. Weeks 3 and 5 share nearly nothing beyond chrome, Notice, Plot and QaDisclosure. Week 3's family (StepCard, InspectorPanel, QaItem, Legend) also has to render on the styleguide: migration-docs.test requires every class in the built week03 HTML and in corridor.js/questions.js/week03-boot.js to appear on out/styleguide/index.html.
+
+Byte-compatibility rules a converter must keep:
+1. React emits attributes in JSX prop order. Tests match these strings literally:
+   - `<section class="step" data-owner="…" id="…">`
+   - `<details class="rx-drawer"><summary>` (no attribute or whitespace between the two tags)
+   - `<div class="notice"` (week04-html.mjs notices())
+   - `<span class="w4-pop"`
+   - `<span class="w4-num">N</span>`
+   - `<li data-target="…">\s*<a …aria-label…>\s*<span … class="w4-rail-label">`
+   - `class="card w4-card w5-card"`
+   Pass full class strings as props. Do not concatenate.
+2. data-owner has to tell "omitted" (week04 sections) apart from `""` (week05 and template opening/closing).
+3. Ids are explicit props, never useId. Scripts and kit.js slot() look up `<section>-asked/did/surprise/figure/checked/limit`, `w4-term-*`, `chart-*`, status-line ids and tbody ids. week04-structure.test fails on duplicate ids.
+4. Term definitions must stay plain text. flatten() and text-budget's regex assume `<span class="w4-pop" …>text</span>` with no nested tags.
+5. The footer sits inside `<main>` on week03, week04, styleguide and home, and after `<main>` on week05, template and kit. Keep each page's placement.
+6. The `{" "}` text nodes vary between `.ico` and the notice text. Opening and closing notices have one; week05/template card notices do not. flatten() absorbs the difference but the bytes change.
+7. Every `<details>` stays uncontrolled and ships closed. Tests assert no `open` and count only `<summary>` text. week04-cut.js opens and closes them by name groups.
+8. Every chart host (div/canvas with chart-*, data-strip, data-finding, data-demo) must render empty and never be re-rendered by React. Scripts draw into them after PageScripts runs.
+
+CSS that depends on direct children (post.css, corridor.css): `.w4-two > div`, `.w5-card > .w5-fig`, `.w5-card > .w4-two`, `.rx-drawers > details.rx-drawer`, `details.rx-drawer > summary`, `.rx-drawer-body > p + p`, `.rx-fig-row > figure|.plot|:only-child`, `.w4-finding + .w4-finding`, `.w4-finding > a`, `.w4-term > button|.w4-pop`, `.w4-anatomy > p`, `.w4-howto > div > b|span`, `.w4-card > details.qa`, `.qa > summary`, `.w5-stack .qa-body > *`, `#closing .w4-card > .notice`, `.w4-q-block + .w4-q-block`, `.w4-vis-stack .w4-figure-body + .w4-figure-body`, `.notice span:last-child`. Components must not add wrapper elements.
+
+A React component will not replace a second copy of the same markup that scripts build at runtime:
+- `week04-ui.js` builds drawer(), drawerRow() and termify().
+- `kit.js` builds drawer() and termify(), which week05 uses.
+- `week04-pagerank.js`, `week04-skills.js`, `week04-skills-radar.js` and `week04-years.js` build `w4-q`/`w4-num`/`w4-answer`/`notice`/`plot` from HTML strings.
+Keep both in step, or move those cards into React in the chart-component phase.
+
+Layouts: the shared part is the html/body shell. Each layout.tsx must keep its own literal `import "@/styles/…";` lines because pageStyles() regex-parses them.
+
+Recommended guard for the conversion: build once and snapshot `out/**/*.html` with built-page.mjs normalisation. Diff after each component extraction and accept only intended changes. The tests match only some of the markup, so a passing suite alone will not catch changed bytes.
+
+Key files:
+- /Users/gyula/Documents/Projects/code/02805-social-graphs/.claude/worktrees/website-framework-github-9f93a5/src/app/(week04)/weeks/week04/page.tsx
+- /Users/gyula/Documents/Projects/code/02805-social-graphs/.claude/worktrees/website-framework-github-9f93a5/src/app/(week05)/weeks/week05/page.tsx
+- /Users/gyula/Documents/Projects/code/02805-social-graphs/.claude/worktrees/website-framework-github-9f93a5/src/app/(template)/weeks/%5Ftemplate/page.tsx
+- /Users/gyula/Documents/Projects/code/02805-social-graphs/.claude/worktrees/website-framework-github-9f93a5/tests/week04-html.mjs
+- /Users/gyula/Documents/Projects/code/02805-social-graphs/.claude/worktrees/website-framework-github-9f93a5/tests/week04-structure.test.mjs
+- /Users/gyula/Documents/Projects/code/02805-social-graphs/.claude/worktrees/website-framework-github-9f93a5/tests/text-budget.test.mjs
+- /Users/gyula/Documents/Projects/code/02805-social-graphs/.claude/worktrees/website-framework-github-9f93a5/tests/template.test.mjs
+- /Users/gyula/Documents/Projects/code/02805-social-graphs/.claude/worktrees/website-framework-github-9f93a5/src/scripts/week04-ui.js
+- /Users/gyula/Documents/Projects/code/02805-social-graphs/.claude/worktrees/website-framework-github-9f93a5/src/styles/post.css
+
+### Survey 2
+
+#### src/app/(home)/page.tsx (out/index.html), layout body class "corridor home"; styles type.css, corridor.css, home.css; no PageScripts
+
+Body class `corridor home`.
+
+- a.skip[href=#main]
+- div.topbar > div.shell (CorridorTopbar: brand href="./", no site-link, nav.topnav aria-label="Sections of this page": Posts(.here #weeks), About(#about))
+- main#main
+- section.hero.home-hero#top > div.shell > div.home-hero-text (h1, p.lede, p.body, div.home-hero-actions > a.home-button) + aside.home-progress[aria-label] > p.home-caps + ol.home-track (li.live[.current] > a > span W1..W5 + label + i[aria-hidden]→ ; li > span W6..W8 + label)
+- div.shell > section.home-section#weeks[aria-labelledby=weeks-title] > div.home-section-head > h2#weeks-title + div.home-half > ol.week-grid > li > a.week-card x5
+- div.shell > section.home-section.home-about#about > div.home-section-head > h2#about-title + div.card > p.home-caps + ul.members (li > a[aria-label] > img + name) x3
+- footer.foot (INSIDE main) > div.shell > span(Wikipedia CC BY-SA credit) + a.home-github (GitHub svg)
+
+#### src/app/(week01)/weeks/week01/page.tsx (out/weeks/week01/index.html); layout body "theme-packs guided-post visual-design", head script adds .js; styles type, arcade, story, design
+
+Body class `theme-packs guided-post visual-design`.
+
+- a.skip
+- header.chrome#arcade-chrome (ArcadeChrome placeholder; packs.js->setupChrome() replaces innerHTML)
+- main.wrap#main
+- p.status#app-status[role=status] + noscript>p.note (ArcadePreamble)
+- section.hero.story-hero > div.hero-copy > div(p.eyebrow, h1, p.intro, nav.story-nav) + p.story-scope + details.post-primer
+- span.anchor#try-it
+- section.section.interaction-panel#pack-machine (div.section-head h2+span.tag; control-row; #pack-status; #pack-tray; #collection-insight; div.metrics x3 with ids)
+- section.section.post#post[aria-labelledby=post-title] (eyebrow, h2#post-title, prose, section.learning-comparison, details.exact-odds, div.two-col: What we asked / What we did / What surprised us)
+- section.section#results (p.eyebrow THE TAKEAWAY, h2, div.metrics.metrics-four x4, p.fine, p.story-end)
+- section.section.evidence#evidence (h2#closing-title, p.fine, details.evidence-menu > details.evidence-item x9 [one nests section.section.post#degree-evidence, one section.section#map, one div.prediction#prediction] + details#methods; then h3 AI use + p)
+- footer.wrap.footer (OUTSIDE main; ArcadeFooter, byte-identical to week02)
+- PageScripts page=week01
+
+#### src/app/(week02)/weeks/week02/page.tsx (out/weeks/week02/index.html); layout body "theme-transit guided-post visual-design"; same styles as week01
+
+Body class `theme-transit guided-post visual-design`.
+
+- a.skip
+- header.chrome#arcade-chrome (transit.js->setupChrome() replaces innerHTML)
+- main.wrap#main
+- p.status#app-status + noscript>p.note
+- section.hero.story-hero > div.hero-copy (FLAT: p.eyebrow, h1, p.intro, nav.story-nav, p.story-scope, details.post-primer)
+- section.section.interaction-panel#try-it (div.section-head h2 + label>select#closure-select; p.try-help; section.ride#ride; details#numeric-guess > div.prediction#prediction; div#disruption-results[hidden] > div.closure-comparison-grid + details.interaction-evidence)
+- section.section.post#post (eyebrow, h2#post-title, div.story-copy, figure img)
+- section.section#results (eyebrow THE TAKEAWAY, h2, p, p.story-end)
+- section.section.evidence#evidence (h2#closing-title, p.fine, div.companion-callout, details.evidence-menu > details.evidence-item x8 [sections #nulls, #paradox, #journey; departure-board] + details#methods + p.downloads; details#ai-disclosure)
+- footer.wrap.footer (OUTSIDE main)
+- PageScripts page=week02
+
+#### src/app/(mockups)/mockups/page.tsx (out/mockups/index.html); layout body "mockups"; styles site.css, mockups.css; themeColor #141614
+
+Body class `mockups`.
+
+- a.skip-link[href=#main] "Skip to mockups"
+- header.site-head > div.wide.head-row > a.brand (BrandMark) + nav[aria-label=Main navigation] (Back to Week 2, All weeks)
+- main#main.wide
+- section.review-intro (eyebrow, h1#review-title, p.lede, p.concept-note, div.starting-points)
+- section.review-tools[data-js-only][hidden] > div.tools-row > div.filters (button.review-button[data-filter] x10 with span.filter-count; last has #shortlist-count) + div.shortlist-actions > button#copy-shortlist; div.copy-fallback#copy-fallback
+- div.review-summary (#visible-count, #shortlist-hint)
+- p.sr-only#review-status
+- section.mockup-grid > article.mockup-card x48 (ids card-1..card-20, card-22..card-49; no 21)
+- section.empty-shortlist#empty-shortlist[hidden]
+- footer.review-foot (INSIDE main)
+- dialog.mockup-viewer#mockup-viewer (header.viewer-head, div.viewer-canvas, footer.viewer-foot)
+- noscript > p.wide
+- script#mockup-data[type=application/json] (dangerouslySetInnerHTML, Python-style JSON string)
+- PageScripts page=mockups
+
+#### src/app/(play)/play/page.tsx (out/play/index.html); layout body "signal-story" data-signal-src; styles type, site, signal
+
+Body class `signal-story`.
+
+- a.skip-link "Skip to the mission"
+- header.signal-head.wide > a.brand (BrandMark, href="../") + span.signal-edition + a.text-link[#results]
+- main#main
+- section.signal-opening.wide (eyebrow, h1#signal-title, div.signal-premise)
+- section.signal-lab.wide (div.signal-topline with ol.mission-progress; div.signal-layout > div.signal-visual (figure.signal-map svg#signal-map, div.reach-counts) + div.mission-panel)
+- section.signal-results.section-space#results > div.wide (eyebrow, h2#results-title, div.signal-findings > article x3, div.signal-conclusion, a.button.button-dark)
+- section.paper.signal-evidence.section-space > div.wide (eyebrow, details x3 each summary+span[aria-hidden]+ div.evidence-body, a.text-link back)
+- footer.site-foot > div.wide (3 spans/links) (OUTSIDE main)
+- noscript > p.noscript-note
+- PageScripts page=play
+
+#### src/app/(screen-test)/prototypes/screen-test/page.tsx (out/prototypes/screen-test/index.html); layout has its own \<head> with Google Fonts and a large inline \<style>; body has no class; no imported stylesheets
+
+Body class `(none)`.
+
+- div.sheet
+- header.masthead (p.lbl.crumbs, p.lbl, h1, p.deck, div.billing with span.lbl#snap)
+- section.act x6, each div.rail (div.no 00..05 + p.lbl.tag) + div.act-body (h2 + content): 00 The part (#vitals), 01 auditions (#cast, reel canvases, table#score, #verdict-01), 02 tail (#cv-ccdf, #ccdf-keys), 03 turn (rig, #cv-hist, #stats-toggle, #stats-full, #stats-plain, #verdict-03), 04 negative (draw, #verdict-04), 05 receipts (div.card #rec-*)
+- footer (bare, inside .sheet) > p#foot + p.lbl.foot-links
+- PageScripts page=screen-test (outside .sheet); no skip link, no \<main>
+
+#### src/app/(week03)/weeks/week03/page.tsx (corridor family, for chrome comparison); body "corridor"; type.css, corridor.css
+
+Body class `corridor`.
+
+- a.skip
+- div.topbar > div.shell (brand ../../, a.site-link, div.style-menu (button#style-trigger > span#style-trigger-label; div.style-bar#style-bar[hidden] EMPTY), nav.topnav 'Sections of this post' Migration(.here)/Flights/People/Connectivity)
+- main#main ... section.hero#globe ... details.qa (#questions, #cliques, #views, #methods-drawer)
+- footer.foot (INSIDE main): Sources span + 'Corridor Control · Log–Log Legends · DTU 02805' span
+- PageScripts page=week03
+
+#### src/app/(week04)/weeks/week04/page.tsx (corridor family); body corridor; type, corridor, post + 11 week04-*.css; noindex
+
+Body class `corridor`.
+
+- a.skip
+- div.topbar > div.shell (brand, site-link, NO style-menu, nav.topnav: Opening, Where(.here), Jobs, Staffing, Giants out, Beyond, Deep dive)
+- main#main > section.hero.w4-hero#top ... section.step#(opening|place|jobs|who|footprint|beyond|closing|cut) (NO data-owner) with header.w4-opener and div.card.w4-card x36, details.rx-drawer x84, span.w4-term x69
+- footer.foot (INSIDE main): 4 credit spans (DOL/Census, O*NET, USCIS, title span)
+- 17 stray {" "} text nodes then PageScripts page=week04
+
+#### src/app/(week05)/weeks/week05/page.tsx and src/app/(template)/weeks/%5Ftemplate/page.tsx (corridor post family); body corridor; type, corridor, post
+
+Body class `corridor`.
+
+- a.skip
+- div.topbar > div.shell (brand, site-link, nav.topnav: Opening, 1..7 / 1..2, Closing; no .here)
+- main#main > section.hero.w4-hero#top (w4-hero-grid w5-hero-grid) + div.shell > section.w4-findings#findings (div.w4-finding x7/x2) + div.shell > section.step[data-owner][id] x9/x4 (opening, sections, closing)
+- footer.foot (OUTSIDE main): credit span + '\<title> · Log–Log Legends · DTU 02805' span
+- stray {" "} nodes then PageScripts
+
+#### Repeated structures (survey 2)
+
+- **CorridorTopbar (site top bar)**
+  - occurrences:
+    - src/app/(home)/page.tsx L2-15 (brand href "./", no site-link, nav aria-label "Sections of this page", Posts.here/About)
+    - src/app/(week03)/weeks/week03/page.tsx L6-31 (brand ../../, site-link, style-menu with empty #style-bar, nav: Migration.here/Flights/People/Connectivity)
+    - src/app/(week04)/weeks/week04/page.tsx L6-31 (brand ../../, site-link, nav: Opening, Where.here, Jobs, Staffing, Giants out, Beyond, Deep dive)
+    - src/app/(week05)/weeks/week05/page.tsx L6-35 (brand ../../, site-link, nav: Opening,1..7,Closing, no .here)
+    - src/app/(template)/weeks/%5Ftemplate/page.tsx L6-24 (brand ../../, site-link, nav: Opening,1,2,Closing)
+    - src/app/(styleguide)/styleguide/page.tsx L6-~105 (brand ../, site-link ../#weeks, style-menu with POPULATED style-bar specimen)
+    - NOT on: week01/02 (ArcadeChrome), mockups/play (BrandMark headers), screen-test, kit
+  - markupShape: \<a className="skip" href="#main">Skip to content\</a>
+\<div className="topbar">\<div className="shell">
+  \<a className="brand" href={root}>LOG–LOG{" "}\<b>LEGENDS\</b>\</a>
+  {" "}\<a className="site-link" href={root+"#weeks"}>All posts\</a>   // optional
+  \<div className="style-menu">                                         // optional
+    \<button aria-controls="style-bar" aria-expanded="false" className="style-trigger" id="style-trigger" type="button">\<span id="style-trigger-label">View\</span>{" "}\<span aria-hidden="true">▾\</span>\</button>
+    \<div aria-label="Page style" className="style-bar" id="style-bar" role="group" hidden>{children}\</div>
+  \</div>
+  \<nav className="topnav" aria-label="Sections of this post">
+    \<a [className="here"] href="#x">Label\</a>{" "}\<a href="#y">…\</a>…
+  \</nav>
+\</div>\</div>
+  - variations: Props: root ("./" | "../" | "../../"), showSiteLink (false on home), styleMenu (absent | empty (week03) | children (styleguide specimen)), navLabel ("Sections of this page" on home, "Sections of this post" elsewhere), links: {href,label}[] plus which one starts with className="here" (home Posts, week03 Migration, week04 Where; none on week05/template). Whitespace is per-instance: {" "} sits between brand and site-link (none on home since no site-link), none between site-link and style-menu/nav, and {" "} between every pair of topnav links. The skip link is part of this chrome on all six pages (class "skip", text "Skip to content").
+  - worthExtracting: true
+  - scriptDependencies: week04-cut.js queries ".topnav a[href^='#']" and toggles class "here" (scroll-spy). week03-boot.js reads #style-trigger, #style-trigger-label and fills #style-bar (must stay hidden and empty on week03). corridor.css styles .topbar/.shell/.brand/.site-link/.topnav/.style-*. migration-docs.test requires every class on week03 (incl. style-menu, style-trigger, style-bar) to appear on the styleguide page. Every topnav fragment must resolve to an existing id (site.test fragment check). Home must keep Wikipedia credit in its first \<footer>.
+- **SiteFooter (corridor .foot with credits)**
+  - occurrences:
+    - src/app/(home)/page.tsx L178-193 (INSIDE main; Wikipedia CC BY-SA credit span + a.home-github SVG, no title span)
+    - src/app/(week03)/weeks/week03/page.tsx L2118-2152 (INSIDE main; Sources span with UN DESA, UNHCR, World Bank, BTS, Eurostat, OxCGRT, OpenFlights ODbL, Natural Earth, NASA Blue Marble; title span 'Corridor Control')
+    - src/app/(week04)/weeks/week04/page.tsx L4666-4700 (INSIDE main; 3 credit spans DOL/Census, O*NET prescribed wording, USCIS; title span)
+    - src/app/(week05)/weeks/week05/page.tsx L1178-1194 (OUTSIDE main; Wikipedia CC BY-SA via course snapshot; title span 'The Marvel network gets language')
+    - src/app/(template)/weeks/%5Ftemplate/page.tsx L374-385 (OUTSIDE main; placeholder credit; 'Post template')
+    - src/app/(styleguide)/styleguide/page.tsx L1225-1239 (INSIDE main; guide description span + plain 'Log–Log Legends · DTU 02805' span, no link)
+    - src/app/(kit)/styleguide/kit/page.tsx L89-99 (OUTSIDE main; single span 'Toy data for the component gallery · Log–Log Legends · DTU 02805')
+  - markupShape: \<footer className="foot">\<div className="shell">
+  \<span>{credits}\</span>{" "}   // zero or more credit spans, each followed by {" "}
+  \<span>{title} ·{" "}\<a href={root}>Log–Log Legends\</a>{" "}· DTU 02805\</span>
+\</div>\</footer>
+  - variations: Props: credits (array of ReactNode spans; children), title (string, or omitted: styleguide uses plain text, home has no title span and adds the GitHub icon link instead), root href ("../../"). Placement differs: inside \<main> on home, week03, week04, styleguide; outside on week05, template, kit. A component can only own the footer, so each page keeps its own placement. Week 4 is followed by 17 stray {" "} text nodes and week05 by 7, left over from removed \<script> tags (harmless whitespace that can be dropped, though the built bytes change).
+  - worthExtracting: true
+  - scriptDependencies: credits.test.mjs reads the FIRST '\<footer' on the page and checks for exact credit strings with whitespace collapsed: home/week01/week02 need 'English Wikipedia' and href="https://creativecommons.org/licenses/by-sa/4.0/"; week03 needs UNHCR..., 'World Bank, World Development Indicators', 'Eurostat, asylum applicants by citizenship', 'Blavatnik School of Government, University of Oxford', ODbL href, 'offered under the same licence', NASA Blue Marble href, CC BY 4.0 href; week04 needs the O*NET 31.0/25.0 wording verbatim, USDOL/ETA disclaimer, USCIS text + href. No component may render an earlier \<footer> on these pages. The credit text must stay as JSX children/props, not be generated, so the strings survive.
+- **ArcadeChrome (header#arcade-chrome)**
+  - occurrences:
+    - src/app/(week01)/weeks/week01/page.tsx L6-10
+    - src/app/(week02)/weeks/week02/page.tsx L6-10
+  - markupShape: \<a className="skip" href="#main">Skip to content\</a>
+\<header className="chrome" id="arcade-chrome">
+  \<a className="arcade-wordmark" href="../../">LOG–LOG ARCADE\</a>
+  \<a href="#post">The post\</a>
+\</header>
+  - variations: None: byte-identical on both pages. This is a no-JS placeholder. At runtime cabinet.js setupChrome() (called at import by packs.js and transit.js) overwrites host.innerHTML with '\<a class="arcade-wordmark" href=…>LOG–LOG \<b>LEGENDS\</b>\</a>\<nav aria-label="Site navigation">\<a href=…#weeks>Posts\</a>\<a href=…#network>The data\</a>\<button class="quiet" data-progress id="open-logbook">LOGBOOK 0/N\</button>\</nav>' and appends \<dialog id="logbook"> to \<body>.
+  - worthExtracting: true
+  - scriptDependencies: #arcade-chrome must exist (cabinet.js $("#arcade-chrome")). The script owns the content, so a React component should render only the server placeholder and must never re-render after hydration, or React and the script will fight over the children. #logbook, #open-logbook, #close-logbook, #reset-logbook, #export-logbook, #score-list, #score-mean, #storage-note and [data-progress] are all script-created. arcade.css styles .chrome, .chrome nav, .arcade-wordmark. site.test ARCADE_PAGES (index, week01, week02) require rel="icon" and existing local assets.
+- **ArcadeFooter (footer.wrap.footer)**
+  - occurrences:
+    - src/app/(week01)/weeks/week01/page.tsx L672-694
+    - src/app/(week02)/weeks/week02/page.tsx L886-908
+  - markupShape: \<footer className="wrap footer">
+  \<span>Log–Log Legends · 02805 Social graphs and interactions · Fall 2026 · Article names, links and text excerpts from English Wikipedia,{" "}\<a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0\</a>\</span>
+  \<span>\<a href="../../">Legends\</a>{" "}/{" "}\<a href="../../mockups/">Design archive\</a>{" "}/{" "}\<a href="../../weeks/week01/">Week 1\</a>{" "}/{" "}\<a href="../../weeks/week02/">Week 2\</a>\</span>
+\</footer>
+  - variations: Byte-identical on both pages, so it takes no props. It sits outside \<main>.
+  - worthExtracting: true
+  - scriptDependencies: credits.test: first \<footer> must contain 'English Wikipedia' and the CC BY-SA href. arcade.css .footer. The fragment check needs every link target to exist (mockups/, weeks/week01/, weeks/week02/).
+- **ArcadePreamble (load status + noscript note)**
+  - occurrences:
+    - src/app/(week01)/weeks/week01/page.tsx L12-20
+    - src/app/(week02)/weeks/week02/page.tsx L12-20
+  - markupShape: \<p className="status" id="app-status" role="status">Loading the frozen snapshot…\</p>
+\<noscript>\<p className="note">The interactive cabinets need JavaScript. The main findings and methods are available below.\</p>\</noscript>
+  - variations: Identical text on both pages.
+  - worthExtracting: true
+  - scriptDependencies: #app-status is written and hidden by packs.js and transit.js (via cabinet.js loadData), and setupChrome() observes its 'hidden' attribute to re-scroll to the hash target. It must stay a \<p> with id="app-status".
+- **StoryHero (arcade cabinet header: hero + story-nav + scope + primer)**
+  - occurrences:
+    - src/app/(week01)/weeks/week01/page.tsx L21-83
+    - src/app/(week02)/weeks/week02/page.tsx L21-78
+  - markupShape: \<section className="hero story-hero">\<div className="hero-copy">
+  [\<div>]  // week01 only wraps the first four children
+    \<p className="eyebrow">{weekLabel}\</p>
+    \<h1>{title}\</h1>
+    \<p className="intro">{intro}\</p>
+    \<nav aria-label="This post" className="story-nav">
+      \<a className="active-step" href="#try-it">Try it\</a>
+      \<a href="#post">What happens\</a>
+      \<a href="#evidence">Go deeper\</a>
+    \</nav>
+  [\</div>]
+  \<p className="story-scope">{scope}\</p>
+  \<details className="post-primer">
+    \<summary>The dataset and a few useful terms\</summary>
+    \<p>{datasetBlurb}\</p>
+    \<dl>{\<dt/>\<dd/> pairs}\</dl>
+    \<a href="https://sunelehmann.com/socialgraphs2026-web/data/">Course dataset and loading instructions ↗\</a>
+  \</details>
+\</div>\</section>
+  - variations: Props: eyebrow, title, intro, scope, primerIntro, terms: {term, definition}[] (week01 has 4 terms, week02 has 4 different ones), and groupIntro (boolean: week01 wraps eyebrow/h1/intro/nav in an extra \<div>, week02 doesn't). The story-nav is identical on both pages, with no {" "} between links. StoryNav and PostPrimer can be separate subcomponents.
+  - worthExtracting: true
+  - scriptDependencies: story-nav targets #try-it, #post and #evidence. On week01, #try-it is a span.anchor before the panel. On week02 it is the panel section's id, so every page needs those three ids. story.css styles .story-nav, .active-step, .story-scope, .post-primer; site.test requires each live week page to contain its course title (in the eyebrow).
+- **InteractionPanel / SectionHead (cabinet section header)**
+  - occurrences:
+    - week01 L85-88 section.section.interaction-panel#pack-machine > div.section-head h2 'Open a pack' + span.tag
+    - week01 L443-447 section#map: h2 + span.tag '303 ARTICLES · 19 PIECES · UNDIRECTED'
+    - week01 L507-516 h2 + label 'Axis view' > select#degree-scale
+    - week01 L584-590 h2 'Your card index' + label > input#collection-search
+    - week02 L79-93 section.section.interaction-panel#try-it > h2 + label 'Close a station' > select#closure-select
+    - week02 L358-361 #nulls h2 + span.tag
+    - week02 L641-644 #paradox h2 + span.tag 'THE FRIENDSHIP PARADOX · 286 LINKED ARTICLES'
+    - week02 L732-735 interchange h2 + span.tag
+    - week02 L757-760 #journey h2 + span.tag
+  - markupShape: \<section className="section[ interaction-panel]" [id]>
+  \<div className="section-head">
+    \<h2>{title}\</h2>
+    {aside}   // \<span className="tag">…\</span> | \<label>Text\<select|input …/>\</label>
+  \</div>
+  {children}
+\</section>
+  - variations: Props: title, the aside (a tag string, or a control node as children), id, and an interactive flag that adds the 'interaction-panel' class. Several of these sections are nested inside details.evidence-item.
+  - worthExtracting: true
+  - scriptDependencies: week02-prose.test matches the tag text '286 LINKED ARTICLES'. Control ids are script-owned: #degree-scale, #collection-search (packs.js), #closure-select (transit.js). arcade.css .section-head, .section-head h2, .tag.
+- **MetricTiles (div.metrics > div.metric)**
+  - occurrences:
+    - week01 L118-131 (3 tiles with ids unique-count/pull-count/rare-count)
+    - week01 L272-289 div.metrics.metrics-four (4 tiles, no ids)
+    - week02 L684-693 (2 tiles: Spider-Man, Radian)
+  - markupShape: \<div className="metrics[ metrics-four]">
+  \<div className="metric">\<strong [id]>{value}\</strong>\<span>{label}\</span>\</div>…
+\</div>
+  - variations: Props: tiles: {value, label, id?}[] and a 'four' modifier. No {" "} between tiles.
+  - worthExtracting: true
+  - scriptDependencies: week01-data.test matches the literal '\<strong>≈1,945\</strong' and '\<strong>≈382\</strong' (so \<strong> must have no attributes there); week01-prose slices from '\<p class="eyebrow">THE TAKEAWAY\</p>' to '\</section>' and checks '58 cards share the lowest chance of appearing' and '107× Spider-Man’s drop rate versus Baymax’s'. packs.js writes #unique-count, #pull-count, #rare-count.
+- **PredictionHost (div.prediction#prediction)**
+  - occurrences:
+    - week01 L577-580 inside details.evidence-item 'Try estimating the number of packs'
+    - week02 L144-147 inside details#numeric-guess 'Predict the total disruption instead'
+  - markupShape: \<details [id="numeric-guess"] [className="evidence-item"]>
+  \<summary>{prompt}\</summary>
+  \<div className="prediction" id="prediction">\</div>
+\</details>
+  - variations: Only the summary text and wrapper class/id differ. The host div is empty in both. cabinet.js prediction(host, config) writes the whole widget (div.prediction-label, h2, form.guess-form, input number + range, p.guess-feedback) into innerHTML.
+  - worthExtracting: false
+  - scriptDependencies: #prediction must exist and stay empty (packs.js L24, transit.js L301). transit.js also toggles #numeric-guess. With only two empty mount points, a component would add nothing. The useful refactor is a client \<Prediction> component that replaces cabinet.js prediction(), which is a chart/script conversion and not a markup extraction. arcade.css .prediction*, body.unlocked.
+- **EvidenceMenu / EvidenceItem (Go deeper drawers)**
+  - occurrences:
+    - week01 L302-670 section.section.evidence#evidence: details.evidence-menu with 9 details.evidence-item + details#methods
+    - week02 L250-884 same section with div.companion-callout, details.evidence-menu with 8 evidence-items + details#methods + p.downloads, then details#ai-disclosure
+    - Shared child 'What can this dataset tell us?' div.closing-grid: week01 L615-638, week02 L800-824 (identical 'What the data means' column + download link; different 'Limits' text)
+    - Shared details#methods closing paragraph 'Analysis and source code on GitHub ... never edited.' week01 L654-658, week02 L860-864
+  - markupShape: \<section className="section evidence" id="evidence">
+  \<h2 id="closing-title">Curious? Go deeper.\</h2>
+  \<p className="fine">Charts, data and methods for anyone who wants to check the details.\</p>
+  {beforeMenu}
+  \<details className="evidence-menu">
+    \<summary>Explore the explanations &amp; evidence\</summary>
+    \<details className="evidence-item">\<summary>{q}\</summary>{children}\</details>…
+    \<details id="methods">\<summary>Technical methods &amp; code\</summary>{methods}\<p>\<a href="https://github.com/horrrt/02805_social_graphs/tree/main/analysis">Analysis and source code on GitHub\</a>. All experiments run locally in your browser; the frozen data is never edited.\</p>\</details>
+    {afterMethods}
+  \</details>
+  {aiNote}
+\</section>
+  - variations: EvidenceItem(summary, children) is the main repeated unit (17 uses). DatasetLimits(limits) renders the closing-grid with a fixed 'What the data means' column. The AI note differs: week01 uses an h3 + p outside the menu, week02 a details#ai-disclosure. Week02 adds a companion-callout before the menu and p.downloads after #methods. Some items wrap a whole section.section (sometimes .post, with ids #degree-evidence, #map, #nulls, #paradox, #journey).
+  - worthExtracting: true
+  - scriptDependencies: cabinet.js revealHashTarget opens every ancestor \<details> of a hash target, so ids nested in drawers (#methods, #nulls, #map, #prediction, #degree-evidence) must stay inside real \<details>. week01 links '#methods'. week02 links '#nulls'. story.css styles .evidence > details, .evidence-item > summary, .evidence-item > .section. week01-prose slices '\<caption class="fine">' to the first '\</table>' (the API-check table). week02-data takes the FIRST '\<table>…\<tbody>' with '\<th scope="row">' rows (the nulls table), so no table may be added before it.
+- **MockupCard (48 gallery cards)**
+  - occurrences:
+    - src/app/(mockups)/mockups/page.tsx L119-1417: shape A plain, 26 cards: 1-20, 22-27 (21 does not exist)
+    - shape B UX principles, cards 28-30: adds p.ux-focus + details.ux-rationale summary 'UX rationale & review notes' > p + p.ux-sources 'Principle sources:' (2/1/3 links joined by {" "}·{" "}) + p.ux-review-note \<strong>Before implementation:\</strong>
+    - shape C story, cards 31-46: p.ux-focus + details.ux-rationale summary 'Story & interaction' > p + p.ux-review-note (no sources); cards 32 and 45 add an extra p.ux-review-note correction notice BETWEEN ux-focus and card-actions
+    - shape D data story, cards 47-49: article.mockup-card.data-story-card, div.data-story-content wraps preview-link + div.data-story-copy (h2, ux-focus, ux-review-note 'Exact static visualization…', card-actions, details 'Interaction & UX' with source links, details 'Read the data' with a per-card \<table>)
+  - markupShape: \<article className="mockup-card" data-mockup={n} id={`card-${n}`}>
+  \<div className="card-topline">\<span className="mockup-number">{pad2(n)}\</span>\<span className="mockup-origin">{origin}\</span>\</div>
+  \<a className="preview-link" href={image} data-open-mockup={n} aria-label={`Open full-page mockup ${n}: ${name}`}>
+    \<img src={thumb} width="360" height={thumbH} loading={n\<=4?"eager":"lazy"} decoding="async" alt={`Full-page preview of mockup ${n}: ${name}`} />
+  \</a>
+  \<h2>\<a href={image} data-open-mockup={n}>{name}\</a>\</h2>
+  [\<p className="ux-focus">{focus}\</p>]
+  [\<p className="ux-review-note">{correctionNotice}\</p>]
+  \<div className="card-actions">
+    \<a className="review-button" href={image} data-open-mockup={n} aria-label={`View mockup ${n}`}>View full page\</a>
+    \<button className="review-button" type="button" data-favourite={n} aria-pressed="false" data-js-only="" hidden>Save favourite\</button>
+  \</div>
+  [\<details className="ux-rationale">\<summary>{rationaleLabel}\</summary>\<p>{uxSummary}\</p>[\<p className="ux-sources">Principle sources:{" "}{links joined by {" "}·{" "}}\</p>]\<p className="ux-review-note">\<strong>Before implementation:\</strong>{" "}{reviewNote}\</p>\</details>]
+\</article>
+  - variations: Props: n, name, image, thumbnail, thumbHeight (varies: 880-972; NOT in #mockup-data, which stores full-image height), origin (string; e.g. 'Original direction', 'Stripe', 'Bain &amp; Company', 'UX principles', 'Data story · verified data'; derivable from inspiration/collection in #mockup-data), loading (eager for 1-4 only), focus (ux-focus text, NOT in #mockup-data), correctionNotice (32, 45; in JSON as correctionNotice), rationaleLabel/uxSummary/uxSources/reviewNote (in JSON for 28-49). Data-story cards (D) need kind='data-visualization': a different wrapper, aria-label 'Open visualization N: …' / 'View visualization N', button text 'View visualization', descriptive alt (JSON 'alt'), width 720 and height 480/540, two drawers ('Interaction & UX' with a \<strong>Proposed interaction:\</strong> paragraph plus a second paragraph, then 'Read the data' with a caption/thead/tbody table, a review note and a source link). The JSON's uxSummary for 47-49 concatenates three paragraphs, so card D should keep its prose as children rather than be generated. Also render the filter buttons from a {key,label,count} list: they carry {" "} between buttons and between label and span.filter-count.
+  - worthExtracting: true
+  - scriptDependencies: mockups.js: querySelectorAll('.mockup-card') and card.dataset.mockup (Number), '[data-open-mockup]' (dataset.openMockup), '[data-favourite]' (dataset.favourite), '[data-js-only]' (unhides), '[data-filter]' + '.filter-count'; getElementById('mockup-data') parses the JSON script, so keep that \<script type="application/json" id="mockup-data"> exactly. It is Python-style JSON (", " separators), and JSON.stringify would change its bytes. No test reads it, but the viewer depends on its fields. Also #card-N ids (deep links / ?mockup=), #shortlist-count, #copy-shortlist, #visible-count, #review-status, #empty-shortlist, #show-all and all #viewer-* / #mockup-viewer ids. site.test excludes /mockups/ from the prose scans.
+- **BrandMark (stacked LOG–LOG / LEGENDS logo)**
+  - occurrences:
+    - src/app/(play)/play/page.tsx L8-15 inside header.signal-head.wide
+    - src/app/(mockups)/mockups/page.tsx L9-16 inside header.site-head > div.wide.head-row
+  - markupShape: \<a className="brand" href="../" aria-label="Log-Log Legends home">
+  \<span className="brand-mark" aria-hidden="true">↗\</span>
+  \<span>LOG–LOG\<br />LEGENDS\</span>
+\</a>
+  - variations: Identical on both pages. The surrounding headers differ: play uses header.signal-head.wide with span.signal-edition and a.text-link; mockups uses header.site-head > div.wide.head-row with nav[aria-label="Main navigation"]. Both pages use a.skip-link with different text ('Skip to the mission' / 'Skip to mockups'). Extract only the brand, or a small header with slots.
+  - worthExtracting: true
+  - scriptDependencies: site.css .brand/.brand-mark/.skip-link (signal.css on play). No script queries these.
+- **PostSection + W4Card (corridor post section, card and drawers)**
+  - occurrences:
+    - week05: section.step[data-owner][id] x9 (opening, relations, copying, search, autocomplete, heaps, fame, weird, closing); div.card.w4-card.w5-card x7; details.rx-drawer x24
+    - template: 4 sections, 2 w5-cards, 5 rx-drawers
+    - week04: section.step (NO data-owner) x8; div.card.w4-card x36; details.rx-drawer x84; span.w4-term x69
+    - week03: section.step x8 with div.step-head (older shape, details.qa drawers)
+  - markupShape: \<section className="step" data-owner={owner} id={id}>
+  \<header className="w4-opener">\<span aria-hidden="true" className="w4-opener-num">{n}\</span>\<div>\<h2>{title}\</h2>\<p>{finding}\</p>\</div>\</header>
+  \<div className="card w4-card w5-card">
+    \<header className="w4-q" id={`${id}-asked`}>\<span className="w4-num">{nA}\</span>\<div>\<h2>{question}\</h2>\<p className="w4-answer">{answer}\</p>\</div>\</header>
+    \<div className="w4-two">\<div>\<div id={`${id}-did`}>…\</div>\<div id={`${id}-surprise`}>\<Notice icon="💡" title="What to notice">…\</Notice>\</div>\</div>\<div id={`${id}-figure`}>…\</div>\</div>
+    \<div className="rx-drawers rx-foot">
+      \<details className="rx-drawer">\<summary>Method\</summary>\<div className="rx-drawer-body">…\<p id={`${id}-limit`}>…\</p>\</div>\</details>
+      \<details className="rx-drawer">\<summary>What we read in the data\</summary>\<div className="rx-drawer-body" id={`${id}-checked`}>…\</div>\</details>
+    \</div>
+  \</div>
+\</section>
+Notice: \<div className="notice">\<span className="ico">{icon}\</span>{" "}\<span>\<b>{title}\</b>{" "}{children}\</span>\</div>
+Term: \<span className="w4-term">\<button aria-describedby={id} type="button">{word}\</button>\<span className="w4-pop" id={id} role="tooltip">{def}\</span>\</span>
+  - variations: owner prop must be OMITTED on week04 and rendered as data-owner="" or a name on week05/template. Card class is 'card w4-card' on week04 and 'card w4-card w5-card' on week05/template. The closing card uses 'card w4-card w5-stack'. Figure layout is either side by side (in w4-two) or a w5-fig/w5-two row under the text. The drawer list varies (Method / More numbers / What we read in the data). Week04 cards have more variants (rx-start-grid, nested w4-q without num). Week03 predates this shape and should only share Notice.
+  - worthExtracting: true
+  - scriptDependencies: template.test: exact '\<section class="step" data-owner="[^"]*" id="(\w+)">' (attribute order className, data-owner, id), 'class="card w4-card w5-card"', ids \<section>-(asked|did|figure|surprise|checked|limit) and href="#\<section>"; week05-frame.test: '\<section class="step" data-owner="[^"]+" id="' and class="w4-finding" rows in #findings; kit.test: ids \<s>-asked/did/figure/surprise/checked/limit for the 7 week05 sections. text-budget.test: div with class containing w4-card (class attr must be on a \<div>), div#[a-z]+-did with ≤1 \<p>, \<summary> as the first child of \<details>, and '\<span class="w4-pop"' with class as the first attribute. week04-structure.test matches '\<span class="w4-num">', nav.w4-rail, '\<li data-target=…>\<a…>\<span class="w4-rail-label">'. Scripts mount into #chart-*, #\<section>-figure/-passage and [data-finding]. migration-docs: week03 #questions/#methods-drawer must be \<details> without open, with '\<details' within 120 chars before the id.
+- **WeekCard + CourseTrack (home lobby)**
+  - occurrences:
+    - src/app/(home)/page.tsx L56-90 ol.week-grid > li > a.week-card x5
+    - src/app/(home)/page.tsx L42-91 ol.home-track > li.live[.current] > a x5 and li (coming) x3
+  - markupShape: \<li>\<a data-week={n} className={"week-card"+(current?" current":"")} href={`weeks/week0${n}/`}>
+  \<span className="week-tag">Week {n} · {courseTitle}\</span>
+  \<h3>{cabinet.name}\</h3>
+  \<p className="week-q">{question}\</p>
+  \<span className="week-go">Read the post →\</span>
+\</a>\</li>
+Track: \<li className="live[ current]">\<a href={href}>\<span>W{n}\</span>{courseTitle}\<i aria-hidden="true">→\</i>\</a>\</li> | \<li>\<span>W{n}\</span>{courseTitle}\</li>
+  - variations: src/scripts/weeks.js WEEKS already has n, courseTitle, status and cabinet.name/href, which covers the tag, h3, href, track label and live/coming state. It lacks the week-q question text: cabinet.blurb is different copy. Add a 'question' field before mapping. 'current' = currentWeek(). The track labels equal courseTitle for W1-W8.
+  - worthExtracting: true
+  - scriptDependencies: site.test regex '\<(a|div)\s+data-week="(\d)"([^>]*)>' requires data-week as the FIRST attribute on the card element. Cards must be in course order, one per live week, contain courseTitle and cabinet.name, and have href exactly cabinet.href. index.html must link currentWeek().cabinet.href. theme.test requires index.html to have no 'data-scene'. home.css styles .week-card/.week-grid/.home-track.
+- **ScreenTestAct (section.act with rail)**
+  - occurrences:
+    - src/app/(screen-test)/prototypes/screen-test/page.tsx L32, 48, 97, 118, 188, 228 (6 acts: 00 The part, 01 The auditions, 02 The tail, 03 The turn, 04 The negative, 05 Receipts)
+  - markupShape: \<section className="act">
+  \<div className="rail">\<div className="no">{no}\</div>\<p className="lbl tag">{tag}\</p>\</div>
+  \<div className="act-body">\<h2>{title}\</h2>{children}\</div>
+\</section>
+  - variations: Props: no, tag, title, children. Single page only.
+  - worthExtracting: true
+  - scriptDependencies: pages/screen-test.js uses getElementById for #vitals, #cast, #cv-*, #cap-*, #score-body, #verdict-0x, #rig-*, #stats-*, #null-*, #who-a/b, #draw-*, #rec-*, #snap, #foot. Styles are in the layout's inline \<style> (section.act, .rail, .act-body). week02-prose.test reads the screen-test HTML for 'The 87.4% quoted below'.
+- **PlayEvidenceDetails (play page drawers)**
+  - occurrences:
+    - src/app/(play)/play/page.tsx L214-264 (3 details)
+  - markupShape: \<details>\<summary>{q}{" "}\<span aria-hidden="true">+\</span>\</summary>\<div className="evidence-body">{children}\</div>\</details>
+  - variations: Only the summary text and body differ, on one page with three uses.
+  - worthExtracting: false
+  - scriptDependencies: signal.css only; no script or test hooks.
+
+#### Surveyor notes (survey 2)
+
+I edited nothing. Files read in full: the home, week01, week02, mockups, play and screen-test pages and their layouts. I also read the week03, week04, week05, template, styleguide and kit chrome, plus the tests.
+
+Chrome families:
+1. **Corridor topbar and `.foot`.** Six pages use them: home, week03, week04, week05, template and styleguide. Kit has the `.foot` only.
+2. **Arcade `header#arcade-chrome` and `footer.wrap.footer`.** Week01 and week02 only.
+3. **Brand-mark headers.** Mockups and play, each with a different wrapper.
+4. **Screen-test.** Its own masthead and inline CSS.
+
+No chrome element appears on every page. The skip link is the closest, and it varies:
+- `a.skip` "Skip to content" on the corridor and arcade pages.
+- `a.skip-link` on play and mockups, with different text.
+- None on screen-test or kit.
+
+Footer placement inside `<main>` varies per page, so a `SiteFooter` component cannot fix where it sits.
+
+Constraints a refactor must keep:
+- **`PageScripts` stays literal.** `next-build.test` requires the literal `<PageScripts page="<group>" />` in each page.tsx. A shared `PostLayout` that renders `PageScripts` would fail that test unless the test changes.
+- **Stylesheet imports stay in each layout.** `pageStyles()` regex-reads `import "@/styles/x.css";` lines from each group's layout.tsx. Moving them into a shared layout component breaks `stylesheets.test` and `kit.test`.
+- **Tests compare built HTML.** `builtPage()` removes `<!-- -->` markers and Next scripts. Attribute order, class-first tags, `{" "}` text nodes and element nesting all reach the bytes the tests match. A `.map()` that drops the per-instance `{" "}` separators changes inline spacing and the built bytes.
+
+Script-owned DOM:
+- **`#arcade-chrome`.** `packs.js` and `transit.js` call `cabinet.js setupChrome()`, which replaces the header's innerHTML (LEGENDS, Posts/The data/LOGBOOK) and appends `dialog#logbook` to body. Any `ArcadeChrome` component is a static placeholder and must never re-render after hydration.
+- **`#prediction` (week01 and week02).** An empty host that `cabinet.js prediction()` fills.
+- **Week03 `#style-bar`.** Filled by `week03-boot.js`.
+
+Findings outside this mapping:
+- **Broken link.** `setupChrome()` writes `href=…#network`, but the home page has no `id="network"`. The fragment test can't catch it because the link is created by JS.
+- **Orphaned `lobby.js`.** It calls `setupChrome()` and draws `#lobby-canvas`, but no entry imports it. The home page has no `PageScripts` and no lobby canvas.
+
+Data-driven candidates:
+- **Home cards.** `WEEKS` in `src/scripts/weeks.js` covers everything except the `week-q` question text, so a `question` field is needed.
+- **Mockup cards.** `#mockup-data` covers most fields except the thumbnail heights and the `ux-focus` text. Its JSON is Python-formatted, so re-serialising it changes its bytes. No test reads it.
+
+Card 21 does not exist; ids run `card-1`..`card-20` and `card-22`..`card-49`. Week04 and week05 leave 17 and 7 stray `{" "}` nodes before `PageScripts`, left over from the removed script tags.

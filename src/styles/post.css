@@ -1,0 +1,3467 @@
+/* post.css: the one stylesheet every post and the post template load, after
+   type.css (the type tokens) and corridor.css (the site's base and colours).
+
+   Class prefixes are historical: w4-* and rx-* were built for week 4, w5-* and
+   kit-* for week 5. Every post may use all of them; a new post adds its rules
+   here rather than in a file of its own. Only a figure no other post will use
+   gets its own sheet (week 4's week04-*.css).
+
+   Parts, in cascade order:
+   1. The post: hero, findings strip, openers, cards, notices, terms, rail (from week04.css)
+   2. Drawers, reveals and the card grid of the redesign (from week04-rx.css)
+   3. The component kit and the section card, w5-card (from kit.css)
+   4. Search, quiz, stat rows and panels first built for week 5 (from week05.css)
+   5. The visually-hidden helper (from week 5's inline style) */
+
+/* ==== 1. The post: hero, findings strip, openers, cards, notices, terms, rail (from week04.css) ==== */
+
+/* Week 4 — Where the hiring is (extras on corridor.css) */
+
+.corridor .hero .shell {
+  grid-template-columns: minmax(0, 1.4fr) minmax(240px, 320px);
+  max-width: 1180px;
+  min-height: auto;
+  padding-block: 36px 40px;
+}
+
+.corridor .chart-host {
+  background: linear-gradient(180deg, #ffffff 0%, #f7fafd 100%);
+  border: 1px solid var(--line-soft);
+  border-radius: 12px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  height: 360px;
+  width: 100%;
+}
+
+.corridor .chart-host.tall {
+  height: 420px;
+}
+
+.corridor .chart-host.short {
+  height: 240px;
+}
+.corridor .chart-host.map {
+  height: 540px;
+}
+
+.corridor #place-longhaul .chart-host {
+  height: 400px;
+}
+
+.corridor #place-longhaul .chart-host.map {
+  height: 540px;
+}
+
+.corridor #place-longhaul .longhaul-stack {
+  display: grid;
+  gap: 22px;
+  grid-template-columns: 1fr;
+}
+
+.corridor .draft-banner {
+  background: #fff6e8;
+  border: 1px solid #f5d5a6;
+  border-radius: 10px;
+  color: #8a5a12;
+  font-size: var(--fs-small);
+  line-height: 1.45;
+  margin: 0 0 18px;
+  padding: 12px 14px;
+}
+
+.corridor .draft-banner[hidden] {
+  display: none;
+}
+
+.corridor .stub {
+  opacity: 0.7;
+}
+
+.corridor .stub .card {
+  border-style: dashed;
+}
+
+.corridor .stub-note {
+  color: var(--ink-mute-text);
+  font-size: var(--fs-small);
+  margin: 0;
+}
+
+.corridor .place-hero-aside {
+  margin-top: 8px;
+}
+
+.corridor .select-row {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0 0 10px;
+}
+
+.corridor .select-row label {
+  color: var(--ink-soft);
+  font-size: var(--fs-small);
+  font-weight: 600;
+}
+
+.corridor .select-row select {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--ink);
+  font: inherit;
+  font-size: var(--fs-small);
+  padding: 6px 10px;
+}
+
+.corridor #place .grid-side {
+  margin-top: 8px;
+}
+
+.corridor .place-keys {
+  margin-bottom: 8px;
+}
+
+.corridor .region-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 16px;
+  margin: 0 0 10px;
+}
+
+.corridor .region-legend span {
+  align-items: center;
+  color: var(--ink-soft);
+  display: inline-flex;
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  gap: 6px;
+}
+
+.corridor .region-legend i {
+  border-radius: 50%;
+  display: inline-block;
+  height: 8px;
+  width: 8px;
+}
+
+.corridor #place .card + .card {
+  margin-top: 20px;
+}
+
+@media (max-width: 860px) {
+  .corridor .chart-host,
+  .corridor .chart-host.tall,
+  .corridor .chart-host.map,
+  .corridor #place-longhaul .chart-host,
+  .corridor #place-longhaul .chart-host.map {
+    height: 320px;
+  }
+}
+
+/* Section 2 · Which jobs go together ---------------------------------- */
+.corridor #jobs .card + .card {
+  margin-top: 20px;
+}
+.corridor .jobs-card {
+  opacity: 1;
+}
+.corridor .jobs-grid {
+  align-items: start;
+  display: grid;
+  gap: 22px;
+  grid-template-columns: minmax(0, 1.7fr) minmax(230px, 1fr);
+  margin-top: 16px;
+}
+.corridor .jobs-network-grid {
+  grid-template-columns: minmax(0, 1.8fr) minmax(230px, 0.8fr);
+}
+.corridor .jobs-groups-grid {
+  grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.9fr);
+}
+.corridor .jobs-pairs {
+  height: 470px;
+}
+.corridor .jobs-network {
+  height: 520px;
+}
+.corridor .jobs-groups,
+.corridor .jobs-nmi {
+  height: 360px;
+}
+.corridor .jobs-inspector h2 {
+  font-size: var(--fs-h4);
+  margin: 0 0 5px;
+}
+.corridor .jobs-inspector h3 {
+  color: var(--ink-soft);
+  font-size: var(--fs-small);
+  letter-spacing: 0.04em;
+  margin: 18px 0 8px;
+  text-transform: uppercase;
+}
+.corridor .jobs-meta {
+  color: var(--ink-mute-text);
+  font-size: var(--fs-small);
+  margin: 0 0 10px;
+}
+.corridor .jobs-partners {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.corridor .jobs-partners li {
+  border-bottom: 1px solid var(--line-soft);
+  display: flex;
+  font-size: var(--fs-small);
+  gap: 8px;
+  justify-content: space-between;
+  padding: 7px 0;
+}
+.corridor .jobs-partners b {
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+.corridor .jobs-bridge-list {
+  display: grid;
+  gap: 7px;
+  margin-top: 16px;
+}
+.corridor .jobs-bridge-list button {
+  align-items: center;
+  background: #fff8ee;
+  border: 1px solid #f5d5a6;
+  border-radius: 8px;
+  color: var(--ink);
+  cursor: pointer;
+  display: flex;
+  font: inherit;
+  font-size: var(--fs-small);
+  gap: 8px;
+  justify-content: space-between;
+  padding: 8px 10px;
+  text-align: left;
+}
+.corridor .jobs-bridge-list button:hover,
+.corridor .jobs-bridge-list button:focus-visible {
+  border-color: var(--accent);
+}
+.corridor .jobs-back {
+  margin-top: 12px;
+  border: 0;
+  background: none;
+  color: var(--ink-soft);
+  font: inherit;
+  font-size: var(--fs-small);
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+}
+
+.corridor .jobs-bridge-list b {
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 860px) {
+  .corridor .jobs-grid,
+  .corridor .jobs-network-grid,
+  .corridor .jobs-groups-grid {
+    grid-template-columns: 1fr;
+  }
+  .corridor .jobs-pairs,
+  .corridor .jobs-network,
+  .corridor .jobs-groups,
+  .corridor .jobs-nmi {
+    height: 340px;
+  }
+}
+
+/* Deep dive · the first round of questions, kept for provenance --------- */
+
+.corridor #cut details.qa.cut + details.qa.cut {
+  margin-top: 14px;
+}
+
+/* The cards moved inside a cut-section's <details> keep their own borders
+   and shadows (unchanged .card rules), which reads as boxes-inside-a-box.
+   A left rule and a tighter top margin make the nesting look intentional
+   instead of accidental. */
+.corridor .cut-body {
+  border-left: 2px solid var(--line);
+  margin-top: 4px;
+  padding-left: 16px;
+}
+
+.corridor .cut-body .card,
+.corridor .cut-body .cut-card {
+  box-shadow: none;
+}
+
+.corridor .cut-body > .card:first-child,
+.corridor .cut-body > .cut-card:first-child,
+.corridor .cut-body > .w4-box-intro + .card,
+.corridor .cut-body > .w4-box-intro + .cut-card {
+  margin-top: 0;
+}
+
+/* One or two sentences that open a deep-dive box: what it holds and which
+   section it extends. */
+.corridor .cut-body > .w4-box-intro {
+  color: var(--ink-soft);
+  font-size: var(--fs-body);
+  line-height: 1.55;
+  margin: 0 0 16px;
+  max-width: 68ch;
+}
+
+.corridor .tag {
+  background: var(--line-soft);
+  border-radius: 999px;
+  color: var(--ink-soft);
+  display: inline-block;
+  font-size: var(--fs-caption);
+  font-weight: 700;
+  line-height: 1;
+  padding: 3px 8px;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+/* Section 3 · Who staffs whom ----------------------------------------- */
+
+/* Week 4 figures. Section 3: clients by filings and by how much one vendor supplies.
+   Three categorical slots at most on a scatter (the reference palette's
+   all-pairs limit, validated on a white surface); clients without a sector
+   label are a neutral grey, not a fourth hue. */
+.staffing {
+  /* The Corridor page's tokens under the names this figure was written with. */
+  --surface: var(--card);
+  --paper: var(--ink);
+  --muted: var(--ink-soft);
+  --band: var(--line-soft);
+  --accent: #14618f;
+  --sans: var(--font-sans);
+  --series-1: #2a78d6; /* finance and insurance */
+  --series-2: #eb6834; /* health care */
+  --series-3: #1baf7a; /* other labelled sectors */
+  --series-none: #b9c4d2; /* no sector label */
+  --grid: #e6ecf3;
+  --bar: var(--accent);
+  margin: 18px 0 0;
+}
+.staffing-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 20px;
+  margin-bottom: 14px;
+}
+/* One segmented control for the whole page (redesign contract C3): the year
+   buttons here, every .axis-modes (base rules in corridor.css, which this file
+   overrides by load order) and the redesign's .rx-seg. The pressed option is
+   white, the others transparent. */
+.corridor :is(.rx-seg, .axis-modes, .staffing-years) {
+  background: var(--line-soft);
+  border: 0;
+  border-radius: 999px;
+  box-shadow: none;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  padding: 3px;
+}
+.corridor :is(.rx-seg, .axis-modes, .staffing-years) button {
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  box-shadow: none;
+  color: var(--ink-soft);
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--fs-small);
+  font-weight: 600;
+  padding: 6px 14px;
+}
+.corridor :is(.rx-seg, .axis-modes, .staffing-years) button[aria-pressed="true"] {
+  background: var(--card);
+  box-shadow: 0 1px 2px rgba(15, 35, 64, 0.12);
+  color: var(--ink);
+  font-weight: 700;
+}
+.corridor :is(.rx-seg, .axis-modes, .staffing-years) button:focus-visible {
+  outline: 2px solid var(--w4-accent);
+  outline-offset: 1px;
+}
+.staffing-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--fs-small);
+  color: var(--muted);
+}
+.staffing-search input {
+  width: 230px;
+  padding: 7px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-weight: 400;
+  font-size: var(--fs-body);
+  line-height: normal;
+  font-family: var(--font-sans);
+  color: var(--paper);
+  background: var(--surface);
+}
+.staffing-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(250px, 1fr);
+  gap: 22px;
+  align-items: start;
+}
+.staffing-chart {
+  position: relative;
+}
+.staffing-flows {
+  margin-top: 28px;
+}
+.staffing-flows h3 {
+  margin: 0 0 6px;
+  font-size: var(--fs-body);
+}
+.staffing-flows .chart-host {
+  height: 640px;
+}
+.staffing-flows .flows-caption {
+  color: var(--muted);
+  font-size: var(--fs-small);
+  margin: 8px 0 0;
+}
+.staffing-chart .chart-host {
+  width: 100%;
+  height: 470px;
+}
+.staffing-panel h3 {
+  margin: 0 0 2px;
+  font-size: var(--fs-h4);
+  letter-spacing: -0.02em;
+}
+.staffing-panel .meta {
+  margin: 0 0 14px;
+  font-size: var(--fs-small);
+  color: var(--muted);
+}
+.staffing-panel ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.staffing-panel li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 44px;
+  gap: 2px 10px;
+  margin-bottom: 9px;
+  font-size: var(--fs-small);
+}
+.staffing-panel li .name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.staffing-panel li .share {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}
+.staffing-panel li .track {
+  grid-column: 1 / -1;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--band);
+}
+.staffing-panel li .fill {
+  height: 100%;
+  border-radius: 3px;
+  background: var(--bar);
+}
+.staffing-panel .rest {
+  margin: 12px 0 0;
+  font-size: var(--fs-small);
+  color: var(--muted);
+}
+.staffing figcaption {
+  margin-top: 12px;
+  font-size: var(--fs-body);
+  line-height: 1.5;
+  color: var(--muted);
+}
+.staffing details {
+  margin-top: 14px;
+}
+.staffing table {
+  width: 100%;
+  margin-top: 10px;
+  border-collapse: collapse;
+  font-size: var(--fs-small);
+}
+.staffing th,
+.staffing td {
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+}
+.staffing td.num,
+.staffing th.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ================================================================ redesign
+   The Week 4 redesign (review/week04-redesign.md): a hero map with an
+   inspector, the findings strip, the section rail, question headers,
+   two-column cards and reveal buttons. Colour grammar: dark ink is the real
+   network, the grey band the random baseline, orange a worker placed at a
+   client, blue a direct employer. Violet, green and slate mark the three
+   metro groups, on maps only. Four navies, dark to pale, mark the hiring
+   clusters of the occupation network. Scripts read these tokens with
+   getComputedStyle. */
+
+.corridor {
+  --w4-accent: #14618f;
+  /* Right and wrong: a hit in a ranking, a correct guess, a failed query. */
+  --good: #1f7a55;
+  --good-line: #7eb6a0;
+  --good-soft: #f3faf6;
+  --bad: #a33b2d;
+  --w4-accent-soft: #d9ecf9;
+  --w4-rail-ring: #9fb4cf;
+  --w4-rail-dot: #c9d6e6;
+  --w4-meter: #7fa9cf;
+  --w4-inset: #f7fafd;
+  --w4-grid: #e6ecf3;
+  --w4-band: rgba(185, 196, 210, 0.62);
+  --w4-group-0: #6d4fd6;
+  --w4-group-1: #15896a;
+  --w4-group-2: #7a8fac;
+  --w4-group-0-dark: #b69cff;
+  --w4-group-1-dark: #4fd1a5;
+  --w4-group-2-dark: #c3cfdd;
+  --w4-cluster-0: #1f3f6e;
+  --w4-cluster-1: #3f6fa8;
+  --w4-cluster-2: #6f8aa3;
+  --w4-cluster-3: #a7b8cc;
+  --w4-hero-ink: #eaf2fb;
+  --w4-hero-lede: #b9cde4;
+  --w4-hero-body: #93aecd;
+  --w4-hero-label: #7f9bbd;
+  --w4-hero-state: rgba(255, 255, 255, 0.035);
+  --w4-hero-state-edge: rgba(185, 205, 228, 0.2);
+  --w4-map-fill: #e6edf5;
+  --w4-map-edge: #c3d0e0;
+  --w4-tip-bg: rgba(11, 31, 58, 0.97);
+  --w4-tip-ink: #cfe0f2;
+  /* Client sectors in the section 3 scatter: navy and slate only, since
+     orange and blue mean placed and direct on this page. */
+  --w4-sector-finance: #1b3a63;
+  --w4-sector-manufacturing: #4a6f9c;
+  --w4-sector-health: #8a9cb3;
+  --w4-sector-other: #d2dae4;
+  --w4-sector-unknown: #e9eef4;
+}
+
+/* ---- hero: the text, the map, the inspector */
+
+.corridor .hero.w4-hero .shell {
+  display: block;
+  max-width: 1180px;
+  min-height: auto;
+  padding-block: 38px 40px;
+}
+
+.corridor .w4-hero h1 {
+  font-size: var(--fs-display);
+  margin: 0;
+}
+
+.corridor .w4-hero-grid {
+  align-items: start;
+  display: grid;
+  gap: 28px;
+  grid-template-columns: 300px minmax(0, 1fr) 264px;
+  margin-top: 22px;
+}
+
+.corridor .w4-hero-text {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.corridor .w4-hero-text p.body,
+.corridor .w4-hero-text .caution {
+  margin: 0;
+}
+
+.corridor .w4-hero-text p.body {
+  color: var(--w4-hero-body);
+  font-size: var(--fs-body);
+  line-height: 1.6;
+}
+
+.corridor .w4-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.corridor .w4-legend-title {
+  color: var(--w4-hero-label);
+  font-size: var(--fs-caption);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.corridor .w4-legend-row {
+  align-items: center;
+  color: var(--w4-hero-lede);
+  display: flex;
+  font-size: var(--fs-small);
+  gap: 10px;
+  line-height: 1.4;
+}
+
+.corridor .w4-legend-row b {
+  color: var(--w4-hero-ink);
+  font-weight: 600;
+}
+
+.corridor .w4-dot {
+  border-radius: 999px;
+  flex: none;
+  height: 11px;
+  width: 11px;
+}
+
+.corridor .w4-dot.g0 { background: var(--w4-group-0-dark); }
+.corridor .w4-dot.g1 { background: var(--w4-group-1-dark); }
+.corridor .w4-dot.g2 { background: var(--w4-group-2); }
+
+.corridor .w4-legend-line {
+  background: var(--w4-hero-lede);
+  flex: none;
+  height: 2px;
+  width: 11px;
+}
+
+.corridor .w4-hero-stats {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding-top: 16px;
+}
+
+.corridor .w4-stat b {
+  color: var(--w4-hero-ink);
+  display: block;
+  font-size: var(--fs-h3);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.corridor .w4-stat span {
+  color: var(--w4-hero-body);
+  display: block;
+  font-size: var(--fs-small);
+  line-height: 1.4;
+  margin-top: 4px;
+}
+
+.corridor .w4-hero-stage {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+}
+
+.corridor .w4-hero-map {
+  aspect-ratio: 604 / 392;
+  width: 100%;
+}
+
+.corridor .w4-hint {
+  background: rgba(8, 22, 42, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  color: #cfe0f2;
+  font-size: var(--fs-small);
+  margin: 0;
+  padding: 6px 12px;
+}
+
+/* ---- the inspector beside the hero map */
+
+.corridor .w4-inspector {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  color: var(--ink);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px 18px 14px;
+}
+
+.corridor .w4-caps {
+  color: var(--ink-mute-text);
+  font-size: var(--fs-caption);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.corridor .w4-inspector-name {
+  align-items: baseline;
+  display: flex;
+  gap: 8px;
+}
+
+.corridor .w4-inspector-name b {
+  font-size: var(--fs-lead);
+  font-weight: 700;
+}
+
+.corridor .w4-inspector-name span {
+  color: var(--ink-mute-text);
+  font-size: var(--fs-small);
+}
+
+.corridor .w4-chip {
+  align-items: center;
+  align-self: flex-start;
+  background: var(--ground);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  display: inline-flex;
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  gap: 7px;
+  padding: 4px 10px;
+}
+
+.corridor .w4-chip i {
+  border-radius: 999px;
+  height: 9px;
+  width: 9px;
+}
+
+.corridor .w4-inspector dl {
+  margin: 0;
+}
+
+.corridor .w4-inspector dl div {
+  border-top: 1px solid var(--line-soft);
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  padding: 7px 0;
+}
+
+.corridor .w4-inspector dt {
+  color: var(--ink-soft);
+  font-size: var(--fs-small);
+}
+
+.corridor .w4-inspector dd {
+  font-size: var(--fs-small);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  margin: 0;
+  text-align: right;
+}
+
+.corridor .w4-links {
+  border-top: 1px solid var(--line-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-top: 8px;
+}
+
+.corridor .w4-links ol {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+}
+
+.corridor .w4-links li {
+  display: flex;
+  font-size: var(--fs-small);
+  justify-content: space-between;
+  padding: 3px 0;
+}
+
+.corridor .w4-links li span {
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- five sections, five findings */
+
+.corridor .w4-findings {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin: 32px 0 8px;
+  padding: 22px 28px 10px;
+}
+
+.corridor .w4-findings-head {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 6px;
+}
+
+.corridor .w4-key {
+  align-items: center;
+  color: var(--ink-soft);
+  display: flex;
+  font-size: var(--fs-small);
+  gap: 18px;
+}
+
+.corridor .w4-key span {
+  align-items: center;
+  display: flex;
+  gap: 7px;
+}
+
+.corridor .w4-key-real {
+  background: var(--ink);
+  border-radius: 999px;
+  height: 11px;
+  width: 11px;
+}
+
+.corridor .w4-key-band {
+  background: var(--w4-band);
+  border-radius: 6px;
+  height: 10px;
+  width: 26px;
+}
+
+.corridor .w4-finding {
+  align-items: center;
+  display: grid;
+  gap: 24px;
+  grid-template-columns: 36px minmax(0, 1fr) 300px 96px;
+  padding: 16px 0;
+}
+
+.corridor .w4-finding + .w4-finding {
+  border-top: 1px solid var(--line-soft);
+}
+
+.corridor .w4-num {
+  align-items: center;
+  background: var(--access-soft);
+  border-radius: 8px;
+  color: var(--w4-accent);
+  display: flex;
+  font-size: var(--fs-small);
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  height: 30px;
+  justify-content: center;
+  min-width: 30px;
+  padding: 0 6px;
+}
+
+.corridor .w4-finding h3 {
+  font-size: var(--fs-body);
+  margin: 0 0 4px;
+}
+
+.corridor .w4-finding p {
+  color: var(--ink-soft);
+  font-size: var(--fs-body);
+  line-height: 1.55;
+  margin: 0;
+}
+
+.corridor .w4-mini {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.corridor .w4-mini svg {
+  display: block;
+  height: auto;
+  max-width: 100%;
+  overflow: visible;
+}
+
+.corridor .w4-mini small {
+  color: var(--ink-mute-text);
+  font-size: var(--fs-caption);
+  line-height: 1.35;
+}
+
+.corridor .w4-finding > a {
+  color: var(--w4-accent);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  justify-self: end;
+  text-decoration: none;
+}
+
+/* ---- a section's opening: the numeral and title on the ground, the finding under it */
+
+.corridor .w4-opener {
+  align-items: flex-start;
+  display: flex;
+  gap: 22px;
+  margin: 8px 0 18px;
+}
+
+.corridor .w4-opener-num {
+  color: var(--w4-accent);
+  flex: none;
+  font-size: var(--fs-numeral);
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.86;
+  width: 58px;
+}
+
+.corridor .w4-opener h2 {
+  font-size: var(--fs-h2);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin: 0 0 10px;
+}
+
+.corridor .w4-opener p {
+  color: var(--ink);
+  font-size: var(--fs-lead);
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  line-height: 1.45;
+  margin: 0;
+  max-width: 860px;
+  text-wrap: pretty;
+}
+
+/* ---- cards: a question header over two columns */
+
+.corridor .card.w4-card {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 24px 28px 26px;
+}
+
+.corridor .w4-q {
+  align-items: flex-start;
+  display: flex;
+  gap: 14px;
+}
+
+.corridor .w4-q .w4-num {
+  min-width: 40px;
+}
+
+.corridor .w4-q h2 {
+  font-size: var(--fs-h4);
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  margin: 0 0 8px;
+}
+
+.corridor .w4-answer {
+  color: var(--ink);
+  font-size: var(--fs-strong);
+  font-weight: 600;
+  line-height: 1.45;
+  margin: 0;
+  max-width: 900px;
+  text-wrap: pretty;
+}
+
+.corridor .w4-two {
+  align-items: start;
+  display: grid;
+  gap: 40px;
+  grid-template-columns: 500px minmax(0, 1fr);
+}
+
+.corridor .w4-two > div {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
+.corridor .w4-card p.sub,
+.corridor .w4-two p {
+  color: var(--ink-soft);
+  font-size: var(--fs-body);
+  line-height: 1.62;
+  margin: 0;
+  max-width: 68ch;
+  text-wrap: pretty;
+}
+
+.corridor .w4-card .notice {
+  margin-top: 0;
+}
+
+.corridor .w4-card .plot {
+  margin: 0;
+}
+
+.corridor .w4-card .plot h3 {
+  font-size: var(--fs-body);
+  margin: 0 0 3px;
+}
+
+.corridor .w4-card .plot p.axis-note {
+  font-size: var(--fs-caption);
+  line-height: 1.45;
+  margin: 0 0 8px;
+}
+
+/* ---- pop-up text: a glossary term's definition, shown on hover, focus or click */
+
+.corridor .w4-pop {
+  background: var(--w4-tip-bg);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 9px;
+  box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 18px 44px rgba(15, 35, 64, 0.16);
+  color: var(--w4-tip-ink);
+  display: none;
+  font-size: var(--fs-small);
+  font-style: normal;
+  font-weight: 400;
+  left: 0;
+  letter-spacing: 0;
+  line-height: 1.55;
+  padding: 12px 14px;
+  position: absolute;
+  text-align: left;
+  top: calc(100% + 8px);
+  white-space: normal;
+  width: 440px;
+  z-index: 40;
+}
+
+.corridor .w4-pop b {
+  color: var(--w4-hero-ink);
+  display: block;
+  margin-bottom: 4px;
+}
+
+/* a term in running text, defined on hover or focus */
+.corridor .w4-term {
+  display: inline;
+  position: relative;
+}
+
+.corridor .w4-term > button {
+  background: none;
+  border: 0;
+  border-bottom: 1px dotted var(--ink-soft);
+  color: inherit;
+  cursor: help;
+  font: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+.corridor .w4-term > .w4-pop {
+  top: calc(100% + 6px);
+  width: 330px;
+}
+
+.corridor .w4-term:hover > .w4-pop,
+.corridor .w4-term:focus-within > .w4-pop,
+.corridor .w4-term.is-open > .w4-pop {
+  display: block;
+}
+
+/* ---- a section's intro beside its figure, on the ground under the opener */
+
+.corridor .w4-intro {
+  margin-bottom: 22px;
+}
+
+.corridor .w4-figure {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+}
+
+.corridor .w4-figure figcaption {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.corridor .w4-figure figcaption b {
+  color: var(--ink);
+  font-size: var(--fs-body);
+}
+
+.corridor .w4-figure figcaption span {
+  color: var(--ink-soft);
+  font-size: var(--fs-caption);
+  line-height: 1.45;
+}
+
+.corridor .w4-figure-body {
+  background: var(--w4-inset);
+  border: 1px solid var(--line-soft);
+  border-radius: 10px;
+  padding: 14px 14px 10px;
+}
+
+.corridor .w4-figure-body svg {
+  display: block;
+  height: auto;
+  max-width: 100%;
+  overflow: visible;
+}
+
+/* the linking example in section 1: a toy, labelled as one */
+.corridor .w4-example {
+  align-items: center;
+  background: var(--w4-inset);
+  border: 1px solid var(--line-soft);
+  border-radius: 10px;
+  display: flex;
+  gap: 16px;
+  padding: 12px 14px;
+}
+
+.corridor .w4-example svg {
+  flex: none;
+  font-family: inherit;
+}
+
+.corridor .w4-example p {
+  color: var(--ink-soft);
+  font-size: var(--fs-small);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.corridor .w4-example p b {
+  color: var(--ink);
+  display: block;
+  font-size: var(--fs-small);
+  margin-bottom: 4px;
+}
+
+.corridor .w4-ex-edge { stroke: var(--ink-soft); stroke-linecap: round; }
+.corridor .w4-ex-link { fill: none; stroke: var(--ink); }
+.corridor .w4-ex-company { fill: var(--ink); }
+.corridor .w4-ex-node { fill: var(--card); stroke: var(--ink); stroke-width: 2; }
+.corridor .w4-ex-on-ink { fill: var(--card); font-size:var(--fs-caption); font-weight: 700; text-anchor: middle; }
+.corridor .w4-ex-letter { fill: var(--ink); font-size:var(--fs-caption); font-weight: 800; text-anchor: middle; }
+.corridor .w4-ex-count { fill: var(--ink-soft); font-size:var(--fs-caption); font-weight: 600; }
+.corridor .w4-ex-gain { fill: var(--ink); font-size:var(--fs-caption); font-weight: 700; text-anchor: middle; }
+
+/* ---- the opening: what one filing names, and how to read the charts */
+
+.corridor .w4-anatomy,
+.corridor .w4-howto {
+  border: 1px solid var(--line-soft);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px 8px;
+}
+
+.corridor .w4-anatomy {
+  background: var(--w4-inset);
+}
+
+.corridor .w4-howto {
+  gap: 8px;
+  padding-bottom: 14px;
+}
+
+.corridor .w4-anatomy h3,
+.corridor .w4-howto h3 {
+  font-size: var(--fs-body);
+  margin: 0;
+}
+
+.corridor .w4-anatomy > p {
+  color: var(--ink-soft);
+  font-size: var(--fs-caption);
+  margin: 0;
+  padding-bottom: 6px;
+}
+
+.corridor .w4-anatomy dl {
+  margin: 0;
+}
+
+.corridor .w4-anatomy dl div {
+  align-items: center;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 96px minmax(0, 1fr) auto;
+  padding: 9px 0;
+}
+
+.corridor .w4-anatomy dl div + div {
+  border-top: 1px solid var(--line-soft);
+}
+
+.corridor .w4-anatomy dt {
+  color: var(--ink-soft);
+  font-size: var(--fs-caption);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.corridor .w4-anatomy dd {
+  font-size: var(--fs-small);
+  line-height: 1.4;
+  margin: 0;
+}
+
+.corridor .w4-tag {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink-soft);
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  padding: 3px 9px;
+  white-space: nowrap;
+}
+
+.corridor .w4-tag.access {
+  background: var(--access-soft);
+  border-color: var(--access-soft);
+  color: var(--w4-accent);
+}
+
+.corridor .w4-howto > div {
+  align-items: center;
+  display: grid;
+  font-size: var(--fs-small);
+  gap: 10px;
+  grid-template-columns: 30px 128px minmax(0, 1fr);
+}
+
+.corridor .w4-howto > div > b {
+  color: var(--ink);
+}
+
+.corridor .w4-howto > div > span {
+  color: var(--ink-soft);
+}
+
+.corridor .w4-howto i {
+  display: flex;
+  justify-self: center;
+}
+
+.corridor .w4-sw-real { background: var(--ink); border-radius: 999px; height: 12px; width: 12px; }
+.corridor .w4-sw-band { background: var(--w4-band); border-radius: 6px; height: 11px; width: 28px; }
+.corridor .w4-sw-people { background: var(--people); border-radius: 3px; height: 12px; width: 12px; }
+.corridor .w4-sw-access { background: var(--access); border-radius: 3px; height: 12px; width: 12px; }
+.corridor .w4-sw-ref { border-top: 2px dashed var(--ink-soft); height: 0; width: 22px; }
+.corridor .w4-sw-groups { gap: 3px; }
+.corridor .w4-sw-groups b { border-radius: 999px; height: 8px; width: 8px; }
+.corridor .w4-sw-groups .g0 { background: var(--w4-group-0); }
+.corridor .w4-sw-groups .g1 { background: var(--w4-group-1); }
+.corridor .w4-sw-groups .g2 { background: var(--w4-group-2); }
+
+.corridor .w4-scope-note {
+  border-top: 1px solid var(--line-soft);
+  color: var(--ink);
+  font-size: var(--fs-body);
+  font-weight: 600;
+  line-height: 1.5;
+  margin: 0;
+  padding-top: 12px;
+}
+
+/* the plot inside a two-column card keeps its chart but loses its old margins */
+.corridor .w4-two > .plot .chart-host {
+  margin-top: 0;
+}
+
+.corridor .w4-card > details.qa {
+  margin-top: 0;
+}
+
+/* ---- Reset view: a small button in a map's top right corner, shown while
+   something is selected. */
+.corridor .w4-has-reset {
+  position: relative;
+}
+
+.corridor .w4-map-reset {
+  align-items: center;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  box-shadow: 0 1px 3px rgba(15, 35, 64, 0.12);
+  color: var(--ink-soft);
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  gap: 5px;
+  padding: 4px 10px 4px 8px;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  z-index: 3;
+}
+
+.corridor .w4-map-reset[hidden] {
+  display: none;
+}
+
+.corridor .w4-map-reset:hover,
+.corridor .w4-map-reset:focus-visible {
+  border-color: var(--ink-mute);
+  color: var(--ink);
+}
+
+/* On the dark hero map the button takes the hero's own ink. */
+.corridor .w4-hero-map .w4-map-reset {
+  background: rgba(11, 31, 58, 0.72);
+  border-color: var(--w4-hero-state-edge);
+  box-shadow: none;
+  color: var(--w4-hero-lede);
+}
+
+.corridor .w4-hero-map .w4-map-reset:hover,
+.corridor .w4-hero-map .w4-map-reset:focus-visible {
+  color: var(--w4-hero-ink);
+}
+
+
+/* ==== 2. Drawers, reveals and the card grid of the redesign (from week04-rx.css) ==== */
+
+/* Week 4 · the 28 September 2026 redesign. The rx- prefix marks a class that
+   came from the design boards (review/week04-final/project/R*.dc.html), so any
+   class here greps straight back to its board. This file holds the union of
+   the boards' rx- rules, with ".rx X" rewritten as ".corridor X" and every
+   colour taken from the page tokens (corridor.css, week04.css). Linked last in
+   the page head. The section rail and the segmented control live in
+   week04.css, on the selectors the page already uses. */
+
+/* ---- drawers: closed ones sit in one row, an open one takes the full width.
+   Labels in order: Background, Method, More numbers, then Table: or Maps:. */
+
+.corridor .rx-drawers {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.corridor .rx-foot {
+  margin-top: 14px;
+}
+
+.corridor details.rx-drawer {
+  background: var(--w4-inset);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+.corridor details.rx-drawer:not([open]) {
+  width: fit-content;
+}
+
+.corridor .rx-drawers > details.rx-drawer {
+  flex: 0 0 auto;
+  margin: 0;
+}
+
+.corridor .rx-drawers > details.rx-drawer[open] {
+  flex: 1 1 100%;
+  order: 10;
+}
+
+/* Where a details element can lay its body out apart from its summary, the
+   row keeps every label in place: an opened drawer's label stays a pill where
+   it was, marked by its border, and its body opens under the whole row. */
+@supports selector(::details-content) {
+  .corridor .rx-drawers > details.rx-drawer,
+  .corridor .rx-drawers > details.rx-drawer[open] {
+    display: contents;
+  }
+
+  .corridor .rx-drawers > details.rx-drawer > summary {
+    background: var(--w4-inset);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+  }
+
+  .corridor .rx-drawers > details.rx-drawer[open] > summary {
+    border-color: var(--w4-accent);
+  }
+
+  /* The body's box in the row: after every label, across the full width. */
+  .corridor .rx-drawers > details.rx-drawer::details-content {
+    flex: 1 1 100%;
+    order: 10;
+  }
+
+  .corridor .rx-drawers > details.rx-drawer > .rx-drawer-body {
+    background: var(--w4-inset);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    flex: 1 1 100%;
+    max-width: none;
+    order: 10;
+    padding: 12px 16px 14px;
+  }
+
+  .corridor .rx-drawers > details.rx-drawer > .rx-drawer-body > p {
+    max-width: 78ch;
+  }
+}
+
+.corridor details.rx-drawer > summary {
+  align-items: center;
+  color: var(--w4-accent);
+  cursor: pointer;
+  display: flex;
+  font-size: var(--fs-small);
+  font-weight: 700;
+  gap: 8px;
+  list-style: none;
+  padding: 6px 12px;
+}
+
+.corridor details.rx-drawer > summary::-webkit-details-marker {
+  display: none;
+}
+
+.corridor details.rx-drawer > summary::before {
+  content: "\25B8";
+  font-size: var(--fs-caption);
+  transition: transform 0.15s;
+}
+
+.corridor details.rx-drawer[open] > summary::before {
+  transform: rotate(90deg);
+}
+
+.corridor .rx-drawer-body {
+  color: var(--ink);
+  font-size: var(--fs-body);
+  line-height: 1.62;
+  max-width: 78ch;
+  padding: 0 16px 14px;
+}
+
+.corridor .rx-drawer-body p {
+  margin: 0 0 8px;
+}
+
+.corridor .rx-drawer-body > p + p {
+  margin-top: 8px;
+}
+
+.corridor .rx-drawer-body.rx-wide {
+  max-width: none;
+}
+
+/* ---- card anatomy. One chart sits beside the text. Two or more go in a
+   figure row under the text, side by side at equal width, and the drawers
+   follow the row. Each figure in a row shares three grid rows with its
+   neighbours (title, note, chart), so the charts start at the same height
+   however long the captions run. */
+
+.corridor .rx-fig-row {
+  align-items: start;
+  column-gap: 28px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  grid-template-rows: auto auto 1fr;
+  margin-top: 22px;
+  row-gap: 0;
+}
+
+.corridor .rx-fig-row > figure,
+.corridor .rx-fig-row > .plot {
+  display: grid;
+  grid-row: span 3;
+  grid-template-rows: subgrid;
+  margin: 0;
+}
+
+.corridor .rx-fig-row > figure > figcaption {
+  grid-row: span 2;
+}
+
+.corridor .rx-fig-row > :only-child {
+  max-width: 58%;
+}
+
+/* ---- segmented control: its row and label. The group and its buttons are
+   one rule in week04.css. The label matches the specificity of the roles
+   toolbar rule in week04-roles.css, so it drops that rule's capitals. */
+
+.corridor .rx-seg-row {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  margin: 10px 0;
+}
+
+.corridor .rx-seg-label,
+.corridor .roles-toolbar .axis-modes-label,
+.corridor .axis-modes-label {
+  color: var(--ink-soft);
+  font-size: var(--fs-small);
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* ---- the hero legend (board RTop), on the dark hero */
+
+.corridor .rx-legend {
+  background: var(--w4-hero-state);
+  border: 1px solid var(--w4-hero-state-edge);
+  border-radius: 12px;
+  margin: 22px 0 4px;
+  padding: 14px 16px;
+  text-align: left;
+}
+
+.corridor .rx-legend-title {
+  color: var(--w4-hero-lede);
+  font-size: var(--fs-small);
+  font-weight: 700;
+  letter-spacing: 0;
+  margin: 0 0 10px;
+  text-transform: none;
+}
+
+.corridor .rx-legend ul {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.corridor .rx-legend li {
+  align-items: center;
+  column-gap: 10px;
+  display: grid;
+  grid-template-columns: 14px minmax(0, 1fr);
+  row-gap: 1px;
+}
+
+.corridor .rx-legend i {
+  border-radius: 50%;
+  display: block;
+  grid-row: 1;
+  height: 12px;
+  width: 12px;
+}
+
+.corridor .rx-legend i.rx-leg-line {
+  border-radius: 0;
+  border-top: 2px solid var(--w4-hero-lede);
+  height: 0;
+  width: 14px;
+}
+
+.corridor .rx-legend b {
+  color: var(--w4-hero-ink);
+  font-size: var(--fs-body);
+  font-weight: 700;
+  grid-column: 2;
+}
+
+.corridor .rx-legend span {
+  color: var(--w4-hero-lede);
+  font-size: var(--fs-small);
+  grid-column: 2;
+  line-height: 1.4;
+}
+
+/* ---- section 1 start card (board RS1) */
+
+.corridor .rx-kicker {
+  color: var(--ink-soft);
+  font-size: var(--fs-small);
+  margin: 6px 0 0;
+}
+
+.corridor .rx-start-grid {
+  align-items: start;
+  display: grid;
+  gap: 36px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 8px;
+}
+
+.corridor .rx-start-grid header.w4-q {
+  margin-bottom: 8px;
+}
+
+.corridor .rx-start-notices {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 14px;
+}
+
+.corridor .rx-groups {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+.corridor .rx-group {
+  border-top: 1px solid var(--line-soft);
+  padding: 10px 0;
+}
+
+.corridor .rx-group-head {
+  align-items: center;
+  display: flex;
+  font-size: var(--fs-body);
+  gap: 8px;
+}
+
+.corridor .rx-group-head i {
+  border-radius: 50%;
+  display: inline-block;
+  height: 12px;
+  width: 12px;
+}
+
+.corridor .rx-group-head span {
+  color: var(--ink-soft);
+  font-size: var(--fs-small);
+}
+
+.corridor .rx-group p {
+  color: var(--ink-soft);
+  font-size: var(--fs-small);
+  line-height: 1.55;
+  margin: 4px 0 0 20px;
+}
+
+/* ---- an employer's network: search and matches (board RS3) */
+
+.corridor .rx-ego-ctrl {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  margin: 2px 0 10px;
+}
+
+.corridor .rx-ego-search {
+  align-items: center;
+  color: var(--ink-soft);
+  display: flex;
+  font-size: var(--fs-small);
+  font-weight: 700;
+  gap: 8px;
+}
+
+.corridor .rx-ego-search input {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink);
+  font: inherit;
+  font-size: var(--fs-small);
+  font-weight: 500;
+  padding: 6px 12px;
+  width: 210px;
+}
+
+.corridor .rx-ego-search input:focus {
+  outline: 2px solid var(--w4-accent);
+  outline-offset: 1px;
+}
+
+.corridor .rx-ego-matches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 10px;
+}
+
+.corridor .rx-ego-matches button {
+  align-items: baseline;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink);
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  font-size: var(--fs-small);
+  font-weight: 600;
+  gap: 6px;
+  padding: 5px 11px;
+}
+
+.corridor .rx-ego-matches button:hover {
+  background: var(--w4-accent-soft);
+  border-color: var(--w4-accent);
+}
+
+.corridor .rx-ego-matches button span {
+  color: var(--ink-mute-text);
+  font-size: var(--fs-caption);
+  font-weight: 500;
+}
+
+.corridor .rx-ego-none {
+  color: var(--ink-mute-text);
+  font-size: var(--fs-small);
+  margin: 0 0 10px;
+}
+
+/* ---- section 5's three answers (board RS5) */
+
+.corridor .rx-answers {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  margin: 16px 0 0;
+  padding: 0;
+}
+
+.corridor .rx-answers li {
+  align-items: baseline;
+  border-top: 1px solid var(--line-soft);
+  color: var(--ink);
+  display: flex;
+  font-size: var(--fs-body);
+  gap: 12px;
+  line-height: 1.5;
+  padding: 10px 0;
+}
+
+.corridor .rx-answers li .w4-num {
+  flex: none;
+}
+
+/* ---- the deep-dive catalogue (board RDeep): six topic cards */
+
+.corridor .rx-cut-intro {
+  max-width: 68ch;
+}
+
+.corridor .rx-tgrid {
+  align-items: start;
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 18px;
+}
+
+.corridor .rx-tcard {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  padding: 16px;
+}
+
+.corridor .rx-tcard-data {
+  background: var(--w4-inset);
+  box-shadow: none;
+}
+
+.corridor .rx-tcard-head {
+  align-items: flex-start;
+  color: var(--ink);
+  display: flex;
+  gap: 12px;
+  padding-bottom: 10px;
+  text-decoration: none;
+}
+
+.corridor .rx-tcard-head span {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.corridor .rx-tcard-head b {
+  font-size: var(--fs-strong);
+}
+
+.corridor .rx-tcard-head em {
+  color: var(--ink-soft);
+  font-size: var(--fs-small);
+  font-style: normal;
+  line-height: 1.45;
+}
+
+.corridor .rx-tcard ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.corridor .rx-tcard li a {
+  align-items: baseline;
+  border-top: 1px solid var(--line-soft);
+  color: var(--ink);
+  display: flex;
+  font-size: var(--fs-small);
+  font-weight: 600;
+  gap: 10px;
+  line-height: 1.4;
+  padding: 8px 4px;
+  text-decoration: none;
+}
+
+.corridor .rx-tcard li a b {
+  color: var(--w4-accent);
+  flex: none;
+  font-size: var(--fs-caption);
+  min-width: 22px;
+}
+
+.corridor .rx-tcard li a span {
+  flex-grow: 1;
+}
+
+.corridor .rx-tcard li a i {
+  color: var(--w4-accent);
+  font-style: normal;
+  font-weight: 700;
+}
+
+.corridor .rx-tcard li a:hover {
+  background: var(--w4-accent-soft);
+}
+
+.corridor .rx-tcard li.rx-uses-li > a {
+  border-top: 1px solid var(--line-soft);
+}
+
+.corridor .rx-uses {
+  border-left: 2px solid var(--line);
+  list-style: none;
+  margin: 0 0 4px 6px;
+  padding: 0 0 0 12px;
+}
+
+.corridor .rx-tcard .rx-uses li a {
+  align-items: flex-start;
+  border-top: none;
+  flex-direction: column;
+  font-weight: 600;
+  gap: 2px;
+  padding: 6px 4px;
+}
+
+.corridor .rx-tcard .rx-uses li a b {
+  color: var(--w4-accent);
+  font-size: var(--fs-caption);
+  min-width: 0;
+}
+
+.corridor .rx-tcard .rx-uses li a em {
+  color: var(--ink-soft);
+  font-size: var(--fs-small);
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.corridor .rx-moved {
+  color: var(--ink-soft);
+  font-size: var(--fs-small);
+  line-height: 1.6;
+  margin: 16px 0 0;
+}
+
+.corridor .rx-tile-finding {
+  color: var(--ink);
+  display: block;
+  margin-top: 6px;
+}
+
+/* ---- a topic: its bar, its contents and one box at a time (topic boards) */
+
+.corridor .rx-topic-bar {
+  align-items: center;
+  display: flex;
+  gap: 16px;
+  margin: 8px 0 16px;
+}
+
+.corridor .rx-back {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--w4-accent);
+  font-size: var(--fs-small);
+  font-weight: 700;
+  padding: 6px 12px;
+  text-decoration: none;
+}
+
+.corridor .rx-topic-title {
+  font-size: var(--fs-h3);
+  font-weight: 800;
+  margin: 0;
+}
+
+.corridor .rx-topic-holds {
+  color: var(--ink-soft);
+  font-size: var(--fs-body);
+  margin: 2px 0 0;
+}
+
+.corridor .rx-topic-count {
+  color: var(--ink-soft);
+  font-size: var(--fs-small);
+  margin-left: auto;
+}
+
+.corridor .rx-toc {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  display: grid;
+  gap: 2px 32px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-bottom: 22px;
+  padding: 14px 16px;
+}
+
+.corridor .rx-toc-col {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.corridor .rx-toc-head {
+  color: var(--ink-mute-text);
+  font-size: var(--fs-small);
+  font-weight: 700;
+  margin: 2px 0 6px 15px;
+}
+
+.corridor .rx-toc-item {
+  background: transparent;
+  border: none;
+  border-left: 3px solid transparent;
+  border-radius: 0 8px 8px 0;
+  box-sizing: border-box;
+  color: var(--ink-soft);
+  cursor: pointer;
+  display: block;
+  font: inherit;
+  font-size: var(--fs-body);
+  font-weight: 600;
+  line-height: 1.4;
+  padding: 8px 12px;
+  text-align: left;
+  text-decoration: none;
+  width: 100%;
+}
+
+.corridor .rx-toc-item:hover {
+  background: var(--w4-inset);
+  color: var(--ink);
+}
+
+.corridor .rx-toc-item[aria-current="true"] {
+  background: var(--ground);
+  border-left-color: var(--w4-accent);
+  color: var(--ink);
+}
+
+.corridor .rx-toc-item b {
+  color: var(--w4-accent);
+  font-weight: 700;
+  margin-right: 6px;
+}
+
+.corridor .rx-panel > .card {
+  margin-top: 0;
+}
+
+/* The port's own rules. A topic and a box are <details> whose summaries stay
+   hidden: the catalogue and the contents list are the controls. */
+
+.corridor details.rx-topic > summary,
+.corridor details.rx-panel > summary {
+  display: none;
+}
+
+#cut:has(> details.rx-topic[open]) > .rx-catalogue {
+  display: none;
+}
+
+/* Data and methods is still a .qa card underneath. As a topic it drops that
+   frame, so its header sits on the page like the other five topics and its
+   content takes the card below. */
+
+.corridor details.qa.rx-topic {
+  background: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.corridor details.qa.rx-topic > .qa-body {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 20px 24px;
+}
+
+/* The skills and PageRank boxes each hold several cards that scripts build;
+   the router's data-show picks the one to show. Scoped to the whole box,
+   because the radar lands at the end of the box when it cannot find the
+   cluster card. */
+
+#cut-skills[data-show="direct"] .w4-card:not(#cut-skills-direct),
+#cut-skills[data-show="cluster"] .w4-card:not(#cut-skills-cluster),
+#cut-skills[data-show="radar"] .w4-card:not(#cut-skills-radar),
+#cut-pagerank[data-show="explore"] .w4-card:not(#cut-pagerank-explore),
+#cut-pagerank[data-show="iteration"] .w4-card:not(#cut-pagerank-iteration) {
+  display: none;
+}
+
+/* ---- tables: one style for every table in the post, with bars and meters
+   that week04-tables.js adds to the numeric columns */
+
+.corridor main table {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-collapse: separate;
+  border-radius: 10px;
+  border-spacing: 0;
+  font-size: var(--fs-small);
+  line-height: 1.4;
+  margin-top: 6px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.corridor main table caption {
+  caption-side: top;
+  color: var(--ink);
+  font-size: var(--fs-small);
+  font-weight: 700;
+  padding: 0 2px 8px;
+  text-align: left;
+}
+
+.corridor main table th {
+  background: var(--w4-inset);
+  border-bottom: 1px solid var(--line);
+  color: var(--ink-soft);
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  padding: 9px 12px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.corridor main table td {
+  border-top: 1px solid var(--ground);
+  color: var(--ink);
+  padding: 8px 12px;
+  vertical-align: middle;
+}
+
+.corridor main table tbody tr:first-child td {
+  border-top: none;
+}
+
+.corridor main table tbody tr:hover td {
+  background: var(--w4-inset);
+}
+
+.corridor main table td:first-child {
+  font-weight: 600;
+}
+
+.corridor main table th.num,
+.corridor main table td.num {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.corridor main table td.soft {
+  color: var(--ink-soft);
+}
+
+.corridor .rx-cell {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.corridor .rx-cell > span:last-child {
+  font-variant-numeric: tabular-nums;
+  min-width: 5.2ch;
+  text-align: right;
+}
+
+.corridor .rx-bar {
+  background: var(--ground);
+  border-radius: 999px;
+  display: flex;
+  flex: none;
+  height: 6px;
+  justify-content: flex-start;
+  overflow: hidden;
+  width: 72px;
+}
+
+.corridor .rx-bar i {
+  background: var(--w4-accent);
+  border-radius: 999px;
+  display: block;
+  height: 100%;
+}
+
+.corridor .rx-bar.meter i {
+  background: var(--w4-meter);
+}
+
+/* USCIS denial rates: orange for firms that place workers, blue for direct
+   employers, the page's two fixed colours. */
+.corridor .rx-bar.placing i {
+  background: var(--people);
+}
+
+.corridor .rx-bar.direct i {
+  background: var(--access);
+}
+
+.corridor .rx-table-block {
+  margin-top: 18px;
+}
+
+.corridor .rx-table-block h4 {
+  color: var(--ink);
+  font-size: var(--fs-small);
+  font-weight: 700;
+  margin: 0 0 4px;
+}
+
+.corridor .rx-table-block p {
+  color: var(--ink-soft);
+  font-size: var(--fs-small);
+  margin: 0 0 6px;
+}
+
+
+/* ==== 3. The component kit and the section card, w5-card (from kit.css) ==== */
+
+/* Styles for the components in src/scripts/kit.js, and the empty-slot
+   hints on the week 5 page. Colours and sizes come from the page's tokens. */
+
+.kit-figure { margin: 0; }
+.kit-figure figcaption { color: var(--ink-soft); font-size: var(--fs-caption); margin-top: 0.5rem; }
+.kit-echart { width: 100%; }
+/* What a kit component says when it has nothing to draw. */
+.kit-empty { color: var(--ink-mute-text); font-size: var(--fs-caption); font-style: italic; }
+
+/* Fixed layout, so a long context is cut with an ellipsis instead of pushing
+   the table past its column (max-width does nothing on a table cell). */
+.kit-kwic { border-collapse: collapse; width: 100%; font-size: var(--fs-small); table-layout: fixed; }
+.kit-kwic td { padding: 0.2rem 0.4rem; border-bottom: 1px solid var(--line-soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.kit-kwic td.kit-kwic-page { color: var(--ink-mute-text); font-size: var(--fs-caption); width: 11rem; }
+.kit-kwic td:nth-child(3) { width: 7rem; }
+.kit-kwic-left { text-align: right; direction: rtl; }
+.kit-kwic mark, .kit-passage mark { background: var(--access-soft); color: var(--ink); padding: 0 0.15em; border-radius: 3px; }
+
+.kit-passage { margin: 0.75rem 0; padding: 0.5rem 1rem; border-left: 3px solid var(--access); background: var(--card); }
+.kit-passage p { margin: 0 0 0.35rem; }
+.kit-passage cite { color: var(--ink-mute-text); font-size: var(--fs-caption); font-style: normal; }
+
+/* The styleguide's intro line. */
+.w5-hint { font-style: italic; opacity: 0.7; }
+
+/* Two panels side by side inside a card shrink to the card: a wide table wraps
+   its cells instead of pushing past the card's edge. */
+.corridor .w5-card .w5-two { grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); }
+.corridor .w5-card .w5-two > * { min-width: 0; }
+.corridor .w5-card .w5-two table { max-width: 100%; }
+/* A chart drawn at a fallback width must not hold its column open. */
+.corridor .w5-card .plot > * { min-width: 0; }
+.corridor .w5-card .notice { margin-top: 0; }
+/* The figure row under the text and notice. */
+.corridor .w5-card > .w5-fig { margin-top: 22px; min-width: 0; }
+.corridor .w5-card > .w4-two { margin-top: 18px; }
+.corridor .w5-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.corridor .w5-chips button { background: var(--card); border: 1px solid var(--line); border-radius: 999px; color: var(--ink-soft); cursor: pointer; font: inherit; font-size: var(--fs-small); padding: 3px 11px; }
+.corridor .w5-chips button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--card); }
+.corridor .w5-card .kit-kwic td.kit-kwic-left { width: 26%; }
+.corridor .w5-card .kit-kwic td.kit-kwic-right { width: 22%; }
+.corridor .w5-card .kit-kwic td:nth-child(3) { width: 9rem; }
+.corridor .kit-kwic td.w5-mark { width: 1.5rem; }
+.corridor .kit-kwic td.w5-verdict { color: var(--ink-mute-text); font-size: var(--fs-caption); white-space: normal; width: 17rem; }
+.corridor .kit-kwic td.w5-mark { font-weight: 800; }
+
+
+/* ==== 4. Search, quiz, stat rows and panels first built for week 5 (from week05.css) ==== */
+
+/* Week 5 · search + autocomplete sections */
+
+.corridor .w5-filled {
+  border-style: solid;
+  opacity: 1;
+}
+
+.corridor .w5-lead {
+  color: var(--ink);
+  font-size: var(--fs-body);
+  line-height: 1.55;
+  margin: 0 0 0.75rem;
+  max-width: 62rem;
+  text-wrap: pretty;
+}
+
+.corridor .w5-lead b {
+  font-weight: 700;
+}
+
+.corridor .w5-statrow {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 0.75rem 0 1.25rem;
+}
+
+.corridor .w5-stat {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+
+.corridor .w5-stat b {
+  color: var(--ink);
+  display: block;
+  font-size: var(--fs-h2);
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+
+.corridor .w5-stat span {
+  color: var(--ink-soft);
+  display: block;
+  font-size: var(--fs-caption);
+  line-height: 1.35;
+  margin-top: 4px;
+}
+
+.corridor .w5-panel {
+  background: linear-gradient(180deg, var(--card) 0%, var(--w4-inset) 100%);
+  border: 1px solid var(--line-soft);
+  border-radius: 12px;
+  padding: 16px 18px;
+}
+
+.corridor .w5-panel h3 {
+  font-size: var(--fs-small);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin: 0 0 10px;
+  text-transform: uppercase;
+}
+
+.corridor .w5-search-box {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr auto;
+  margin-bottom: 12px;
+}
+
+.corridor .w5-search-box input {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--ink);
+  font: inherit;
+  padding: 10px 12px;
+}
+
+.corridor .w5-search-box button,
+.corridor .w5-chip,
+.corridor .w5-guess button,
+.corridor .w5-quiz-nav button {
+  background: var(--ink);
+  border: 0;
+  border-radius: 8px;
+  color: var(--card);
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--fs-small);
+  font-weight: 650;
+  padding: 10px 14px;
+}
+
+.corridor .w5-chip {
+  background: var(--card);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  padding: 6px 10px;
+}
+
+.corridor .w5-chip[aria-pressed="true"] {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--card);
+}
+
+.corridor .w5-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 14px;
+}
+
+.corridor .w5-rank {
+  display: grid;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.corridor .w5-rank li {
+  align-items: baseline;
+  background: var(--card);
+  border: 1px solid var(--line-soft);
+  border-radius: 8px;
+  display: grid;
+  gap: 8px 12px;
+  grid-template-columns: 2rem 1fr auto;
+  padding: 8px 12px;
+}
+
+.corridor .w5-rank .w5-pos {
+  color: var(--ink-mute-text);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+.corridor .w5-rank .w5-name {
+  color: var(--ink);
+  font-weight: 650;
+}
+
+.corridor .w5-rank .w5-score {
+  color: var(--ink-soft);
+  font-size: var(--fs-caption);
+  font-variant-numeric: tabular-nums;
+}
+
+.corridor .w5-rank .w5-terms {
+  color: var(--ink-mute-text);
+  font-size: var(--fs-caption);
+  grid-column: 2 / -1;
+}
+
+.corridor .w5-rank li.w5-hit {
+  border-color: var(--good-line);
+  box-shadow: inset 3px 0 0 var(--good);
+}
+
+.corridor .w5-table-wrap {
+  overflow-x: auto;
+}
+
+.corridor .w5-table {
+  border-collapse: collapse;
+  font-size: var(--fs-small);
+  width: 100%;
+}
+
+.corridor .w5-table th,
+.corridor .w5-table td {
+  border-bottom: 1px solid var(--line-soft);
+  padding: 8px 10px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.corridor .w5-table th {
+  color: var(--ink-soft);
+  font-weight: 650;
+}
+
+.corridor .w5-table tr[data-selected="true"] {
+  background: var(--access-soft);
+}
+
+.corridor .w5-table button.linkish {
+  all: unset;
+  color: var(--ink);
+  cursor: pointer;
+  font-weight: 650;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.corridor .w5-ok {
+  color: var(--good);
+  font-weight: 700;
+}
+
+.corridor .w5-fail {
+  color: var(--bad);
+  font-weight: 700;
+}
+
+.corridor .w5-detail {
+  margin-top: 14px;
+}
+
+.corridor .w5-detail blockquote,
+.corridor .w5-quote {
+  border-left: 3px solid var(--line);
+  color: var(--ink-soft);
+  font-style: italic;
+  margin: 10px 0 0;
+  padding: 2px 0 2px 12px;
+}
+
+.corridor .w5-caption {
+  color: var(--ink-mute-text);
+  font-size: var(--fs-caption);
+  line-height: 1.4;
+  margin: 8px 0 0;
+}
+
+.corridor .w5-fake {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+
+.corridor .w5-fake .w5-char {
+  color: var(--ink);
+  font-size: var(--fs-lead);
+  font-weight: 750;
+  margin: 0 0 8px;
+}
+
+.corridor .w5-fake p {
+  color: var(--ink);
+  line-height: 1.55;
+  margin: 0;
+  text-wrap: pretty;
+}
+
+.corridor .w5-guess {
+  align-items: end;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr auto;
+  margin-top: 12px;
+}
+
+.corridor .w5-guess select {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--ink);
+  font: inherit;
+  padding: 10px 12px;
+  width: 100%;
+}
+
+.corridor .w5-quiz-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.corridor .w5-quiz-nav button[data-kind="ghost"] {
+  background: var(--card);
+  border: 1px solid var(--line);
+  color: var(--ink);
+}
+
+.corridor .w5-scoreboard {
+  color: var(--ink-soft);
+  font-size: var(--fs-small);
+  margin: 0 0 10px;
+}
+
+.corridor .w5-reveal {
+  background: var(--good-soft);
+  border: 1px solid var(--good-line);
+  border-radius: 8px;
+  margin-top: 12px;
+  padding: 12px 14px;
+}
+
+.corridor .w5-reveal[hidden] {
+  display: none;
+}
+
+.corridor .w5-hubs {
+  color: var(--ink-mute-text);
+  font-size: var(--fs-caption);
+  margin: 6px 0 0;
+}
+
+.corridor .w5-two {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1.1fr 0.9fr;
+  margin-top: 8px;
+}
+
+@media (max-width: 900px) {
+  .corridor .w5-statrow,
+  .corridor .w5-two {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* The hero: the text column and one scatter, Week 4's grid without the inspector. */
+.corridor .w4-hero-grid.w5-hero-grid {
+  grid-template-columns: 340px minmax(0, 1fr);
+}
+.corridor .w5-hero-stage {
+  align-items: stretch;
+}
+.corridor .w5-hero-plot {
+  min-width: 0;
+  width: 100%;
+}
+.corridor .w5-hero-caption {
+  color: var(--w4-hero-body);
+  font-size: var(--fs-small);
+  line-height: 1.5;
+  margin: 0;
+  max-width: 68ch;
+}
+.corridor .w5-hero-caption a {
+  color: var(--w4-hero-ink);
+}
+
+/* The methods list in the closing. */
+.corridor .w5-methods {
+  color: var(--ink-soft);
+  display: flex;
+  flex-direction: column;
+  font-size: var(--fs-body);
+  gap: 8px;
+  line-height: 1.55;
+  margin: 0;
+  padding-left: 18px;
+}
+
+/* A card of stacked paragraphs, notices and drawers, evenly spaced. */
+.corridor .w5-stack { display: flex; flex-direction: column; gap: 14px; }
+.corridor .w5-stack > * { margin: 0; }
+.corridor .w5-stack .qa-body { display: flex; flex-direction: column; gap: 10px; }
+.corridor .w5-stack .qa-body > * { margin: 0; }
+
+
+/* ==== 5. The visually-hidden helper (from week 5's inline style) ==== */
+
+.visually-hidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+
+/* ==== 6. Network views (networkView() in graph.js) ==== */
+
+/* Eight community colours and a grey for nodes in no group, on a light card
+   (.gv) and on the dark surface (.gv-dark): Paul Tol's muted palette, built to
+   stay apart under colour blindness, with purple for his olive and each colour
+   moved in lightness only until it has 3:1 contrast with its ground. A group
+   number keeps its hue in both themes. analysis/check_palette.py checks
+   that they stay apart for normal vision and simulated colour blindness and
+   stand out from the ground; rerun it after changing one. */
+.corridor .gv {
+  --group-0: #332288;
+  --group-1: #a09043;
+  --group-2: #117733;
+  --group-3: #cc6677;
+  --group-4: #5398b9;
+  --group-5: #882255;
+  --group-6: #38a08f;
+  --group-7: #aa4499;
+  --group-none: #aab6c5;
+  /* Label ink on each group colour: white or navy, whichever gives at least 4.5:1. */
+  --on-group-0: #ffffff;
+  --on-group-1: #0b1830;
+  --on-group-2: #ffffff;
+  --on-group-3: #0b1830;
+  --on-group-4: #0b1830;
+  --on-group-5: #ffffff;
+  --on-group-6: #0b1830;
+  --on-group-7: #ffffff;
+  --on-group-none: #0b1830;
+  --graph-ground: #ffffff;
+  --graph-edge: #8c9aad;
+  --graph-ink: #0f2340;
+  --graph-accent: #6d4fd6;
+  --graph-label: rgba(255, 255, 255, 0.92);
+  display: block;
+  position: relative;
+}
+.corridor .gv.gv-dark {
+  --group-0: #6460c0;
+  --group-1: #ddcc77;
+  --group-2: #167a35;
+  --group-3: #cc6677;
+  --group-4: #88ccee;
+  --group-5: #b04476;
+  --group-6: #44aa99;
+  --group-7: #c77dd0;
+  --group-none: #5f6b7a;
+  --on-group-0: #ffffff;
+  --on-group-1: #0b1830;
+  --on-group-2: #ffffff;
+  --on-group-3: #0b1830;
+  --on-group-4: #0b1830;
+  --on-group-5: #ffffff;
+  --on-group-6: #0b1830;
+  --on-group-7: #0b1830;
+  --on-group-none: #ffffff;
+  --graph-ground: #1b1d21;
+  --graph-edge: #8d939b;
+  --graph-ink: #eef2f7;
+  --graph-accent: #9a8cf2;
+  --graph-label: rgba(20, 22, 26, 0.86);
+  background: var(--graph-ground);
+  border-radius: var(--radius);
+  color: var(--graph-ink);
+  padding: 12px 14px;
+}
+.corridor .gv svg { display: block; overflow: visible; }
+
+/* Links: plain, in their community's colour, or faded behind the coloured ones. */
+.corridor .gv .gv-link { stroke: var(--graph-edge); stroke-linecap: round; stroke-opacity: 0.45; }
+.corridor .gv .gv-link.gv-faint { stroke-opacity: 0.1; }
+.corridor .gv .gv-hit { cursor: pointer; stroke: transparent; stroke-width: 10; }
+
+/* Nodes: a group colour, grey for no group, hollow for unassigned, two halves for two groups. */
+.corridor .gv .gv-node { fill: var(--group-none); stroke: var(--graph-ground); stroke-width: 1.5; }
+.corridor .gv .gv-node.gv-hollow { fill: var(--graph-ground); stroke: var(--group-none); stroke-width: 2.5; }
+.corridor .gv .gv-dim { opacity: 0.35; }
+.corridor .gv .gv-inside { fill: var(--on-group-none); font-weight: 700; pointer-events: none; }
+.corridor .gv .gv-inside.g0 { fill: var(--on-group-0); }
+.corridor .gv .gv-inside.g1 { fill: var(--on-group-1); }
+.corridor .gv .gv-inside.g2 { fill: var(--on-group-2); }
+.corridor .gv .gv-inside.g3 { fill: var(--on-group-3); }
+.corridor .gv .gv-inside.g4 { fill: var(--on-group-4); }
+.corridor .gv .gv-inside.g5 { fill: var(--on-group-5); }
+.corridor .gv .gv-inside.g6 { fill: var(--on-group-6); }
+.corridor .gv .gv-inside.g7 { fill: var(--on-group-7); }
+.corridor .gv .gv-inside.gv-on-hollow, .corridor .gv .gv-inside.gv-split {
+  fill: var(--graph-ink); paint-order: stroke; stroke: var(--graph-ground); stroke-width: 3px;
+}
+.corridor .gv [data-movable] { cursor: pointer; }
+.corridor .gv [data-movable]:focus-visible { outline: 2px solid var(--graph-accent); outline-offset: 2px; }
+
+/* Group colours for nodes (fill), links (stroke) and legend dots (background). */
+.corridor .gv .g0 { fill: var(--group-0); } .corridor .gv .gv-link.g0 { stroke: var(--group-0); stroke-opacity: 0.85; }
+.corridor .gv .g1 { fill: var(--group-1); } .corridor .gv .gv-link.g1 { stroke: var(--group-1); stroke-opacity: 0.85; }
+.corridor .gv .g2 { fill: var(--group-2); } .corridor .gv .gv-link.g2 { stroke: var(--group-2); stroke-opacity: 0.85; }
+.corridor .gv .g3 { fill: var(--group-3); } .corridor .gv .gv-link.g3 { stroke: var(--group-3); stroke-opacity: 0.85; }
+.corridor .gv .g4 { fill: var(--group-4); } .corridor .gv .gv-link.g4 { stroke: var(--group-4); stroke-opacity: 0.85; }
+.corridor .gv .g5 { fill: var(--group-5); } .corridor .gv .gv-link.g5 { stroke: var(--group-5); stroke-opacity: 0.85; }
+.corridor .gv .g6 { fill: var(--group-6); } .corridor .gv .gv-link.g6 { stroke: var(--group-6); stroke-opacity: 0.85; }
+.corridor .gv .g7 { fill: var(--group-7); } .corridor .gv .gv-link.g7 { stroke: var(--group-7); stroke-opacity: 0.85; }
+.corridor .gv .gv-link.gv-on { stroke: var(--graph-accent); stroke-opacity: 1; }
+.corridor .gv .gv-link.gv-mark { stroke: var(--graph-ink); stroke-opacity: 0.75; }
+.corridor .gv .gv-link.gv-strong { stroke: var(--ink-mute); stroke-opacity: 0.85; }
+.corridor .gv.gv-dark .gv-link.gv-strong { stroke: var(--graph-edge); }
+.corridor .gv .gv-link.gv-dashed { stroke-dasharray: 5 4; }
+.corridor .gv .gv-node.gv-tone { fill: var(--access); }
+.corridor .gv .gv-side text { fill: var(--ink-soft); }
+.corridor .gv.gv-dark .gv-side text { fill: var(--graph-ink); opacity: 0.8; }
+.corridor .gv .gv-leader { stroke: var(--graph-ink); stroke-opacity: 0.6; stroke-width: 1; }
+.corridor .gv .gv-outline { fill: none; stroke: var(--graph-ground); stroke-width: 1.5; }
+.corridor .gv .gv-ring { fill: none; stroke-width: 2.5; }
+.corridor .gv .gv-ring.g0 { stroke: var(--group-0); } .corridor .gv .gv-ring.g1 { stroke: var(--group-1); }
+.corridor .gv .gv-ring.g2 { stroke: var(--group-2); } .corridor .gv .gv-ring.g3 { stroke: var(--group-3); }
+.corridor .gv .gv-ring.g4 { stroke: var(--group-4); } .corridor .gv .gv-ring.g5 { stroke: var(--group-5); }
+.corridor .gv .gv-ring.g6 { stroke: var(--group-6); } .corridor .gv .gv-ring.g7 { stroke: var(--group-7); }
+.corridor .gv .gv-ring.gnone { stroke: var(--group-none); }
+
+/* Labels: a hub's name on a pill, a group badge, a link's weight. */
+.corridor .gv .gv-pill { fill: var(--graph-label); }
+.corridor .gv .gv-name { fill: var(--graph-ink); font-weight: 700; }
+.corridor .gv .gv-badge circle { fill: var(--graph-ground); stroke: var(--graph-ink); stroke-width: 1.2; }
+.corridor .gv .gv-badge text { fill: var(--graph-ink); font-weight: 700; }
+.corridor .gv .gv-weight rect { fill: var(--graph-ground); stroke: var(--graph-accent); stroke-width: 1.5; }
+.corridor .gv .gv-weight text { fill: var(--graph-ink); font-weight: 800; }
+
+/* The legend above a view: a dot per group, with its name and size. */
+.corridor .gv-legend { display: flex; flex-wrap: wrap; font-size: var(--fs-small); gap: 6px 18px; margin: 0 0 8px; }
+.corridor .gv-legend span { align-items: center; display: inline-flex; gap: 7px; }
+.corridor .gv-legend i { border-radius: 999px; display: inline-block; height: 11px; width: 11px; background: var(--group-none); }
+.corridor .gv-legend i.g0 { background: var(--group-0); } .corridor .gv-legend i.g1 { background: var(--group-1); }
+.corridor .gv-legend i.g2 { background: var(--group-2); } .corridor .gv-legend i.g3 { background: var(--group-3); }
+.corridor .gv-legend i.g4 { background: var(--group-4); } .corridor .gv-legend i.g5 { background: var(--group-5); }
+.corridor .gv-legend i.g6 { background: var(--group-6); } .corridor .gv-legend i.g7 { background: var(--group-7); }
+.corridor .gv-legend i.gv-hollow-dot { background: transparent; border: 2px solid var(--group-none); }
+.corridor .gv .gv-legend { color: var(--graph-ink); }
+.corridor .gv .gv-note { color: var(--graph-ink); font-size: var(--fs-small); margin: 0 0 6px; opacity: 0.8; }
+
+/* explore: hover a node, click a hub or a legend entry, zoom. The lit part stays
+   in ink; the rest fades. Strokes keep their width when the view zooms. */
+.corridor .gv-stage { position: relative; }
+.corridor .gv.gv-explore svg { cursor: grab; overflow: hidden; touch-action: none; }
+.corridor .gv.gv-explore svg:active { cursor: grabbing; }
+.corridor .gv.gv-explore [data-id], .corridor .gv.gv-explore .gv-hub { cursor: pointer; }
+.corridor .gv.gv-explore line, .corridor .gv.gv-explore circle, .corridor .gv.gv-explore rect { vector-effect: non-scaling-stroke; }
+.corridor .gv .gv-lit .gv-link:not(.gv-hi) { stroke-opacity: 0.04; }
+.corridor .gv .gv-lit [data-id]:not(.gv-hi), .corridor .gv .gv-lit .gv-hub:not(.gv-hi) { opacity: 0.18; }
+.corridor .gv .gv-lit .gv-link.gv-hi { stroke: var(--graph-ink); stroke-opacity: 0.8; }
+.corridor .gv .gv-hub { outline: none; }
+.corridor .gv .gv-hub:focus-visible .gv-pill { stroke: var(--graph-accent); stroke-width: 2; }
+.corridor .kit-tip-host { position: relative; }
+.corridor .kit-tip,
+.corridor .gv-tip {
+  background: var(--w4-tip-bg); border-radius: 9px; box-shadow: 0 12px 32px rgba(15, 35, 64, 0.18);
+  color: var(--w4-tip-ink); display: flex; flex-direction: column; font-size: var(--fs-small); gap: 2px;
+  line-height: 1.45; max-width: 240px; padding: 8px 11px; pointer-events: none; position: absolute; z-index: 30;
+}
+.corridor .gv-tip[hidden], .corridor .kit-tip[hidden] { display: none; }
+.corridor .gv-tip b, .corridor .kit-tip b { color: var(--w4-hero-ink); }
+.corridor [data-tip] { cursor: default; }
+.corridor circle.kit-hot, .corridor rect.kit-hot { stroke: var(--ink); stroke-width: 2px; }
+.corridor path.kit-hot, .corridor polyline.kit-hot, .corridor line.kit-hot { stroke-width: 3.5px; }
+.corridor polygon.kit-hot { opacity: 0.8; }
+.corridor .kit-guide { stroke: var(--ink-mute); stroke-dasharray: 3 3; pointer-events: none; }
+.corridor .gv-tools { display: flex; gap: 4px; position: absolute; right: 0; top: 0; z-index: 20; }
+.corridor .gv-tools button {
+  background: var(--card); border: 1px solid var(--line); border-radius: 6px; color: var(--ink-soft);
+  cursor: pointer; font: inherit; font-size: var(--fs-small); min-height: 28px; min-width: 28px; padding: 0 8px;
+}
+.corridor .gv-tools button:hover { border-color: var(--ink-mute); color: var(--ink); }
+.corridor .gv-legend .gv-key {
+  align-items: center; background: none; border: 0; color: inherit; cursor: pointer; display: inline-flex;
+  font: inherit; gap: 7px; padding: 0;
+}
+.corridor .gv-legend .gv-key:hover { text-decoration: underline; }
+.corridor .gv-legend .gv-key:focus-visible { outline: 2px solid var(--graph-accent); outline-offset: 2px; }
+
+/* Week 6's explorer: a character picker, then two ranked columns of its nearest pages. */
+.corridor .w6-pick { align-items: center; display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+.corridor .w6-pick label { color: var(--ink-soft); font-size: var(--fs-small); font-weight: 600; }
+.corridor .w6-pick select { background: var(--card); border: 1px solid var(--line); border-radius: 6px; color: var(--ink); font: inherit; font-size: var(--fs-small); max-width: 16rem; padding: 4px 8px; }
+.corridor .w6-cols { display: grid; gap: 20px; grid-template-columns: 1fr 1fr; }
+.corridor .w6-col h3 { font-size: var(--fs-body); margin: 0 0 2px; }
+.corridor .w6-count { color: var(--ink-soft); font-size: var(--fs-small); margin: 0 0 8px; }
+.corridor .w6-col ol { display: flex; flex-direction: column; gap: 4px; margin: 0; padding-left: 22px; }
+.corridor .w6-col li { font-size: var(--fs-small); line-height: 1.4; padding: 3px 6px; }
+.corridor .w6-col li > span { display: inline-block; }
+.corridor .w6-name { font-weight: 600; margin-right: 8px; }
+.corridor .w6-where { border: 1px solid var(--line); border-radius: 999px; color: var(--ink-soft); font-size: var(--fs-caption); margin-right: 8px; padding: 0 7px; }
+.corridor .w6-linked .w6-where { background: var(--ink); border-color: var(--ink); color: var(--card); }
+.corridor .w6-cos { color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.corridor .w6-words { color: var(--ink-soft); display: block !important; font-size: var(--fs-caption); }
+/* A strip chart reads the page's light tokens, so in the dark hero it sits on a card. */
+.corridor .w6-hero-panel { background: var(--card); border-radius: 12px; padding: 14px 18px 10px; }
+.corridor .w6-gender { color: var(--ink-soft); font-size: var(--fs-caption); margin-right: 8px; }
+.corridor .w6-note { color: var(--ink); font-size: var(--fs-small); margin: 0 0 14px; }
+.corridor .w6-failed { color: var(--ink-soft); font-size: var(--fs-small); font-style: italic; margin: 8px 0; }
+/* The hero's contrast: two short ranked lists side by side on the light panel. */
+.corridor .w6-contrast { display: grid; gap: 28px; grid-template-columns: 1fr 1fr; min-width: 0; width: 100%; }
+.corridor .w6-contrast .w6-hero-h { color: var(--ink); font-size: var(--fs-body); font-weight: 700; margin: 0 0 10px; }
+.corridor .w6-contrast ol { display: flex; flex-direction: column; gap: 10px; margin: 0; padding-left: 20px; }
+.corridor .w6-contrast li { color: var(--ink); font-size: var(--fs-strong); line-height: 1.3; }
+.corridor .w6-contrast li span { color: var(--ink-soft); display: block; font-size: var(--fs-small); }
+/* Week 6's tables: space between stacked tables, a one-line "Read as" column, plain text in the words table. */
+.corridor #names-table + #names-distance { margin-top: 18px; }
+.corridor :is(#names-read, #gender-read) td:nth-child(5) { white-space: nowrap; }
+.corridor #gender-words td.soft { color: var(--ink); }
+/* Week 6's explorer: pages about women carry a tint, so the lean shows at a glance; the controls take the house focus ring. */
+.corridor .w6-col li.w6-woman { background: var(--people-soft); border-radius: 6px; }
+.corridor :is(.w5-chips button, .w6-pick select):focus-visible { outline: 2px solid var(--w4-accent); outline-offset: 2px; }
+.corridor .w6-both { color: var(--ink-soft); font-size: var(--fs-caption); font-style: italic; margin-right: 8px; }
+.corridor .w6-key { align-items: center; color: var(--ink-soft); display: flex; font-size: var(--fs-small); gap: 8px; margin: -6px 0 14px; }
+.corridor .w6-key-woman { background: var(--people-soft); border-radius: 3px; display: inline-block; height: 12px; width: 18px; }
+
+/* ==== Week 6 essentials (/weeks/week06/essentials/) ==== */
+.corridor .w6e-hero { padding: 56px 0 40px; }
+.corridor .w6e-hero h1 { color: #fff; font-size: var(--fs-display); line-height: 1.05; margin: 8px 0 16px; }
+.corridor .w6e-lede { color: #dbe6f5; font-size: var(--fs-lead); line-height: 1.5; max-width: 760px; }
+.corridor .w6e-lede a { color: #fff; }
+.corridor .w6e-part { border-top: 1px solid var(--line); color: var(--ink-soft); font-size: var(--fs-small); font-weight: 700; letter-spacing: 0.04em; margin: 48px 0 0; padding-top: 16px; }
+.corridor .w6e-uses { color: var(--ink-soft); font-size: var(--fs-small); margin: 0 0 8px; }
+.corridor .w6e-app { min-height: 120px; }
+.corridor .w6e-controls { align-items: center; display: flex; flex-wrap: wrap; gap: 10px 16px; margin: 0 0 14px; }
+.corridor .w6e-picker { align-items: center; display: inline-flex; gap: 8px; }
+.corridor .w6e-picker label, .corridor .w6e-label { color: var(--ink-soft); font-size: var(--fs-small); font-weight: 600; }
+.corridor .w6e-picker select, .corridor .w6e-picker input { border: 1px solid var(--line); border-radius: 6px; color: var(--ink); font-size: var(--fs-small); padding: 4px 8px; }
+.corridor .w6e-picker select:focus-visible, .corridor .w6e-picker input:focus-visible { outline: 2px solid var(--w4-accent); outline-offset: 2px; }
+.corridor .w6e-note { color: var(--ink-soft); font-size: var(--fs-small); margin: 0 0 10px; }
+.corridor .w6e-cols { display: grid; gap: 28px; grid-template-columns: 1fr 1fr; margin: 0 0 14px; }
+.corridor .w6e-cols.w6e-three { grid-template-columns: 1fr 1fr 1fr; }
+.corridor .w6e-list h3 { font-size: var(--fs-body); margin: 0 0 4px; }
+.corridor .w6e-list ol { list-style: none; margin: 0; padding: 0; }
+.corridor .w6e-list li { align-items: center; display: grid; font-size: var(--fs-small); gap: 8px; grid-template-columns: minmax(84px, 1.2fr) 2fr auto; padding: 2px 0; }
+.corridor .w6e-word { color: var(--ink); font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.corridor .w6e-track { background: var(--line-soft); border-radius: 3px; display: block; height: 8px; }
+.corridor .w6e-bar { background: var(--w4-accent); border-radius: 3px; display: block; height: 8px; }
+.corridor .w6e-num { color: var(--ink-soft); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.corridor .w6e-list li.w6e-mark .w6e-bar { background: var(--people); }
+.corridor #weights-app .w6e-list li.w6e-mark .w6e-word { color: var(--ink-soft); font-weight: 400; }
+.corridor #weights-app .w6e-list li.w6e-mark .w6e-bar { background: var(--ink-mute); }
+.corridor .w6e-grid { border-collapse: collapse; font-size: var(--fs-small); font-variant-numeric: tabular-nums; }
+.corridor .w6e-grid th, .corridor .w6e-grid td { border-bottom: 1px solid var(--line-soft); padding: 4px 8px; text-align: right; }
+.corridor .w6e-grid th[scope="row"] { text-align: left; }
+.corridor .w6e-grid td.w6e-zero { color: var(--ink-mute); }
+.corridor .w6e-topics { list-style: none; margin: 0 0 14px; padding: 0; }
+.corridor .w6e-topics li { border: 1px dashed var(--line); border-radius: 8px; display: grid; font-size: var(--fs-small); gap: 12px; grid-template-columns: 70px 1fr auto; margin: 0 0 6px; padding: 6px 10px; }
+.corridor .w6e-topics li.w6e-kept { border-style: solid; border-color: var(--w4-accent); }
+.corridor .w6e-tnum { color: var(--ink-soft); font-weight: 600; }
+.corridor .w6e-tshare { color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.corridor .w6e-step { border-top: 1px solid var(--line-soft); padding-top: 14px; }
+.corridor .w6e-window { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 10px; }
+.corridor .w6e-window span { border-radius: 6px; font-size: var(--fs-small); padding: 2px 8px; }
+.corridor .w6e-ctx { background: var(--access-soft); }
+.corridor .w6e-centre { background: var(--w4-accent); color: #fff; font-weight: 700; }
+.corridor .w6e-neg { background: var(--line-soft); color: var(--ink-soft); text-decoration: line-through; }
+.corridor .w6e-closing h3 { font-size: var(--fs-h4); margin: 0 0 10px; }
+.corridor .w6e-takeaways { margin: 0 0 24px; padding-left: 20px; }
+.corridor .w6e-takeaways li { font-size: var(--fs-body); line-height: 1.55; margin: 0 0 8px; }
+.corridor .w6e-checklist { column-gap: 32px; columns: 2; list-style: none; margin: 0 0 18px; padding: 0; }
+.corridor .w6e-checklist li { break-inside: avoid; display: flex; font-size: var(--fs-small); justify-content: space-between; padding: 3px 0; }
+
+/* ==== Kit: text explorables (VectorAngle, SplitBars, SweepCurve, TokenWindow,
+   CountMatrix, MixtureBar, RankedBars, AxisMap, AnalogyPlot, GuessRanker in
+   src/kit). Light corridor style; every control takes the house focus ring. ==== */
+.corridor :is(.kit-vec, .kit-split, .kit-tokens, .kit-matrix, .kit-mix, .kit-ranked, .kit-guess) :is(button, input):focus-visible { outline: 2px solid var(--w4-accent); outline-offset: 2px; }
+.corridor .kit-plot { min-width: 0; }
+.corridor .kit-plot > svg { display: block; }
+.corridor .kit-controls { align-items: center; display: flex; flex-wrap: wrap; gap: 8px 12px; margin: 0 0 10px; }
+.corridor .kit-controls label { color: var(--ink-soft); font-size: var(--fs-small); font-weight: 600; }
+.corridor .kit-controls output { color: var(--ink); font-size: var(--fs-small); font-variant-numeric: tabular-nums; min-width: 3.5em; }
+.corridor .kit-controls input[type="range"] { accent-color: var(--w4-accent); display: inline-block; flex: none; margin: 0; width: 160px; }
+.corridor .kit-controls input[type="text"] { border: 1px solid var(--line); border-radius: 6px; color: var(--ink); font-size: var(--fs-small); padding: 4px 8px; }
+.corridor .kit-controls :is(input, button):focus-visible { outline: 2px solid var(--w4-accent); outline-offset: 2px; }
+.corridor .kit-link { background: none; border: 0; color: var(--ink); cursor: pointer; font: inherit; font-weight: 600; padding: 0; text-align: left; text-decoration: underline dotted var(--ink-mute); text-underline-offset: 3px; }
+.corridor .kit-link:hover { color: var(--w4-accent); }
+.corridor .kit-note { color: var(--ink-mute-text); font-size: var(--fs-caption); margin: 8px 0 0; }
+.corridor .kit-rank { color: var(--ink-mute-text); font-size: var(--fs-caption); font-variant-numeric: tabular-nums; text-align: right; }
+.corridor .kit-num { color: var(--ink-soft); font-size: var(--fs-small); font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+.corridor .kit-word { color: var(--ink); font-weight: 600; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.corridor .kit-track { background: var(--line-soft); border-radius: 3px; display: flex; height: 10px; min-width: 0; overflow: hidden; }
+.corridor .kit-seg { background: var(--w4-accent); display: block; flex: none; height: 100%; }
+.corridor .kit-legend { color: var(--ink-soft); display: flex; flex-wrap: wrap; font-size: var(--fs-caption); gap: 4px 16px; list-style: none; margin: 10px 0 0; padding: 0; }
+.corridor .kit-legend li { align-items: center; display: inline-flex; gap: 6px; }
+.corridor .kit-swatch { border-radius: 3px; display: inline-block; height: 10px; width: 10px; }
+
+/* VectorAngle: the plot, then its readouts in a row. */
+.corridor .kit-readouts { display: flex; flex-wrap: wrap; gap: 10px; margin: 10px 0 0; }
+.corridor .kit-readouts > div { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 6px 12px; }
+.corridor .kit-readouts dt { color: var(--ink-mute-text); font-size: var(--fs-caption); letter-spacing: 0.04em; text-transform: uppercase; }
+.corridor .kit-readouts dd { color: var(--ink); font-size: var(--fs-h4); font-variant-numeric: tabular-nums; font-weight: 700; margin: 0; }
+
+/* SplitBars: rank, name, bar, value, status. */
+.corridor .kit-split ol { list-style: none; margin: 0; padding: 0; }
+.corridor .kit-split ol > li { align-items: center; border-bottom: 1px solid var(--line-soft); display: grid; gap: 10px; grid-template-columns: 1.6em minmax(0, 1.2fr) minmax(0, 2fr) 4em 6.5em; padding: 5px 0; }
+.corridor .kit-split-name { display: flex; flex-direction: column; min-width: 0; }
+.corridor .kit-split-name > :is(b, button) { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.corridor .kit-split-name b { color: var(--ink); font-size: var(--fs-small); }
+.corridor .kit-split-name small { color: var(--ink-mute-text); font-size: var(--fs-caption); }
+.corridor .kit-split .kit-track { height: 14px; }
+.corridor .kit-pill { border-radius: 999px; display: inline-block; font-size: var(--fs-caption); font-weight: 700; padding: 1px 9px; }
+.corridor .kit-pill-good { background: var(--good-soft); border: 1px solid var(--good-line); color: var(--good); }
+.corridor .kit-pill-bad { background: var(--card); border: 1px solid var(--bad); color: var(--bad); }
+
+/* TokenWindow: chips, then positive and negative pairs side by side. */
+.corridor .kit-tok-row { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin: 0 0 14px; padding: 0; }
+.corridor .kit-tok-row :is(span, button) { border: 1px solid var(--line); border-radius: 6px; display: inline-block; font-family: var(--font-mono); font-size: var(--fs-small); padding: 2px 8px; }
+.corridor .kit-tok-row button { cursor: pointer; }
+.corridor .kit-tok-centre { background: var(--w4-accent); border-color: var(--w4-accent); color: var(--card); font-weight: 700; }
+.corridor .kit-tok-ctx { background: var(--access-soft); border-color: var(--access); color: var(--ink); }
+.corridor .kit-tok-out { background: var(--card); color: var(--ink-mute-text); }
+.corridor .kit-pairs { display: grid; gap: 24px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.corridor .kit-pairs h4 { color: var(--ink-soft); font-size: var(--fs-caption); letter-spacing: 0.04em; margin: 0 0 6px; text-transform: uppercase; }
+.corridor .kit-pairs ul { list-style: none; margin: 0; padding: 0; }
+.corridor .kit-pairs li { border-bottom: 1px solid var(--line-soft); font-family: var(--font-mono); font-size: var(--fs-small); overflow-wrap: anywhere; padding: 4px 0; }
+.corridor .kit-pairs s { color: var(--ink-mute-text); }
+
+/* CountMatrix: fixed layout, so many columns share the width instead of spilling. */
+.corridor .kit-matrix table { border-collapse: collapse; font-size: var(--fs-small); font-variant-numeric: tabular-nums; table-layout: fixed; width: 100%; }
+.corridor .kit-matrix caption { caption-side: bottom; color: var(--ink-mute-text); font-size: var(--fs-caption); padding-top: 6px; text-align: left; }
+.corridor .kit-matrix th, .corridor .kit-matrix td { border: 1px solid var(--line-soft); overflow: hidden; padding: 4px 6px; text-overflow: ellipsis; white-space: nowrap; }
+.corridor .kit-matrix thead th { color: var(--ink-soft); font-size: var(--fs-caption); font-weight: 600; text-align: center; }
+.corridor .kit-matrix thead th:first-child, .corridor .kit-matrix th[scope="row"] { text-align: left; width: 8em; }
+.corridor .kit-matrix td { color: var(--ink); text-align: center; }
+.corridor .kit-matrix td.kit-zero { color: var(--ink-mute); }
+.corridor .kit-matrix tr.kit-row-on th, .corridor .kit-matrix tr.kit-row-on td { border-bottom-color: var(--w4-accent); border-top-color: var(--w4-accent); font-weight: 700; }
+.corridor .kit-matrix tr.kit-row-on th { box-shadow: inset 3px 0 0 var(--w4-accent); }
+.corridor .kit-vector { margin: 10px 0 0; }
+.corridor .kit-vector code { background: var(--w4-inset); border: 1px solid var(--line); border-radius: 6px; display: block; font-size: var(--fs-small); overflow-wrap: anywhere; padding: 6px 10px; }
+
+/* MixtureBar: the 100% bar, a card per part, the focused part's words. */
+.corridor .kit-mix-bar { border-radius: 6px; display: flex; height: 30px; overflow: hidden; }
+.corridor .kit-mix-seg { align-items: center; color: var(--ink); display: flex; flex: none; font-size: var(--fs-caption); font-weight: 600; justify-content: center; min-width: 0; overflow: hidden; white-space: nowrap; }
+.corridor .kit-mix-seg.kit-on { font-weight: 800; }
+.corridor .kit-mix-cards { display: grid; gap: 8px; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); list-style: none; margin: 10px 0 0; padding: 0; }
+.corridor .kit-mix-cards li { border: 1px solid var(--line); border-radius: 8px; border-top-width: 3px; min-width: 0; }
+.corridor .kit-mix-cards :is(button, div) { background: var(--card); border: 0; border-radius: 6px; color: var(--ink); display: flex; flex-direction: column; font: inherit; padding: 6px 10px; text-align: left; width: 100%; }
+.corridor .kit-mix-cards button { cursor: pointer; }
+.corridor .kit-mix-cards :is(button[aria-pressed="true"], div.kit-on) { background: var(--w4-inset); }
+.corridor .kit-mix-cards small { color: var(--ink-mute-text); font-size: var(--fs-caption); letter-spacing: 0.04em; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase; white-space: nowrap; }
+.corridor .kit-mix-cards b { font-size: var(--fs-h4); }
+.corridor .kit-mix-words h4 { color: var(--ink-soft); font-size: var(--fs-caption); letter-spacing: 0.04em; margin: 14px 0 6px; text-transform: uppercase; }
+.corridor .kit-mix-words ul { display: grid; gap: 4px 24px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); list-style: none; margin: 0; padding: 0; }
+.corridor .kit-mix-words li { align-items: center; display: grid; font-size: var(--fs-small); gap: 8px; grid-template-columns: minmax(0, 5em) minmax(0, 1fr) 3em; }
+
+/* RankedBars: a fixed-layout table so long words cut instead of spilling. */
+.corridor .kit-ranked { border-collapse: collapse; font-size: var(--fs-small); table-layout: fixed; width: 100%; }
+.corridor .kit-ranked caption { color: var(--ink-soft); font-size: var(--fs-caption); font-weight: 700; letter-spacing: 0.04em; padding-bottom: 6px; text-align: left; text-transform: uppercase; }
+.corridor .kit-ranked col.kit-ranked-n { width: 2.2em; }
+.corridor .kit-ranked col.kit-ranked-label { width: 30%; }
+.corridor .kit-ranked col.kit-ranked-col { width: 6.5em; }
+.corridor .kit-ranked th { border-bottom: 1px solid var(--line); color: var(--ink-mute-text); font-size: var(--fs-caption); font-weight: 600; padding: 4px 6px; text-align: left; }
+.corridor .kit-ranked td { border-bottom: 1px solid var(--line-soft); padding: 4px 6px; }
+.corridor .kit-ranked :is(th, td).num { font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+.corridor .kit-ranked-word { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.corridor .kit-ranked tr.kit-muted .kit-ranked-word { color: var(--ink-mute-text); }
+.corridor .kit-ranked tr.kit-muted .kit-link { color: var(--ink-mute-text); font-weight: 400; }
+.corridor .kit-ranked tr.kit-muted .kit-seg { background: var(--ink-mute); opacity: 0.55; }
+
+/* AxisMap: the axis ends on the four sides of the plot. */
+.corridor .kit-axismap { align-items: center; display: grid; gap: 4px 8px; grid-template-areas: ". top ." "left plot right" ". bottom ."; grid-template-columns: auto minmax(0, 1fr) auto; margin: 0; }
+.corridor .kit-axismap-plot { grid-area: plot; min-width: 0; }
+.corridor .kit-axismap > span { color: var(--ink-soft); font-size: var(--fs-small); font-weight: 600; max-width: 9em; overflow-wrap: anywhere; }
+.corridor .kit-axis-top { grid-area: top; justify-self: center; }
+.corridor .kit-axis-bottom { grid-area: bottom; justify-self: center; }
+.corridor .kit-axis-left { grid-area: left; text-align: right; }
+.corridor .kit-axis-right { grid-area: right; }
+
+/* AnalogyPlot */
+.corridor .kit-analogy { margin: 0; }
+.corridor .kit-analogy-expr { color: var(--ink-mute-text); font-family: var(--font-mono); font-size: var(--fs-strong); margin: 0 0 8px; text-align: center; }
+.corridor .kit-analogy-expr b { color: var(--ink); }
+.corridor .kit-analogy-expr b.kit-analogy-hit { color: var(--people); }
+
+/* GuessRanker: the input and words on the left, the live ranking on the right. */
+.corridor .kit-guess { display: grid; gap: 24px; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); }
+.corridor .kit-guess-target { font-size: var(--fs-body); margin: 0 0 10px; }
+.corridor .kit-guess-form label { color: var(--ink-soft); display: block; font-size: var(--fs-small); font-weight: 600; margin: 0 0 4px; }
+.corridor .kit-guess-form div { display: flex; gap: 8px; }
+.corridor .kit-guess-form input { border: 1px solid var(--line); border-radius: 6px; color: var(--ink); flex: 1; font-size: var(--fs-small); min-width: 0; padding: 6px 10px; }
+.corridor .kit-guess-form button { background: var(--w4-accent); border: 0; border-radius: 6px; color: var(--card); cursor: pointer; font-size: var(--fs-small); font-weight: 700; padding: 6px 14px; }
+.corridor .kit-guess-form :is(input, button):disabled { cursor: not-allowed; opacity: 0.5; }
+.corridor .kit-guess-count { color: var(--ink-soft); font-size: var(--fs-small); margin: 10px 0 6px; }
+.corridor .kit-guess-chips { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin: 0 0 8px; padding: 0; }
+.corridor .kit-guess-chips li { background: var(--access-soft); border-radius: 999px; font-size: var(--fs-small); overflow-wrap: anywhere; padding: 2px 10px; }
+.corridor .kit-guess-chips li.kit-banned { background: var(--line-soft); color: var(--bad); }
+.corridor .kit-guess-chips li.kit-empty { background: none; border: 1px dashed var(--line); }
+.corridor .kit-guess-status { color: var(--ink-soft); font-size: var(--fs-small); margin: 0 0 6px; min-height: 1.5em; }
+.corridor .kit-guess-board h4 { color: var(--ink-soft); font-size: var(--fs-caption); letter-spacing: 0.04em; margin: 0 0 6px; text-transform: uppercase; }
+.corridor .kit-guess-board ol { list-style: none; margin: 0; padding: 0; }
+.corridor .kit-guess-board li { align-items: center; border-bottom: 1px solid var(--line-soft); display: grid; font-size: var(--fs-small); gap: 8px; grid-template-columns: 1.6em minmax(0, 1.2fr) minmax(0, 1.5fr) 3.5em; padding: 3px 0; }
+.corridor .kit-guess-board li.kit-target { background: var(--people-soft); border-radius: 4px; }
+.corridor .kit-guess-board li.kit-target .kit-seg { background: var(--people); }
+.corridor .kit-guess-board em { color: var(--people); font-size: var(--fs-caption); font-style: normal; font-weight: 700; }
+.corridor .kit-guess-win { background: var(--good-soft); border: 1px solid var(--good-line); border-radius: 8px; color: var(--good); font-weight: 700; margin: 10px 0 0; padding: 8px 12px; }
+
+/* ==== Kit: networks (NetCanvas, StepPlayer, Readouts and NetworkView's
+   explorable additions in src/kit). Light corridor style; every control takes
+   the house focus ring. ==== */
+.corridor .kit-player:focus-visible, .corridor .kit-player :is(button, input, select):focus-visible { outline: 2px solid var(--w4-accent); outline-offset: 2px; }
+.corridor .kit-player { border-radius: 8px; }
+.corridor .kit-player .kit-controls button, .corridor .kit-net-demo .kit-controls button { background: var(--card); border: 1px solid var(--line); border-radius: 6px; color: var(--ink); cursor: pointer; font-size: var(--fs-small); padding: 4px 12px; }
+.corridor .kit-player .kit-controls button[aria-pressed="true"], .corridor .kit-net-demo .kit-controls button[aria-pressed="true"] { background: var(--w4-accent); border-color: var(--w4-accent); color: var(--card); }
+.corridor .kit-player .kit-controls button:disabled { cursor: not-allowed; opacity: 0.5; }
+.corridor .kit-player .kit-controls .kit-note { margin: 0; }
+.corridor .kit-net-demo .kit-controls select { border: 1px solid var(--line); border-radius: 6px; color: var(--ink); font-size: var(--fs-small); padding: 3px 6px; }
+.corridor .kit-net-demo :is(button, input, select):focus-visible { outline: 2px solid var(--w4-accent); outline-offset: 2px; }
+.corridor .kit-readouts dd.kit-readout-sub { color: var(--ink-mute-text); font-size: var(--fs-caption); font-weight: 400; }
+
+/* NetCanvas: one canvas, or a grid of small multiples. */
+.corridor .gv.kit-netcanvas { min-width: 0; }
+.corridor .kit-netcanvas-stage { position: relative; }
+.corridor .kit-netcanvas-stage canvas { display: block; height: 100%; width: 100%; }
+.corridor .kit-netcanvas-pick { cursor: pointer; }
+.corridor .kit-netcanvas-cell { min-width: 0; }
+.corridor .kit-netgrid { display: grid; gap: 12px 16px; }
+.corridor .kit-netcanvas-item { min-width: 0; }
+.corridor .kit-netcanvas-title { color: var(--ink-soft); font-size: var(--fs-caption); font-weight: 700; letter-spacing: 0.04em; margin: 0 0 4px; text-transform: uppercase; }
+.corridor .gv.gv-dark .kit-netcanvas-title, .corridor .gv.gv-dark .kit-note { color: var(--graph-ink); }
+
+/* NetworkView additions: states, highlighted links, arrowheads, clickable nodes. */
+.corridor .gv .gv-node.kit-net-is-ghost { opacity: 0.2; }
+.corridor .gv .gv-node.kit-net-is-picked { fill: var(--graph-accent); }
+.corridor .gv .gv-node.kit-net-is-new { fill: var(--people); }
+.corridor .gv .kit-net-ring { fill: none; pointer-events: none; stroke: var(--graph-ink); stroke-width: 2; }
+.corridor .gv .kit-net-ring.kit-net-picked { stroke: var(--graph-accent); }
+.corridor .gv .kit-net-ring.kit-net-new { stroke: var(--people); }
+.corridor .gv .gv-link.kit-net-hi { stroke: var(--graph-accent); stroke-opacity: 1; stroke-width: 2.5; }
+.corridor .gv .gv-link.kit-net-faint { stroke-opacity: 0.08; }
+.corridor .gv .kit-net-head { fill: var(--graph-edge); opacity: 0.75; }
+.corridor .gv .kit-net-head.kit-net-hi { fill: var(--graph-accent); opacity: 1; }
+.corridor .gv .kit-net-head.kit-net-faint { opacity: 0.1; }
+.corridor .gv [data-pick] { cursor: pointer; }
+.corridor .gv [data-pick]:focus-visible { outline: 2px solid var(--w4-accent); outline-offset: 2px; }
+
+/* ==== Kit: Text (TaggedTokens, ContributionBars, RankedResults, MethodCompare,
+   and the CountMatrix and AxisMap options in src/kit). Light corridor style;
+   every control takes the house focus ring. ==== */
+.corridor :is(.kit-tt, .kit-contrib, .kit-results, .kit-compare) :is(button, input, textarea, li[tabindex]):focus-visible { outline: 2px solid var(--w4-accent); outline-offset: 2px; }
+
+/* TaggedTokens: chips with a tag beneath, spans boxed under their label, the n-gram windows. */
+.corridor .kit-tt-source label, .corridor .kit-tt-grams h4, .corridor .kit-tt-head { color: var(--ink-soft); display: block; font-size: var(--fs-caption); font-weight: 600; letter-spacing: 0.04em; margin: 0 0 6px; text-transform: uppercase; }
+.corridor .kit-tt-head { margin-top: 12px; }
+.corridor .kit-tt-source { margin: 0 0 12px; }
+.corridor .kit-tt-source textarea { background: var(--card); border: 1px solid var(--line); border-radius: 6px; color: var(--ink); display: block; font-family: var(--font-mono); font-size: var(--fs-small); padding: 6px 8px; resize: vertical; width: 100%; }
+.corridor .kit-tt-row { align-items: flex-start; display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin: 0; padding: 0; }
+.corridor .kit-tt-row > li { max-width: 100%; min-width: 0; }
+.corridor .kit-tt-chip { align-items: center; background: var(--card); border: 1px solid var(--line); border-radius: 6px; color: var(--ink); display: inline-flex; flex-direction: column; font: inherit; max-width: 100%; min-height: 1.9em; min-width: 1.6em; padding: 2px 7px; vertical-align: top; }
+.corridor button.kit-tt-chip { cursor: help; }
+.corridor .kit-tt-text { font-family: var(--font-mono); font-size: var(--fs-small); max-width: 100%; overflow-wrap: anywhere; }
+.corridor .kit-tt-tag { color: var(--ink-mute-text); font-size: var(--fs-caption); max-width: 100%; overflow-wrap: anywhere; }
+.corridor .kit-tt-pos { background: var(--good-soft); border-color: var(--good-line); }
+.corridor .kit-tt-neg { background: color-mix(in srgb, var(--bad) 9%, var(--card)); border-color: color-mix(in srgb, var(--bad) 45%, var(--card)); }
+.corridor .kit-tt-accent { background: var(--access-soft); border-color: var(--access); }
+.corridor .kit-tt-chip.kit-tt-muted { border-style: dashed; color: var(--ink-mute-text); }
+.corridor .kit-tt-chip.kit-on { background: var(--w4-accent); border-color: var(--w4-accent); color: var(--card); }
+.corridor .kit-tt-chip.kit-on .kit-tt-tag { color: var(--card); }
+.corridor .kit-tt-pop-host { display: inline-block; max-width: 100%; position: relative; }
+.corridor .kit-tt-pop { background: var(--card); border: 1px solid var(--line); border-radius: 8px; box-shadow: var(--shadow); color: var(--ink); display: grid; font-size: var(--fs-caption); gap: 2px; left: 0; max-width: 18em; padding: 6px 10px; position: absolute; top: calc(100% + 4px); width: max-content; z-index: 5; }
+.corridor .kit-tt-pop span { overflow-wrap: anywhere; }
+.corridor .kit-tt-pop b { color: var(--ink-soft); font-family: var(--font-mono); font-weight: 600; }
+.corridor .kit-tt-span { background: var(--w4-inset); border: 1px solid var(--access); border-radius: 8px; display: inline-flex; flex-direction: column; gap: 3px; padding: 3px; }
+.corridor .kit-tt-span-chips { display: flex; flex-wrap: wrap; gap: 4px; }
+.corridor .kit-tt-span-label { color: var(--ink-soft); font-size: var(--fs-caption); font-weight: 700; overflow-wrap: anywhere; text-align: center; }
+.corridor .kit-tt-grams { margin: 14px 0 0; }
+.corridor .kit-tt-grams ol { display: grid; gap: 4px 12px; grid-template-columns: repeat(auto-fill, minmax(11em, 1fr)); list-style: none; margin: 0; padding: 0; }
+.corridor .kit-tt-grams li { align-items: center; display: flex; gap: 6px; min-width: 0; }
+.corridor .kit-tt-grams :is(button, span:not(.kit-rank)) { background: var(--card); border: 1px solid var(--line); border-radius: 8px; color: var(--ink); font-family: var(--font-mono); font-size: var(--fs-small); min-width: 0; overflow-wrap: anywhere; padding: 1px 9px; text-align: left; }
+.corridor .kit-tt-grams button { cursor: pointer; }
+.corridor .kit-tt-grams li.kit-on :is(button, span:not(.kit-rank)) { background: var(--w4-accent); border-color: var(--w4-accent); color: var(--card); }
+
+/* ContributionBars: label, a bar either side of zero, value; then the total's gauge. */
+.corridor .kit-contrib ol { list-style: none; margin: 0; padding: 0; }
+.corridor .kit-contrib ol > li { align-items: center; border-bottom: 1px solid var(--line-soft); display: grid; font-size: var(--fs-small); gap: 8px; grid-template-columns: minmax(0, 9em) minmax(0, 1fr) 4em; padding: 3px 0; }
+.corridor .kit-contrib-label { color: var(--ink); font-family: var(--font-mono); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.corridor .kit-contrib-track { background: var(--line-soft); border-radius: 3px; display: block; height: 10px; overflow: hidden; position: relative; }
+.corridor .kit-contrib-zero, .corridor .kit-contrib-mid { background: var(--ink-mute); bottom: 0; left: 50%; position: absolute; top: 0; width: 1px; }
+.corridor .kit-contrib-track :is(.kit-contrib-pos, .kit-contrib-neg) { bottom: 0; position: absolute; top: 0; }
+.corridor .kit-contrib-track .kit-contrib-pos { background: var(--good); left: 50%; }
+.corridor .kit-contrib-track .kit-contrib-neg { background: var(--bad); right: 50%; }
+.corridor .kit-contrib-total { margin: 10px 0 0; }
+.corridor .kit-contrib-readout { font-size: var(--fs-small); margin: 0 0 8px; }
+.corridor .kit-contrib-readout b { color: var(--ink-soft); font-size: var(--fs-caption); font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+.corridor .kit-contrib-readout code { background: var(--w4-inset); border: 1px solid var(--line); border-radius: 6px; display: inline-block; font-size: var(--fs-small); max-width: 100%; overflow-wrap: anywhere; padding: 3px 8px; }
+.corridor .kit-contrib-gauge { background: linear-gradient(90deg, color-mix(in srgb, var(--bad) 18%, var(--card)), var(--line-soft) 50%, var(--good-soft)); border: 1px solid var(--line); border-radius: 999px; height: 12px; position: relative; }
+.corridor .kit-contrib-mark { background: var(--ink); border: 2px solid var(--card); border-radius: 999px; height: 18px; position: absolute; top: -4px; transform: translateX(-50%); width: 10px; }
+.corridor .kit-contrib-mark.kit-contrib-pos { background: var(--good); }
+.corridor .kit-contrib-mark.kit-contrib-neg { background: var(--bad); }
+.corridor .kit-contrib-ends { color: var(--ink-mute-text); display: grid; font-size: var(--fs-caption); gap: 8px; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); letter-spacing: 0.04em; margin: 4px 0 0; text-transform: uppercase; }
+.corridor .kit-contrib-ends span { overflow-wrap: anywhere; }
+.corridor .kit-contrib-ends span:last-child { text-align: right; }
+
+/* RankedResults: the query and its presets, then one column per engine. */
+.corridor .kit-results-query { align-items: center; display: flex; flex-wrap: wrap; gap: 8px 12px; margin: 0 0 12px; }
+.corridor .kit-results-query label { color: var(--ink-soft); font-size: var(--fs-small); font-weight: 600; }
+.corridor .kit-results-query input { border: 1px solid var(--line); border-radius: 6px; color: var(--ink); flex: 1 1 14em; font-size: var(--fs-small); min-width: 0; padding: 5px 9px; }
+.corridor .kit-results-presets { display: flex; flex-wrap: wrap; gap: 6px; min-width: 0; }
+.corridor .kit-results-presets button { background: var(--card); border: 1px solid var(--line); border-radius: 999px; color: var(--ink-soft); cursor: pointer; font: inherit; font-size: var(--fs-small); max-width: 100%; overflow-wrap: anywhere; padding: 3px 11px; text-align: left; }
+.corridor .kit-results-presets button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--card); }
+.corridor .kit-results-cols { display: grid; gap: 14px; }
+.corridor .kit-results-col { background: var(--card); border: 1px solid var(--line); border-radius: 10px; min-width: 0; padding: 10px 12px; }
+.corridor .kit-results-col h4 { color: var(--ink); font-size: var(--fs-strong); margin: 0; overflow-wrap: anywhere; }
+.corridor .kit-results-sub { color: var(--ink-mute-text); font-size: var(--fs-caption); margin: 2px 0 8px; }
+.corridor .kit-results-col ol { list-style: none; margin: 0; padding: 0; }
+.corridor .kit-results-col li { border-bottom: 1px solid var(--line-soft); border-radius: 4px; display: grid; gap: 3px; padding: 6px 4px; }
+.corridor .kit-results-col li.kit-on { background: var(--w4-inset); box-shadow: inset 3px 0 0 var(--w4-accent); }
+.corridor .kit-results-head { align-items: baseline; display: flex; gap: 8px; justify-content: space-between; min-width: 0; }
+.corridor .kit-results-head b { color: var(--ink); font-size: var(--fs-small); min-width: 0; overflow-wrap: anywhere; }
+.corridor .kit-results-col .kit-track { height: 6px; }
+.corridor .kit-results-snippet { color: var(--ink-soft); font-size: var(--fs-caption); overflow-wrap: anywhere; }
+
+/* MethodCompare: one card per method with its accent rule on top, facts under. */
+.corridor .kit-compare-cards { display: grid; gap: 12px; list-style: none; margin: 0; padding: 0; }
+.corridor .kit-compare-cards > li { background: var(--card); border: 1px solid var(--line); border-radius: 10px; border-top: 3px solid; min-width: 0; padding: 10px 12px; }
+.corridor .kit-compare-cards h4 { color: var(--ink); font-size: var(--fs-strong); margin: 0 0 4px; overflow-wrap: anywhere; }
+.corridor .kit-compare-n { color: var(--ink-mute-text); font-variant-numeric: tabular-nums; }
+.corridor .kit-compare-blurb { color: var(--ink-soft); font-size: var(--fs-caption); margin: 0 0 10px; }
+.corridor .kit-compare-body { min-width: 0; overflow-wrap: anywhere; }
+.corridor .kit-compare-body > * + * { margin-top: 10px; }
+.corridor .kit-compare-facts { border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 8px 28px; margin: 12px 0 0; padding: 10px 0 0; }
+.corridor .kit-compare-facts dt { color: var(--ink-mute-text); font-size: var(--fs-caption); }
+.corridor .kit-compare-facts dd { color: var(--ink); font-size: var(--fs-strong); font-weight: 700; margin: 0; overflow-wrap: anywhere; }
+
+/* AxisMap's legend and detail slot span the whole map. */
+.corridor .kit-axismap-foot { grid-column: 1 / -1; margin: 6px 0 0; }
+.corridor .kit-axismap-detail { background: var(--w4-inset); border: 1px solid var(--line); border-radius: 8px; font-size: var(--fs-small); overflow-wrap: anywhere; padding: 6px 12px; }
+.corridor .kit-axismap-detail p { margin: 0; }
+/* ==== Kit: distributions and nulls (DistributionPlot, NullHistogram, NullBoard,
+   NullBars in src/kit). Light corridor style; every control takes the house
+   focus ring. ==== */
+.corridor .kit-seg-label { color: var(--ink-soft); font-size: var(--fs-small); font-weight: 600; }
+.corridor .kit-btn { background: var(--card); border: 1px solid var(--w4-accent); border-radius: 6px; color: var(--w4-accent); cursor: pointer; font: inherit; font-size: var(--fs-small); font-weight: 600; padding: 3px 12px; }
+.corridor .kit-btn:hover:not(:disabled) { background: var(--w4-accent-soft); }
+.corridor .kit-btn:disabled { cursor: not-allowed; opacity: 0.5; }
+.corridor .kit-swatch-line, .corridor .kit-swatch-dash { background: none; border-radius: 0; border-top: 2px solid currentColor; height: 0; width: 16px; }
+.corridor .kit-swatch-dash { border-top-style: dashed; }
+.corridor .kit-swatch-dot { border-radius: 50%; }
+.corridor .kit-swatch-band { opacity: 0.35; width: 16px; }
+
+/* DistributionPlot: the plot, and the ranked list beside it when there is one. */
+.corridor .kit-dist-body { display: grid; gap: 20px; grid-template-columns: minmax(0, 1fr); }
+.corridor .kit-dist-body.kit-dist-with-top { grid-template-columns: minmax(0, 1fr) minmax(0, 15em); }
+.corridor .kit-dist-plot { min-width: 0; }
+.corridor .kit-dist-top h4 { color: var(--ink-soft); font-size: var(--fs-caption); letter-spacing: 0.04em; margin: 0 0 6px; text-transform: uppercase; }
+.corridor .kit-dist-top ol { list-style: decimal; margin: 0; padding-left: 1.6em; }
+.corridor .kit-dist-top li { color: var(--ink-mute-text); font-size: var(--fs-small); padding: 2px 0; }
+.corridor .kit-dist-top li > span { display: inline-block; vertical-align: bottom; }
+.corridor .kit-dist-top .kit-word { max-width: calc(100% - 4em); }
+.corridor .kit-dist-top .kit-num { font-weight: 700; margin-left: 6px; }
+
+/* NullHistogram: readouts read smaller than VectorAngle's, six in a row. */
+.corridor .kit-nullhist .kit-readouts dd { font-size: var(--fs-strong); }
+.corridor .kit-nullhist .kit-readouts small { color: var(--ink-mute-text); font-size: var(--fs-caption); font-weight: 400; }
+
+/* NullBoard: a grid of panels, then the verdict table. */
+.corridor .kit-board-grid { align-items: stretch; display: grid; gap: 8px; }
+.corridor .kit-board-head { align-self: end; color: var(--ink-soft); font-size: var(--fs-caption); font-weight: 700; letter-spacing: 0.04em; overflow-wrap: anywhere; text-transform: uppercase; }
+.corridor .kit-board-measure { align-self: center; color: var(--ink); font-size: var(--fs-small); font-weight: 600; overflow-wrap: anywhere; }
+.corridor .kit-board-panel { background: var(--card); border: 1px solid var(--line); border-radius: 8px; border-top-width: 3px; min-width: 0; padding: 6px 8px 2px; }
+.corridor .kit-board-panel > b { display: block; font-size: var(--fs-small); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.corridor .kit-board-panel > b small { color: var(--ink-mute-text); font-size: var(--fs-caption); font-weight: 400; margin-left: 6px; }
+.corridor .kit-board-panel.kit-on { background: var(--w4-inset); box-shadow: 0 0 0 1px var(--w4-accent); }
+.corridor .kit-board-panel:focus-visible { outline: 2px solid var(--w4-accent); outline-offset: 2px; }
+.corridor .kit-board-none { background: none; border-style: dashed; border-top-width: 1px; }
+.corridor .kit-board-table { border-collapse: collapse; font-size: var(--fs-small); margin: 16px 0 0; table-layout: fixed; width: 100%; }
+.corridor .kit-board-table caption { caption-side: bottom; color: var(--ink-mute-text); font-size: var(--fs-caption); padding-top: 6px; text-align: left; }
+.corridor .kit-board-table th { border-bottom: 1px solid var(--line); color: var(--ink-mute-text); font-size: var(--fs-caption); font-weight: 600; padding: 4px 6px; text-align: left; }
+.corridor .kit-board-table td { border-bottom: 1px solid var(--line-soft); overflow-wrap: break-word; padding: 4px 6px; }
+.corridor .kit-board-table :is(th, td).num { font-variant-numeric: tabular-nums; text-align: right; }
+.corridor .kit-board-table tr.kit-on td { background: var(--w4-inset); box-shadow: inset 0 -1px 0 var(--w4-accent); }
+.corridor .kit-verdict { font-weight: 700; }
+.corridor .kit-verdict-survives { color: var(--good); }
+.corridor .kit-verdict-dies { color: var(--bad); }
+.corridor .kit-verdict-fixed { color: var(--ink-mute-text); font-style: italic; }
+.corridor .kit-board-table col.kit-board-c-measure { width: 20%; }
+.corridor .kit-board-table col.kit-board-c-model { width: 16%; }
+.corridor .kit-board-table col.kit-board-c-num { width: 10%; }
+.corridor .kit-board-table col.kit-board-c-null { width: 18%; }
+.corridor .kit-board-table col.kit-board-c-verdict { width: 16%; }
+.corridor main .kit-board-table :is(th, td).num { white-space: normal; }
+
+/* ==== Kit: games (GameShell, PathQuest, AttackGame, SeatingGame, QuizRun in
+   src/kit). Light corridor style; every control takes the house focus ring,
+   and nothing moves under reduced motion. ==== */
+.corridor .kit-game { background: var(--card); border: 1px solid var(--line); border-radius: 14px; min-width: 0; padding: 14px 16px 16px; }
+.corridor .kit-game :is(button, [tabindex]):focus-visible { outline: 2px solid var(--w4-accent); outline-offset: 2px; }
+.corridor .kit-game-panel:focus { outline: none; }
+.corridor .kit-game-panel:focus-visible { outline: 2px solid var(--w4-accent); outline-offset: 4px; }
+.corridor .kit-game-head { align-items: flex-start; display: flex; flex-wrap: wrap; gap: 6px 16px; justify-content: space-between; margin: 0 0 10px; }
+.corridor .kit-game-head .kit-readouts { margin: 0; }
+.corridor .kit-game-head .kit-readouts > div { padding: 4px 10px; }
+.corridor .kit-game-head .kit-readouts dd { font-size: var(--fs-strong); overflow-wrap: anywhere; }
+.corridor .kit-game-title { color: var(--ink); font-size: var(--fs-h4); margin: 0; }
+.corridor .kit-game-intro p { color: var(--ink-soft); font-size: var(--fs-body); margin: 0 0 12px; max-width: 62ch; }
+.corridor .kit-game-seg { margin: 0 0 10px; }
+.corridor .kit-game-seg-label { color: var(--ink-mute-text); display: block; font-size: var(--fs-caption); font-weight: 700; letter-spacing: 0.04em; margin: 0 0 4px; text-transform: uppercase; }
+.corridor .kit-game-seg [role="group"] { display: flex; flex-wrap: wrap; gap: 6px; }
+.corridor .kit-game-seg button { background: var(--card); border: 1px solid var(--line); border-radius: 8px; color: var(--ink); cursor: pointer; font: inherit; font-size: var(--fs-small); max-width: 100%; padding: 5px 12px; text-align: left; }
+.corridor .kit-game-seg button b { display: block; font-weight: 700; }
+.corridor .kit-game-seg button small { color: var(--ink-mute-text); display: block; font-size: var(--fs-caption); }
+.corridor .kit-game-seg button[aria-pressed="true"] { background: var(--w4-accent-soft); border-color: var(--w4-accent); box-shadow: inset 0 0 0 1px var(--w4-accent); }
+.corridor .kit-game-seg button:disabled { cursor: not-allowed; opacity: 0.45; }
+.corridor .kit-game-go { align-items: center; display: flex; flex-wrap: wrap; gap: 8px 12px; margin: 12px 0 4px; }
+.corridor .kit-game-go .kit-note { margin: 0; }
+.corridor .kit-game-start { background: var(--w4-accent); border: 0; border-radius: 8px; color: var(--card); cursor: pointer; font: inherit; font-size: var(--fs-body); font-weight: 700; padding: 7px 18px; }
+.corridor .kit-game-start:disabled { cursor: not-allowed; opacity: 0.45; }
+.corridor .kit-game-daily { background: var(--card); border: 1px solid var(--line); border-radius: 8px; color: var(--ink-soft); cursor: pointer; font: inherit; font-size: var(--fs-small); padding: 6px 12px; }
+.corridor .kit-game-daily[aria-pressed="true"] { background: var(--people-soft); border-color: var(--people); color: var(--ink); }
+.corridor .kit-game-rules ol { color: var(--ink-soft); font-size: var(--fs-small); margin: 10px 0 0; padding-left: 1.4em; }
+.corridor .kit-game-tools { align-items: center; display: flex; flex-wrap: wrap; gap: 8px 12px; margin: 10px 0 0; }
+.corridor .kit-game-list { border: 1px solid var(--line-soft); border-radius: 8px; list-style: none; margin: 0; max-height: 300px; overflow-y: auto; padding: 4px; }
+.corridor .kit-game-list li.kit-muted button { color: var(--ink-mute-text); }
+.corridor .kit-game-list button, .corridor .kit-quest-exits button { background: none; border: 0; border-radius: 6px; color: var(--ink); cursor: pointer; display: block; font: inherit; font-size: var(--fs-small); overflow-wrap: anywhere; padding: 4px 8px; text-align: left; width: 100%; }
+.corridor .kit-game-list button:hover:not(:disabled), .corridor .kit-quest-exits button:hover { background: var(--w4-accent-soft); }
+.corridor .kit-game-list button:disabled { cursor: not-allowed; opacity: 0.55; }
+.corridor .kit-game-list button[aria-pressed="true"] { background: var(--people-soft); }
+.corridor .kit-game-list small, .corridor .kit-quest-exits small { color: var(--ink-mute-text); font-size: var(--fs-caption); }
+.corridor .kit-game-list em, .corridor .kit-quest-exits em { color: var(--people); font-size: var(--fs-caption); font-style: normal; font-weight: 700; }
+.corridor .kit-game h5 { color: var(--ink-soft); font-size: var(--fs-caption); letter-spacing: 0.04em; margin: 10px 0 4px; text-transform: uppercase; }
+.corridor .kit-game-compare { display: grid; gap: 6px; margin: 12px 0 0; }
+.corridor .kit-game-compare dt { color: var(--ink-mute-text); font-size: var(--fs-caption); font-weight: 700; }
+.corridor .kit-game-compare dd { color: var(--ink); font-size: var(--fs-small); margin: 0; overflow-wrap: anywhere; }
+.corridor .kit-game-verdict { color: var(--ink); font-size: var(--fs-body); font-weight: 600; margin: 12px 0 0; }
+.corridor .kit-game-best { color: var(--ink-soft); font-size: var(--fs-small); margin: 10px 0 0; }
+.corridor .kit-game-best b { color: var(--good); }
+.corridor .kit-game-table { border-collapse: collapse; font-size: var(--fs-small); margin: 0 0 8px; table-layout: fixed; width: 100%; }
+.corridor .kit-game-table th { background: none; border-bottom: 1px solid var(--line); color: var(--ink-mute-text); font-size: var(--fs-caption); font-weight: 600; padding: 4px 6px; text-align: left; }
+.corridor .kit-game-table td, .corridor .kit-game-table tbody th { border-bottom: 1px solid var(--line-soft); color: var(--ink); font-size: var(--fs-small); overflow-wrap: anywhere; padding: 4px 6px; }
+.corridor .kit-game-table .num { font-variant-numeric: tabular-nums; text-align: right; }
+.corridor .kit-game-table tr.kit-target :is(td, th) { background: var(--people-soft); }
+
+/* The board beside its list: map on the left, choices on the right; one column when the game is narrow. */
+.corridor :is(.kit-quest, .kit-attack, .kit-seating, .kit-quiz) { container-type: inline-size; min-width: 0; }
+.corridor :is(.kit-quest-play, .kit-attack-play, .kit-seating-play) { display: grid; gap: 16px; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); }
+@container (max-width: 640px) { .corridor :is(.kit-quest-play, .kit-attack-play, .kit-seating-play) { grid-template-columns: minmax(0, 1fr); } }
+.corridor :is(.kit-quest-map, .kit-attack-map, .kit-seating-map, .kit-quest-side, .kit-attack-side, .kit-seating-side) { min-width: 0; }
+.corridor .kit-quest-here { color: var(--ink-soft); font-size: var(--fs-small); margin: 0; overflow-wrap: anywhere; }
+.corridor .kit-quest-exits { list-style: none; margin: 0; padding: 0; }
+.corridor .kit-quest-exits li { border-bottom: 1px solid var(--line-soft); }
+
+/* AttackGame's reveal: the core chart beside the ranking. */
+.corridor .kit-attack-cols { display: grid; gap: 16px; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); margin: 0 0 12px; }
+@container (max-width: 640px) { .corridor .kit-attack-cols { grid-template-columns: minmax(0, 1fr); } }
+.corridor .kit-attack-chart { min-width: 0; }
+.corridor .kit-attack-chart svg { display: block; max-width: 100%; }
+.corridor .kit-attack-key { display: flex; flex-wrap: wrap; gap: 4px 14px; list-style: none; margin: 4px 0 0; padding: 0; }
+.corridor .kit-attack-key li { align-items: center; color: var(--ink-soft); display: flex; font-size: var(--fs-caption); gap: 6px; }
+.corridor .kit-attack-key i { border-radius: 2px; display: inline-block; height: 3px; width: 16px; }
+.corridor .kit-attack-ranks { list-style: none; margin: 0; padding: 0; }
+.corridor .kit-attack-ranks li { align-items: center; border-bottom: 1px solid var(--line-soft); display: grid; font-size: var(--fs-small); gap: 8px; grid-template-columns: 1.6em minmax(0, 1fr) auto; padding: 4px 2px; }
+.corridor .kit-attack-ranks li.kit-target { background: var(--people-soft); border-radius: 4px; font-weight: 700; }
+
+/* SeatingGame: the chairs, each with what its guest added, and the place cards in their group colours. */
+.corridor .kit-seating-seats { margin: 0; padding-left: 1.6em; }
+.corridor .kit-seating-seats li { font-size: var(--fs-small); overflow-wrap: anywhere; padding: 1px 0; }
+.corridor .kit-seating-seats .kit-num { margin-left: 8px; }
+.corridor .kit-game-seg button.kit-card { min-width: 2.6em; text-align: center; }
+.corridor .kit-card-0 b { color: var(--group-0); }
+.corridor .kit-card-1 b { color: var(--group-1); }
+.corridor .kit-card-2 b { color: var(--group-2); }
+.corridor .kit-card-3 b { color: var(--group-3); }
+
+/* QuizRun and its rounds. */
+.corridor .kit-quiz-round { border-radius: 8px; padding: 2px; }
+.corridor .kit-quiz-round:focus-visible { outline: 2px solid var(--w4-accent); outline-offset: 2px; }
+.corridor .kit-quiz-ask { color: var(--ink); font-size: var(--fs-body); font-weight: 600; margin: 0 0 8px; }
+.corridor .kit-quiz-clues { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin: 0 0 10px; padding: 0; }
+.corridor .kit-quiz-clues li { background: var(--access-soft); border-radius: 999px; font-size: var(--fs-small); font-weight: 600; overflow-wrap: anywhere; padding: 2px 12px; }
+.corridor .kit-quiz-fade li:last-child { animation: kit-quiz-in 0.3s ease-out; }
+@keyframes kit-quiz-in { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .corridor .kit-quiz-fade li:last-child { animation: none; } }
+.corridor .kit-quiz-options { display: grid; gap: 6px; list-style: none; margin: 0; padding: 0; }
+.corridor .kit-quiz-options button { align-items: baseline; background: var(--card); border: 1px solid var(--line); border-radius: 8px; color: var(--ink); cursor: pointer; display: flex; font: inherit; font-size: var(--fs-small); gap: 8px; overflow-wrap: anywhere; padding: 6px 10px; text-align: left; width: 100%; }
+.corridor .kit-quiz-options button:hover:not(:disabled) { border-color: var(--w4-accent); }
+.corridor .kit-quiz-options button:disabled { cursor: default; }
+.corridor .kit-quiz-options button.kit-right { background: var(--good-soft); border-color: var(--good); }
+.corridor .kit-quiz-options button.kit-wrong { background: color-mix(in srgb, var(--bad) 9%, var(--card)); border-color: var(--bad); }
+.corridor .kit-quiz-options kbd { border: 1px solid var(--line); border-radius: 4px; color: var(--ink-mute-text); flex: none; font-family: var(--font-mono); font-size: var(--fs-caption); padding: 0 5px; }
+.corridor .kit-quiz-line { background: var(--w4-inset); border-radius: 8px; font-family: var(--font-mono); font-size: var(--fs-small); margin: 0 0 6px; overflow-wrap: anywhere; padding: 8px 12px; }
+.corridor .kit-quiz-line mark { background: var(--people-soft); border-radius: 3px; padding: 0 4px; }
+.corridor .kit-quiz-feedback { color: var(--ink); font-size: var(--fs-small); font-weight: 600; margin: 10px 0 0; }
+
+/* ==== Kit: editors and puzzles (Dendrogram, EditableMatrix, PartitionEditor,
+   EgoEditor, NodePicker, StepFlow, StageTabs, DetailPanel in src/kit). Light
+   corridor style; every control takes the house focus ring. ==== */
+.corridor :is(.kit-dendro, .kit-emat, .kit-part, .kit-ego, .kit-picker, .kit-stages, .kit-detail, .kit-ed-detail) :is(button, input, [tabindex]):focus-visible { outline: 2px solid var(--w4-accent); outline-offset: 2px; }
+.corridor :is(.kit-emat, .kit-part, .kit-ego, .kit-picker, .kit-ed-detail) .kit-controls button { background: var(--card); border: 1px solid var(--line); border-radius: 6px; color: var(--ink); cursor: pointer; font-size: var(--fs-small); padding: 4px 12px; }
+.corridor :is(.kit-emat, .kit-part, .kit-ego, .kit-picker) .kit-controls button[aria-pressed="true"] { background: var(--w4-accent); border-color: var(--w4-accent); color: var(--card); }
+.corridor :is(.kit-emat, .kit-part, .kit-ego, .kit-picker, .kit-ed-detail) .kit-controls button:disabled { cursor: not-allowed; opacity: 0.5; }
+.corridor :is(.kit-part, .kit-picker, .kit-ed-detail) .kit-controls .kit-note { margin: 0; }
+.corridor .kit-part-presets { display: flex; flex-wrap: wrap; gap: 6px; }
+
+/* The demos: a view and its editor side by side, or stacked pipelines. */
+.corridor .kit-ed-pair { align-items: start; display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 22em), 1fr)); }
+.corridor .kit-ed-pair > * { min-width: 0; }
+.corridor .kit-ed-stack { display: grid; gap: 28px; }
+.corridor .kit-ed-detail { align-items: start; display: grid; gap: 20px; grid-template-columns: minmax(0, 1fr) minmax(0, 20em); }
+.corridor .kit-ed-code { display: grid; font-size: var(--fs-small); gap: 2px; overflow-wrap: anywhere; }
+
+/* Dendrogram: blocks in the group colours of .gv, the picked one outlined. */
+.corridor .gv.kit-dendro { min-width: 0; }
+.corridor .kit-dendro .kit-dendro-block { opacity: 0.88; stroke: var(--graph-ground); stroke-width: 1; }
+.corridor .kit-dendro .kit-dendro-grey { fill: var(--group-none); opacity: 0.55; }
+.corridor .kit-dendro .kit-dendro-g0 { fill: var(--group-0); }
+.corridor .kit-dendro .kit-dendro-g1 { fill: var(--group-1); }
+.corridor .kit-dendro .kit-dendro-g2 { fill: var(--group-2); }
+.corridor .kit-dendro .kit-dendro-g3 { fill: var(--group-3); }
+.corridor .kit-dendro .kit-dendro-g4 { fill: var(--group-4); }
+.corridor .kit-dendro .kit-dendro-g5 { fill: var(--group-5); }
+.corridor .kit-dendro .kit-dendro-g6 { fill: var(--group-6); }
+.corridor .kit-dendro .kit-dendro-g7 { fill: var(--group-7); }
+.corridor .kit-dendro .kit-dendro-block.kit-on { opacity: 1; stroke: var(--graph-ink); stroke-width: 2; }
+.corridor .kit-dendro .kit-dendro-pick { cursor: pointer; }
+.corridor .kit-dendro-metric { margin: 12px 0 0; }
+.corridor :is(.kit-dendro-head, .kit-part-head) { color: var(--ink-soft); font-size: var(--fs-caption); font-weight: 700; letter-spacing: 0.04em; margin: 0 0 4px; text-transform: uppercase; }
+
+/* EditableMatrix: a fixed grid of small inputs, sums in the margins. */
+.corridor .kit-emat table { border-collapse: separate; border-spacing: 3px; font-size: var(--fs-small); font-variant-numeric: tabular-nums; table-layout: fixed; width: 100%; }
+.corridor .kit-emat caption { caption-side: bottom; color: var(--ink-mute-text); font-size: var(--fs-caption); padding-top: 6px; text-align: left; }
+.corridor .kit-emat th { color: var(--ink-soft); font-size: var(--fs-caption); font-weight: 600; overflow: hidden; padding: 0 2px; text-overflow: ellipsis; white-space: nowrap; }
+.corridor .kit-emat thead th { text-align: center; }
+.corridor .kit-emat thead td:first-child, .corridor .kit-emat th[scope="row"] { text-align: right; width: 4.5em; }
+.corridor .kit-emat td { border: 1px solid var(--line); border-radius: 5px; height: 2em; padding: 0; text-align: center; }
+.corridor .kit-emat td.kit-emat-on { background: var(--access-soft); border-color: var(--access); }
+.corridor .kit-emat td.kit-emat-diag { border-style: dashed; color: var(--ink-mute-text); }
+.corridor .kit-emat td.kit-emat-sum, .corridor .kit-emat th.kit-emat-sum { border: 0; color: var(--ink); font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.corridor .kit-emat thead .kit-emat-sum, .corridor .kit-emat tfoot th { color: var(--ink-mute-text); font-size: var(--fs-caption); font-weight: 600; width: 3.5em; }
+.corridor .kit-emat input { background: transparent; border: 0; color: var(--ink); font-size: var(--fs-small); height: 100%; min-width: 0; padding: 0; text-align: center; width: 100%; }
+.corridor .kit-emat .kit-controls { margin: 10px 0 0; }
+.corridor .kit-emat-flag { color: var(--ink-soft); font-size: var(--fs-small); }
+.corridor .kit-emat-flag.kit-emat-sym { color: var(--good); font-weight: 600; }
+
+/* PartitionEditor and NodePicker: the network beside its trace or its prompt. */
+.corridor :is(.kit-part-body, .kit-picker-body) { align-items: start; display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 20em), 1fr)); }
+.corridor :is(.kit-part-body, .kit-picker-body) > * { min-width: 0; }
+.corridor .kit-picker-prompt { font-size: var(--fs-body); overflow-wrap: anywhere; }
+.corridor .kit-picker-prompt p { margin: 0 0 8px; }
+.corridor .kit-picker-verdict { font-size: var(--fs-small); margin: 8px 0 0; min-height: 1.5em; }
+.corridor .kit-picker-verdict.kit-picker-ok { color: var(--good); font-weight: 700; }
+.corridor .kit-picker-verdict.kit-picker-no { color: var(--bad); }
+
+/* EgoEditor: the drawing beside the formula and the table. */
+.corridor .kit-ego-body { align-items: start; display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 18em), 1fr)); }
+.corridor .kit-ego-body > * { min-width: 0; }
+.corridor .kit-ego-node, .corridor .kit-ego-pair { cursor: pointer; }
+.corridor .kit-ego-formula { font-size: var(--fs-strong); margin: 0; overflow-wrap: anywhere; }
+.corridor .kit-ego-formula b { color: var(--w4-accent); }
+.corridor .kit-ego-table { border-collapse: collapse; font-size: var(--fs-small); margin: 10px 0 0; }
+.corridor .kit-ego-table th, .corridor .kit-ego-table td { border-bottom: 1px solid var(--line-soft); padding: 2px 10px 2px 0; text-align: left; }
+.corridor .kit-ego-table thead th { color: var(--ink-mute-text); font-size: var(--fs-caption); font-weight: 600; }
+.corridor .kit-ego-table .num { font-variant-numeric: tabular-nums; text-align: right; }
+.corridor .kit-ego-table tr.kit-on :is(th, td) { color: var(--w4-accent); font-weight: 700; }
+
+/* StepFlow: numbered boxes, arrows with their transition, the worked example beside. */
+.corridor .kit-flow-heads { color: var(--ink-soft); display: grid; font-size: var(--fs-caption); font-weight: 700; gap: 16px; grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); letter-spacing: 0.04em; margin: 0 0 6px; text-transform: uppercase; }
+.corridor .kit-flow ol { list-style: none; margin: 0; padding: 0; }
+.corridor .kit-flow-row { display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr); }
+.corridor .kit-flow-worked .kit-flow-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); }
+.corridor .kit-flow-step { align-items: center; background: var(--card); border: 1px solid var(--line); border-radius: 10px; display: flex; gap: 12px; min-width: 0; padding: 12px 14px; }
+.corridor .kit-flow-step > div { min-width: 0; overflow-wrap: anywhere; }
+.corridor .kit-flow-step b { color: var(--ink); font-size: var(--fs-body); }
+.corridor .kit-flow-step p { color: var(--ink-soft); font-size: var(--fs-small); margin: 2px 0 0; }
+.corridor .kit-flow-n { align-items: center; border: 1px solid var(--line); border-radius: 999px; color: var(--ink-mute-text); display: inline-flex; flex: none; font-size: var(--fs-caption); height: 24px; justify-content: center; width: 24px; }
+.corridor .kit-flow-example { background: var(--w4-inset); border-left: 3px solid var(--access); border-radius: 0 8px 8px 0; color: var(--ink); font-size: var(--fs-small); min-width: 0; overflow-wrap: anywhere; padding: 8px 12px; }
+.corridor .kit-flow-example.kit-flow-none { background: none; border-left-color: transparent; }
+.corridor .kit-flow-example-title { color: var(--ink-soft); display: block; font-size: var(--fs-caption); font-weight: 700; letter-spacing: 0.04em; margin: 0 0 4px; text-transform: uppercase; }
+.corridor .kit-flow-arrow { align-items: center; color: var(--ink-soft); display: flex; gap: 10px; margin: 4px 0; padding-left: 28px; }
+.corridor .kit-flow-arrow > span:first-child { font-size: var(--fs-strong); }
+.corridor .kit-flow-transition { color: var(--ink-mute-text); font-size: var(--fs-caption); max-width: 22em; overflow-wrap: anywhere; }
+
+/* StageTabs: the numbered strip wraps; the picked stage's card under it. */
+.corridor .kit-stages-strip { display: grid; gap: 6px; grid-template-columns: repeat(auto-fill, minmax(7.5em, 1fr)); }
+.corridor .kit-stages-strip button { align-items: center; background: var(--card); border: 1px solid var(--line); border-radius: 8px; color: var(--ink); cursor: pointer; display: flex; flex-direction: column; font: inherit; font-size: var(--fs-small); gap: 2px; min-width: 0; padding: 8px 6px; }
+.corridor .kit-stages-strip button[aria-selected="true"] { background: var(--w4-accent-soft); border-color: var(--w4-accent); }
+.corridor .kit-stages-n { color: var(--ink-mute-text); font-size: var(--fs-caption); font-variant-numeric: tabular-nums; }
+.corridor .kit-stages-title { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.corridor .kit-stages-card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; margin: 10px 0 0; overflow-wrap: anywhere; padding: 10px 14px; }
+.corridor .kit-stages-card h4 { color: var(--ink); font-size: var(--fs-body); margin: 0 0 6px; }
+.corridor .kit-stages-card dl { display: grid; gap: 3px; margin: 0; }
+.corridor .kit-stages-card dl > div { display: flex; flex-wrap: wrap; gap: 4px 10px; min-width: 0; }
+.corridor .kit-stages-card dt { color: var(--ink-mute-text); font-size: var(--fs-caption); letter-spacing: 0.04em; text-transform: uppercase; }
+.corridor .kit-stages-card dd { font-size: var(--fs-small); margin: 0; min-width: 0; }
+
+/* DetailPanel: title, a row of stats under it, chips, items and the nearest lists. */
+.corridor .kit-detail { background: var(--card); border: 1px solid var(--line); border-radius: 10px; min-width: 0; overflow-wrap: anywhere; padding: 12px 14px; }
+.corridor .kit-detail h4 { color: var(--ink); font-size: var(--fs-h4); margin: 0; }
+.corridor :is(.kit-detail-kicker, .kit-detail h5) { color: var(--ink-soft); font-size: var(--fs-caption); font-weight: 700; letter-spacing: 0.04em; margin: 0 0 4px; text-transform: uppercase; }
+.corridor .kit-detail h5 { border-top: 1px solid var(--line-soft); margin: 12px 0 6px; padding-top: 8px; }
+.corridor .kit-detail-sub { color: var(--ink-soft); font-size: var(--fs-small); margin: 2px 0 0; }
+.corridor .kit-detail-stats { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 0; }
+.corridor .kit-detail-stats > div { background: var(--w4-inset); border: 1px solid var(--line); border-radius: 8px; min-width: 0; padding: 3px 10px; }
+.corridor .kit-detail-stats dt { color: var(--ink-mute-text); font-size: var(--fs-caption); }
+.corridor .kit-detail-stats dd { color: var(--ink); font-size: var(--fs-small); font-variant-numeric: tabular-nums; font-weight: 700; margin: 0; }
+.corridor .kit-detail-words { display: flex; flex-wrap: wrap; gap: 5px; list-style: none; margin: 0; padding: 0; }
+.corridor .kit-detail-words li { border: 1px solid var(--line); border-radius: 999px; font-size: var(--fs-small); max-width: 100%; padding: 1px 9px; }
+.corridor .kit-detail-items { list-style: none; margin: 0; padding: 0; }
+.corridor .kit-detail-items li { border-bottom: 1px solid var(--line-soft); display: grid; gap: 2px; padding: 5px 0; }
+.corridor .kit-detail-items b { font-size: var(--fs-small); }
+.corridor .kit-detail-items span { color: var(--ink-soft); font-size: var(--fs-caption); }
+.corridor .kit-detail-near { display: grid; gap: 0 16px; }
+.corridor .kit-detail-near ol { list-style: none; margin: 0; padding: 0; }
+.corridor .kit-detail-near li { align-items: baseline; border-bottom: 1px solid var(--line-soft); display: flex; font-size: var(--fs-small); gap: 8px; justify-content: space-between; padding: 3px 0; }
+.corridor .kit-detail-near li > :first-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.corridor .kit-detail-near-two { grid-template-columns: repeat(auto-fit, minmax(min(100%, 14em), 1fr)); }
+.corridor .kit-emat thead td:first-child { border: 0; }
+
+/* ==== Kit: growth (GrowthReplay, GrowthLab, ComponentGallery, FriendshipParadox
+   in src/kit). Light corridor style; every control takes the house focus ring. ==== */
+.corridor :is(.kit-growth, .kit-growlab, .kit-gallery, .kit-paradox) :is(button, input):focus-visible { outline: 2px solid var(--w4-accent); outline-offset: 2px; }
+.corridor :is(.kit-growth, .kit-growlab, .kit-paradox) .kit-btn[aria-pressed="true"] { background: var(--w4-accent); color: var(--card); }
+.corridor .kit-growth > .w5-chips { margin: 0 0 8px; }
+.corridor .kit-growth-head { color: var(--ink-soft); font-size: var(--fs-small); margin: 12px 0 6px; }
+
+/* GrowthReplay: the canvas with its arrival card on the left, controls and the top k on the right, the CCDF under them. */
+.corridor .kit-growth-body { display: grid; gap: 12px 24px; grid-template-areas: "stage side" "stage ccdf"; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); margin-top: 8px; }
+.corridor .kit-growth-stage { grid-area: stage; min-width: 0; position: relative; }
+.corridor .kit-growth-side { grid-area: side; min-width: 0; }
+.corridor .kit-growth-ccdf { grid-area: ccdf; min-width: 0; }
+.corridor .kit-growth-card { background: var(--card); border: 1px solid var(--line); border-left: 3px solid var(--people); border-radius: 8px; left: 8px; max-width: min(18em, calc(100% - 16px)); padding: 8px 12px; position: absolute; top: 8px; }
+.corridor .kit-growth-card.kit-growth-pinned { border-left-color: var(--graph-accent); }
+.corridor .kit-growth-card p { margin: 0; overflow-wrap: anywhere; }
+.corridor .kit-growth-tag { color: var(--ink-mute-text); font-size: var(--fs-caption); font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+.corridor .kit-growth-title { color: var(--ink); font-size: var(--fs-strong); font-weight: 700; }
+.corridor .kit-growth-line { color: var(--ink-soft); font-size: var(--fs-small); }
+.corridor .kit-growth-card .kit-btn { margin-top: 6px; }
+.corridor .kit-growth-top { list-style: decimal; margin: 0; padding-left: 1.8em; }
+.corridor .kit-growth-top li { color: var(--ink-mute-text); font-size: var(--fs-small); }
+.corridor .kit-growth-top button { background: none; border: 0; border-radius: 4px; color: var(--ink); cursor: pointer; display: flex; font: inherit; gap: 8px; justify-content: space-between; padding: 2px 4px; text-align: left; width: 100%; }
+.corridor .kit-growth-top button:hover, .corridor .kit-growth-top button[aria-pressed="true"] { background: var(--w4-inset); }
+.corridor .kit-growth-top button[aria-pressed="true"] { box-shadow: inset 2px 0 0 var(--graph-accent); }
+.corridor .kit-growth-top .kit-word { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.corridor .kit-growth-top .kit-num { font-variant-numeric: tabular-nums; font-weight: 700; }
+
+/* GrowthLab: the network beside its two charts, the regime in a sentence above. */
+.corridor .kit-growlab-says { color: var(--ink); font-size: var(--fs-body); margin: 4px 0 10px; }
+.corridor .kit-growlab-body { display: grid; gap: 16px 24px; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); }
+.corridor .kit-growlab-net, .corridor .kit-growlab-charts { min-width: 0; }
+.corridor .kit-growlab-charts .kit-growth-head:first-child { margin-top: 0; }
+
+/* ComponentGallery: tiles in a grid that fits as many columns as the width allows. */
+.corridor .kit-gallery-grid { display: grid; gap: 12px; list-style: none; margin: 0; padding: 0; }
+.corridor .kit-gallery-tile { background: var(--card); border: 1px solid var(--line); border-radius: 8px; min-width: 0; padding: 8px 10px; }
+.corridor .kit-gallery-title { color: var(--ink); font-size: var(--fs-small); font-weight: 700; margin: 0; overflow-wrap: anywhere; }
+.corridor .kit-gallery-count { color: var(--ink-mute-text); font-size: var(--fs-caption); margin: 0 0 4px; }
+.corridor .kit-gallery-isolates { color: var(--ink-mute); font-size: var(--fs-caption); letter-spacing: 0.2em; line-height: 1.6; margin: 8px 0 0; overflow-wrap: anywhere; }

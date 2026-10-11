@@ -1,0 +1,61 @@
+[
+ {
+  "key": "*w3-drawers/*/canvas:#v-graph > div:nth-of-type(1) > canvas:nth-of-type(1)",
+  "reason": "nondeterministic on main: #v-graph in the #views drawer (echarts-views.js) is an ECharts force layout that keeps simulating after it draws, so its canvas hash differs on every snapshot while the drawer is open (every pass), and the viewport screenshot with it while the graph is on screen. The chart's option hash in id:#v-graph still covers its nodes, links and settings."
+ },
+ {
+  "key": "*w3-drawers/7/pixels",
+  "reason": "nondeterministic on main: #v-graph in the #views drawer (echarts-views.js) is an ECharts force layout that keeps simulating after it draws, so its canvas hash differs on every snapshot while the drawer is open (every pass), and the viewport screenshot with it while the graph is on screen. The chart's option hash in id:#v-graph still covers its nodes, links and settings."
+ },
+ {
+  "key": "*w3-drawers/9/pixels",
+  "reason": "nondeterministic on main: #v-graph in the #views drawer (echarts-views.js) is an ECharts force layout that keeps simulating after it draws, so its canvas hash differs on every snapshot while the drawer is open (every pass), and the viewport screenshot with it while the graph is on screen. The chart's option hash in id:#v-graph still covers its nodes, links and settings."
+ },
+ {
+  "key": "*w3-drawers/11/pixels",
+  "reason": "nondeterministic on main: #v-graph in the #views drawer (echarts-views.js) is an ECharts force layout that keeps simulating after it draws, so its canvas hash differs on every snapshot while the drawer is open (every pass), and the viewport screenshot with it while the graph is on screen. The chart's option hash in id:#v-graph still covers its nodes, links and settings."
+ },
+ {
+  "key": "*w3-drawers/13/pixels",
+  "reason": "nondeterministic on main: #v-graph in the #views drawer (echarts-views.js) is an ECharts force layout that keeps simulating after it draws, so its canvas hash differs on every snapshot while the drawer is open (every pass), and the viewport screenshot with it while the graph is on screen. The chart's option hash in id:#v-graph still covers its nodes, links and settings."
+ },
+ {
+  "key": "*w3-drawers/16/pixels",
+  "reason": "nondeterministic on main: #v-graph in the #views drawer (echarts-views.js) is an ECharts force layout that keeps simulating after it draws, so its canvas hash differs on every snapshot while the drawer is open (every pass), and the viewport screenshot with it while the graph is on screen. The chart's option hash in id:#v-graph still covers its nodes, links and settings."
+ },
+ {
+  "key": "*w3-drawers/18/pixels",
+  "reason": "nondeterministic on main: #v-graph in the #views drawer (echarts-views.js) is an ECharts force layout that keeps simulating after it draws, so its canvas hash differs on every snapshot while the drawer is open (every pass), and the viewport screenshot with it while the graph is on screen. The chart's option hash in id:#v-graph still covers its nodes, links and settings."
+ },
+ {
+  "key": "*w3-deck-audit/*/console",
+  "reason": "nondeterministic on main: under the WebGL renderers (globe.gl, Atlas, deck.gl) Chromium logs 'GL Driver Message ... GPU stall due to ReadPixels' with the WebGL context's address (warning: [.WebGL-0x...]), which differs from run to run, so the console line never matches; requests/P0b.md asks to normalise the address so these entries can go."
+ },
+ {
+  "key": "*w3-deck/*/console",
+  "reason": "nondeterministic on main: under the WebGL renderers (globe.gl, Atlas, deck.gl) Chromium logs 'GL Driver Message ... GPU stall due to ReadPixels' with the WebGL context's address (warning: [.WebGL-0x...]), which differs from run to run, so the console line never matches; requests/P0b.md asks to normalise the address so these entries can go."
+ },
+ {
+  "key": "*w3-globe/*/console",
+  "reason": "nondeterministic on main: under the WebGL renderers (globe.gl, Atlas, deck.gl) Chromium logs 'GL Driver Message ... GPU stall due to ReadPixels' with the WebGL context's address (warning: [.WebGL-0x...]), which differs from run to run, so the console line never matches; requests/P0b.md asks to normalise the address so these entries can go."
+ },
+ {
+  "key": "*w3-globe-b/*/console",
+  "reason": "nondeterministic on main: under the WebGL renderers (globe.gl, Atlas, deck.gl) Chromium logs 'GL Driver Message ... GPU stall due to ReadPixels' with the WebGL context's address (warning: [.WebGL-0x...]), which differs from run to run, so the console line never matches; requests/P0b.md asks to normalise the address so these entries can go."
+ },
+ {
+  "key": "*w3-atlas/*/console",
+  "reason": "nondeterministic on main: under the WebGL renderers (globe.gl, Atlas, deck.gl) Chromium logs 'GL Driver Message ... GPU stall due to ReadPixels' with the WebGL context's address (warning: [.WebGL-0x...]), which differs from run to run, so the console line never matches; requests/P0b.md asks to normalise the address so these entries can go."
+ },
+ {
+  "key": "*w3-atlas-b/*/console",
+  "reason": "nondeterministic on main: under the WebGL renderers (globe.gl, Atlas, deck.gl) Chromium logs 'GL Driver Message ... GPU stall due to ReadPixels' with the WebGL context's address (warning: [.WebGL-0x...]), which differs from run to run, so the console line never matches; requests/P0b.md asks to normalise the address so these entries can go."
+ },
+ {
+  "key": "w3-echarts-audit/1/evaluate:rows",
+  "reason": "Main's audit03 rows under ?variant=echarts (KB06), kept for reference; the key matches no snapshot key, so the entry masks nothing. On main the plain audit03 throws at its click-to-select checks: main has no #prestige-ec, and ECharts 5.5.1's getInstanceByDom(null) throws TypeError: Cannot read properties of null (reading 'getAttribute'). The w3-echarts-audit scenario compares that error (expectError) and then runs audit03Rows (scenarios/week03/lib.mjs), which returns undefined for a null host as the audit expects: on main it gives 49 rows and 0 failures at 7978c8a, as at fed3c83. Head is compared with main's rows and error, never with all-pass.",
+  "approvedBug": "KB06",
+  "failingRows": [],
+  "plainAuditError": "TypeError: Cannot read properties of null (reading 'getAttribute')"
+ }
+]

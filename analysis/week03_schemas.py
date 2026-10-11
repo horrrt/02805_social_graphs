@@ -18,10 +18,10 @@ ROLES = {"ultra-peripheral", "peripheral", "connector", "kinless", "provincial h
 
 
 def corridors():
-    return json.loads((ROOT / "docs/assets/data/week03_corridors.json").read_text())
+    return json.loads((ROOT / "public/assets/data/week03_corridors.json").read_text())
 
 
-# docs/assets/data/week03_corridors.json ---------------------------------------
+# public/assets/data/week03_corridors.json ---------------------------------------
 
 class YearBlock(Model):
     in_strength: int = Count
@@ -115,7 +115,7 @@ class Corridors(Model):
         return self
 
 
-# docs/assets/data/week03_edges.json and week03_flights.json ---------------------
+# public/assets/data/week03_edges.json and week03_flights.json ---------------------
 
 class Edges(Model):
     countries: list[str]
@@ -164,7 +164,7 @@ class Flights(Model):
         return self
 
 
-# docs/assets/data/week03_cartography.json -------------------------------------
+# public/assets/data/week03_cartography.json -------------------------------------
 
 class Placement(Model):
     role: str
@@ -203,7 +203,7 @@ class Cartography(Model):
         return self
 
 
-# docs/assets/data/week03_asylum.json and week03_closures.json -------------------
+# public/assets/data/week03_asylum.json and week03_closures.json -------------------
 
 class Origin(Model):
     name: str
@@ -241,10 +241,10 @@ class Closures(Model):
 
 
 PAGES = {
-    "docs/assets/data/week03_corridors.json": Corridors,
-    "docs/assets/data/week03_edges.json": Edges,
-    "docs/assets/data/week03_flights.json": Flights,
-    "docs/assets/data/week03_cartography.json": Cartography,
-    "docs/assets/data/week03_asylum.json": Asylum,
-    "docs/assets/data/week03_closures.json": Closures,
+    "public/assets/data/week03_corridors.json": Corridors,
+    "public/assets/data/week03_edges.json": Edges,
+    "public/assets/data/week03_flights.json": Flights,
+    "public/assets/data/week03_cartography.json": Cartography,
+    "public/assets/data/week03_asylum.json": Asylum,
+    "public/assets/data/week03_closures.json": Closures,
 }

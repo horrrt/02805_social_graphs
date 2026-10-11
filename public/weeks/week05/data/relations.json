@@ -1,0 +1,1018 @@
+{
+ "meta": {
+  "script": "analysis/week05_relations.py",
+  "owner": "Gyula",
+  "sentences": "paragraphs at line breaks, then spaCy's rule-based sentencizer; reference sections dropped",
+  "names": "title without disambiguation, plus the two-word real names in the node description; names shared by two or more pages dropped",
+  "labels": "first match in PRIORITY order, whole lower-case words",
+  "priority": [
+   "killed",
+   "family",
+   "enemy",
+   "ally",
+   "teammate"
+  ],
+  "lexicon": {
+   "killed": [
+    "kill",
+    "kills",
+    "killed",
+    "killing",
+    "murder",
+    "murders",
+    "murdered",
+    "slain",
+    "slay",
+    "slays",
+    "slew"
+   ],
+   "family": [
+    "married",
+    "marry",
+    "marries",
+    "wife",
+    "husband",
+    "son",
+    "daughter",
+    "father",
+    "mother",
+    "brother",
+    "sister",
+    "cousin",
+    "uncle",
+    "aunt",
+    "niece",
+    "nephew",
+    "twin",
+    "parent",
+    "parents",
+    "grandfather",
+    "grandmother",
+    "grandson",
+    "granddaughter",
+    "fiance",
+    "fiancé",
+    "fiancée"
+   ],
+   "enemy": [
+    "enemy",
+    "enemies",
+    "archenemy",
+    "arch-enemy",
+    "archenemies",
+    "nemesis",
+    "foe",
+    "foes",
+    "rival",
+    "rivals",
+    "villain",
+    "villains",
+    "battle",
+    "battles",
+    "battled",
+    "fight",
+    "fights",
+    "fought",
+    "defeat",
+    "defeats",
+    "defeated",
+    "attack",
+    "attacks",
+    "attacked"
+   ],
+   "ally": [
+    "ally",
+    "allies",
+    "allied",
+    "friend",
+    "friends",
+    "befriend",
+    "befriends",
+    "befriended",
+    "partner",
+    "partners",
+    "sidekick",
+    "mentor",
+    "mentors",
+    "mentored",
+    "lover",
+    "girlfriend",
+    "boyfriend"
+   ],
+   "teammate": [
+    "team",
+    "teams",
+    "teammate",
+    "teammates",
+    "join",
+    "joins",
+    "joined",
+    "member",
+    "members",
+    "recruit",
+    "recruits",
+    "recruited",
+    "founding"
+   ]
+  },
+  "runs": 100,
+  "shuffles": 1000,
+  "sample": 12
+ },
+ "coverage": {
+  "arcs": 1784,
+  "with_sentence": 1513,
+  "share": 0.8481,
+  "nameless_targets": 7,
+  "arcs_to_nameless": 33,
+  "multi_label": 113
+ },
+ "labels": [
+  {
+   "label": "killed",
+   "arcs": 84,
+   "share": 0.0555
+  },
+  {
+   "label": "family",
+   "arcs": 116,
+   "share": 0.0767
+  },
+  {
+   "label": "enemy",
+   "arcs": 202,
+   "share": 0.1335
+  },
+  {
+   "label": "ally",
+   "arcs": 58,
+   "share": 0.0383
+  },
+  {
+   "label": "teammate",
+   "arcs": 217,
+   "share": 0.1434
+  },
+  {
+   "label": "unlabelled",
+   "arcs": 836,
+   "share": 0.5525
+  }
+ ],
+ "precision": {
+  "killed": {
+   "read": 12,
+   "right": 5,
+   "share": 0.417,
+   "wrong_examples": [
+    {
+     "source": "Cyclops_(Marvel_Comics)",
+     "target": "Xorn",
+     "note": "Xorn kills Jean; nothing between Cyclops and Xorn"
+    },
+    {
+     "source": "Rachel_Summers",
+     "target": "Cable_(character)",
+     "note": "Xavier is killed; Cable is on Rachel's mission"
+    },
+    {
+     "source": "Man-Thing",
+     "target": "Blade_(character)",
+     "note": "Blade kills Xarus; nothing between Man-Thing and Blade"
+    }
+   ]
+  },
+  "family": {
+   "read": 12,
+   "right": 6,
+   "share": 0.5,
+   "wrong_examples": [
+    {
+     "source": "Misty_Knight",
+     "target": "Blade_(character)",
+     "note": "\"his son\" is Joe Robertson's son; Blade is in a list of characters"
+    },
+    {
+     "source": "Black_Bolt",
+     "target": "Karnak_(character)",
+     "note": "\"cousin\" and \"brother\" name Medusa and Maximus, not Karnak"
+    },
+    {
+     "source": "Ghost_Rider",
+     "target": "Killraven",
+     "note": "\"his father's killers\"; Killraven is an amalgam he battles"
+    }
+   ]
+  },
+  "enemy": {
+   "read": 12,
+   "right": 5,
+   "share": 0.417,
+   "wrong_examples": [
+    {
+     "source": "Adam_Warlock",
+     "target": "Emma_Frost",
+     "note": "they meet; \"defeat\" is about Devondra"
+    },
+    {
+     "source": "Hulkling",
+     "target": "Cloak_and_Dagger_(characters)",
+     "note": "an assassin has powers like Cloak and Dagger's"
+    },
+    {
+     "source": "Quicksilver_(Marvel_Comics)",
+     "target": "Black_Bolt",
+     "note": "\"defeated\" is about the conspirators; Black Bolt gives away the bride"
+    }
+   ]
+  },
+  "ally": {
+   "read": 12,
+   "right": 9,
+   "share": 0.75,
+   "wrong_examples": [
+    {
+     "source": "Jack_Monroe_(character)",
+     "target": "Nomad_(Marvel_Comics)",
+     "note": "Nomad is an identity Jack Monroe takes"
+    },
+    {
+     "source": "Black_Rider_(character)",
+     "target": "Doctor_Strange",
+     "note": "\"mentor\" is the Ancient One's to Doctor Strange"
+    },
+    {
+     "source": "Spider-Woman_(Gwen_Stacy)",
+     "target": "Spider-Man_Noir",
+     "note": "\"Peter Parker\" here is the main Spider-Man, not Spider-Man Noir"
+    }
+   ]
+  },
+  "teammate": {
+   "read": 12,
+   "right": 7,
+   "share": 0.583,
+   "wrong_examples": [
+    {
+     "source": "Solo_(Marvel_Comics)",
+     "target": "Cable_(character)",
+     "note": "Solo's team is formed to take down Cable"
+    },
+    {
+     "source": "Wolverine_(character)",
+     "target": "Hulk",
+     "note": "\"member\" is Wolverine in the X-Men; Hulk is a comic's title"
+    },
+    {
+     "source": "Hyperion_(character)",
+     "target": "Makkari_(character)",
+     "note": "Makkari restores his sight; the sentence names no shared team"
+    }
+   ]
+  }
+ },
+ "communities": {
+  "runs": 100,
+  "median_count": 26,
+  "modularity_mean": 0.5081
+ },
+ "crossing": [
+  {
+   "label": "killed",
+   "arcs": 84,
+   "crossing": 0.3649,
+   "null_mean": 0.4193,
+   "null_sd": 0.0483,
+   "z": -1.13,
+   "p_above": 0.8731,
+   "p_below": 0.1299,
+   "within_page_mean": 0.415,
+   "within_page_sd": 0.0385,
+   "within_page_z": -1.3
+  },
+  {
+   "label": "family",
+   "arcs": 116,
+   "crossing": 0.2315,
+   "null_mean": 0.419,
+   "null_sd": 0.0405,
+   "z": -4.63,
+   "p_above": 1.0,
+   "p_below": 0.001,
+   "within_page_mean": 0.3304,
+   "within_page_sd": 0.0269,
+   "within_page_z": -3.67
+  },
+  {
+   "label": "enemy",
+   "arcs": 202,
+   "crossing": 0.54,
+   "null_mean": 0.4196,
+   "null_sd": 0.028,
+   "z": 4.29,
+   "p_above": 0.001,
+   "p_below": 1.0,
+   "within_page_mean": 0.4603,
+   "within_page_sd": 0.0219,
+   "within_page_z": 3.63
+  },
+  {
+   "label": "ally",
+   "arcs": 58,
+   "crossing": 0.306,
+   "null_mean": 0.4197,
+   "null_sd": 0.0583,
+   "z": -1.95,
+   "p_above": 0.967,
+   "p_below": 0.035,
+   "within_page_mean": 0.373,
+   "within_page_sd": 0.0411,
+   "within_page_z": -1.63
+  },
+  {
+   "label": "teammate",
+   "arcs": 217,
+   "crossing": 0.4579,
+   "null_mean": 0.4182,
+   "null_sd": 0.0273,
+   "z": 1.46,
+   "p_above": 0.0749,
+   "p_below": 0.9261,
+   "within_page_mean": 0.4419,
+   "within_page_sd": 0.0193,
+   "within_page_z": 0.83
+  }
+ ],
+ "one_per_pair": {
+  "arcs": 599,
+  "crossing": [
+   {
+    "label": "killed",
+    "arcs": 77,
+    "crossing": 0.3981,
+    "null_mean": 0.4462,
+    "null_sd": 0.0489,
+    "z": -0.99,
+    "p_above": 0.8402,
+    "p_below": 0.1628,
+    "within_page_mean": 0.4515,
+    "within_page_sd": 0.0385,
+    "within_page_z": -1.39
+   },
+   {
+    "label": "family",
+    "arcs": 93,
+    "crossing": 0.2523,
+    "null_mean": 0.4443,
+    "null_sd": 0.0478,
+    "z": -4.02,
+    "p_above": 1.0,
+    "p_below": 0.001,
+    "within_page_mean": 0.3498,
+    "within_page_sd": 0.0301,
+    "within_page_z": -3.24
+   },
+   {
+    "label": "enemy",
+    "arcs": 187,
+    "crossing": 0.5487,
+    "null_mean": 0.4447,
+    "null_sd": 0.0288,
+    "z": 3.62,
+    "p_above": 0.001,
+    "p_below": 1.0,
+    "within_page_mean": 0.4852,
+    "within_page_sd": 0.0226,
+    "within_page_z": 2.81
+   },
+   {
+    "label": "ally",
+    "arcs": 52,
+    "crossing": 0.3202,
+    "null_mean": 0.4437,
+    "null_sd": 0.062,
+    "z": -1.99,
+    "p_above": 0.978,
+    "p_below": 0.023,
+    "within_page_mean": 0.3863,
+    "within_page_sd": 0.0401,
+    "within_page_z": -1.65
+   },
+   {
+    "label": "teammate",
+    "arcs": 190,
+    "crossing": 0.4897,
+    "null_mean": 0.4447,
+    "null_sd": 0.0287,
+    "z": 1.57,
+    "p_above": 0.0609,
+    "p_below": 0.9401,
+    "within_page_mean": 0.4647,
+    "within_page_sd": 0.0215,
+    "within_page_z": 1.16
+   }
+  ]
+ },
+ "concordance": [
+  {
+   "label": "killed",
+   "page": "Cyclops_(Marvel_Comics)",
+   "target": "Xorn",
+   "left": "Jean discovers it, forces a confrontation, and is killed shortly after in battle with ",
+   "hit": "Xorn",
+   "right": ".",
+   "verdict": "wrong",
+   "note": "Xorn kills Jean; nothing between Cyclops and Xorn"
+  },
+  {
+   "label": "killed",
+   "page": "Iron_Man_2020",
+   "target": "War_Machine",
+   "left": "Arno also murders ",
+   "hit": "War Machine",
+   "right": ".",
+   "verdict": "right",
+   "note": "Arno murders War Machine"
+  },
+  {
+   "label": "killed",
+   "page": "Rachel_Summers",
+   "target": "Cable_(character)",
+   "left": "Soon after X (Xavier) is killed by bioengineered human terrorists, Cyclops gathers Rachel and Kid ",
+   "hit": "Cable",
+   "right": " for a mission on the Atlantic Ocean regarding a piece of their new homeland of Krakoa.",
+   "verdict": "wrong",
+   "note": "Xavier is killed; Cable is on Rachel's mission"
+  },
+  {
+   "label": "killed",
+   "page": "Man-Thing",
+   "target": "Blade_(character)",
+   "left": "After Xarus is killed by ",
+   "hit": "Blade",
+   "right": ", the latter adopts Boy-Thing.",
+   "verdict": "wrong",
+   "note": "Blade kills Xarus; nothing between Man-Thing and Blade"
+  },
+  {
+   "label": "killed",
+   "page": "Guardsman_(character)",
+   "target": "Luke_Cage",
+   "left": "Pascal Tyler - killed Cinder, framing ",
+   "hit": "Luke Cage",
+   "right": " and Rhino",
+   "verdict": "wrong",
+   "note": "a Guardsman kills Cinder and frames Luke Cage"
+  },
+  {
+   "label": "killed",
+   "page": "Deadpool",
+   "target": "She-Hulk",
+   "left": "In each book, he hunts down and murders characters such as the Headless Horseman (who inspired the Green Goblin and Ghost Rider), the characters of Little Women (Black Widow, ",
+   "hit": "She-Hulk",
+   "right": ", Elektra), Captain Ahab (Thunderbolt Ross), the Little Mermaid (Namor), Mowgli (Ka-Zar), Count Dracula (Dracula, Morbius, and Blade) and more.",
+   "verdict": "right",
+   "note": "Deadpool murders a version of She-Hulk"
+  },
+  {
+   "label": "killed",
+   "page": "Betsy_Braddock",
+   "target": "Doctor_Nemesis",
+   "left": "While Cable recruited Fantomex, Marrow and ",
+   "hit": "Doctor Nemesis",
+   "right": " as his teammates, Betsy actually sought Cable because she couldn't bear staying away from X-Force as she admitted she was addicted to killing.",
+   "verdict": "wrong",
+   "note": "\"addicted to killing\"; Doctor Nemesis is a teammate"
+  },
+  {
+   "label": "killed",
+   "page": "Blue_Eagle_(character)",
+   "target": "Black_Widow_(Natasha_Romanova)",
+   "left": "",
+   "hit": "Black Widow",
+   "right": " and Hawkeye later kill Blue Eagle and take his wings.",
+   "verdict": "right",
+   "note": "Black Widow kills Blue Eagle"
+  },
+  {
+   "label": "killed",
+   "page": "Black_Cat_(Marvel_Comics)",
+   "target": "Paladin_(comics)",
+   "left": "Felicia later inadvertently reveals his identity to an informant and becomes jealous of Parker's continued friendship with Mary Jane before Felicia is killed by ",
+   "hit": "Paladin",
+   "right": ".",
+   "verdict": "right",
+   "note": "Felicia is killed by Paladin"
+  },
+  {
+   "label": "killed",
+   "page": "Guardsman_(character)",
+   "target": "Eddie_Brock",
+   "left": "Danny Stephens - worked at the Vault and was the first Guardsman taken hostage and killed by Venom (",
+   "hit": "Eddie Brock",
+   "right": ")",
+   "verdict": "right",
+   "note": "a Guardsman is killed by Venom (Eddie Brock)"
+  },
+  {
+   "label": "killed",
+   "page": "Hit-Monkey",
+   "target": "Spider-Man",
+   "left": "In Deadpool #19, ",
+   "hit": "Spider-Man",
+   "right": " finds a local shop owner brutally murdered.",
+   "verdict": "wrong",
+   "note": "Spider-Man finds a murdered shop owner"
+  },
+  {
+   "label": "killed",
+   "page": "Brian_Braddock",
+   "target": "Emma_Frost",
+   "left": "He is killed by Pierce after overcoming the device's influence and refusing to kill ",
+   "hit": "Emma Frost",
+   "right": ".",
+   "verdict": "wrong",
+   "note": "he refuses to kill Emma Frost"
+  },
+  {
+   "label": "family",
+   "page": "Mayday_Parker",
+   "target": "Spider-Man",
+   "left": "The character was created by Tom DeFalco and Ron Frenz as the teenage daughter of Peter Parker (",
+   "hit": "Spider-Man",
+   "right": ") and Mary Jane Watson, and first appeared in What If #105 (February 1998).",
+   "verdict": "right",
+   "note": "Mayday is Peter Parker's daughter"
+  },
+  {
+   "label": "family",
+   "page": "Misty_Knight",
+   "target": "Blade_(character)",
+   "left": "In Marvel Comics, preceding characters were Gabe Jones (debuted in 1963), Black Panther (1966), Bill Foster (1966), Spider-Man supporting characters Joe Robertson (1967), his son Randy Robertson (1968), Hobie Brown (the Prowler) and Falcon (both 1969), Luke Cage (1972), ",
+   "hit": "Blade",
+   "right": " (1973), and Abe Brown (1974).",
+   "verdict": "wrong",
+   "note": "\"his son\" is Joe Robertson's son; Blade is in a list of characters"
+  },
+  {
+   "label": "family",
+   "page": "Cable_(character)",
+   "target": "Rachel_Summers",
+   "left": "Nathan Summers is the son of the X-Men member Cyclops (Scott Summers) and his first wife Madelyne Pryor (Jean Grey's clone), as well as the \"half\"-brother of ",
+   "hit": "Rachel Summers",
+   "right": " from the \"Days of Future Past\" timeline and Nate Grey from the timeline of the \"Age of Apocalypse\" storyline, the genetic template of the mutant terrorist Stryfe (one of his deadliest enemies), and the adoptive father of Hope Summers.",
+   "verdict": "right",
+   "note": "Cable is Rachel's half-brother"
+  },
+  {
+   "label": "family",
+   "page": "Black_Bolt",
+   "target": "Karnak_(character)",
+   "left": "Black Bolt reappears in a story focusing on his cousin Medusa, drives off the Hulk after he defeats the entire Inhuman Royal Family (Medusa, Gorgon, ",
+   "hit": "Karnak",
+   "right": ", Triton, and Crystal), and with the Fantastic Four, battles his brother Maximus and his own group of rogue Inhumans.",
+   "verdict": "wrong",
+   "note": "\"cousin\" and \"brother\" name Medusa and Maximus, not Karnak"
+  },
+  {
+   "label": "family",
+   "page": "Ghost_Rider",
+   "target": "Killraven",
+   "left": "When battling his father's killers, he accepted the offer and became Ghost Panther and battled Erik ",
+   "hit": "Killraven",
+   "right": " (fusion of Erik Killmonger and Killraven) while riding a burning black panther.",
+   "verdict": "wrong",
+   "note": "\"his father's killers\"; Killraven is an amalgam he battles"
+  },
+  {
+   "label": "family",
+   "page": "Vindicator_(comics)",
+   "target": "Guardian_(Marvel_Comics)",
+   "left": "Following James' return, she takes her husband's mantle of ",
+   "hit": "Guardian",
+   "right": " while he uses Vindicator for a time before the two switch back to their original codenames.",
+   "verdict": "right",
+   "note": "Guardian is Vindicator's husband"
+  },
+  {
+   "label": "family",
+   "page": "Patsy_Walker",
+   "target": "Mockingbird_(Marvel_Comics)",
+   "left": "Hellstrom tricks the archer superhero Hawkeye into returning her spirit to Earth; Hawkeye believes he is retrieving his presumed-dead wife, the ",
+   "hit": "Mockingbird",
+   "right": ", from the demonic lord Mephisto's realm.",
+   "verdict": "wrong",
+   "note": "\"wife\" is Hawkeye's wife; nothing between Patsy and Mockingbird"
+  },
+  {
+   "label": "family",
+   "page": "Cyclops_(Marvel_Comics)",
+   "target": "Rachel_Summers",
+   "left": "His first and most enduring love interest is his wife, Jean Grey, with the two having a daughter, ",
+   "hit": "Rachel Summers",
+   "right": ", from an alternate future.",
+   "verdict": "right",
+   "note": "Rachel is Cyclops's daughter"
+  },
+  {
+   "label": "family",
+   "page": "Patsy_Walker",
+   "target": "Kristoff_Vernard",
+   "left": "She then helps the She-Hulk in protecting ",
+   "hit": "Kristoff Vernard",
+   "right": ", the son of Doctor Doom, who was trying to defect to the U.S. She is later seen talking with Tigra about a case involving a lawsuit but ends up fighting her when she mentions the plaintiff's name, George Saywitz.",
+   "verdict": "wrong",
+   "note": "\"son\" is Doctor Doom's son; Patsy protects Kristoff"
+  },
+  {
+   "label": "family",
+   "page": "Golem_(Marvel_Comics)",
+   "target": "Blue_Bullet",
+   "left": "Jacob Goldstein, the brother of the ",
+   "hit": "Blue Bullet",
+   "right": ", was a resident of the Jewish Warsaw Ghetto in Poland during World War II.",
+   "verdict": "right",
+   "note": "Jacob Goldstein, the Golem, is Blue Bullet's brother"
+  },
+  {
+   "label": "family",
+   "page": "Hulk",
+   "target": "She-Hulk",
+   "left": "This includes Banner's love interest Betty Ross, his best friend, Rick Jones, his cousin ",
+   "hit": "She-Hulk",
+   "right": ", and therapist and ally Doc Samson.",
+   "verdict": "right",
+   "note": "She-Hulk is Banner's cousin"
+  },
+  {
+   "label": "family",
+   "page": "Human_Torch_(android)",
+   "target": "Toro_(character)",
+   "left": "In his solo title's debut issue, he acquired a young partner, Thomas \"",
+   "hit": "Toro",
+   "right": "\" Raymond, the mutant son of two nuclear scientists whose exposure to radiation gave him the ability to control fire.",
+   "verdict": "wrong",
+   "note": "\"son\" is Toro's parents; Toro is the Torch's partner"
+  },
+  {
+   "label": "enemy",
+   "page": "Adam_Warlock",
+   "target": "Emma_Frost",
+   "left": "As Loki, ",
+   "hit": "Emma Frost",
+   "right": ", Hulk, Ant-Man, Ms. Marvel, and Kang the Conqueror gather together, they find Adam and suggest they exit the Soulworld only for Adam to declare that they need to defeat Devondra first.",
+   "verdict": "wrong",
+   "note": "they meet; \"defeat\" is about Devondra"
+  },
+  {
+   "label": "enemy",
+   "page": "Hulkling",
+   "target": "Cloak_and_Dagger_(characters)",
+   "left": "With the aid of Xavin, Speed and Wiccan, Hulkling survives an attack by X'iv, a Skrull assassin working for Chrell with the powers of Daredevil, Elektra, and ",
+   "hit": "Cloak and Dagger",
+   "right": ".",
+   "verdict": "wrong",
+   "note": "an assassin has powers like Cloak and Dagger's"
+  },
+  {
+   "label": "enemy",
+   "page": "Iron_Fist_(character)",
+   "target": "Phoenix_Force",
+   "left": "During the \"Avengers vs. X-Men\" storyline, Iron Fist and Lei Kung bring Hope Summers to K'un-Lun to train as an Iron Fist, in order to defeat the ",
+   "hit": "Phoenix",
+   "right": " Force-possessed X-Men.",
+   "verdict": "right",
+   "note": "Iron Fist trains Hope to defeat the Phoenix-possessed X-Men"
+  },
+  {
+   "label": "enemy",
+   "page": "Sabra_(character)",
+   "target": "She-Hulk",
+   "left": "There, she meets Iron Man and the Arabian Knight (Abdul Qamar), and battles ",
+   "hit": "She-Hulk",
+   "right": " and Captain Britain.",
+   "verdict": "right",
+   "note": "Sabra battles She-Hulk"
+  },
+  {
+   "label": "enemy",
+   "page": "Quicksilver_(Marvel_Comics)",
+   "target": "Black_Bolt",
+   "left": "The ceremony itself was depicted in Fantastic Four #150 by writer Gerry Conway and penciler Rich Buckler, where a threat engineered by the Inhuman Maximus the Mad working alongside Omega (revealed to be Ultron-7) was resolved when Franklin Richards awoke from a long coma and defeated the conspirators, after which the wedding took place with ",
+   "hit": "Black Bolt",
+   "right": " walking Crystal down the aisle.",
+   "verdict": "wrong",
+   "note": "\"defeated\" is about the conspirators; Black Bolt gives away the bride"
+  },
+  {
+   "label": "enemy",
+   "page": "Cloak_and_Dagger_(characters)",
+   "target": "Anole_(character)",
+   "left": "With the help of X-Men ",
+   "hit": "Anole",
+   "right": " and Dr. Nemesis, she fights off his captors whereupon Tia reveals that she has powers as well and has been brainwashed to hate them.",
+   "verdict": "wrong",
+   "note": "Anole helps Dagger fight off her captors"
+  },
+  {
+   "label": "enemy",
+   "page": "Union_Jack_(Marvel_Comics)",
+   "target": "Blazing_Skull",
+   "left": "Dan Slott and James W. Fry III featured Brian Falsworth in a World War II-era story for Midnight Sons Unlimited #9 (May 1995); in the story he teams up with the ",
+   "hit": "Blazing Skull",
+   "right": " to defend a fundraiser he is hosting from a Nazi attack.",
+   "verdict": "wrong",
+   "note": "Union Jack teams up with the Blazing Skull against a Nazi attack"
+  },
+  {
+   "label": "enemy",
+   "page": "Guardsman_(character)",
+   "target": "War_Machine",
+   "left": "Upon learning their armors are based on stolen specs for that of Iron Man's, Pepper Potts exposes the Guardsmen as criminals while Iron Man and ",
+   "hit": "War Machine",
+   "right": " defeat them.",
+   "verdict": "right",
+   "note": "Iron Man and War Machine defeat the Guardsmen"
+  },
+  {
+   "label": "enemy",
+   "page": "Devil_Hulk",
+   "target": "Venom_(character)",
+   "left": "During the events of Absolute Carnage, the ",
+   "hit": "Venom",
+   "right": " symbiote takes Bruce as its host to fight Carnage.",
+   "verdict": "wrong",
+   "note": "Venom takes Bruce as its host to fight Carnage"
+  },
+  {
+   "label": "enemy",
+   "page": "Phyla-Vell",
+   "target": "Star-Lord",
+   "left": "Phyla then goes with Nova and ",
+   "hit": "Star-Lord",
+   "right": " to lead a final battle against Annihilus, being saved at the last second by a massive energy wave caused by the just freed Galactus, which left only the three heroes and Annihilus as survivors.",
+   "verdict": "wrong",
+   "note": "Phyla and Star-Lord fight Annihilus together"
+  },
+  {
+   "label": "enemy",
+   "page": "Iron_Lad",
+   "target": "Kristoff_Vernard",
+   "left": "In the series Marvel's Voices, Iron Lad is attacked by ",
+   "hit": "Kristoff Vernard",
+   "right": ", who sieges Chronopolis.",
+   "verdict": "right",
+   "note": "Iron Lad is attacked by Kristoff Vernard"
+  },
+  {
+   "label": "enemy",
+   "page": "Gladiator_(Kallark)",
+   "target": "Phoenix_Force",
+   "left": "When the X-Men come into conflict with the Shi'ar empire regarding the ",
+   "hit": "Phoenix",
+   "right": " entity, Gladiator battles them first at the command of Emperor D'Ken, and then at the behest of D'Ken's successor, Empress Lilandra Neramani.",
+   "verdict": "right",
+   "note": "Gladiator battles the X-Men over the Phoenix"
+  },
+  {
+   "label": "ally",
+   "page": "Human_Torch_(android)",
+   "target": "Bucky_(Marvel_Comics)",
+   "left": "Both the Torch and the Sub-Mariner joined with Captain America and his partner ",
+   "hit": "Bucky",
+   "right": " as the core of the superhero team the Invaders, fighting Nazis during World War II (in retcon stories that premiered in 1970s comics).",
+   "verdict": "right",
+   "note": "the Torch joins Captain America and Bucky"
+  },
+  {
+   "label": "ally",
+   "page": "Anole_(character)",
+   "target": "Hellion_(character)",
+   "left": "At first, he is depicted as close friends with fellow student ",
+   "hit": "Julian Keller",
+   "right": " and the other students in the Hellions, but he later becomes closer to his teammates.",
+   "verdict": "right",
+   "note": "Anole and Julian Keller are close friends"
+  },
+  {
+   "label": "ally",
+   "page": "Jack_Monroe_(character)",
+   "target": "William_Burnside_(character)",
+   "left": "He became an adventurer and the partner of ",
+   "hit": "William Burnside",
+   "right": " who had assumed the identity of Steve Rogers in the 1950s.",
+   "verdict": "right",
+   "note": "Jack Monroe is William Burnside's partner"
+  },
+  {
+   "label": "ally",
+   "page": "Ghost_Rider",
+   "target": "Caretaker_(comics)",
+   "left": "",
+   "hit": "Caretaker",
+   "right": ": An immortal man and ally to Ketch, member of the Blood.",
+   "verdict": "right",
+   "note": "Caretaker is an ally to Ketch"
+  },
+  {
+   "label": "ally",
+   "page": "Jack_Monroe_(character)",
+   "target": "Nomad_(Marvel_Comics)",
+   "left": "The character was originally introduced as the third sidekick under the Bucky identity, initially treated as the original Bucky Barnes before being retconned as a separate character, and later the most well-known incarnation of ",
+   "hit": "Nomad",
+   "right": ".",
+   "verdict": "wrong",
+   "note": "Nomad is an identity Jack Monroe takes"
+  },
+  {
+   "label": "ally",
+   "page": "Morbius",
+   "target": "Blade_(character)",
+   "left": "In contrast to the comics, the cartoon depicted Morbius both as a regular ally of the character ",
+   "hit": "Blade",
+   "right": " and as a being who feeds on human plasma through his hands rather than with his fangs.",
+   "verdict": "right",
+   "note": "Morbius is a regular ally of Blade"
+  },
+  {
+   "label": "ally",
+   "page": "Black_Rider_(character)",
+   "target": "Doctor_Strange",
+   "left": "There he receives help from a mysterious Chinese man, who is eventually revealed to be a younger version of the Ancient One, future mentor of the occult superhero ",
+   "hit": "Doctor Strange",
+   "right": ".",
+   "verdict": "wrong",
+   "note": "\"mentor\" is the Ancient One's to Doctor Strange"
+  },
+  {
+   "label": "ally",
+   "page": "Rachel_Summers",
+   "target": "Betsy_Braddock",
+   "left": "In its fourth issue, Rachel Summers and her long-time friend ",
+   "hit": "Betsy Braddock",
+   "right": " confessed their romantic feelings for each other and their kiss was shown in a splash page.",
+   "verdict": "right",
+   "note": "Rachel and Betsy are long-time friends"
+  },
+  {
+   "label": "ally",
+   "page": "Spider-Woman_(Gwen_Stacy)",
+   "target": "Spider-Man_Noir",
+   "left": "In the primary continuity of the comic books constituting the Marvel Universe, college-student Gwen Stacy was the girlfriend of ",
+   "hit": "Peter Parker",
+   "right": ", whom she was unaware was Spider-Man.",
+   "verdict": "wrong",
+   "note": "\"Peter Parker\" here is the main Spider-Man, not Spider-Man Noir"
+  },
+  {
+   "label": "ally",
+   "page": "Betsy_Braddock",
+   "target": "Anole_(character)",
+   "left": "During this time, Betsy started focusing her powers into different weapons of psychic energy such as a bow and arrow, a crossbow and a grappling line and a flail, mentored a small group of students consisted of Hellion, ",
+   "hit": "Anole",
+   "right": ", Broo, and Rockslide and kept a relationship with a virtual boyfriend created in the Danger Room.",
+   "verdict": "right",
+   "note": "Betsy mentors Anole"
+  },
+  {
+   "label": "ally",
+   "page": "Cloak_and_Dagger_(characters)",
+   "target": "Deathlok",
+   "left": "During the 1993 \"Maximum Carnage\" event, Cloak and Dagger teamed up with Spider-Man, Captain America, Black Cat, Nightwatch, Iron Fist, ",
+   "hit": "Deathlok",
+   "right": ", Morbius, Venom, and Firestar to halt Carnage and his allies' murderous rampage across New York City.",
+   "verdict": "right",
+   "note": "they team up against Carnage"
+  },
+  {
+   "label": "ally",
+   "page": "Killpower",
+   "target": "Motormouth_(comics)",
+   "left": "He is the partner of ",
+   "hit": "Motormouth",
+   "right": " and first appeared in Motormouth #1 (June 1992).",
+   "verdict": "right",
+   "note": "Killpower is Motormouth's partner"
+  },
+  {
+   "label": "teammate",
+   "page": "Solo_(Marvel_Comics)",
+   "target": "Cable_(character)",
+   "left": "Solo is hired by G. W. Bridge to join the new Six Pack alongside Hammer, Domino, Anaconda, and Constrictor in their mission to take down ",
+   "hit": "Cable",
+   "right": ".",
+   "verdict": "wrong",
+   "note": "Solo's team is formed to take down Cable"
+  },
+  {
+   "label": "teammate",
+   "page": "Box_(comics)",
+   "target": "Guardian_(Marvel_Comics)",
+   "left": "",
+   "hit": "James Hudson",
+   "right": ", seeing Bochs' potential, helped him construct Box and recruited him into Gamma Flight, a training program for the Canadian superhero group Alpha Flight, which was led by Hudson as Guardian.",
+   "verdict": "right",
+   "note": "Guardian recruits Box into Gamma Flight"
+  },
+  {
+   "label": "teammate",
+   "page": "Wolverine_(character)",
+   "target": "Hulk",
+   "left": "The character first appeared in the comic book The Incredible ",
+   "hit": "Hulk",
+   "right": " #180 (1974) and is best known as a member of the superhero team the X-Men.",
+   "verdict": "wrong",
+   "note": "\"member\" is Wolverine in the X-Men; Hulk is a comic's title"
+  },
+  {
+   "label": "teammate",
+   "page": "Empath_(character)",
+   "target": "Emma_Frost",
+   "left": "Manuel de la Rocha debuted as a member of ",
+   "hit": "Emma Frost",
+   "right": "'s original Hellions in New Mutants #16 (June 1984), and was created by Chris Claremont and Sal Buscema.",
+   "verdict": "right",
+   "note": "Empath is a member of Emma Frost's Hellions"
+  },
+  {
+   "label": "teammate",
+   "page": "Hyperion_(character)",
+   "target": "Makkari_(character)",
+   "left": "The team encounters the hero Quasar and take up residence at Project Pegasus, where ",
+   "hit": "Makkari",
+   "right": " restores his sight.",
+   "verdict": "wrong",
+   "note": "Makkari restores his sight; the sentence names no shared team"
+  },
+  {
+   "label": "teammate",
+   "page": "Puck_(Marvel_Comics)",
+   "target": "Storm_(Marvel_Comics)",
+   "left": "In the 2012 series Uncanny X-Force, Puck joins the eponymous team alongside ",
+   "hit": "Storm",
+   "right": ", Psylocke, and Spiral.",
+   "verdict": "right",
+   "note": "Puck joins Uncanny X-Force alongside Storm"
+  },
+  {
+   "label": "teammate",
+   "page": "Straw_Man_(comics)",
+   "target": "Doctor_Strange",
+   "left": "The Straw Man was invited by the Dweller-in-Darkness to join the Fear Lords, but he betrayed them to ",
+   "hit": "Doctor Strange",
+   "right": ".",
+   "verdict": "wrong",
+   "note": "the Straw Man betrays the Fear Lords to Doctor Strange"
+  },
+  {
+   "label": "teammate",
+   "page": "Iron_Fist_(character)",
+   "target": "Doctor_Strange",
+   "left": "After the arrest of Captain America, Rand joins the New Avengers, an underground group provided with secure accommodation by ",
+   "hit": "Doctor Strange",
+   "right": " and which includes his former teammate Luke Cage.",
+   "verdict": "right",
+   "note": "Iron Fist joins the New Avengers that Doctor Strange houses"
+  },
+  {
+   "label": "teammate",
+   "page": "Vulcan_(Marvel_Comics)",
+   "target": "Korvus",
+   "left": "Meanwhile, Havok, Marvel Girl, Polaris, Ch'od, Raza, and ",
+   "hit": "Korvus",
+   "right": " form a new team of Starjammers bent on defeating Vulcan and salvaging the remains of the Shi'ar empire.",
+   "verdict": "wrong",
+   "note": "Korvus's team forms to defeat Vulcan"
+  },
+  {
+   "label": "teammate",
+   "page": "Darkhawk",
+   "target": "Black_Bolt",
+   "left": "Together, the two heroes join past versions of Reed Richards, ",
+   "hit": "Black Bolt",
+   "right": ", and Namorita in helping Sphinx combat his younger self.",
+   "verdict": "right",
+   "note": "Darkhawk joins Black Bolt and others to help Sphinx"
+  },
+  {
+   "label": "teammate",
+   "page": "Shamrock_(comics)",
+   "target": "Iron_Fist_(character)",
+   "left": "Shamrock was chosen for Death's team, fighting alongside fellow heroes Peregrine, Iron Man, Vanguard, ",
+   "hit": "Iron Fist",
+   "right": ", Storm, Arabian Knight, Sabra, Invisible Woman, Angel, Black Panther, Sunfire, and the Collective Man.",
+   "verdict": "right",
+   "note": "Shamrock fights alongside Iron Fist on Death's team"
+  },
+  {
+   "label": "teammate",
+   "page": "Shang-Chi",
+   "target": "Silk_(character)",
+   "left": "He became a recurring member of Jimmy Woo's Agents of Atlas and its successor team, the New Agents of Atlas, alongside heroes including Kamala Khan, ",
+   "hit": "Silk",
+   "right": ", Amadeus Cho, White Fox, Wave, Aero, Luna Snow, Crescent, Io, and S.H.I.E.L.D. agent Jake Oh.",
+   "verdict": "right",
+   "note": "Shang-Chi and Silk are on the Agents of Atlas"
+  }
+ ]
+}

@@ -16,7 +16,7 @@ NODES = 303
 LINKS = 1784
 
 
-# docs/assets/data/arcade_graph.json: lobby.js, packs.js, transit.js via arcade-core
+# public/assets/data/arcade_graph.json: lobby.js, packs.js, transit.js via arcade-core
 
 class ArcadeNode(Model):
     id: str
@@ -51,7 +51,7 @@ class ArcadeGraph(Model):
         return self
 
 
-# docs/assets/data/week01_packs.json: packs.js
+# public/assets/data/week01_packs.json: packs.js
 
 class Card(Model):
     id: str
@@ -104,7 +104,7 @@ class Packs(Model):
         return self
 
 
-# docs/assets/data/marvel_story.json: /play/ (signal.js)
+# public/assets/data/marvel_story.json: /play/ (signal.js)
 
 class StoryNode(Model):
     id: str
@@ -132,7 +132,7 @@ class Story(Model):
 
 
 PAGES = {
-    "docs/assets/data/arcade_graph.json": ArcadeGraph,
-    "docs/assets/data/week01_packs.json": Packs,
-    "docs/assets/data/marvel_story.json": Story,
+    "public/assets/data/arcade_graph.json": ArcadeGraph,
+    "public/assets/data/week01_packs.json": Packs,
+    "public/assets/data/marvel_story.json": Story,
 }

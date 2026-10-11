@@ -47,7 +47,7 @@ own window) matches years.json's oct_jun totals for FY2024 to FY2026. check()
 runs before the file is written, so a rerun that breaks one of these stops
 here instead of on the page.
 
-Output: docs/weeks/week04/data/roles.json.
+Output: public/weeks/week04/data/roles.json.
 """
 
 import json
@@ -61,7 +61,7 @@ from week04_schemas import check
 from week04_shift import bounds as oct_jun_bounds
 
 ROOT = Path(__file__).resolve().parents[1]
-PAGE = ROOT / "docs/weeks/week04/data/roles.json"
+PAGE = ROOT / "public/weeks/week04/data/roles.json"
 YEARS = ["2022", "2023", "2024", "2025", "2026"]
 FY = {y: f"FY{y}" for y in YEARS}
 TOP_N = {"occupations": 10, "groups": 7, "employer": 10}
@@ -120,7 +120,7 @@ def oct_jun_frames(frames):
     out = {}
     for y in YEARS:
         f = frames[y]
-        decided = pd.to_datetime(f["DECISION_DATE"], errors="coerce")
+        decided = f["DECISION_DATE"]
         start, end = oct_jun_bounds(int(y), "oct_jun")
         out[y] = f[decided.between(start, end)]
     return out
@@ -211,7 +211,7 @@ def build_split(name, frames, oj_frames, key_col, totals, oj_totals, label_of):
 
 
 def build_placement(frames, oj_frames, totals, oj_totals):
-    placed = lambda f: f["SECONDARY_ENTITY"].str.upper().str.startswith("Y")
+    placed = lambda f: f["SECONDARY_ENTITY"].fillna(False)
     placed_full = [int(placed(frames[y]).sum()) for y in YEARS]
     placed_oj = [int(placed(oj_frames[y]).sum()) for y in YEARS]
     direct_full = [totals[y] - p for y, p in zip(YEARS, placed_full)]
@@ -227,7 +227,7 @@ def build_placement(frames, oj_frames, totals, oj_totals):
 
 
 def main():
-    years_page = json.loads((ROOT / "docs/weeks/week04/data/years.json").read_text())
+    years_page = json.loads((ROOT / "public/weeks/week04/data/years.json").read_text())
     frames = load_years()
     oj = oct_jun_frames(frames)
     totals = {y: len(frames[y]) for y in YEARS}

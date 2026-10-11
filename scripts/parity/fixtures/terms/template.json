@@ -1,0 +1,16 @@
+[
+ {
+  "module": "src/scripts/week-template.js",
+  "line": 60,
+  "selector": "#second-did p",
+  "serverRendered": true,
+  "phrase": "term",
+  "definition": "A toy definition: one plain sentence, with an example.",
+  "id": "tpl-term",
+  "order": 1,
+  "afterData": true,
+  "matched": true,
+  "raw": "<p class=\"sub\">The method and the baseline. A term gets a definition on hover the first time it appears.</p>",
+  "after": "<p class=\"sub\">The method and the baseline. A <span class=\"w4-term\"><button type=\"button\" aria-describedby=\"tpl-term\">term</button><span class=\"w4-pop\" id=\"tpl-term\" role=\"tooltip\">A toy definition: one plain sentence, with an example.</span></span> gets a definition on hover the first time it appears.</p>"
+ }
+]

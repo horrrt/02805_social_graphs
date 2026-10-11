@@ -79,7 +79,7 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from week04_staffing import span  # noqa: E402  (module import order kept flat)
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-DATA = ROOT / "docs" / "assets" / "data"
+DATA = ROOT / "public" / "assets" / "data"
 OUT = ROOT / "analysis"
 
 RIVALS = ("lognormal", "exponential")

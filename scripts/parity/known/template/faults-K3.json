@@ -1,0 +1,7 @@
+{
+  "styleguide/data/graphs.json": {
+    "expectDiff": ["[data-finding=\"1\"]", "[data-finding=\"2\"]", "#chart-first", "#first-passage", "#chart-second-right"],
+    "fp": "FP11",
+    "reason": "week-template.js drew every toy chart inside boot() after awaiting graphs.json (line 13), so a failed load left all seven hosts empty. The islands isolate each chart: the two networks still fail (empty hosts, an error logged) and the term stays plain, but the minis, the strip chart, the passage and the table need no file and draw."
+  }
+}

@@ -26,17 +26,17 @@ def load(rel):
         return json.load(f)
 
 
-place = load("docs/assets/data/week04_place.json")
-usa = load("docs/assets/data/usa.json")
-ww = load("docs/weeks/week04/data/where_who.json")
-fp = load("docs/weeks/week04/data/footprint.json")
-fr = load("docs/weeks/week04/data/footprint_rank.json")
-sm = load("docs/weeks/week04/data/staffing_moves.json")
-scm = load("docs/weeks/week04/data/staffing_communities.json")
-scl = load("docs/weeks/week04/data/staffing_clients.json")
-bey = load("docs/weeks/week04/data/beyond.json")
-jsp = load("docs/weeks/week04/data/jobs_split.json")
-jobs = load("docs/weeks/week04/data/jobs.json")
+place = load("public/assets/data/week04_place.json")
+usa = load("public/assets/data/usa.json")
+ww = load("public/weeks/week04/data/where_who.json")
+fp = load("public/weeks/week04/data/footprint.json")
+fr = load("public/weeks/week04/data/footprint_rank.json")
+sm = load("public/weeks/week04/data/staffing_moves.json")
+scm = load("public/weeks/week04/data/staffing_communities.json")
+scl = load("public/weeks/week04/data/staffing_clients.json")
+bey = load("public/weeks/week04/data/beyond.json")
+jsp = load("public/weeks/week04/data/jobs_split.json")
+jobs = load("public/weeks/week04/data/jobs.json")
 
 F = sm["finding"]
 # The three metro groups get hues of their own, so orange and blue keep one meaning (placed, direct) on the whole page.

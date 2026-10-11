@@ -37,7 +37,7 @@ Each post now introduces the dataset and experiment without assuming an earlier 
 
 ## Reuse
 
-[POST_GUIDE.md](../POST_GUIDE.md) records the workflow and user preferences. The repository's [AGENTS.md](../AGENTS.md) directs future post work to read it first.
+[project/POST_GUIDE.md](../project/POST_GUIDE.md) records the workflow and user preferences. The repository's [AGENTS.md](../AGENTS.md) directs future post work to read it first.
 
 ## Desktop screenshots
 

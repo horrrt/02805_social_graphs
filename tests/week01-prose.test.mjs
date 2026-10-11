@@ -10,14 +10,15 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { expectedDistinct } from "../docs/assets/js/collection-model.mjs";
+import { expectedDistinct } from "../src/scripts/collection-model.mjs";
+import { builtPage } from "./built-page.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const read = (name) => readFileSync(join(ROOT, name), "utf8");
 const json = (name) => JSON.parse(read(name));
 
-const raw = read("docs/weeks/week01/index.html");
-const svg = read("docs/assets/images/hero-packs.svg");
+const raw = builtPage("out/weeks/week01/index.html");
+const svg = read("public/assets/images/hero-packs.svg");
 const plain = raw
   .replace(/<[^>]+>/g, " ")
   .replace(/&lt;/g, "<")
@@ -27,8 +28,8 @@ const plain = raw
 const has = (t) => assert.ok(plain.includes(t), `the page should say "${t}"`);
 
 const facts = json("analysis/week01_facts.json");
-const packs = json("docs/assets/data/week01_packs.json");
-const graph = json("docs/assets/data/arcade_graph.json");
+const packs = json("public/assets/data/week01_packs.json");
+const graph = json("public/assets/data/arcade_graph.json");
 const apiCheck = json("analysis/week01_api_check.json");
 
 const count = (n) => n.toLocaleString("en-US");
@@ -289,8 +290,8 @@ test("the odds-comparison static fallback matches the JS it stands in for (w1-m2
   const uniform = expectedDistinct(graph.nodes.map(() => 1 / graph.nodes.length), draws);
   assert.ok(raw.includes(`<strong id="weighted-unique">${weighted.toFixed(1)}</strong>`));
   assert.ok(raw.includes(`<strong id="uniform-unique">${uniform.toFixed(1)}</strong>`));
-  assert.ok(raw.includes(`style="width: ${((weighted / graph.nodes.length) * 100).toFixed(2)}%"`));
-  assert.ok(raw.includes(`style="width: ${((uniform / graph.nodes.length) * 100).toFixed(2)}%"`));
+  assert.ok(raw.includes(`style="width:${((weighted / graph.nodes.length) * 100).toFixed(2)}%"`));
+  assert.ok(raw.includes(`style="width:${((uniform / graph.nodes.length) * 100).toFixed(2)}%"`));
   has(`equal odds give about ${Math.round(uniform - weighted)} more different cards on average`);
 });
 

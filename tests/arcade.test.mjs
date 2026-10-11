@@ -16,10 +16,10 @@ import {
   tfidfIndex,
   predictionScore,
   tokenizeCommand,
-} from "../docs/assets/js/arcade-core.mjs";
+} from "../src/scripts/arcade-core.mjs";
 const read = (name) =>
   JSON.parse(
-    readFileSync(new URL("../docs/assets/data/" + name, import.meta.url)),
+    readFileSync(new URL("../public/assets/data/" + name, import.meta.url)),
   );
 const data = read("arcade_graph.json"),
   core = graph(data, { core: true });
@@ -62,7 +62,7 @@ test("browser BFS agrees with independent Python distances and only follows real
 });
 test("all 277 browser removal counts agree with the independently recorded CSV", () => {
   const lines = readFileSync(
-    new URL("../docs/assets/data/week02_all_removals.csv", import.meta.url),
+    new URL("../public/assets/data/week02_all_removals.csv", import.meta.url),
     "utf8",
   )
     .trim()

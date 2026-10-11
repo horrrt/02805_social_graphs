@@ -22,7 +22,8 @@ import os
 import pathlib
 import subprocess
 import sys
-import urllib.request
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1] / "analysis"))
+import fetch as web  # noqa: E402
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 RAW = ROOT / "build" / "raw"
@@ -61,13 +62,13 @@ DOWNLOADS = [
 # serves the repository as it stands: a library that is not in the repo is a
 # library the published site cannot load.
 VENDOR = [
-    ("docs/assets/vendor/d3-7.9.0.min.js",
+    ("public/assets/vendor/d3-7.9.0.min.js",
      "https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js", "ISC"),
-    ("docs/assets/vendor/echarts-5.5.1.min.js",
+    ("public/assets/vendor/echarts-5.5.1.min.js",
      "https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js", "Apache-2.0"),
-    ("docs/assets/vendor/globe.gl-2.32.0.min.js",
+    ("public/assets/vendor/globe.gl-2.32.0.min.js",
      "https://cdn.jsdelivr.net/npm/globe.gl@2.32.0/dist/globe.gl.min.js", "MIT"),
-    ("docs/assets/vendor/deck.gl-9.0.30.min.js",
+    ("public/assets/vendor/deck.gl-9.0.30.min.js",
      "https://cdn.jsdelivr.net/npm/deck.gl@9.0.30/dist.min.js", "MIT"),
 ]
 
@@ -75,35 +76,35 @@ VENDOR = [
 TEXTURES = [
     ("earth-blue-marble.jpg",
      "https://unpkg.com/three-globe@2.31.0/example/img/earth-blue-marble.jpg",
-     "docs/assets/textures/earth-day-2048.jpg", 2048, "72"),
+     "public/assets/textures/earth-day-2048.jpg", 2048, "72"),
     ("earth-topology.png",
      "https://unpkg.com/three-globe@2.31.0/example/img/earth-topology.png",
-     "docs/assets/textures/earth-bump-1024.jpg", 1024, "65"),
+     "public/assets/textures/earth-bump-1024.jpg", 1024, "65"),
 ]
 
 # What the browser loads, and what made it.
 COMMITTED = [
-    ("docs/assets/data/week03_corridors.json",
+    ("public/assets/data/week03_corridors.json",
      "analysis/week03_corridor_control.py", "UN DESA stock + OpenFlights + Wikidata"),
-    ("docs/assets/data/week03_edges.json",
+    ("public/assets/data/week03_edges.json",
      "analysis/week03_corridor_control.py", "UN DESA stock + OpenFlights + UNHCR"),
-    ("docs/assets/data/week03_flights.json",
+    ("public/assets/data/week03_flights.json",
      "analysis/week03_corridor_control.py", "OpenFlights, every directed pair with a route"),
-    ("docs/assets/data/week03_cartography.json",
+    ("public/assets/data/week03_cartography.json",
      "analysis/week03_cartography.py", "roles inside the communities, per year"),
-    ("docs/assets/data/week03_asylum.json",
+    ("public/assets/data/week03_asylum.json",
      "analysis/week03_asylum.py", "Eurostat migr_asyappctzm, monthly"),
-    ("docs/assets/data/week03_closures.json",
+    ("public/assets/data/week03_closures.json",
      "analysis/week03_closures.py", "Oxford Covid-19 Response Tracker, daily"),
-    ("docs/assets/data/world_outline.geo.json",
+    ("public/assets/data/world_outline.geo.json",
      "scripts/migration/build_world_outline.py", "Natural Earth 1:110m"),
-    ("docs/assets/textures/earth-day-2048.jpg", "scripts/rebuild_week03.py", "NASA Blue Marble"),
-    ("docs/assets/textures/earth-bump-1024.jpg", "scripts/rebuild_week03.py", "Earth topography"),
-    ("docs/assets/vendor/d3-7.9.0.min.js", "scripts/rebuild_week03.py", "jsDelivr, pinned"),
-    ("docs/assets/vendor/echarts-5.5.1.min.js", "scripts/rebuild_week03.py", "jsDelivr, pinned"),
-    ("docs/assets/vendor/globe.gl-2.32.0.min.js", "scripts/rebuild_week03.py", "jsDelivr, pinned"),
-    ("docs/assets/vendor/deck.gl-9.0.30.min.js", "scripts/rebuild_week03.py", "jsDelivr, pinned"),
-    ("docs/weeks/week03/index.html", "hand-written", "the post itself"),
+    ("public/assets/textures/earth-day-2048.jpg", "scripts/rebuild_week03.py", "NASA Blue Marble"),
+    ("public/assets/textures/earth-bump-1024.jpg", "scripts/rebuild_week03.py", "Earth topography"),
+    ("public/assets/vendor/d3-7.9.0.min.js", "scripts/rebuild_week03.py", "jsDelivr, pinned"),
+    ("public/assets/vendor/echarts-5.5.1.min.js", "scripts/rebuild_week03.py", "jsDelivr, pinned"),
+    ("public/assets/vendor/globe.gl-2.32.0.min.js", "scripts/rebuild_week03.py", "jsDelivr, pinned"),
+    ("public/assets/vendor/deck.gl-9.0.30.min.js", "scripts/rebuild_week03.py", "jsDelivr, pinned"),
+    ("src/app/(week03)/weeks/week03/page.tsx", "hand-written", "the post itself"),
     ("analysis/week03_tails.json",
      "analysis/week03_tails.py", "power-law fits, not loaded by the page"),
     ("analysis/week03_gravity.json",
@@ -112,7 +113,7 @@ COMMITTED = [
      "analysis/week03_communities.py", "Louvain communities against a null"),
     ("analysis/week03_passengers.json",
      "analysis/week03_passengers.py", "US BTS T-100 passengers vs route counts"),
-    ("docs/styleguide/index.html", "hand-written", "every class, under every skin"),
+    ("src/app/(styleguide)/styleguide/page.tsx", "hand-written", "every class, under every skin"),
 ]
 
 
@@ -129,9 +130,7 @@ def fetch(url: str, target: pathlib.Path, force: bool) -> None:
         return
     print(f"  fetch   {target.name} … ", end="", flush=True)
     target.parent.mkdir(parents=True, exist_ok=True)
-    request = urllib.request.Request(url, headers={"User-Agent": user_agent()})
-    with urllib.request.urlopen(request, timeout=600) as response:
-        target.write_bytes(response.read())
+    target.write_bytes(web.content(web.session(user_agent()), url, timeout=600))
     print(size(target))
 
 
@@ -198,7 +197,7 @@ def main() -> None:
             print(f"  resize  {out.name} ({size(out)})")
 
     print("\n4. derived data")
-    # data/migration_country_indicators.tsv is committed and is not rebuilt
+    # data/migration_country_indicators.parquet is committed and is not rebuilt
     # here: it comes from the World Bank, one row per country, via
     #   python scripts/migration/fetch_country_layer.py --only worldbank
     # which takes a minute and needs the network. The corridor script reads it
@@ -213,11 +212,8 @@ def main() -> None:
     # always follows them and never needs the network.
     run(python, str(ROOT / "analysis/week03_cartography.py"))
 
-    print("\n5. the cache stamp")
-    run(python, str(ROOT / "scripts/stamp_week03.py"))
-
     report()
-    print("\nNow run: node --test 'tests/*.test.mjs'")
+    print("\nNow run: npm test")
 
 
 if __name__ == "__main__":

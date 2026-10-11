@@ -3,14 +3,14 @@
 Section 3's first-round questions (who-q1 to who-q4), the law-firm question
 and the lottery question already have every number in an existing analysis
 JSON (week04_staffing.json, week04_lawfirms.json, week04_lottery.json,
-week04_shift.json), but those files sit outside docs/ and are not fetched at
+week04_shift.json), but those files sit outside public/ and are not fetched at
 runtime. This script copies the handful of fields week04-vis-staffing.js
-draws that no page file under docs/ already carries. Fields already on a
-page (docs/weeks/week04/data/staffing_communities.json's modularity,
-industry_or_vendor and stability; docs/weeks/week04/data/years.json's
+draws that no page file under public/ already carries. Fields already on a
+page (public/weeks/week04/data/staffing_communities.json's modularity,
+industry_or_vendor and stability; public/weeks/week04/data/years.json's
 uscis_series) are read straight from there instead of duplicated here.
 
-Owner: Gyula. Outputs: docs/weeks/week04/data/staffing_deep.json.
+Owner: Gyula. Outputs: public/weeks/week04/data/staffing_deep.json.
 """
 
 import json
@@ -19,7 +19,7 @@ from pathlib import Path
 from week04_schemas import check
 
 ROOT = Path(__file__).resolve().parents[1]
-PAGE = ROOT / "docs/weeks/week04/data/staffing_deep.json"
+PAGE = ROOT / "public/weeks/week04/data/staffing_deep.json"
 
 
 def load(rel):

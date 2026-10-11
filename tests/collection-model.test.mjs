@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { expectedDistinct } from "../docs/assets/js/collection-model.mjs";
+import { expectedDistinct } from "../src/scripts/collection-model.mjs";
 
 test("expected collection agrees with exhaustive enumeration of a small deck", () => {
   const p = [0.5, 0.3, 0.2];

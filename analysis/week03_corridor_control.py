@@ -15,7 +15,7 @@ brokers come out as Australia, Norway and Denmark, which ranks statistical
 reporting systems rather than countries (see week03_country_networks.py). The
 z-score against a degree-preserving null is what makes any of it interpretable.
 
-Writes docs/assets/data/week03_corridors.json and week03_edges.json.
+Writes public/assets/data/week03_corridors.json and week03_edges.json.
 
     python analysis/week03_corridor_control.py [--shuffles 100] [--null-year 2020]
 """
@@ -37,12 +37,13 @@ import networkx as nx
 from scipy import stats
 
 from check_pages import check
+import tables
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts" / "migration"))
 
 RAW = ROOT / "build" / "raw"
-OUT = ROOT / "docs" / "assets" / "data"
+OUT = ROOT / "public" / "assets" / "data"
 YEARS = [1990, 1995, 2000, 2005, 2010, 2015, 2020, 2024]
 FOCUS = "DNK"
 
@@ -64,10 +65,8 @@ def read_json(path, attempts=5):
     raise AssertionError("unreachable")
 
 
-def read_tsv(path):
-    with (ROOT / path).open(encoding="utf-8") as fh:
-        body = [line for line in fh if not line.startswith("#")]
-    return list(csv.DictReader(body, delimiter="\t"))
+def read_table(path):
+    return tables.rows(ROOT / path)
 
 
 def forced_counts():
@@ -81,7 +80,7 @@ def forced_counts():
     reads this has to cap the count at the stock and say so.
     """
     forced = {}
-    for row in read_tsv("data/migration_displacement.tsv"):
+    for row in read_table("data/migration_displacement.parquet"):
         origin, asylum = row["origin"], row["asylum"]
         if not origin or not asylum or origin == asylum:
             continue
@@ -153,7 +152,7 @@ def flight_network(iso3_by_iso2):
 
 def migration_networks():
     graphs = {}
-    rows = read_tsv("data/migration_flows.tsv")
+    rows = read_table("data/migration_flows.parquet")
     for year in YEARS:
         graph = nx.DiGraph()
         for row in rows:
@@ -496,7 +495,7 @@ def main():
     # can be set against how rich and how large its two ends are.
     indicators = {}
     try:
-        for row in read_tsv("data/migration_country_indicators.tsv"):
+        for row in read_table("data/migration_country_indicators.parquet"):
             iso3 = row["iso3"]
             def number(key):
                 value = row.get(key, "")

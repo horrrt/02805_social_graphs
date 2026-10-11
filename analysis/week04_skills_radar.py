@@ -22,18 +22,18 @@ Method
   sort of the Element IDs misplaces "2.C.10" (Sales and Marketing) right
   after "2.C.1.f", because "1" sorts before ".".
 
-Deep-dive box (docs/weeks/week04/data/skills_radar.json)
+Deep-dive box (public/weeks/week04/data/skills_radar.json)
 - occupations: every SOC code with a rated profile and at least one
   certified FY2024 or FY2025 filing (the same population week04_skills.py
   reports as "covered"). in_network flags section 2's 60 shown occupations
-  (docs/weeks/week04/data/jobs.json); cluster is that node's Louvain
+  (public/weeks/week04/data/jobs.json); cluster is that node's Louvain
   cluster, or null for a code outside the 60.
 - default: two codes the page opens with, chosen without hand-picking: the
   most-filed occupation (this script's own FY2024+FY2025 count) in each of
   the two largest of the 60's four clusters, sized by how many of the 60
   they hold (39 and 16), not by each cluster's full membership beyond the 60.
 
-Output: docs/weeks/week04/data/skills_radar.json, kept compact (no indent)
+Output: public/weeks/week04/data/skills_radar.json, kept compact (no indent)
 because a reader's browser downloads it on every page load.
 """
 
@@ -49,7 +49,7 @@ from week04_jobs import filtered
 from week04_schemas import check
 from week04_skills import JOBS_PAGE, YEARS, detailed_profiles, read, weights
 
-PAGE = ROOT / "docs" / "weeks" / "week04" / "data" / "skills_radar.json"
+PAGE = ROOT / "public" / "weeks" / "week04" / "data" / "skills_radar.json"
 GROUP_DOMAINS = {
     "skills": ["essential_skills", "transferable_skills"],
     "knowledge": ["knowledge"],

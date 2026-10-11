@@ -45,7 +45,11 @@
      "selection_rate": 0.2607,
      "selected_that_became_petitions": 0.7596,
      "approved": 38729,
+     "selected_that_became_petitions_single": 0.9051,
+     "selected_that_became_petitions_multi": 0.4175,
      "approved_per_petition": 0.9821,
+     "undecided_petitions": 274,
+     "approved_per_decision": 0.989,
      "registrations_per_approval": 5.14,
      "denial_rate": 0.011
     },
@@ -57,7 +61,11 @@
      "selection_rate": 0.2276,
      "selected_that_became_petitions": 0.4983,
      "approved": 17631,
+     "selected_that_became_petitions_single": 0.7933,
+     "selected_that_became_petitions_multi": 0.2448,
      "approved_per_petition": 0.9675,
+     "undecided_petitions": 233,
+     "approved_per_decision": 0.98,
      "registrations_per_approval": 9.12,
      "denial_rate": 0.02
     },
@@ -69,7 +77,11 @@
      "selection_rate": 0.2503,
      "selected_that_became_petitions": 0.3472,
      "approved": 32779,
+     "selected_that_became_petitions_single": 0.7017,
+     "selected_that_became_petitions_multi": 0.1803,
      "approved_per_petition": 0.9451,
+     "undecided_petitions": 742,
+     "approved_per_decision": 0.9658,
      "registrations_per_approval": 12.17,
      "denial_rate": 0.0342
     }
@@ -79,13 +91,31 @@
      "ratio": 1.773,
      "draw_share": 0.237,
      "petition_share": 0.736,
-     "approval_share": 0.026
+     "pending_share": 0.01,
+     "approval_share": 0.016
     },
     "small": {
      "ratio": 2.368,
      "draw_share": 0.047,
      "petition_share": 0.908,
-     "approval_share": 0.045
+     "pending_share": 0.017,
+     "approval_share": 0.028
+    }
+   },
+   "gap_to_direct_single": {
+    "placing": {
+     "ratio": 1.578,
+     "draw_share": 0.694,
+     "petition_share": 0.289,
+     "pending_share": 0.006,
+     "approval_share": 0.011
+    },
+    "small": {
+     "ratio": 1.49,
+     "draw_share": 0.306,
+     "petition_share": 0.639,
+     "pending_share": 0.018,
+     "approval_share": 0.038
     }
    },
    "clients": {
@@ -265,7 +295,11 @@
      "selection_rate": 0.2826,
      "selected_that_became_petitions": 0.8508,
      "approved": 39892,
+     "selected_that_became_petitions_single": 0.9374,
+     "selected_that_became_petitions_multi": 0.5575,
      "approved_per_petition": 0.9716,
+     "undecided_petitions": 57,
+     "approved_per_decision": 0.973,
      "registrations_per_approval": 4.28,
      "denial_rate": 0.027
     },
@@ -277,7 +311,11 @@
      "selection_rate": 0.2509,
      "selected_that_became_petitions": 0.6613,
      "approved": 22038,
+     "selected_that_became_petitions_single": 0.8601,
+     "selected_that_became_petitions_multi": 0.4364,
      "approved_per_petition": 0.9593,
+     "undecided_petitions": 42,
+     "approved_per_decision": 0.9611,
      "registrations_per_approval": 6.28,
      "denial_rate": 0.0389
     },
@@ -289,7 +327,11 @@
      "selection_rate": 0.2698,
      "selected_that_became_petitions": 0.6782,
      "approved": 28862,
+     "selected_that_became_petitions_single": 0.8405,
+     "selected_that_became_petitions_multi": 0.4421,
      "approved_per_petition": 0.9549,
+     "undecided_petitions": 69,
+     "approved_per_decision": 0.9571,
      "registrations_per_approval": 5.72,
      "denial_rate": 0.0429
     }
@@ -299,13 +341,31 @@
      "ratio": 1.467,
      "draw_share": 0.31,
      "petition_share": 0.657,
-     "approval_share": 0.033
+     "pending_share": 0.001,
+     "approval_share": 0.032
     },
     "small": {
      "ratio": 1.337,
      "draw_share": 0.16,
      "petition_share": 0.781,
-     "approval_share": 0.06
+     "pending_share": 0.003,
+     "approval_share": 0.057
+    }
+   },
+   "gap_to_direct_single": {
+    "placing": {
+     "ratio": 1.439,
+     "draw_share": 0.728,
+     "petition_share": 0.237,
+     "pending_share": 0.0,
+     "approval_share": 0.035
+    },
+    "small": {
+     "ratio": 1.224,
+     "draw_share": 0.346,
+     "petition_share": 0.539,
+     "pending_share": 0.006,
+     "approval_share": 0.109
     }
    },
    "clients": {
@@ -443,5 +503,5 @@
    }
   }
  },
- "seconds": 252
+ "seconds": 90
 }

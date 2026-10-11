@@ -4,4 +4,4 @@ Course project repo for DTU 02805, group Log-Log Legends (Àngela, Gyula, Niklas
 
 @AGENTS.md
 
-See [README.md](README.md) for the full project layout, data, and site build details.
+See [README.md](README.md) for the project overview and [the development guide](project/DEVELOPMENT.md) for setup, data and site build details.

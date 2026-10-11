@@ -1,0 +1,14 @@
+{
+  "weeks/week05/data/search_live.json": {
+    "expectDiff": [
+      "#search-stats",
+      "#search-chips",
+      "#search-input",
+      "#search-tbody",
+      "#search-detail",
+      "#search-passage"
+    ],
+    "fp": "FP02",
+    "reason": "week05-search.js awaited search.json and search_live.json with one Promise.all (line 119), so a failed search_live.json left the whole section empty. The islands draw from search.json alone what needs only it: the stat row, the chips, the query table with the selected query's detail, the box filled with that query, and the checked passage. The live ranking (#search-live-ranks) and the terms in #search-did still wait for both files, so they stay empty and plain as on main."
+  }
+}

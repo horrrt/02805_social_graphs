@@ -1,0 +1,4 @@
+// allow-html: JSON.stringify output with "<" escaped cannot close the script element.
+export function JsonLdScript({ data }: { data: unknown }) {
+  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(data).replace(/</g, "\\u003c") }} />;
+}

@@ -40,7 +40,7 @@ import networkx as nx
 from week04_staffing import labels, louvain, nmi
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-DATA = ROOT / "docs" / "assets" / "data"
+DATA = ROOT / "public" / "assets" / "data"
 OUT = ROOT / "analysis"
 
 STABILITY_SEEDS = range(100)

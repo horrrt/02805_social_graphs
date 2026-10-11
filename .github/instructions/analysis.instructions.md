@@ -19,8 +19,8 @@ applyTo: "analysis/**"
 - Repeat a headline on a second year or sample when the data has one. Compare two statistics only when both
   cover the same items.
 - Check what a file covers before you name it (its dates, its reporting units), report the share of rows a
-  fuzzy join matched, and write each trap into the week's notes (`WEEK04.md` keeps a list).
-- Write every number the page quotes to the script's JSON in `analysis/` or `docs/`. The page reads it
+  fuzzy join matched, and write each trap into the week's notes (`project/WEEK04.md` keeps a list).
+- Write every number the page quotes to the script's JSON in `analysis/` or `public/`. The page reads it
   from there, and a test in `tests/` builds each sentence from that JSON (`tests/week04-prose.test.mjs`).
   Pin the names and the words a sentence attaches to a number too, such as "about twice".
 - When a page script reads a new field, add it to that week's model (`analysis/week01_schemas.py` to
@@ -38,8 +38,9 @@ applyTo: "analysis/**"
   "Certified - Withdrawn") and `VISA_CLASS` is "H-1B".
 - Identify companies only through `resolver()` in `analysis/week04_staffing.py`: `employer(name, fein)`,
   `client(name)` and `label(key)`. Do not write your own name cleaning.
-- To merge two company names, add a row to `analysis/week04_client_aliases.csv` that follows the rule at its
-  top, then run `python analysis/week04_names_check.py`. Separately branded subsidiaries (LinkedIn, Optum)
+- To merge two company names, add a row to `analysis/week04_client_aliases.parquet` that follows the rule in its
+  notes (`python analysis/tables.py edit analysis/week04_client_aliases.parquet` opens it as CSV in `$EDITOR`),
+  then run `python analysis/week04_names_check.py`. Separately branded subsidiaries (LinkedIn, Optum)
   stay separate companies.
 - Weight links by filings, not requested positions: one firm asks for 40 positions on every filing.
 - Week 4 scripts validate with `week04_schemas.check`, which does the same as `check_pages.check`.

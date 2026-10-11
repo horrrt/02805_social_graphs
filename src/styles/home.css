@@ -1,0 +1,379 @@
+/* The homepage. Loads after corridor.css and uses only its tokens, so the
+   lobby reads as the same site as Weeks 3 and 4: navy hero band, white cards
+   on the cool ground, accent blue for actions. */
+
+.home {
+  --accent: #14618f;
+  --inset: #f7fafd;
+}
+
+/* ------------------------------------------------------------------ hero */
+
+.home .home-hero .shell {
+  align-items: start;
+  gap: 40px;
+  grid-template-columns: minmax(0, 1.5fr) minmax(280px, 1fr);
+  max-width: 1180px;
+  min-height: 0;
+  padding-block: 56px 48px;
+}
+
+.home .home-hero h1 {
+  font-size: var(--fs-display);
+  max-width: 16ch;
+}
+
+.home .home-hero p.body {
+  max-width: 62ch;
+}
+
+.home .home-hero-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+
+.home .home-button {
+  background: var(--access);
+  border-radius: 999px;
+  color: #ffffff;
+  font-size: var(--fs-body);
+  font-weight: 700;
+  padding: 11px 20px;
+  text-decoration: none;
+}
+
+.home .home-button:hover {
+  background: var(--accent);
+}
+
+.home .home-progress {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: var(--radius);
+  padding: 20px 22px;
+}
+
+.home .home-progress .home-caps {
+  color: #93aecd;
+}
+
+.home .home-track {
+  display: grid;
+  gap: 2px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.home .home-track li {
+  align-items: center;
+  border-radius: 8px;
+  color: #7f9bbd;
+  display: flex;
+  font-size: var(--fs-body);
+  gap: 12px;
+  padding: 6px 8px;
+}
+
+.home .home-track li span {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 6px;
+  font-size: var(--fs-caption);
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  padding: 2px 6px;
+}
+
+.home .home-track li.live {
+  color: #eaf2fb;
+  font-weight: 600;
+}
+
+.home .home-track li.live span {
+  background: rgba(31, 143, 214, 0.28);
+  border-color: transparent;
+}
+
+.home .home-track li.current {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Weeks 1–4 and 5–8 are the course's two halves. */
+.home .home-track li:nth-child(5) {
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0 0 8px 8px;
+  margin-top: 6px;
+  padding-top: 12px;
+}
+
+/* -------------------------------------------------------------- sections */
+
+.home .home-caps {
+  color: var(--ink-mute-text);
+  font-size: var(--fs-caption);
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  margin: 0 0 10px;
+  text-transform: uppercase;
+}
+
+.home .home-section {
+  margin-top: 44px;
+  scroll-margin-top: 72px;
+}
+
+.home .home-section-head {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  margin-bottom: 16px;
+}
+
+.home .home-section-head h2 {
+  font-size: var(--fs-h3);
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.home .home-section-head p {
+  color: var(--ink-soft);
+  font-size: var(--fs-body);
+  margin: 0;
+}
+
+.home .home-half + .home-half {
+  margin-top: 26px;
+}
+
+/* ---------------------------------------------------------------- weeks */
+
+.home .week-grid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.home .week-grid > li {
+  display: flex;
+}
+
+.home .week-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  color: var(--ink);
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 20px 22px;
+  text-decoration: none;
+}
+
+a.week-card:hover {
+  border-color: var(--access);
+}
+
+.home .week-card.current {
+  border-color: var(--access);
+  box-shadow: 0 0 0 1px var(--access), var(--shadow);
+}
+
+.home .week-tag {
+  color: var(--accent);
+  font-size: var(--fs-caption);
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.home .week-card h3 {
+  font-size: var(--fs-h3);
+  letter-spacing: -0.01em;
+  margin: 10px 0 6px;
+}
+
+.home .week-q {
+  color: var(--ink-soft);
+  font-size: var(--fs-body);
+  line-height: 1.5;
+  margin: 0 0 14px;
+}
+
+.home .week-go {
+  color: var(--accent);
+  font-size: var(--fs-body);
+  font-weight: 700;
+  margin-top: auto;
+}
+
+.home .week-card.coming {
+  background: transparent;
+  border-style: dashed;
+  box-shadow: none;
+}
+
+.home .week-card.coming .week-tag {
+  color: var(--ink-mute-text);
+}
+
+.home .week-card.coming h3 {
+  color: var(--ink-soft);
+  font-size: var(--fs-strong);
+}
+
+.home .week-card.coming .week-q {
+  margin: 0;
+}
+
+/* ------------------------------------------------------------ about, qa */
+
+.home .home-about .card h2 {
+  font-size: var(--fs-strong);
+  letter-spacing: -0.01em;
+  margin: 0 0 8px;
+}
+
+.home .home-about p {
+  color: var(--ink-soft);
+  font-size: var(--fs-body);
+  line-height: 1.62;
+  margin: 0 0 14px;
+}
+
+.home .home-about a,
+.home .qa-body a {
+  color: var(--accent);
+  font-size: var(--fs-body);
+  font-weight: 600;
+}
+
+.home .members {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  margin: 0 0 12px;
+  padding: 0;
+}
+
+.home .members li {
+  background: var(--access-soft);
+  border-radius: 999px;
+  color: var(--accent);
+  font-size: var(--fs-small);
+  font-weight: 700;
+  padding: 5px 12px;
+}
+
+.home .qa-body p {
+  color: var(--ink-soft);
+  font-size: var(--fs-body);
+  line-height: 1.62;
+  max-width: 68ch;
+}
+
+.home footer.foot .shell {
+  align-items: center;
+}
+
+.home footer.foot .home-github {
+  color: var(--ink);
+  display: inline-flex;
+}
+
+.home footer.foot .home-github:hover {
+  color: var(--accent);
+}
+
+/* Team portraits: a round photo above each name. */
+.home .members {
+  gap: 28px;
+  margin: 4px 0 0;
+}
+
+.home .members li {
+  align-items: center;
+  background: none;
+  color: var(--ink);
+  display: flex;
+  flex-direction: column;
+  font-size: var(--fs-body);
+  font-weight: 700;
+  gap: 10px;
+  padding: 0;
+}
+
+.home .members img {
+  border: 3px solid var(--card);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px var(--line), var(--shadow);
+  display: block;
+  height: 96px;
+  object-fit: cover;
+  width: 96px;
+}
+
+/* The live weeks in the hero's course list link to their posts. */
+.home .home-track li.live {
+  padding: 0;
+}
+
+.home .home-track li a {
+  align-items: center;
+  border-radius: 8px;
+  color: inherit;
+  display: flex;
+  flex: 1;
+  gap: 12px;
+  padding: 6px 8px;
+  text-decoration: none;
+}
+
+.home .home-track li a:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.home .home-track li a i {
+  color: #93aecd;
+  font-style: normal;
+  margin-left: auto;
+}
+
+.home .home-track li a:hover i {
+  color: #eaf2fb;
+}
+
+/* Each portrait and name links to that person's LinkedIn profile. */
+.home .members a {
+  align-items: center;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  font-weight: inherit;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.home .members a:hover {
+  color: var(--accent);
+}
+
+.home .members a:hover img {
+  box-shadow: 0 0 0 2px var(--access), var(--shadow);
+}
+
+/* The tag holds week and topic; two lines for every card keeps the titles level. */
+.home .week-tag {
+  display: block;
+  line-height: 1.4;
+  min-height: 2.8em;
+}

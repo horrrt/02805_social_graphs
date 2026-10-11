@@ -7,27 +7,42 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync, readdirSync } from "node:fs";
-import { dirname, join } from "node:path";
+import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
+import { builtPage, codeFiles } from "./built-page.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const readText = (path) => readFileSync(join(ROOT, path), "utf8");
-const loadData = (name) => JSON.parse(readText(join("docs/assets/data", name)));
+const loadData = (name) => JSON.parse(readText(join("public/assets/data", name)));
 const loadAnalysis = (name) => JSON.parse(readText(join("analysis", name)));
 
-const html = readText("docs/weeks/week03/index.html");
-const corridor = readText("docs/assets/js/corridor.js");
+const html = builtPage("out/weeks/week03/index.html");
+const corridor = readText("src/scripts/corridor.js");
 
 const glob = (dir) => readdirSync(join(ROOT, dir))
   .filter((name) => name.endsWith(".js"))
   .map((name) => join(dir, name));
-const jsFiles = [...glob("docs/assets/js"), ...glob("docs/assets/js/variants")];
+// Week 3 code moving into components is read too, at any depth.
+const nested = (dir) => codeFiles(join(ROOT, dir), /\.(js|ts|tsx)$/).map((path) => relative(ROOT, path));
+const jsFiles = [
+  ...glob("src/scripts"),
+  ...glob("src/scripts/variants"),
+  ...nested("src/features/week03"),
+  ...nested("src/components/week03"),
+];
 
 // The page wraps hand-written prose at ~70 columns, so a phrase that reads as
 // one line in the source is split by newlines and indentation in the file.
 // Match on the words with whitespace collapsed instead of a literal substring.
-const flat = html.replace(/\s+/g, " ");
-const hasPhrase = (phrase) => flat.includes(phrase.replace(/\s+/g, " "));
+// React's output drops the whitespace between tags and writes inline styles
+// without spaces ("text-align:right"), so both sides are normalised the same way.
+const norm = (s) =>
+  s
+    .replace(/\s+/g, " ")
+    .replace(/> </g, "><")
+    .replace(/style="([^"]*)"/g, (_, v) => `style="${v.replace(/\s*:\s*/g, ":").replace(/;\s*$/, "")}"`);
+const flat = norm(html);
+const hasPhrase = (phrase) => flat.includes(norm(phrase));
 
 const corridors = loadData("week03_corridors.json");
 const edges = loadData("week03_edges.json");
@@ -39,7 +54,7 @@ const communities = loadAnalysis("week03_communities.json");
 const passengers = loadAnalysis("week03_passengers.json");
 const countryFacts = loadAnalysis("week03_country_facts.json");
 const reciprocity = loadAnalysis("week03_reciprocity.json");
-const questions = readText("docs/assets/js/questions.js");
+const questions = readText("src/scripts/questions.js");
 const corridorNodes = corridors.nodes;
 
 test("the page's country counts match the corridors file", () => {

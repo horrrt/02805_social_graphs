@@ -229,14 +229,12 @@ window.auditWeek03 = async function auditWeek03({ verbose = false } = {}) {
 
   for (const chart of ["hist", "ccdf"]) {
     const group = document.querySelector(`.axis-modes[data-chart="${chart}"]`);
-    if (group) {
-      group.scrollIntoView({ block: "center" });
-      await wait(120);
-    }
     if (!group) {
       record("axis mode", chart, false, "no control");
       continue;
     }
+    group.scrollIntoView({ block: "center" });
+    await wait(120);
     const host = document.getElementById(`${chart}-ec`) ?? document.getElementById(`${chart}-d3`) ?? $(chart);
     // The chart has to actually redraw, and each renderer proves that
     // differently: pixels for a canvas, markup for SVG, the option for ECharts.

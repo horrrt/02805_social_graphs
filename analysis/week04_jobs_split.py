@@ -85,7 +85,7 @@ Checks
 Seed: week04_jobs.SEED (204).
 
 Outputs: analysis/week04_jobs_split.json (every number), and
-docs/weeks/week04/data/jobs_split.json (the page's numbers).
+public/weeks/week04/data/jobs_split.json (the page's numbers).
 """
 
 import itertools
@@ -109,7 +109,7 @@ from week04_staffing import MIN_FILINGS, intermediaries, louvain, tracked
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "analysis" / "week04_jobs_split.json"
-PAGE = ROOT / "docs" / "weeks" / "week04" / "data" / "jobs_split.json"
+PAGE = ROOT / "public" / "weeks" / "week04" / "data" / "jobs_split.json"
 YEAR = 2025
 SEED = jobs.SEED  # 204, the same seed section 2 uses
 NULLS = 20  # random splits per null kind
@@ -124,7 +124,7 @@ def placement_groups(frame):
     """Company keys split two ways: "any" (a company with at least one placed
     filing) and "min20" (week04_staffing.MIN_FILINGS or more placed filings,
     the headline)."""
-    placed = frame[frame["SECONDARY_ENTITY"].str.upper().str.startswith("Y", na=False)]
+    placed = frame[frame["SECONDARY_ENTITY"].fillna(False)]
     any_placing = set(placed["company"].unique())
     counts = placed["company"].value_counts()
     min20_placing = set(counts[counts >= MIN_FILINGS].index)

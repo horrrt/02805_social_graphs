@@ -29,7 +29,7 @@ instead of one bucket:
 
     python analysis/week03_cartography.py [--year-all] [--seeds 100]
 
-Writes docs/assets/data/week03_cartography.json.
+Writes public/assets/data/week03_cartography.json.
 
 The graph is the one section 5 already shows: undirected, weighted by people
 moving both ways, corridors under 10,000 people dropped. Same floor, so the
@@ -67,7 +67,7 @@ import networkx as nx
 from check_pages import check
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-DATA = ROOT / "docs" / "assets" / "data"
+DATA = ROOT / "public" / "assets" / "data"
 
 # Guimerà and Amaral (2005), table 1. A hub is z >= 2.5; the participation
 # coefficient then splits hubs three ways and non-hubs four.

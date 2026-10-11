@@ -38,7 +38,7 @@ def draw(data, target, suffix, p):
         "text.color": p["text"], "axes.labelcolor": p["secondary"], "xtick.color": p["secondary"],
         "ytick.color": p["secondary"], "axes.edgecolor": p["edge"], "axes.facecolor": p["background"],
         "figure.facecolor": p["background"], "svg.hashsalt": "week02"})
-    font = FontProperties(fname=ROOT / "docs/assets/fonts/barlow-condensed-800.ttf")
+    font = FontProperties(fname=ROOT / "src/fonts/barlow-condensed-800.ttf")
     removal = target / f"removal_results{suffix}.svg"
     fig, ax = plt.subplots(figsize=(10, 4.8), layout="constrained")
     labels = [c["label"] for c in data["cases"]]
@@ -75,7 +75,7 @@ def draw(data, target, suffix, p):
 
 def draw_survivors(table, draws, target, suffix, p):
     """One panel per quantity: both null distributions, and the real value marked."""
-    font = FontProperties(fname=ROOT / "docs/assets/fonts/barlow-condensed-800.ttf")
+    font = FontProperties(fname=ROOT / "src/fonts/barlow-condensed-800.ttf")
     path = target / f"null_survivors{suffix}.svg"
     fig, axes = plt.subplots(2, 3, figsize=(14, 8.6), layout="constrained")
     handles = None
@@ -118,15 +118,15 @@ def draw_survivors(table, draws, target, suffix, p):
 
 
 def main():
-    data = json.loads((ROOT / "docs/assets/data/week02_resilience.json").read_text())
-    nulls = json.loads((ROOT / "docs/assets/data/week02_nullmodels.json").read_text())
+    data = json.loads((ROOT / "public/assets/data/week02_resilience.json").read_text())
+    nulls = json.loads((ROOT / "public/assets/data/week02_nullmodels.json").read_text())
     table = {q["key"]: q for q in nulls["quantities"]}
     draws = {"swap": {}, "er": {}}
-    with (ROOT / "docs/assets/data/week02_nullmodels_draws.csv").open() as f:
+    with (ROOT / "public/assets/data/week02_nullmodels_draws.csv").open() as f:
         for row in csv.DictReader(f):
             for key in table:
                 draws[row["null"]].setdefault(key, []).append(float(row[key]))
-    target = ROOT / "docs/weeks/week02/figures"
+    target = ROOT / "public/weeks/week02/figures"
     target.mkdir(parents=True, exist_ok=True)
     written = [path for suffix, palette in PALETTES
                for path in draw(data, target, suffix, palette)

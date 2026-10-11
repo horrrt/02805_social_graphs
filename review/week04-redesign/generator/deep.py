@@ -951,7 +951,7 @@ def deep_more_b():
 
 SCRIPTS = [
     ("The three networks", [
-        ("week04_where.py", "builds the place network and writes docs/assets/data/week04_place.json."),
+        ("week04_where.py", "builds the place network and writes public/assets/data/week04_place.json."),
         ("week04_jobs.py", "builds the occupation network."),
         ("week04_staffing.py", "and week04_staffing_figure.py build the firm → client network and its figure."),
     ]),

@@ -1,15 +1,32 @@
 // Pins the site's one type scale: every stylesheet and every page style takes
-// its font sizes and families from the tokens in docs/assets/css/type.css.
+// its font sizes and families from the tokens in src/styles/type.css.
 // Runs in node with no DOM.
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { builtPage, codeFiles } from "./built-page.mjs";
 
-const DOCS = fileURLToPath(new URL("../docs/", import.meta.url));
-const CSS = join(DOCS, "assets/css");
-// type.css defines the tokens. mockups.css styles docs/mockups/, a set of
+const CSS = fileURLToPath(new URL("../src/styles/", import.meta.url));
+const SCRIPTS = fileURLToPath(new URL("../src/scripts/", import.meta.url));
+const ROOT = fileURLToPath(new URL("../", import.meta.url));
+// Sizes typed into JSX: fontSize={11}, fontSize="11px", font-size="11".
+const JSX_LITERALS = [/fontSize=\{\s*\d/, /fontSize\s*=\s*["'`]?\d/, /font-size=["']?\d/];
+// Code moving out of src/scripts, as [repo-relative path, text], at any depth.
+const moved = (dir, skip = []) =>
+  codeFiles(join(ROOT, dir), /\.(js|mjs|ts|tsx)$/)
+    .map((path) => path.slice(ROOT.length))
+    .filter((rel) => !skip.some((prefix) => rel.startsWith(prefix)))
+    .map((rel) => [rel, readFileSync(join(ROOT, rel), "utf8")]);
+const linesMatching = (name, src, patterns) => {
+  const found = [];
+  src.split("\n").forEach((line, i) => {
+    if (patterns.some((re) => re.test(line))) found.push(`${name}:${i + 1}: ${line.trim()}`);
+  });
+  return found;
+};
+// type.css defines the tokens. mockups.css styles public/mockups/, a set of
 // explorations that stays outside the scale.
 const SKIP = ["type.css", "mockups.css"];
 const PAGES = [
@@ -18,6 +35,7 @@ const PAGES = [
   "weeks/week02/index.html",
   "weeks/week03/index.html",
   "weeks/week04/index.html",
+  "weeks/week05/index.html",
   "play/index.html",
   "styleguide/index.html",
 ];
@@ -55,8 +73,8 @@ function problems(where, selector, decl) {
   if (prop === "font") return value === "inherit" ? [] : [`${where} ${selector} { ${decl} } uses the font shorthand`];
   if (prop === "font-size") {
     if (/^var\(--fs-[a-z0-9]+\)$/.test(value) || value === "inherit") return [];
-    // The Week 4 rail hides its link text and shows only the dot.
-    if (value === "0" && selector === ".corridor .w4-rail a") return [];
+    // The section rail hides its link text and shows only the dot.
+    if (value === "0" && selector === ".w4-rail a") return [];
     return [`${where} ${selector} { ${decl} } is not a --fs- token`];
   }
   if (/^var\(--font-(sans|display|mono)\)$/.test(value) || value === "inherit") return [];
@@ -77,7 +95,7 @@ test("stylesheets take font sizes and families from the type scale", () => {
 test("page styles take font sizes and families from the type scale", () => {
   const found = [];
   for (const page of PAGES) {
-    const html = readFileSync(join(DOCS, page), "utf8");
+    const html = builtPage(join("out", page));
     for (const [, block] of html.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)) {
       for (const { selector, decl } of declarations(block)) found.push(...problems(page, selector, decl));
     }
@@ -91,8 +109,8 @@ test("page styles take font sizes and families from the type scale", () => {
 
 test("week 4 chart code takes every font size from the type scale", () => {
   // Numeric sizes in SVG attributes, ECharts options or inline styles must come
-  // from fs()/font() in docs/assets/js/type-scale.mjs instead.
-  const JS = join(DOCS, "assets/js");
+  // from fs()/font() in src/scripts/type-scale.mjs instead.
+  const JS = SCRIPTS;
   const literal = [
     /fontSize:\s*\d/,
     /"font-size":\s*\d/,
@@ -110,6 +128,7 @@ test("week 4 chart code takes every font size from the type scale", () => {
       if (literal.some((re) => re.test(line))) found.push(`${file}:${i + 1}: ${line.trim()}`);
     });
   }
+  for (const [file, src] of moved("src/features/week04")) found.push(...linesMatching(file, src, [...literal, ...JSX_LITERALS]));
   assert.deepEqual(found, []);
 });
 
@@ -127,12 +146,16 @@ const OTHER_JS_LITERALS = [
   /\.font\s*=\s*[`"'][^;]*?[?:]\s*\d+(?:\.\d+)?\s*\}px/,
 ];
 
+// The screen-test prototype (public/prototypes/, via pages/screen-test.js) keeps
+// its own fonts and sizes, as mockups.css does; it was inline in its page before.
+const OUTSIDE_SCALE = ["pages/screen-test.js"];
+
 function otherChartScripts(dir, prefix = "") {
   const files = [];
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
     const rel = prefix + entry.name;
     if (entry.isDirectory()) files.push(...otherChartScripts(join(dir, entry.name), `${rel}/`));
-    else if (/\.m?js$/.test(entry.name) && !/^week04-/.test(entry.name) && entry.name !== "type-scale.mjs")
+    else if (/\.m?js$/.test(entry.name) && !/^week04-/.test(entry.name) && entry.name !== "type-scale.mjs" && !OUTSIDE_SCALE.includes(rel))
       files.push(rel);
   }
   return files;
@@ -147,8 +170,16 @@ function fontLiterals(name, src) {
 }
 
 test("chart code outside week 4 takes every font size from the type scale", () => {
-  const JS = join(DOCS, "assets/js");
+  const JS = SCRIPTS;
   const found = otherChartScripts(JS).flatMap((f) => fontLiterals(f, readFileSync(join(JS, f), "utf8")));
+  // Components and hooks outside Week 4; the screen-test prototype keeps its own sizes.
+  const elsewhere = [
+    ...moved("src/lib"),
+    ...moved("src/kit"),
+    ...moved("src/features", ["src/features/week04/", "src/features/screen-test/"]),
+    ...moved("src/components"),
+  ];
+  for (const [file, src] of elsewhere) found.push(...linesMatching(file, src, [...OTHER_JS_LITERALS, ...JSX_LITERALS]));
   assert.deepEqual(found, []);
 });
 
@@ -170,4 +201,11 @@ test("the font-size guard catches the literals it replaced", () => {
     'axisLabel: { color: MUTE, fontSize: fs("caption") },',
   ])
     assert.equal(fontLiterals("x", line).length, 0, line);
+});
+
+test("the JSX font-size guard catches typed sizes and passes the scale", () => {
+  for (const line of ['<text fontSize={11}>', '<text fontSize="11px">', '<text font-size="11">'])
+    assert.equal(linesMatching("x", line, JSX_LITERALS).length, 1, line);
+  for (const line of ['<text fontSize={fs("caption")}>', "<text style={{ fontSize: \"var(--fs-caption)\" }}>"])
+    assert.equal(linesMatching("x", line, JSX_LITERALS).length, 0, line);
 });
