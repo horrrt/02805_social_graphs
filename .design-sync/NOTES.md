@@ -106,3 +106,28 @@ can't write to it.
   they go stale if Week 4's analysis reruns.
 - Previews that copy page markup (topbar, hero wrappers) break if `corridor.css`/`post.css`
   rename those classes; the render check catches blank cards, not subtly wrong ones.
+
+## Third pass (12 Oct): 41 explorables and Cold Read
+
+- 41 kit explorables (added to `src/kit` on 7 Oct) got authored previews from the kit page's own
+  props and toy data (`@/features/kit-page/toy*.ts`); previews may import data through `@/` paths.
+  17 wide ones (games, growth panels, nulls, Dendrogram, AxisMap, SweepCurve, VectorAngle,
+  AnalogyPlot) are `column` cards, as `[GRID_OVERFLOW]` asked.
+- Cold Read: `Frame`, `Campaign`, the five rounds and `LEVELS` are exported from
+  `src/features/cold-read/`, with `setup/ColdReadRoot` swapping `body.corridor` for
+  `body.cold-read`. `build.sh` appends Driver.js's CSS, KaTeX's CSS (font URLs rewritten to the
+  live site) and `cold-read.css` to `gen/site.css`; its unscoped rules (`[data-topic]`,
+  `[data-heat]`, `.tex-*`) match nothing in the corridor components.
+- `env.ts` sets `NEXT_PUBLIC_BASE_PATH` to https://horrrt.github.io/02805_social_graphs, so
+  `asset()` loads Cold Read's decks, vectors and portraits from GitHub Pages (CORS `*`). A design
+  opened offline shows the rounds' "did not load" notes.
+- Grades for the 49 new components live in `.design-sync/.cache/review/*.grade.json` (gitignored).
+
+## Component gaps found (third pass, site code, not fixed here)
+
+- `PartitionEditor` on `karateNodes(0.62)`: nodes 32/33, 8/30 and 3/7 overlap and hide their
+  labels, on the kit page as in the card.
+- `ComponentGallery`: a 68-node component draws as a solid disc; the node radius does not shrink
+  with the component's size, so links vanish. Same on the kit page.
+- `PathQuest` mid-run draws only the pages seen so far at their full-map positions, so a short run
+  sits in a corner of the map; the card shows the start panel instead.

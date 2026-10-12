@@ -7,6 +7,7 @@ import "./env";
 
 export * from "../../src/kit";
 export { default as CorridorRoot } from "./setup/CorridorRoot";
+export { default as ColdReadRoot } from "./setup/ColdReadRoot";
 
 export { Anatomy, type AnatomyRow } from "../../src/components/post/Anatomy";
 export { Card } from "../../src/components/post/Card";
@@ -34,3 +35,14 @@ export { BrandMark } from "../../src/components/site/BrandMark";
 export { PostTopbar, type TopbarLink } from "../../src/components/site/PostTopbar";
 export { SiteFooter } from "../../src/components/site/SiteFooter";
 export { SkipLink } from "../../src/components/site/SkipLink";
+
+// Cold Read, the Week 6 game at /play/cold-read/: the frame, the five rounds,
+// the campaign through all five, and the level list the practice menu shows.
+export { Frame } from "../../src/features/cold-read/Frame";
+export { Campaign } from "../../src/features/cold-read/Campaign";
+export { ClueShop } from "../../src/features/cold-read/ClueShop";
+export { WhoseLine } from "../../src/features/cold-read/WhoseLine";
+export { Tezguino } from "../../src/features/cold-read/Tezguino";
+export { MixDesk } from "../../src/features/cold-read/MixDesk";
+export { HotCold } from "../../src/features/cold-read/HotCold";
+export { LEVELS } from "../../src/features/cold-read/levels";
