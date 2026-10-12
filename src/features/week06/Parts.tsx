@@ -108,26 +108,29 @@ const buildWords = (d: Data): TableSpec => {
 
 type Row = ReturnType<typeof neighbourRows>[number];
 
+/** "1 woman", "5 women". */
+const womenWord = (n: number) => `${n} ${n === 1 ? "woman" : "women"}`;
+
 function Column({ title, rows, linked, women, other }: { title: string; rows: Row[]; linked: number; women: number; other: Set<number> }) {
   return (
     <div className="w6-col">
       <h3>{title}</h3>
-      <p className="w6-count">{`${linkedCount(rows)} of 10 linked, ${rows.filter((r) => r.gender === "woman").length} women. Average over all pages: ${two(linked)} linked, ${women} women.`}</p>
+      <p className="w6-count">{`${linkedCount(rows)} of 10 linked, ${womenWord(rows.filter((r) => r.gender === "woman").length)}. Average over all pages: ${two(linked)} linked, ${women} women.`}</p>
       <ol>
         {rows.map((r) => (
           <li key={r.index} className={[r.linked && "w6-linked", r.gender === "woman" && "w6-woman"].filter(Boolean).join(" ") || undefined}>
             <span className="w6-name">{r.name}</span>
-            {r.gender ? <span className="w6-gender">{r.gender}</span> : null}
-            <span className="w6-where">{r.where}</span>
-            {other.has(r.index) ? <span className="w6-both">in both lists</span> : null}
+            {r.gender ? <span className="visually-hidden">{`, ${r.gender}, `}</span> : <span className="w6-nolabel"><span className="visually-hidden">, </span>no label<span className="visually-hidden">, </span></span>}
+            <span className="w6-where">{r.where}<span className="visually-hidden">, </span></span>
+            {other.has(r.index) ? <span className="w6-both">in both lists<span className="visually-hidden">, </span></span> : null}
             <span className="w6-cos">
               <span aria-hidden="true">cos</span>
               <span className="visually-hidden">cosine</span>
               {` ${r.cos}`}
             </span>
             <span className="w6-words">
-              <span className="visually-hidden">words behind the match: </span>
-              {r.words.join(", ")}
+              <span className="visually-hidden">, words behind the match: </span>
+              {r.words.slice(0, 3).join(", ")}
             </span>
           </li>
         ))}
@@ -188,11 +191,13 @@ function Explorer({ data }: { data: Data }) {
         </span>
       </div>
       <p className="w6-note" aria-live="polite">
-        {`${pickNote(data, index)} ${linkedCount(kept)} and ${linkedCount(removed)} of 10 linked; ${women(kept)} and ${women(removed)} women.`}
+        {pickNote(data, index)}
+        {/* The column heads show these counts; a screen reader hears them with the pick. */}
+        <span className="visually-hidden">{` ${linkedCount(kept)} and ${linkedCount(removed)} of 10 linked; ${women(kept)} and ${womenWord(women(removed))}.`}</span>
       </p>
       <p className="w6-key">
         <span className="w6-key-woman" aria-hidden="true"></span>
-        A tinted row is a page about a woman. &ldquo;In both lists&rdquo; marks a page that stays near with and without names.
+        A tinted row is a page about a woman; &ldquo;no label&rdquo; means Wikidata gives none. &ldquo;In both lists&rdquo; marks a page that stays near with and without names.
       </p>
       <div className="w6-cols">
         <Column title="Names kept" rows={kept} linked={data.facts.course.tfidf} women={data.facts.gender.women_in_ten_all.tfidf} other={inRemoved} />

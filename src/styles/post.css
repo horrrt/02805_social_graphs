@@ -1095,6 +1095,13 @@
   text-underline-offset: 2px;
 }
 
+/* A link's ring takes its own colour, so it shows on the white cards and on
+   the navy hero alike. */
+.corridor :where(a[href]):focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
 /* Glossary terms and drawer summaries take the controls' focus ring, not the
    browser's thin default. */
 .corridor :is(.w4-term > button, summary):focus-visible {
@@ -2829,7 +2836,6 @@
 .corridor .w6-words { color: var(--ink-soft); display: block !important; font-size: var(--fs-caption); }
 /* A strip chart reads the page's light tokens, so in the dark hero it sits on a card. */
 .corridor .w6-hero-panel { background: var(--card); border-radius: 12px; padding: 14px 18px 10px; }
-.corridor .w6-gender { color: var(--ink-soft); font-size: var(--fs-caption); margin-right: 8px; }
 .corridor .w6-note { color: var(--ink); font-size: var(--fs-small); margin: 0 0 14px; }
 .corridor .w6-failed { color: var(--ink-soft); font-size: var(--fs-small); font-style: italic; margin: 8px 0; }
 /* The hero's contrast: two short ranked lists side by side on the light panel. */
@@ -2846,6 +2852,7 @@
 .corridor .w6-col li.w6-woman { background: var(--people-soft); border-radius: 6px; }
 .corridor :is(.w5-chips button, .w6-pick select):focus-visible { outline: 2px solid var(--w4-accent); outline-offset: 2px; }
 .corridor .w6-both { color: var(--ink-soft); font-size: var(--fs-caption); font-style: italic; margin-right: 8px; }
+.corridor .w6-nolabel { color: var(--ink-mute-text); font-size: var(--fs-caption); margin-right: 8px; }
 .corridor .w6-key { align-items: center; color: var(--ink-soft); display: flex; font-size: var(--fs-small); gap: 8px; margin: -6px 0 14px; }
 .corridor .w6-key-woman { background: var(--people-soft); border-radius: 3px; display: inline-block; height: 12px; width: 18px; }
 

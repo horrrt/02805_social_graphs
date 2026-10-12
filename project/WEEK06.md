@@ -100,6 +100,13 @@ Script: `analysis/week06_lookalikes.py` writes `analysis/week06_lookalikes.json`
 | 2 | Names carry the links | `#names` | Linked in ten: TF-IDF 4.01, names only 3.96, names removed 1.91, as many other words of the same rarity removed 4.00 ± 0.01 (they carry 19.8% of the weight, names 44.5%). Of the 25 closest unlinked pairs, 18 story, 2 title, 5 name only; names removed, 23 template, 2 story |
 | 3 | Without names, pages lean toward women's pages | `#gender` | Women's pages fill 48% of all ten-nearest lists (17% of pages); women's lists 96% women, men's 44%, gap 51 points (z 23.9); 13 points with he and she removed too |
 
+The split's second part, "textually close, structurally far", is not its own section. The brief asks for one
+question, and the post's question is names against stories, so the network distance of the ten nearest pages
+sits in section 2's More numbers and Table instead (40% linked and 8% with no path, against 3% and 16% of all
+pairs). Decided 12 October 2026, when the post was polished over two design-critique rounds (#244 to #248):
+the headline was scoped to the hand reading, cards 1A and 3A were limited to their evidence, the explorer got
+`?pick=` links and three match words per row, and the essentials data-story style was removed.
+
 Traps written down for next time:
 
 - The course's token rule is `[^\W\d_]+(?:['’][^\W\d_]+)?`, lowercased. It reproduces all 303 page lengths in
