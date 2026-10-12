@@ -191,3 +191,18 @@ test("section 3's follow-up quotes lean.json", () => {
   says("gender", `median ${count(lean.median_words.female)} words against ${count(lean.median_words.male)}`);
   assert.ok(m.terms.reception_share.p > 0.05 && m.terms.relations_share.p > 0.05);
 });
+
+test("the answer lines' qualifiers rest on their numbers", () => {
+  const kept = f.pairs.filter((p) => p.rep === "tfidf");
+  const story = kept.filter((p) => p.bucket === "story" || p.bucket === "mantle").length;
+  says("top", "a shared name usually marks a shared story");
+  says("closing", "a shared name usually marks a shared story or a link");
+  assert.ok(story > f.read.n / 2, "\"usually marks a shared story\" needs most read pairs to share a story or a title");
+  const nn = f.gender.no_names.gap.observed, np = f.gender.no_names_pronouns.gap.observed;
+  says("gender", "mostly because TF-IDF weighs she and her far above he and his");
+  assert.ok(nn - np > nn / 2, "\"mostly because\" needs removing the pronouns to cut most of the gap");
+  const m = lean.model;
+  says("gender", "partly because their pages are longer");
+  assert.ok(lean.median_words.female > lean.median_words.male && m.per_doubling > 0, "\"longer\" pages need to sit in more lists");
+  assert.ok(m.terms.female.coef > 0 && m.r2 < 1, "\"partly\" needs a lean left at equal length");
+});
