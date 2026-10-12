@@ -14,7 +14,7 @@ import { useData } from "@/lib/useData";
 import { useHydrated } from "@/lib/useHydrated";
 import { asset } from "@/scripts/site.js";
 import {
-  choices, contrast, DATA, distanceTable, gapRows, ladder, ladderTable, leanRows, linkedCount, minis, neighbourRows, pickNote, PICKS, readTable,
+  choices, contrast, DATA, distanceTable, gapRows, ladder, ladderTable, leanRows, linkedCount, minis, neighbourRows, pickNote, PICK_WHY, PICKS, readTable,
   short, START, two,
 } from "@/scripts/week06-lookalikes.js";
 
@@ -170,6 +170,7 @@ function Explorer({ data }: { data: Data }) {
   const inKept = useMemo(() => new Set<number>(kept.map((r: Row) => r.index)), [kept]);
   const inRemoved = useMemo(() => new Set<number>(removed.map((r: Row) => r.index)), [removed]);
   const women = (rows: Row[]) => rows.filter((r) => r.gender === "woman").length;
+  const why = (PICK_WHY as Record<string, string>)[data.names[index]];
   return (
     <>
       <div className="w6-pick">
@@ -190,10 +191,13 @@ function Explorer({ data }: { data: Data }) {
           })}
         </span>
       </div>
-      <p className="w6-note" aria-live="polite">
-        {pickNote(data, index)}
-        {/* The column heads show these counts; a screen reader hears them with the pick. */}
-        <span className="visually-hidden">{` ${linkedCount(kept)} and ${linkedCount(removed)} of 10 linked; ${women(kept)} and ${womenWord(women(removed))}.`}</span>
+      <p className="w6-note">
+        {why ? `${why} ` : null}
+        {/* Only the match and the counts are announced on a new pick; the column heads show the counts. */}
+        <span aria-live="polite">
+          {pickNote(data, index, false)}
+          <span className="visually-hidden">{` Names kept: ${linkedCount(kept)} of 10 linked, ${womenWord(women(kept))}; names removed: ${linkedCount(removed)} linked, ${womenWord(women(removed))}.`}</span>
+        </span>
       </p>
       <p className="w6-key">
         <span className="w6-key-woman" aria-hidden="true"></span>
