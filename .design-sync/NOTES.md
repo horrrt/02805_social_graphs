@@ -155,3 +155,17 @@ As found:
   (topbar to footer). Both sit in `pkg/week06/` so the pane groups them with `EssentialsPart`.
 - They import route files from `src/app/(week06essentials)/`; a moved route breaks the build here
   first. The page story is a `single` card at 1400x900; the card itself is 9,618px tall.
+
+## Migrated to Claude (12 Oct 2026)
+
+Standalone Claude Design (claude.ai/design) closes on 14 December 2026. The kit was migrated with
+Artifacts → Claude Design → "Migrate team design systems" and is now the design-system artifact
+https://claude.ai/artifact/JRrSbSw7WMvvxRr57oBmWD, where Design and Slides artifacts can use it.
+The other three standalone systems (Modernist, Classical, Design System) were skipped; the
+migration skips empty ones and ones built from a starter theme.
+
+Until the standalone site closes, `/design-sync` still writes to the standalone project
+(projectId in config.json). After a sync, choose "Migrate again" from the Claude Design menu on the
+Artifacts page to copy the changes over. That only works while the artifact copy has no edits made
+in Claude: an artifact edited there is skipped so the edits survive. After 14 December, syncing
+needs a new path, since DesignSync writes only to claude.ai/design projects.
