@@ -27,22 +27,17 @@ export function Hero() {
               A shared employer is not a shared labour market.
             </p>
             <div className="rx-legend">
-              <p className="rx-legend-title">On the map: three Louvain groups</p>
+              <p className="rx-legend-title">On the map: two Louvain groups</p>
               <ul>
                 <li>
                   <i className="w4-dot g0"></i>
                   <b>New York–Dallas</b>
-                  <span>seven large hubs</span>
-                </li>
-                <li>
-                  <i className="w4-dot g1"></i>
-                  <b>San Jose–San Francisco</b>
-                  <span>eight tech hubs</span>
+                  <span>twelve large hubs</span>
                 </li>
                 <li>
                   <i className="w4-dot g2"></i>
-                  <b>Detroit–Phoenix</b>
-                  <span>the other 25</span>
+                  <b>Houston–Philadelphia</b>
+                  <span>the other 28</span>
                 </li>
                 <li>
                   <i className="rx-leg-line"></i>

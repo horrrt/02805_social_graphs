@@ -26,14 +26,14 @@ export function Place() {
               A method that finds groups by moving each node into the neighbouring group that raises modularity most, then merging the groups and repeating until no move helps. It starts from a random order, so two runs can differ.
             </GlossTerm>
             {" "}
-            splits them into three groups, and the split is weak
+            splits them into two groups, and the split is weak
             but real:
             {" "}
             <GlossTerm id="w4-term-place-modularity" word="modularity">
               How much more of the link weight falls inside the groups than a random network with the same number of links per node would put there. Higher means sharper groups.
             </GlossTerm>
             {" "}
-            0.049 against 0.013 for
+            0.057 against 0.013 for
             {" "}
             <GlossTerm id="w4-term-place-rewired" word="rewired networks">
               A random copy of the network in which every node keeps its number of partners, but the partners are dealt out again at random.
@@ -44,7 +44,7 @@ export function Place() {
               How many standard deviations the real value sits from the random baseline’s mean. Beyond about 2 either way is rare by chance.
             </GlossTerm>
             {" "}
-            = 29).
+            = 36).
           </p>
           <div className="w4-example">
             <svg aria-hidden="true" height="150" viewBox="0 0 250 150" width="250">
@@ -69,7 +69,7 @@ export function Place() {
           <Drawers variant="foot">
             <Drawer label="Background">
               <p>
-                Louvain splits the 40 metros into seven large hubs led by New York and Dallas, eight tech hubs led by San Jose and San Francisco, and the other 25. The rewired networks keep each company's number of metros. The two questions below ask what the groups follow and where the network comes apart.
+                Louvain splits the 40 metros into twelve large hubs led by New York and Dallas, and the other 28 from Houston and Philadelphia down. The rewired networks keep each company's number of metros. The two questions below ask what the groups follow and where the network comes apart.
               </p>
             </Drawer>
             <Drawer label="Method">
@@ -126,7 +126,7 @@ export function Place() {
             <header className="w4-q">
               <div>
                 <h2>Is it one national job market or several regional ones?</h2>
-                <p className="w4-answer">Not regional markets: the two hub groups cross regions.</p>
+                <p className="w4-answer">Not regional markets: the hub group crosses regions.</p>
               </div>
             </header>
             <PlacePart part="groups" />
@@ -149,7 +149,7 @@ export function Place() {
             <span>
               <b>What to notice</b>
               {" "}
-              The split is real but weak: modularity 0.049 against 0.013 for rewired networks; Louvain finds it in 65 of 100 runs.
+              The split is real but weak: modularity 0.057 against 0.013 for rewired networks, the highest any of 100 Louvain runs reaches.
             </span>
           </div>
         </div>
@@ -157,17 +157,17 @@ export function Place() {
           <Drawer label="Background">
             <p className="sub">A position is a seat an employer asks to fill, not a worker who arrived.</p>
             <p className="sub">
-              Louvain splits the large hubs into two groups, which cross regions, and leaves the smaller metros as a third.
+              Louvain separates the twelve largest hubs, which cross regions, from the other 28 metros.
             </p>
             <p className="sub">
-              The map shows the partition Louvain finds most often, and every number below is computed on it. The null rewires the company × metro network so each company and each metro keeps its number of partners, deals the filing counts back out at random, and projects it again:
+              The map shows the partition with the highest modularity Louvain reaches, and every number below is computed on it. The null rewires the company × metro network so each company and each metro keeps its number of partners, deals the filing counts back out at random, and projects it again:
             </p>
             <PlacePart part="nullStats" />
             <p className="sub">
-              One group holds New York, Dallas, Atlanta, Chicago, Houston, Philadelphia and Charlotte. The other holds San Jose, San Francisco, Seattle, Los Angeles, San Diego, Austin, Boston and Washington. The 25 smaller metros form the third. Modularity is 0.049 against 0.013 for rewired networks that keep each company's number of metros (z = 29).
+              One group holds New York, Dallas, San Jose, San Francisco, Seattle, Atlanta, Chicago, Austin, Boston, Washington, Los Angeles and San Diego. The other 28 metros form the second. Modularity is 0.057 against 0.013 for rewired networks that keep each company's number of metros (z = 36).
             </p>
             <p className="sub">
-              Louvain finds the split shown in 65 of 100 runs; the other 35 find one other split, into two groups: the 12 largest hubs against the other 28. That split scores higher, modularity 0.057 against 0.049, so the page shows the split found most often, not the one that scores best; the maps below show both. 2024 gives that two-group split in all 100 runs, so it matches the split shown here at
+              Louvain finds the split shown in 35 of 100 runs; the other 65 find one other split, into three groups, which cuts the hubs into New York–Dallas and San Jose–San Francisco at a lower modularity, 0.049. The page shows the higher one; the maps below show both, and more. 2024 gives the split shown in all 100 runs; across the two years the runs agree at
               {" "}
               <GlossTerm id="w4-term-place-start-nmi" word="NMI">
                 Normalized mutual information: how alike two groupings are, from 0 for unrelated to 1 for the same.
@@ -176,7 +176,7 @@ export function Place() {
               0.64, against 1.00 between two 2025 runs.
             </p>
             <p className="sub">
-              NMI with Census regions is 0.14 and with divisions 0.21. Infomap, which follows a random walk between metros instead of counting links, finds no split at all: one module holds all 40.
+              NMI with Census regions is 0.04 and with divisions 0.11. Infomap, which follows a random walk between metros instead of counting links, finds no split at all: one module holds all 40.
             </p>
           </Drawer>
           <Drawer label="Method">
@@ -189,7 +189,7 @@ export function Place() {
                 The share of shuffled labellings that match at least as well as the real one. A small value means the match is unlikely to be chance.
               </GlossTerm>
               {" "}
-              = 0.10 and 0.11).
+              = 0.46 and 0.32).
             </p>
             <p>
               In Seattle one company, Amazon, files 31%. Positions reward a few firms asking for many seats; employer counts reward a broad market.
@@ -199,8 +199,9 @@ export function Place() {
             </p>
           </Drawer>
           <Drawer label="Maps: groups and Census regions">
-            <p className="sub">Colour the same map by Louvain's three groups, by the two-group split that scores higher (12 hubs against the other 28), or by Census region.</p>
+            <p className="sub">Colour the same map by Louvain's groups, two (the split above) to ten, or by Census region.</p>
             <PlacePart part="region" />
+            <PlacePart part="groupCount" />
             <PlacePart part="legend" />
             <div className="plot" style={{"marginTop":"18px"}}>
               <h3>On the map</h3>

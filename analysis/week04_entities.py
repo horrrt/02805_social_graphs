@@ -75,6 +75,7 @@ from week04_schemas import check
 from week04_skills import read as onet_read
 from week04_staffing import (SEED, giant_of, graph as staffing_graph, intermediaries, louvain as nx_louvain,
                              placements, resolver, rewire, span, tracked)
+import budget
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = Path(__file__).with_suffix(".json")
@@ -89,7 +90,7 @@ LOOSE = 0.5  # a group that holds together less often than this is marked loose
 ALPHA = 0.2  # the disparity filter's cut, as section 1 and exercise 4.11
 MAX_CLIQUES = 20000  # maximal cliques above which k-clique percolation is skipped: networkx compares cliques pairwise
 AMI_MAX_VALUES = 1000
-WORKERS = max(1, (os.cpu_count() or 4) - 1)
+WORKERS = budget.cores()  # CPU_SHARE of the cores, 80% by default
 LEVELS = {"I": 0, "II": 1, "III": 2, "IV": 3}
 KINDS = ["occupation", "place", "level", "sector"]  # the attribute nodes, by kind
 KIND_NAMES = {"occupation": "occupation", "place": "metro", "level": "wage level", "sector": "sector"}

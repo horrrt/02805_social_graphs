@@ -200,10 +200,10 @@ function Rank() {
   return <W4Chart {...RANK} option={option} onEvents={events} notMerge={false} />;
 }
 
+// Each head's colour is its group's slot in week04_place.json (2, slate, for the smaller metros).
 const GROUP_HEADS = [
-  { id: 1, title: "Eight tech hubs", lead: "led by San Jose and San Francisco" },
-  { id: 0, title: "Seven large hubs", lead: "led by New York and Dallas" },
-  { id: 2, title: "The other 25", lead: "from Detroit and Phoenix down" },
+  { id: 0, slot: 0, title: "Twelve large hubs", lead: "led by New York and Dallas" },
+  { id: 1, slot: 2, title: "The other 28", lead: "from Houston and Philadelphia down" },
 ];
 
 function GroupsBody({ lists }: { lists: Record<number, string> | null }) {
@@ -212,7 +212,7 @@ function GroupsBody({ lists }: { lists: Record<number, string> | null }) {
       {GROUP_HEADS.map((g) => (
         <div className="rx-group" data-community={g.id} key={g.id}>
           <div className="rx-group-head">
-            <i style={{ background: `var(--w4-group-${g.id})` }}></i>
+            <i style={{ background: `var(--w4-group-${g.slot})` }}></i>
             <b>{g.title}</b>
             <span>{g.lead}</span>
           </div>
@@ -251,7 +251,6 @@ function NullStats() {
 
 const REGIONS = [
   { value: "communities", label: "Communities", dataAttr: { name: "place-region", value: "communities" } },
-  { value: "split", label: "Two groups", dataAttr: { name: "place-region", value: "split" } },
   { value: "census", label: "Census regions", dataAttr: { name: "place-region", value: "census" } },
 ];
 
@@ -260,9 +259,6 @@ function RegionServer() {
     <div className="axis-modes" role="group" aria-label="Colour cities by">
       <button aria-pressed="true" data-place-region="communities" type="button">
         Communities
-      </button>{" "}
-      <button aria-pressed="false" data-place-region="split" type="button">
-        Two groups
       </button>{" "}
       <button aria-pressed="false" data-place-region="census" type="button">
         Census regions
@@ -276,6 +272,38 @@ function Region() {
   return (
     <SegmentedControl className="axis-modes" role="group" ariaLabel="Colour cities by" separator=" " buttons={REGIONS} value={mode} onChange={(v) => set({ regionMode: v })} />
   );
+}
+
+// The number of groups the map shows: 2 to 10, the split Louvain finds most
+// often at each size (week04_where.py "views"); the shown partition by default.
+// Nine choices, so a select rather than a row of buttons.
+const GROUP_COUNTS = Array.from({ length: 9 }, (_, i) => i + 2);
+
+function GroupCountBody({ value, onChange }: { value: number; onChange?: (k: number) => void }) {
+  return (
+    <label className="w4-select" id="place-group-count">
+      <span>Groups on the map</span>{" "}
+      <select value={value} onChange={onChange ? (e) => onChange(Number(e.target.value)) : undefined}>
+        {GROUP_COUNTS.map((k) => (
+          <option key={k} value={k}>
+            {k === 2 ? "2 (the split above)" : k}
+          </option>
+        ))}
+      </select>
+    </label>
+  );
+}
+
+function GroupCountServer() {
+  return <GroupCountBody value={2} />;
+}
+
+function GroupCount() {
+  const p = usePlace();
+  useIslandReady(p !== null);
+  if (!p) return <GroupCountServer />;
+  const shown = p.m.data.views?.find((v: { shown: boolean }) => v.shown)?.groups ?? 2;
+  return <GroupCountBody value={p.s.groups ?? shown} onChange={(k) => set({ groups: k, regionMode: "communities" })} />;
 }
 
 function LegendServer() {
@@ -323,10 +351,10 @@ function RegionMap() {
   const p = usePlace();
   const events = useSelectOnClick();
   const ready = Boolean(p?.mapReady);
-  const { metric, selected, regionMode } = p?.s ?? {};
+  const { metric, selected, regionMode, groups } = p?.s ?? {};
   const option = useMemo(
-    () => (p && ready ? usMapOption(p.m, { metric, selected, regionMode }, p.T, "partition") : null),
-    [p?.m, p?.T, ready, metric, selected, regionMode],
+    () => (p && ready ? usMapOption(p.m, { metric, selected, regionMode, groups }, p.T, "partition") : null),
+    [p?.m, p?.T, ready, metric, selected, regionMode, groups],
   );
   useIslandReady(option !== null);
   return <W4Chart {...REGION_MAP} option={option} onEvents={events} reset={RESET(selected != null)} />;
@@ -358,10 +386,10 @@ function Backbone() {
   const p = usePlace();
   const events = useSelectOnClick();
   const ready = Boolean(p?.mapReady);
-  const { alpha, selected, regionMode } = p?.s ?? {};
+  const { alpha, selected, regionMode, groups } = p?.s ?? {};
   const option = useMemo(
-    () => (p && ready ? backboneOption(p.m, { alpha, selected, regionMode }, p.T) : null),
-    [p?.m, p?.T, ready, alpha, selected, regionMode],
+    () => (p && ready ? backboneOption(p.m, { alpha, selected, regionMode, groups }, p.T) : null),
+    [p?.m, p?.T, ready, alpha, selected, regionMode, groups],
   );
   useIslandReady(option !== null);
   return <W4Chart {...BACKBONE} option={option} onEvents={events} reset={RESET(selected != null)} />;
@@ -635,6 +663,7 @@ const PARTS: Record<string, [ComponentType, ComponentType, string]> = {
   nullStats: [NullStats, NullStatsServer, "#place-null-stats"],
   region: [Region, RegionServer, "[data-place-region]"],
   legend: [Legend, LegendServer, "#place-region-legend"],
+  groupCount: [GroupCount, GroupCountServer, "#place-group-count"],
   cityMap: [CityMap, CityMapServer, "#chart-citymap"],
   regionMap: [RegionMap, RegionMapServer, "#chart-regions"],
   alpha: [Alpha, AlphaServer, "#place-alpha"],

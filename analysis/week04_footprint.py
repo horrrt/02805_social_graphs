@@ -101,6 +101,7 @@ import week04_jobs as jobs
 import week04_where as where
 from week04_schemas import check
 from week04_staffing import check_rewire, louvain, resolver
+import budget
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = Path(__file__).with_suffix(".json")
@@ -114,7 +115,7 @@ NULLS_JOBS = 20     # nulls for the full job network and its two named drops (pr
 NULLS_CONTROL = 10  # nulls per matched-control draw (metros and jobs alike)
 DRAWS = 50          # volume-matched control draws per named drop
 TOP10 = 10          # employers dropped for variant c
-WORKERS = 8         # forked worker processes (machine has 10 cores)
+WORKERS = budget.cores()  # forked worker processes: CPU_SHARE of the cores, 80% by default
 
 
 def seed_for(part, variant_id, draw_idx, purpose, i=0):

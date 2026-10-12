@@ -55,6 +55,7 @@ class Community(Model):
     label: str
     colour: str
     metros: int = Field(ge=1)
+    slot: int = Field(ge=0, le=5)  # colour: 2 (slate) for the group with the most metros
 
 
 class Backbone(Model):
@@ -81,7 +82,8 @@ class NullModel(Model):
     Q_null_std: float = Count
     z: float
     seeds: int = Field(ge=1)
-    modal_runs: int = Field(ge=1)
+    shown_runs: int = Field(ge=1)
+    most_found_runs: int = Field(ge=1)
     partitions_found: int = Field(ge=1)
     nmi_seeds: float = Share
     nmi_seeds_min: float = Share
@@ -121,19 +123,20 @@ class Meta(Model):
     script: str
 
 
-class AltGroup(Model):
+class ViewGroup(Model):
     id: int = Count
     label: str
     metros: int = Field(ge=1)
-    colour: int = Count  # the shown community whose colour it takes
+    slot: int = Field(ge=-2, le=5)  # colour: the shown group id it matches, a further slot; -1 a metro alone, -2 past the last colour
 
 
-class Alternative(Model):
-    """A partition Louvain finds less often than the one shown."""
-    groups: int = Field(ge=1)
-    runs: int = Field(ge=1)
+class View(Model):
+    """The metros split into `groups` groups, for the map's group-count control."""
+    groups: int = Field(ge=2)
     Q: float
-    communities: list[AltGroup] = Field(min_length=1)
+    found: int = Count
+    shown: bool
+    communities: list[ViewGroup] = Field(min_length=2)
     member: dict[str, int]
 
 
@@ -141,7 +144,7 @@ class Place(Model):
     meta: Meta
     cities: list[City] = Field(min_length=2)
     communities: list[Community] = Field(min_length=1)
-    alternatives: list[Alternative] = []
+    views: list[View] = Field(min_length=1)
     census_colours: dict[str, str]
     backbone: Backbone
     null_model: NullModel

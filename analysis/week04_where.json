@@ -77,21 +77,22 @@
   ]
  },
  "null_model": {
-  "Q": 0.049,
+  "Q": 0.057,
   "Q_runs_mean": 0.052,
   "partitions_found": 2,
-  "modal_runs": 65,
+  "shown_runs": 35,
+  "most_found_runs": 65,
   "Q_null_mean": 0.013,
   "Q_null_std": 0.0012,
-  "z": 29.48,
+  "z": 36.0,
   "nmi_seeds": 1.0,
   "nmi_seeds_min": 0.642,
-  "nmi_census_region": 0.137,
-  "p_region": 0.0989,
-  "nmi_census_division": 0.214,
-  "p_division": 0.1149,
+  "nmi_census_region": 0.04,
+  "p_region": 0.4635,
+  "nmi_census_division": 0.108,
+  "p_division": 0.3187,
   "seeds": 100,
-  "communities": 3,
+  "communities": 2,
   "other_year": {
    "year": 2024,
    "metros": 40,
@@ -100,7 +101,7 @@
    "communities": 2,
    "modal_runs": 100,
    "partitions_found": 1,
-   "nmi_modal_partitions": 0.642,
+   "nmi_modal_partitions": 1.0,
    "nmi_across_years_median": 0.642,
    "nmi_within_fy2025_median": 1.0,
    "nmi_within_other_year_median": 1.0,
@@ -121,58 +122,435 @@
    "id": 0,
    "label": "New York–Dallas",
    "colour": "#f2820c",
-   "metros": 7,
+   "metros": 12,
    "regions": {
+    "West": 5,
     "South": 4,
     "Northeast": 2,
     "Midwest": 1
-   }
+   },
+   "slot": 0
   },
   {
    "id": 1,
-   "label": "San Jose–San Francisco",
+   "label": "Houston–Philadelphia",
    "colour": "#1f8fd6",
-   "metros": 8,
+   "metros": 28,
    "regions": {
-    "West": 5,
-    "South": 2,
-    "Northeast": 1
-   }
-  },
-  {
-   "id": 2,
-   "label": "Detroit–Phoenix",
-   "colour": "#6b4fbb",
-   "metros": 25,
-   "regions": {
-    "South": 11,
+    "South": 13,
     "Midwest": 6,
     "West": 5,
-    "Northeast": 3
-   }
+    "Northeast": 4
+   },
+   "slot": 2
   }
  ],
- "alternatives": [
+ "views": [
   {
    "groups": 2,
-   "runs": 35,
    "Q": 0.057,
+   "found": 116,
+   "shown": true,
    "communities": [
     {
      "id": 0,
      "metros": 12,
-     "colour": 1,
+     "slot": 0,
      "label": "New York, Dallas and 10 more"
     },
     {
      "id": 1,
      "metros": 28,
-     "colour": 2,
+     "slot": 2,
      "label": "Houston, Philadelphia and 26 more"
+    }
+   ]
+  },
+  {
+   "groups": 3,
+   "Q": 0.049,
+   "found": 414,
+   "shown": false,
+   "communities": [
+    {
+     "id": 0,
+     "metros": 7,
+     "slot": 1,
+     "label": "New York, Dallas and 5 more"
+    },
+    {
+     "id": 1,
+     "metros": 8,
+     "slot": 0,
+     "label": "San Jose, San Francisco and 6 more"
+    },
+    {
+     "id": 2,
+     "metros": 25,
+     "slot": 2,
+     "label": "Detroit, Phoenix and 23 more"
+    }
+   ]
+  },
+  {
+   "groups": 4,
+   "Q": 0.047,
+   "found": 44,
+   "shown": false,
+   "communities": [
+    {
+     "id": 0,
+     "metros": 8,
+     "slot": 0,
+     "label": "San Jose, San Francisco and 6 more"
+    },
+    {
+     "id": 1,
+     "metros": 6,
+     "slot": 1,
+     "label": "New York, Dallas and 4 more"
+    },
+    {
+     "id": 2,
+     "metros": 25,
+     "slot": 2,
+     "label": "Detroit, Phoenix and 23 more"
+    },
+    {
+     "id": 3,
+     "metros": 1,
+     "slot": -1,
+     "label": "Houston"
+    }
+   ]
+  },
+  {
+   "groups": 5,
+   "Q": 0.042,
+   "found": 15,
+   "shown": false,
+   "communities": [
+    {
+     "id": 0,
+     "metros": 7,
+     "slot": 0,
+     "label": "New York, Dallas and 5 more"
+    },
+    {
+     "id": 1,
+     "metros": 6,
+     "slot": 1,
+     "label": "San Jose, San Francisco and 4 more"
+    },
+    {
+     "id": 2,
+     "metros": 23,
+     "slot": 2,
+     "label": "Detroit, Phoenix and 21 more"
+    },
+    {
+     "id": 3,
+     "metros": 2,
+     "slot": 3,
+     "label": "Boston and Washington"
+    },
+    {
+     "id": 4,
+     "metros": 2,
+     "slot": 4,
+     "label": "Raleigh and Durham"
+    }
+   ]
+  },
+  {
+   "groups": 6,
+   "Q": 0.041,
+   "found": 113,
+   "shown": false,
+   "communities": [
+    {
+     "id": 0,
+     "metros": 6,
+     "slot": 0,
+     "label": "New York, Dallas and 4 more"
+    },
+    {
+     "id": 1,
+     "metros": 6,
+     "slot": 1,
+     "label": "San Jose, San Francisco and 4 more"
+    },
+    {
+     "id": 2,
+     "metros": 23,
+     "slot": 2,
+     "label": "Detroit, Phoenix and 21 more"
+    },
+    {
+     "id": 3,
+     "metros": 2,
+     "slot": 3,
+     "label": "Boston and Washington"
+    },
+    {
+     "id": 4,
+     "metros": 1,
+     "slot": -1,
+     "label": "Houston"
+    },
+    {
+     "id": 5,
+     "metros": 2,
+     "slot": 4,
+     "label": "Raleigh and Durham"
+    }
+   ]
+  },
+  {
+   "groups": 7,
+   "Q": 0.037,
+   "found": 100,
+   "shown": false,
+   "communities": [
+    {
+     "id": 0,
+     "metros": 6,
+     "slot": 0,
+     "label": "New York, Dallas and 4 more"
+    },
+    {
+     "id": 1,
+     "metros": 6,
+     "slot": 1,
+     "label": "San Jose, San Francisco and 4 more"
+    },
+    {
+     "id": 2,
+     "metros": 20,
+     "slot": 2,
+     "label": "Detroit, Miami and 18 more"
+    },
+    {
+     "id": 3,
+     "metros": 2,
+     "slot": 3,
+     "label": "Boston and Washington"
+    },
+    {
+     "id": 4,
+     "metros": 3,
+     "slot": 4,
+     "label": "Phoenix, Portland and 1 more"
+    },
+    {
+     "id": 5,
+     "metros": 1,
+     "slot": -1,
+     "label": "Houston"
+    },
+    {
+     "id": 6,
+     "metros": 2,
+     "slot": 5,
+     "label": "Raleigh and Durham"
+    }
+   ]
+  },
+  {
+   "groups": 8,
+   "Q": 0.031,
+   "found": 15,
+   "shown": false,
+   "communities": [
+    {
+     "id": 0,
+     "metros": 4,
+     "slot": 0,
+     "label": "New York, Dallas and 2 more"
+    },
+    {
+     "id": 1,
+     "metros": 5,
+     "slot": 1,
+     "label": "San Jose, San Francisco and 3 more"
+    },
+    {
+     "id": 2,
+     "metros": 20,
+     "slot": 2,
+     "label": "Detroit, Miami and 18 more"
+    },
+    {
+     "id": 3,
+     "metros": 3,
+     "slot": 3,
+     "label": "Houston, Philadelphia and 1 more"
+    },
+    {
+     "id": 4,
+     "metros": 2,
+     "slot": 4,
+     "label": "Boston and Los Angeles"
+    },
+    {
+     "id": 5,
+     "metros": 1,
+     "slot": -1,
+     "label": "Washington"
+    },
+    {
+     "id": 6,
+     "metros": 3,
+     "slot": 5,
+     "label": "Phoenix, Portland and 1 more"
+    },
+    {
+     "id": 7,
+     "metros": 2,
+     "slot": -2,
+     "label": "Raleigh and Durham"
+    }
+   ]
+  },
+  {
+   "groups": 9,
+   "Q": 0.03,
+   "found": 63,
+   "shown": false,
+   "communities": [
+    {
+     "id": 0,
+     "metros": 4,
+     "slot": 0,
+     "label": "New York, Dallas and 2 more"
+    },
+    {
+     "id": 1,
+     "metros": 5,
+     "slot": 1,
+     "label": "San Jose, San Francisco and 3 more"
+    },
+    {
+     "id": 2,
+     "metros": 20,
+     "slot": 2,
+     "label": "Detroit, Miami and 18 more"
+    },
+    {
+     "id": 3,
+     "metros": 2,
+     "slot": 3,
+     "label": "Boston and Los Angeles"
+    },
+    {
+     "id": 4,
+     "metros": 2,
+     "slot": 4,
+     "label": "Philadelphia and Charlotte"
+    },
+    {
+     "id": 5,
+     "metros": 1,
+     "slot": -1,
+     "label": "Washington"
+    },
+    {
+     "id": 6,
+     "metros": 3,
+     "slot": 5,
+     "label": "Phoenix, Portland and 1 more"
+    },
+    {
+     "id": 7,
+     "metros": 1,
+     "slot": -1,
+     "label": "Houston"
+    },
+    {
+     "id": 8,
+     "metros": 2,
+     "slot": -2,
+     "label": "Raleigh and Durham"
+    }
+   ]
+  },
+  {
+   "groups": 10,
+   "Q": 0.028,
+   "found": 112,
+   "shown": false,
+   "communities": [
+    {
+     "id": 0,
+     "metros": 4,
+     "slot": 0,
+     "label": "New York, Dallas and 2 more"
+    },
+    {
+     "id": 1,
+     "metros": 5,
+     "slot": 1,
+     "label": "San Jose, San Francisco and 3 more"
+    },
+    {
+     "id": 2,
+     "metros": 19,
+     "slot": 2,
+     "label": "Detroit, Miami and 17 more"
+    },
+    {
+     "id": 3,
+     "metros": 2,
+     "slot": 3,
+     "label": "Boston and Los Angeles"
+    },
+    {
+     "id": 4,
+     "metros": 1,
+     "slot": -1,
+     "label": "Washington"
+    },
+    {
+     "id": 5,
+     "metros": 3,
+     "slot": 4,
+     "label": "Phoenix, Portland and 1 more"
+    },
+    {
+     "id": 6,
+     "metros": 2,
+     "slot": 5,
+     "label": "Charlotte and Hartford"
+    },
+    {
+     "id": 7,
+     "metros": 1,
+     "slot": -1,
+     "label": "Houston"
+    },
+    {
+     "id": 8,
+     "metros": 2,
+     "slot": -2,
+     "label": "Raleigh and Durham"
+    },
+    {
+     "id": 9,
+     "metros": 1,
+     "slot": -1,
+     "label": "Philadelphia"
     }
    ]
   }
  ],
+ "view_sweep": {
+  "resolution": [
+   0.98,
+   1.35
+  ],
+  "step": 0.01,
+  "seeds": 50
+ },
  "longhaul": {
   "backbone_links": 180,
   "threshold_km": 1500,

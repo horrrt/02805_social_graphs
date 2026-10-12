@@ -31,6 +31,7 @@ import subprocess
 import sys
 import time
 from pathlib import Path
+import budget
 
 ROOT = Path(__file__).resolve().parents[1]
 LOGS = ROOT / "build" / "logs"
@@ -81,7 +82,9 @@ AFTER = {
 }
 # Checks rerun whenever a script they read reruns, so their JSON never trails it.
 CHECKS = ("course_reference",)
-MAX_PARALLEL = os.cpu_count() or 4
+# At most budget.cores() busy cores (CPU_SHARE, default 80%): a plain script
+# counts one, a script with its own worker pool counts the whole budget.
+POOLED = {"week03_tails"}
 
 
 def span(seconds):
@@ -90,11 +93,15 @@ def span(seconds):
 
 
 def run(commands, wanted):
-    """Run wanted scripts in dependency order, as many at once as there are cores."""
+    """Run wanted scripts in dependency order, as many at once as the CPU budget allows."""
     started, running, waiting, done, failed = time.time(), {}, list(wanted), set(), []
     while waiting or running:
         ready = [w for w in waiting if not any(d in waiting or d in running for d in AFTER.get(w, ()))]
-        for name in ready[:max(0, MAX_PARALLEL - len(running))]:
+        for name in ready:
+            if not budget.fits(name, running, POOLED):
+                if name in POOLED:
+                    break  # hold new starts until the pooled script fits, so it is not starved
+                continue
             waiting.remove(name)
             log = open(LOGS / f"{name}.log", "w")
             running[name] = (subprocess.Popen([sys.executable, str(ROOT / commands[name])], stdout=log,
@@ -124,7 +131,8 @@ def main():
     wanted += [c for c in CHECKS if c not in wanted and set(AFTER[c]) & set(wanted)]
     LOGS.mkdir(parents=True, exist_ok=True)
     started = time.time()
-    print(f"running {len(wanted)} scripts, up to {MAX_PARALLEL} at once; logs in build/logs/", flush=True)
+    budget.lower_priority()
+    print(f"running {len(wanted)} scripts, at most {budget.cores()} cores busy; logs in build/logs/", flush=True)
     failed = run(SCRIPTS, wanted)
     print(f"all done in {span(time.time() - started)}" + (f"; failed: {failed}" if failed else ""))
     git = subprocess.run(["git", "status", "--porcelain", "--", "analysis", "public"], cwd=ROOT,

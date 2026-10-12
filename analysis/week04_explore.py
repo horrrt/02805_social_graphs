@@ -45,7 +45,7 @@ Method
   the original 40 metros and calling networkx.community.modularity on the
   original full graph; the two must agree within 1e-9, and that check runs
   on every move. Seeds 0..199 are tried; the first whose final partition
-  equals the page's 3 communities (frozenset-of-frozensets equality, not a
+  equals the page's partition (frozenset-of-frozensets equality, not a
   float NMI check) is kept and gets the full move-by-move recording. If none
   matches, the highest-Q seed is kept instead and the report says so.
 - k-clique communities: networkx.community.k_clique_communities on the
@@ -59,8 +59,8 @@ Checks
   employer (printed; expected 780 = C(40, 2)).
 - The rebuilt full network's disparity-filter backbone at alpha 0.2 matches
   week04_place.json's backbone edges exactly (same pairs and weights).
-- Q of the page's 3-community partition on the full weighted network, rounded
-  to 3 decimals, equals week04_place.json's null_model.Q (0.049).
+- Q of the page's partition on the full weighted network, rounded to 3
+  decimals, equals week04_place.json's null_model.Q.
 - The backbone graph from the JSON has 180 links and 40 nodes.
 - Every recorded Louvain move's incremental gain matches a fresh
   Q_after - Q_before to within 1e-9 (asserted for every move of the kept
@@ -325,7 +325,7 @@ def main():
           f"{gn['best']['components']} components, Q = {gn['best']['Q']}")
 
     # Louvain: search seeds cheaply (no recording) for one matching the page's
-    # 3 communities; fall back to the highest-Q seed.
+    # partition; fall back to the highest-Q seed.
     m_total = g_full.size(weight="weight")
     page_frozen = frozenset(frozenset(c) for c in page_communities)
     best_seed, best_q, chosen_seed, chosen_reason = None, -1, None, None
@@ -336,7 +336,7 @@ def main():
             parts_by_label.setdefault(c, set()).add(node)
         frozen = frozenset(frozenset(v) for v in parts_by_label.values())
         if frozen == page_frozen:
-            chosen_seed, chosen_reason = s, "matches the page's 3 communities exactly"
+            chosen_seed, chosen_reason = s, "matches the page's partition exactly"
             break
         if q > best_q:
             best_q, best_seed = q, s

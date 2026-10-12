@@ -52,7 +52,7 @@
    "census": "West",
    "division": "Pacific",
    "metro_title": "San Jose-Sunnyvale-Santa Clara, CA Metro Area",
-   "community": 1
+   "community": 0
   },
   {
    "id": "41860",
@@ -68,7 +68,7 @@
    "census": "West",
    "division": "Pacific",
    "metro_title": "San Francisco-Oakland-Fremont, CA Metro Area",
-   "community": 1
+   "community": 0
   },
   {
    "id": "42660",
@@ -84,7 +84,7 @@
    "census": "West",
    "division": "Pacific",
    "metro_title": "Seattle-Tacoma-Bellevue, WA Metro Area",
-   "community": 1
+   "community": 0
   },
   {
    "id": "12060",
@@ -132,7 +132,7 @@
    "census": "South",
    "division": "West South Central",
    "metro_title": "Austin-Round Rock-San Marcos, TX Metro Area",
-   "community": 1
+   "community": 0
   },
   {
    "id": "14460",
@@ -148,7 +148,7 @@
    "census": "Northeast",
    "division": "New England",
    "metro_title": "Boston-Cambridge-Newton, MA-NH Metro Area",
-   "community": 1
+   "community": 0
   },
   {
    "id": "47900",
@@ -164,7 +164,7 @@
    "census": "South",
    "division": "South Atlantic",
    "metro_title": "Washington-Arlington-Alexandria, DC-VA-MD-WV Metro Area",
-   "community": 1
+   "community": 0
   },
   {
    "id": "31080",
@@ -180,7 +180,7 @@
    "census": "West",
    "division": "Pacific",
    "metro_title": "Los Angeles-Long Beach-Anaheim, CA Metro Area",
-   "community": 1
+   "community": 0
   },
   {
    "id": "26420",
@@ -196,7 +196,7 @@
    "census": "South",
    "division": "West South Central",
    "metro_title": "Houston-Pasadena-The Woodlands, TX Metro Area",
-   "community": 0
+   "community": 1
   },
   {
    "id": "37980",
@@ -212,7 +212,7 @@
    "census": "Northeast",
    "division": "Middle Atlantic",
    "metro_title": "Philadelphia-Camden-Wilmington, PA-NJ-DE-MD Metro Area",
-   "community": 0
+   "community": 1
   },
   {
    "id": "19820",
@@ -228,7 +228,7 @@
    "census": "Midwest",
    "division": "East North Central",
    "metro_title": "Detroit-Warren-Dearborn, MI Metro Area",
-   "community": 2
+   "community": 1
   },
   {
    "id": "16740",
@@ -244,7 +244,7 @@
    "census": "South",
    "division": "South Atlantic",
    "metro_title": "Charlotte-Concord-Gastonia, NC-SC Metro Area",
-   "community": 0
+   "community": 1
   },
   {
    "id": "38060",
@@ -260,7 +260,7 @@
    "census": "West",
    "division": "Mountain",
    "metro_title": "Phoenix-Mesa-Chandler, AZ Metro Area",
-   "community": 2
+   "community": 1
   },
   {
    "id": "39580",
@@ -276,7 +276,7 @@
    "census": "South",
    "division": "South Atlantic",
    "metro_title": "Raleigh-Cary, NC Metro Area",
-   "community": 2
+   "community": 1
   },
   {
    "id": "41740",
@@ -292,7 +292,7 @@
    "census": "West",
    "division": "Pacific",
    "metro_title": "San Diego-Chula Vista-Carlsbad, CA Metro Area",
-   "community": 1
+   "community": 0
   },
   {
    "id": "33100",
@@ -308,7 +308,7 @@
    "census": "South",
    "division": "South Atlantic",
    "metro_title": "Miami-Fort Lauderdale-West Palm Beach, FL Metro Area",
-   "community": 2
+   "community": 1
   },
   {
    "id": "33460",
@@ -324,7 +324,7 @@
    "census": "Midwest",
    "division": "West North Central",
    "metro_title": "Minneapolis-St. Paul-Bloomington, MN-WI Metro Area",
-   "community": 2
+   "community": 1
   },
   {
    "id": "45300",
@@ -340,7 +340,7 @@
    "census": "South",
    "division": "South Atlantic",
    "metro_title": "Tampa-St. Petersburg-Clearwater, FL Metro Area",
-   "community": 2
+   "community": 1
   },
   {
    "id": "18140",
@@ -356,7 +356,7 @@
    "census": "Midwest",
    "division": "East North Central",
    "metro_title": "Columbus, OH Metro Area",
-   "community": 2
+   "community": 1
   },
   {
    "id": "41180",
@@ -372,7 +372,7 @@
    "census": "Midwest",
    "division": "West North Central",
    "metro_title": "St. Louis, MO-IL Metro Area",
-   "community": 2
+   "community": 1
   },
   {
    "id": "19740",
@@ -388,7 +388,7 @@
    "census": "West",
    "division": "Mountain",
    "metro_title": "Denver-Aurora-Centennial, CO Metro Area",
-   "community": 2
+   "community": 1
   },
   {
    "id": "38900",
@@ -404,7 +404,7 @@
    "census": "West",
    "division": "Pacific",
    "metro_title": "Portland-Vancouver-Hillsboro, OR-WA Metro Area",
-   "community": 2
+   "community": 1
   },
   {
    "id": "45940",
@@ -420,7 +420,7 @@
    "census": "Northeast",
    "division": "Middle Atlantic",
    "metro_title": "Trenton-Princeton, NJ Metro Area",
-   "community": 2
+   "community": 1
   },
   {
    "id": "38300",
@@ -436,7 +436,7 @@
    "census": "Northeast",
    "division": "Middle Atlantic",
    "metro_title": "Pittsburgh, PA Metro Area",
-   "community": 2
+   "community": 1
   },
   {
    "id": "22220",
@@ -452,7 +452,7 @@
    "census": "South",
    "division": "West South Central",
    "metro_title": "Fayetteville-Springdale-Rogers, AR Metro Area",
-   "community": 2
+   "community": 1
   },
   {
    "id": "20500",
@@ -468,7 +468,7 @@
    "census": "South",
    "division": "South Atlantic",
    "metro_title": "Durham-Chapel Hill, NC Metro Area",
-   "community": 2
+   "community": 1
   },
   {
    "id": "17140",
@@ -484,7 +484,7 @@
    "census": "Midwest",
    "division": "East North Central",
    "metro_title": "Cincinnati, OH-KY-IN Metro Area",
-   "community": 2
+   "community": 1
   },
   {
    "id": "34980",
@@ -500,7 +500,7 @@
    "census": "South",
    "division": "East South Central",
    "metro_title": "Nashville-Davidson--Murfreesboro--Franklin, TN Metro Area",
-   "community": 2
+   "community": 1
   },
   {
    "id": "25540",
@@ -516,7 +516,7 @@
    "census": "Northeast",
    "division": "New England",
    "metro_title": "Hartford-West Hartford-East Hartford, CT Metro Area",
-   "community": 2
+   "community": 1
   },
   {
    "id": "12580",
@@ -532,7 +532,7 @@
    "census": "South",
    "division": "South Atlantic",
    "metro_title": "Baltimore-Columbia-Towson, MD Metro Area",
-   "community": 2
+   "community": 1
   },
   {
    "id": "36740",
@@ -548,7 +548,7 @@
    "census": "South",
    "division": "South Atlantic",
    "metro_title": "Orlando-Kissimmee-Sanford, FL Metro Area",
-   "community": 2
+   "community": 1
   },
   {
    "id": "26900",
@@ -564,7 +564,7 @@
    "census": "Midwest",
    "division": "East North Central",
    "metro_title": "Indianapolis-Carmel-Greenwood, IN Metro Area",
-   "community": 2
+   "community": 1
   },
   {
    "id": "41700",
@@ -580,7 +580,7 @@
    "census": "South",
    "division": "West South Central",
    "metro_title": "San Antonio-New Braunfels, TX Metro Area",
-   "community": 2
+   "community": 1
   },
   {
    "id": "40900",
@@ -596,7 +596,7 @@
    "census": "West",
    "division": "Pacific",
    "metro_title": "Sacramento-Roseville-Folsom, CA Metro Area",
-   "community": 2
+   "community": 1
   },
   {
    "id": "40060",
@@ -612,7 +612,7 @@
    "census": "South",
    "division": "South Atlantic",
    "metro_title": "Richmond, VA Metro Area",
-   "community": 2
+   "community": 1
   },
   {
    "id": "41620",
@@ -628,7 +628,7 @@
    "census": "West",
    "division": "Mountain",
    "metro_title": "Salt Lake City-Murray, UT Metro Area",
-   "community": 2
+   "community": 1
   },
   {
    "id": "32820",
@@ -644,7 +644,7 @@
    "census": "South",
    "division": "East South Central",
    "metro_title": "Memphis, TN-MS-AR Metro Area",
-   "community": 2
+   "community": 1
   }
  ],
  "communities": [
@@ -652,97 +652,802 @@
    "id": 0,
    "label": "New York–Dallas",
    "colour": "#f2820c",
-   "metros": 7,
+   "metros": 12,
    "regions": {
+    "West": 5,
     "South": 4,
     "Northeast": 2,
     "Midwest": 1
-   }
+   },
+   "slot": 0
   },
   {
    "id": 1,
-   "label": "San Jose–San Francisco",
+   "label": "Houston–Philadelphia",
    "colour": "#1f8fd6",
-   "metros": 8,
+   "metros": 28,
    "regions": {
-    "West": 5,
-    "South": 2,
-    "Northeast": 1
-   }
-  },
-  {
-   "id": 2,
-   "label": "Detroit–Phoenix",
-   "colour": "#6b4fbb",
-   "metros": 25,
-   "regions": {
-    "South": 11,
+    "South": 13,
     "Midwest": 6,
     "West": 5,
-    "Northeast": 3
-   }
+    "Northeast": 4
+   },
+   "slot": 2
   }
  ],
- "alternatives": [
+ "views": [
   {
    "groups": 2,
-   "runs": 35,
    "Q": 0.057,
+   "found": 116,
+   "shown": true,
    "communities": [
     {
      "id": 0,
      "metros": 12,
-     "colour": 1,
+     "slot": 0,
      "label": "New York, Dallas and 10 more"
     },
     {
      "id": 1,
      "metros": 28,
-     "colour": 2,
+     "slot": 2,
      "label": "Houston, Philadelphia and 26 more"
     }
    ],
    "member": {
-    "35620": 0,
-    "14460": 0,
-    "31080": 0,
-    "12060": 0,
-    "41860": 0,
     "41940": 0,
-    "42660": 0,
     "16980": 0,
+    "31080": 0,
     "47900": 0,
+    "42660": 0,
+    "14460": 0,
+    "35620": 0,
     "12420": 0,
     "19100": 0,
+    "12060": 0,
     "41740": 0,
-    "41700": 1,
-    "25540": 1,
+    "41860": 0,
+    "36740": 1,
+    "39580": 1,
+    "40060": 1,
+    "16740": 1,
+    "38060": 1,
+    "26420": 1,
+    "22220": 1,
+    "40900": 1,
+    "45300": 1,
+    "20500": 1,
+    "33100": 1,
+    "41180": 1,
+    "19740": 1,
+    "26900": 1,
+    "18140": 1,
+    "17140": 1,
+    "34980": 1,
+    "37980": 1,
+    "12580": 1,
+    "19820": 1,
+    "41620": 1,
     "32820": 1,
     "33460": 1,
-    "36740": 1,
-    "20500": 1,
-    "17140": 1,
-    "12580": 1,
-    "41620": 1,
-    "19820": 1,
-    "38300": 1,
-    "38060": 1,
-    "37980": 1,
-    "26900": 1,
-    "22220": 1,
-    "18140": 1,
-    "39580": 1,
+    "41700": 1,
+    "25540": 1,
     "45940": 1,
-    "26420": 1,
-    "34980": 1,
+    "38300": 1,
+    "38900": 1
+   }
+  },
+  {
+   "groups": 3,
+   "Q": 0.049,
+   "found": 414,
+   "shown": false,
+   "communities": [
+    {
+     "id": 0,
+     "metros": 7,
+     "slot": 1,
+     "label": "New York, Dallas and 5 more"
+    },
+    {
+     "id": 1,
+     "metros": 8,
+     "slot": 0,
+     "label": "San Jose, San Francisco and 6 more"
+    },
+    {
+     "id": 2,
+     "metros": 25,
+     "slot": 2,
+     "label": "Detroit, Phoenix and 23 more"
+    }
+   ],
+   "member": {
+    "35620": 0,
+    "16980": 0,
+    "19100": 0,
+    "26420": 0,
+    "16740": 0,
+    "37980": 0,
+    "12060": 0,
+    "41940": 1,
+    "31080": 1,
+    "47900": 1,
+    "42660": 1,
+    "14460": 1,
+    "12420": 1,
+    "41740": 1,
+    "41860": 1,
+    "36740": 2,
+    "39580": 2,
+    "40060": 2,
+    "38060": 2,
+    "40900": 2,
+    "22220": 2,
+    "45300": 2,
+    "20500": 2,
+    "33100": 2,
+    "41180": 2,
+    "19740": 2,
+    "26900": 2,
+    "18140": 2,
+    "17140": 2,
+    "34980": 2,
+    "12580": 2,
+    "19820": 2,
+    "41620": 2,
+    "32820": 2,
+    "33460": 2,
+    "41700": 2,
+    "25540": 2,
+    "45940": 2,
+    "38300": 2,
+    "38900": 2
+   }
+  },
+  {
+   "groups": 4,
+   "Q": 0.047,
+   "found": 44,
+   "shown": false,
+   "communities": [
+    {
+     "id": 0,
+     "metros": 8,
+     "slot": 0,
+     "label": "San Jose, San Francisco and 6 more"
+    },
+    {
+     "id": 1,
+     "metros": 6,
+     "slot": 1,
+     "label": "New York, Dallas and 4 more"
+    },
+    {
+     "id": 2,
+     "metros": 25,
+     "slot": 2,
+     "label": "Detroit, Phoenix and 23 more"
+    },
+    {
+     "id": 3,
+     "metros": 1,
+     "slot": -1,
+     "label": "Houston"
+    }
+   ],
+   "member": {
+    "41940": 0,
+    "31080": 0,
+    "47900": 0,
+    "42660": 0,
+    "14460": 0,
+    "12420": 0,
+    "41740": 0,
+    "41860": 0,
+    "35620": 1,
+    "16980": 1,
+    "19100": 1,
     "16740": 1,
-    "41180": 1,
-    "38900": 1,
-    "40900": 1,
-    "19740": 1,
-    "45300": 1,
-    "33100": 1,
-    "40060": 1
+    "12060": 1,
+    "37980": 1,
+    "36740": 2,
+    "39580": 2,
+    "40060": 2,
+    "38060": 2,
+    "40900": 2,
+    "22220": 2,
+    "45300": 2,
+    "20500": 2,
+    "33100": 2,
+    "41180": 2,
+    "19740": 2,
+    "26900": 2,
+    "18140": 2,
+    "17140": 2,
+    "34980": 2,
+    "12580": 2,
+    "19820": 2,
+    "41620": 2,
+    "32820": 2,
+    "33460": 2,
+    "41700": 2,
+    "25540": 2,
+    "45940": 2,
+    "38300": 2,
+    "38900": 2,
+    "26420": 3
+   }
+  },
+  {
+   "groups": 5,
+   "Q": 0.042,
+   "found": 15,
+   "shown": false,
+   "communities": [
+    {
+     "id": 0,
+     "metros": 7,
+     "slot": 0,
+     "label": "New York, Dallas and 5 more"
+    },
+    {
+     "id": 1,
+     "metros": 6,
+     "slot": 1,
+     "label": "San Jose, San Francisco and 4 more"
+    },
+    {
+     "id": 2,
+     "metros": 23,
+     "slot": 2,
+     "label": "Detroit, Phoenix and 21 more"
+    },
+    {
+     "id": 3,
+     "metros": 2,
+     "slot": 3,
+     "label": "Boston and Washington"
+    },
+    {
+     "id": 4,
+     "metros": 2,
+     "slot": 4,
+     "label": "Raleigh and Durham"
+    }
+   ],
+   "member": {
+    "35620": 0,
+    "16980": 0,
+    "19100": 0,
+    "26420": 0,
+    "16740": 0,
+    "37980": 0,
+    "12060": 0,
+    "12420": 1,
+    "41940": 1,
+    "31080": 1,
+    "41740": 1,
+    "41860": 1,
+    "42660": 1,
+    "36740": 2,
+    "40060": 2,
+    "38060": 2,
+    "40900": 2,
+    "22220": 2,
+    "45300": 2,
+    "33100": 2,
+    "41180": 2,
+    "19740": 2,
+    "26900": 2,
+    "18140": 2,
+    "17140": 2,
+    "34980": 2,
+    "12580": 2,
+    "19820": 2,
+    "41620": 2,
+    "32820": 2,
+    "33460": 2,
+    "41700": 2,
+    "25540": 2,
+    "45940": 2,
+    "38300": 2,
+    "38900": 2,
+    "47900": 3,
+    "14460": 3,
+    "39580": 4,
+    "20500": 4
+   }
+  },
+  {
+   "groups": 6,
+   "Q": 0.041,
+   "found": 113,
+   "shown": false,
+   "communities": [
+    {
+     "id": 0,
+     "metros": 6,
+     "slot": 0,
+     "label": "New York, Dallas and 4 more"
+    },
+    {
+     "id": 1,
+     "metros": 6,
+     "slot": 1,
+     "label": "San Jose, San Francisco and 4 more"
+    },
+    {
+     "id": 2,
+     "metros": 23,
+     "slot": 2,
+     "label": "Detroit, Phoenix and 21 more"
+    },
+    {
+     "id": 3,
+     "metros": 2,
+     "slot": 3,
+     "label": "Boston and Washington"
+    },
+    {
+     "id": 4,
+     "metros": 1,
+     "slot": -1,
+     "label": "Houston"
+    },
+    {
+     "id": 5,
+     "metros": 2,
+     "slot": 4,
+     "label": "Raleigh and Durham"
+    }
+   ],
+   "member": {
+    "35620": 0,
+    "16980": 0,
+    "19100": 0,
+    "16740": 0,
+    "12060": 0,
+    "37980": 0,
+    "12420": 1,
+    "41940": 1,
+    "31080": 1,
+    "41740": 1,
+    "41860": 1,
+    "42660": 1,
+    "36740": 2,
+    "40060": 2,
+    "38060": 2,
+    "40900": 2,
+    "22220": 2,
+    "45300": 2,
+    "33100": 2,
+    "41180": 2,
+    "19740": 2,
+    "26900": 2,
+    "18140": 2,
+    "17140": 2,
+    "34980": 2,
+    "12580": 2,
+    "19820": 2,
+    "41620": 2,
+    "32820": 2,
+    "33460": 2,
+    "41700": 2,
+    "25540": 2,
+    "45940": 2,
+    "38300": 2,
+    "38900": 2,
+    "47900": 3,
+    "14460": 3,
+    "26420": 4,
+    "39580": 5,
+    "20500": 5
+   }
+  },
+  {
+   "groups": 7,
+   "Q": 0.037,
+   "found": 100,
+   "shown": false,
+   "communities": [
+    {
+     "id": 0,
+     "metros": 6,
+     "slot": 0,
+     "label": "New York, Dallas and 4 more"
+    },
+    {
+     "id": 1,
+     "metros": 6,
+     "slot": 1,
+     "label": "San Jose, San Francisco and 4 more"
+    },
+    {
+     "id": 2,
+     "metros": 20,
+     "slot": 2,
+     "label": "Detroit, Miami and 18 more"
+    },
+    {
+     "id": 3,
+     "metros": 2,
+     "slot": 3,
+     "label": "Boston and Washington"
+    },
+    {
+     "id": 4,
+     "metros": 3,
+     "slot": 4,
+     "label": "Phoenix, Portland and 1 more"
+    },
+    {
+     "id": 5,
+     "metros": 1,
+     "slot": -1,
+     "label": "Houston"
+    },
+    {
+     "id": 6,
+     "metros": 2,
+     "slot": 5,
+     "label": "Raleigh and Durham"
+    }
+   ],
+   "member": {
+    "35620": 0,
+    "16980": 0,
+    "19100": 0,
+    "16740": 0,
+    "12060": 0,
+    "37980": 0,
+    "12420": 1,
+    "41940": 1,
+    "31080": 1,
+    "41740": 1,
+    "41860": 1,
+    "42660": 1,
+    "36740": 2,
+    "40060": 2,
+    "22220": 2,
+    "45300": 2,
+    "33100": 2,
+    "41180": 2,
+    "19740": 2,
+    "26900": 2,
+    "18140": 2,
+    "17140": 2,
+    "34980": 2,
+    "12580": 2,
+    "19820": 2,
+    "41620": 2,
+    "32820": 2,
+    "33460": 2,
+    "41700": 2,
+    "25540": 2,
+    "45940": 2,
+    "38300": 2,
+    "47900": 3,
+    "14460": 3,
+    "38900": 4,
+    "40900": 4,
+    "38060": 4,
+    "26420": 5,
+    "39580": 6,
+    "20500": 6
+   }
+  },
+  {
+   "groups": 8,
+   "Q": 0.031,
+   "found": 15,
+   "shown": false,
+   "communities": [
+    {
+     "id": 0,
+     "metros": 4,
+     "slot": 0,
+     "label": "New York, Dallas and 2 more"
+    },
+    {
+     "id": 1,
+     "metros": 5,
+     "slot": 1,
+     "label": "San Jose, San Francisco and 3 more"
+    },
+    {
+     "id": 2,
+     "metros": 20,
+     "slot": 2,
+     "label": "Detroit, Miami and 18 more"
+    },
+    {
+     "id": 3,
+     "metros": 3,
+     "slot": 3,
+     "label": "Houston, Philadelphia and 1 more"
+    },
+    {
+     "id": 4,
+     "metros": 2,
+     "slot": 4,
+     "label": "Boston and Los Angeles"
+    },
+    {
+     "id": 5,
+     "metros": 1,
+     "slot": -1,
+     "label": "Washington"
+    },
+    {
+     "id": 6,
+     "metros": 3,
+     "slot": 5,
+     "label": "Phoenix, Portland and 1 more"
+    },
+    {
+     "id": 7,
+     "metros": 2,
+     "slot": -2,
+     "label": "Raleigh and Durham"
+    }
+   ],
+   "member": {
+    "35620": 0,
+    "16980": 0,
+    "19100": 0,
+    "12060": 0,
+    "12420": 1,
+    "41940": 1,
+    "41740": 1,
+    "41860": 1,
+    "42660": 1,
+    "36740": 2,
+    "40060": 2,
+    "22220": 2,
+    "45300": 2,
+    "33100": 2,
+    "41180": 2,
+    "19740": 2,
+    "26900": 2,
+    "18140": 2,
+    "17140": 2,
+    "34980": 2,
+    "12580": 2,
+    "19820": 2,
+    "41620": 2,
+    "32820": 2,
+    "33460": 2,
+    "41700": 2,
+    "25540": 2,
+    "45940": 2,
+    "38300": 2,
+    "16740": 3,
+    "26420": 3,
+    "37980": 3,
+    "31080": 4,
+    "14460": 4,
+    "47900": 5,
+    "38900": 6,
+    "40900": 6,
+    "38060": 6,
+    "39580": 7,
+    "20500": 7
+   }
+  },
+  {
+   "groups": 9,
+   "Q": 0.03,
+   "found": 63,
+   "shown": false,
+   "communities": [
+    {
+     "id": 0,
+     "metros": 4,
+     "slot": 0,
+     "label": "New York, Dallas and 2 more"
+    },
+    {
+     "id": 1,
+     "metros": 5,
+     "slot": 1,
+     "label": "San Jose, San Francisco and 3 more"
+    },
+    {
+     "id": 2,
+     "metros": 20,
+     "slot": 2,
+     "label": "Detroit, Miami and 18 more"
+    },
+    {
+     "id": 3,
+     "metros": 2,
+     "slot": 3,
+     "label": "Boston and Los Angeles"
+    },
+    {
+     "id": 4,
+     "metros": 2,
+     "slot": 4,
+     "label": "Philadelphia and Charlotte"
+    },
+    {
+     "id": 5,
+     "metros": 1,
+     "slot": -1,
+     "label": "Washington"
+    },
+    {
+     "id": 6,
+     "metros": 3,
+     "slot": 5,
+     "label": "Phoenix, Portland and 1 more"
+    },
+    {
+     "id": 7,
+     "metros": 1,
+     "slot": -1,
+     "label": "Houston"
+    },
+    {
+     "id": 8,
+     "metros": 2,
+     "slot": -2,
+     "label": "Raleigh and Durham"
+    }
+   ],
+   "member": {
+    "35620": 0,
+    "16980": 0,
+    "19100": 0,
+    "12060": 0,
+    "12420": 1,
+    "41940": 1,
+    "41740": 1,
+    "41860": 1,
+    "42660": 1,
+    "36740": 2,
+    "40060": 2,
+    "22220": 2,
+    "45300": 2,
+    "33100": 2,
+    "41180": 2,
+    "19740": 2,
+    "26900": 2,
+    "18140": 2,
+    "17140": 2,
+    "34980": 2,
+    "12580": 2,
+    "19820": 2,
+    "41620": 2,
+    "32820": 2,
+    "33460": 2,
+    "41700": 2,
+    "25540": 2,
+    "45940": 2,
+    "38300": 2,
+    "31080": 3,
+    "14460": 3,
+    "16740": 4,
+    "37980": 4,
+    "47900": 5,
+    "38900": 6,
+    "40900": 6,
+    "38060": 6,
+    "26420": 7,
+    "39580": 8,
+    "20500": 8
+   }
+  },
+  {
+   "groups": 10,
+   "Q": 0.028,
+   "found": 112,
+   "shown": false,
+   "communities": [
+    {
+     "id": 0,
+     "metros": 4,
+     "slot": 0,
+     "label": "New York, Dallas and 2 more"
+    },
+    {
+     "id": 1,
+     "metros": 5,
+     "slot": 1,
+     "label": "San Jose, San Francisco and 3 more"
+    },
+    {
+     "id": 2,
+     "metros": 19,
+     "slot": 2,
+     "label": "Detroit, Miami and 17 more"
+    },
+    {
+     "id": 3,
+     "metros": 2,
+     "slot": 3,
+     "label": "Boston and Los Angeles"
+    },
+    {
+     "id": 4,
+     "metros": 1,
+     "slot": -1,
+     "label": "Washington"
+    },
+    {
+     "id": 5,
+     "metros": 3,
+     "slot": 4,
+     "label": "Phoenix, Portland and 1 more"
+    },
+    {
+     "id": 6,
+     "metros": 2,
+     "slot": 5,
+     "label": "Charlotte and Hartford"
+    },
+    {
+     "id": 7,
+     "metros": 1,
+     "slot": -1,
+     "label": "Houston"
+    },
+    {
+     "id": 8,
+     "metros": 2,
+     "slot": -2,
+     "label": "Raleigh and Durham"
+    },
+    {
+     "id": 9,
+     "metros": 1,
+     "slot": -1,
+     "label": "Philadelphia"
+    }
+   ],
+   "member": {
+    "35620": 0,
+    "16980": 0,
+    "19100": 0,
+    "12060": 0,
+    "12420": 1,
+    "41940": 1,
+    "41740": 1,
+    "41860": 1,
+    "42660": 1,
+    "36740": 2,
+    "40060": 2,
+    "22220": 2,
+    "45300": 2,
+    "33100": 2,
+    "41180": 2,
+    "19740": 2,
+    "26900": 2,
+    "18140": 2,
+    "17140": 2,
+    "34980": 2,
+    "12580": 2,
+    "19820": 2,
+    "41620": 2,
+    "32820": 2,
+    "33460": 2,
+    "41700": 2,
+    "45940": 2,
+    "38300": 2,
+    "31080": 3,
+    "14460": 3,
+    "47900": 4,
+    "38900": 5,
+    "40900": 5,
+    "38060": 5,
+    "25540": 6,
+    "16740": 6,
+    "26420": 7,
+    "39580": 8,
+    "20500": 8,
+    "37980": 9
    }
   }
  ],
@@ -7754,21 +8459,22 @@
   }
  },
  "null_model": {
-  "Q": 0.049,
+  "Q": 0.057,
   "Q_runs_mean": 0.052,
   "partitions_found": 2,
-  "modal_runs": 65,
+  "shown_runs": 35,
+  "most_found_runs": 65,
   "Q_null_mean": 0.013,
   "Q_null_std": 0.0012,
-  "z": 29.48,
+  "z": 36.0,
   "nmi_seeds": 1.0,
   "nmi_seeds_min": 0.642,
-  "nmi_census_region": 0.137,
-  "p_region": 0.0989,
-  "nmi_census_division": 0.214,
-  "p_division": 0.1149,
+  "nmi_census_region": 0.04,
+  "p_region": 0.4635,
+  "nmi_census_division": 0.108,
+  "p_division": 0.3187,
   "seeds": 100,
-  "communities": 3,
+  "communities": 2,
   "other_year": {
    "year": 2024,
    "metros": 40,
@@ -7777,7 +8483,7 @@
    "communities": 2,
    "modal_runs": 100,
    "partitions_found": 1,
-   "nmi_modal_partitions": 0.642,
+   "nmi_modal_partitions": 1.0,
    "nmi_across_years_median": 0.642,
    "nmi_within_fy2025_median": 1.0,
    "nmi_within_other_year_median": 1.0,

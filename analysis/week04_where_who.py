@@ -60,9 +60,9 @@ Method, Q2
   week04_where.json's longhaul: 22 of 83 long links, 48 of 97 short links).
 
 Checks
-- The reproduced modal partition must have 3 communities and Q rounding to
-  0.049, and match analysis/week04_where.json's null_model exactly (Q,
-  modal_runs, partitions_found); the per-metro community must also match
+- The reproduced shown partition (where.shown_partition) must match
+  analysis/week04_where.json's null_model exactly (communities, Q,
+  shown_runs, partitions_found); the per-metro community must also match
   public/assets/data/week04_place.json's cities[].community. Any mismatch stops
   the script rather than silently reporting on a different partition.
 - Almost every metro has NAICS 54 (professional/technical/scientific
@@ -132,12 +132,13 @@ def rebuild_network():
 
 
 def modal_partition(g, top, filings):
-    """where.py's modal-partition recipe: 100 Louvain runs, the partition found
-    most often (ties broken by modularity), renumbered biggest-filings-first."""
+    """where.py's recipe for the partition the page shows: 100 Louvain runs, then
+    where.shown_partition() (highest modularity, ties by runs), renumbered
+    biggest-filings-first."""
     runs = [where.louvain(g, SEED + r)[0] for r in range(RUNS)]
     found = Counter(frozenset(frozenset(c) for c in part) for part in runs)
     q_of = {k: nx.community.modularity(g, [set(c) for c in k], weight="weight") for k in found}
-    modal = max(found, key=lambda k: (found[k], q_of[k]))
+    modal = where.shown_partition(found, q_of)
     best = [set(c) for c in sorted(modal, key=lambda c: (-len(c), min(c)))]
     member = {m: i for i, part in enumerate(best) for m in part}
     order = sorted(range(len(best)), key=lambda k: -sum(filings[m] for m in best[k]))
@@ -146,7 +147,7 @@ def modal_partition(g, top, filings):
     run_labels = [{m: i for i, part in enumerate(c) for m in part} for c in runs]
     return {
         "community_of": community_of, "q_modal": float(q_of[modal]),
-        "modal_runs": found[modal], "partitions_found": len(found),
+        "shown_runs": found[modal], "partitions_found": len(found),
         "communities": len(best), "run_labels": run_labels,
     }
 
@@ -158,19 +159,19 @@ def check_reproduction(recon):
     place = json.loads(PLACE_JSON.read_text())
     page_comm = {c["id"]: c["community"] for c in place["cities"]}
     problems = []
-    if recon["communities"] != 3:
-        problems.append(f"communities: got {recon['communities']}, expected 3")
-    if round(recon["q_modal"], 3) != 0.049:
-        problems.append(f"Q: got {round(recon['q_modal'], 3)}, expected 0.049")
-    if recon["modal_runs"] != published["modal_runs"]:
-        problems.append(f"modal_runs: got {recon['modal_runs']}, expected {published['modal_runs']}")
+    if recon["communities"] != published["communities"]:
+        problems.append(f"communities: got {recon['communities']}, expected {published['communities']}")
+    if round(recon["q_modal"], 3) != published["Q"]:
+        problems.append(f"Q: got {round(recon['q_modal'], 3)}, expected {published['Q']}")
+    if recon["shown_runs"] != published["shown_runs"]:
+        problems.append(f"shown_runs: got {recon['shown_runs']}, expected {published['shown_runs']}")
     if recon["partitions_found"] != published["partitions_found"]:
         problems.append(f"partitions_found: got {recon['partitions_found']}, expected {published['partitions_found']}")
     mismatches = [m for m, c in recon["community_of"].items() if c != page_comm.get(m)]
     if mismatches:
         problems.append(f"{len(mismatches)} metros disagree with week04_place.json's community ids: {mismatches}")
     if problems:
-        raise SystemExit("Modal partition does not match week04_where.json / week04_place.json:\n"
+        raise SystemExit("The shown partition does not match week04_where.json / week04_place.json:\n"
                           + "\n".join(f"  - {p}" for p in problems))
 
 
@@ -417,7 +418,7 @@ def main():
         "generated_by": "analysis/week04_where_who.py", "year": where.YEAR, "seconds": seconds,
         "reproduction": {
             "communities": recon["communities"], "Q": round(recon["q_modal"], 3),
-            "modal_runs": recon["modal_runs"], "partitions_found": recon["partitions_found"],
+            "shown_runs": recon["shown_runs"], "partitions_found": recon["partitions_found"],
             "matches_week04_where": True,
         },
         "q1_who_hires": q1,

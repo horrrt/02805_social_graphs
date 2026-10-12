@@ -274,7 +274,7 @@ function Mod({ live, show }: { live: Live | null; show: boolean }) {
           <div className="w4m-stats">
             <div className="w4m-stat">
               <b id="w4m-mod-q">{Q === null ? null : Q.toFixed(3)}</b>
-              <span id="w4m-mod-q-label">{m ? m.qLabel : "modularity of your three groups"}</span>
+              <span id="w4m-mod-q-label">{m ? m.qLabel : "modularity of your groups"}</span>
             </div>
           </div>
           {live && m && Q !== null ? <Strip s={m.strip} q={Q} T={live.T} /> : <svg className="w4m-strip" id="w4m-mod-strip" role="img"></svg>}

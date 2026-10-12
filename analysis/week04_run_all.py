@@ -32,6 +32,7 @@ import subprocess
 import sys
 import time
 from pathlib import Path
+import budget
 
 HERE = Path(__file__).resolve().parent
 LOGS = HERE.parent / "build" / "logs"
@@ -50,8 +51,9 @@ AFTER = {"week04_staffing_figure": ("week04_staffing",), "week04_staffing_moves"
          "week04_more_page": ("week04_perm", "week04_countries", "week04_oews", "week04_ties", "week04_lottery"),
          "week04_staffing_deep_page": ("week04_staffing", "week04_lottery", "week04_shift", "week04_lawfirms",
                                        "week04_ties")}
-# One process per core: each loads a few hundred MB of filings.
-MAX_PARALLEL = os.cpu_count() or 4
+# At most budget.cores() busy cores (CPU_SHARE, default 80%): a plain script
+# counts one, a script with its own worker pool counts the whole budget.
+POOLED = {"week04_entities", "week04_footprint", "week04_footprint_rank"}
 
 
 def span(seconds):
@@ -72,11 +74,17 @@ def main():
         running[name] = (subprocess.Popen([sys.executable, str(HERE / f"{name}.py")], stdout=log,
                                           stderr=subprocess.STDOUT, cwd=HERE.parent), log)
 
-    print(f"running {len(wanted)} scripts in parallel; logs in {LOGS.relative_to(HERE.parent)}/", flush=True)
+    budget.lower_priority()
+    print(f"running {len(wanted)} scripts, at most {budget.cores()} cores busy; logs in {LOGS.relative_to(HERE.parent)}/",
+          flush=True)
     done = set()
     while waiting or running:
         ready = [w for w in waiting if not any(d in waiting or d in running for d in AFTER.get(w, ()))]
-        for name in ready[:max(0, MAX_PARALLEL - len(running))]:
+        for name in ready:
+            if not budget.fits(name, running, POOLED):
+                if name in POOLED:
+                    break  # hold new starts until the pooled script fits, so it is not starved
+                continue
             waiting.remove(name)
             launch(name)
         time.sleep(2)
