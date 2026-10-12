@@ -77,6 +77,7 @@ import powerlaw
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from week04_staffing import span  # noqa: E402  (module import order kept flat)
+import budget  # noqa: E402
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 DATA = ROOT / "public" / "assets" / "data"
@@ -145,7 +146,7 @@ def goodness_of_fit(values, fit, discrete, reps, seed):
     started = time.time()
     step = max(1, reps // 10)
     distances = []
-    with ProcessPoolExecutor(max_workers=os.cpu_count()) as pool:
+    with ProcessPoolExecutor(max_workers=budget.cores()) as pool:
         futures = [pool.submit(_one_draw, job) for job in jobs]
         for done, future in enumerate(as_completed(futures), start=1):
             distances.append(future.result())

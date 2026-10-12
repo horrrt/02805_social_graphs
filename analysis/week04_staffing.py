@@ -327,14 +327,15 @@ def tracked(label, total):
                   f"about {span(elapsed / done * (total - done))} left", flush=True)
 
 
-def louvain(g, seed):
+def louvain(g, seed, resolution=1.0):
     """Louvain on a networkx graph: (list of node sets, modularity). igraph's
     multilevel is the same method as networkx's louvain_communities and runs about
     25 times faster; the seed fixes the order it visits nodes. Weighted by the edges'
-    "weight" when they carry one."""
+    "weight" when they carry one. A resolution above 1 favours more, smaller groups;
+    the modularity returned is always the standard one (resolution 1)."""
     nodes, h, weights = to_igraph(g)
     ig.set_random_number_generator(random.Random(seed))
-    part = h.community_multilevel(weights=weights)
+    part = h.community_multilevel(weights=weights, resolution=resolution)
     return [{nodes[i] for i in c} for c in part], h.modularity(part, weights=weights)
 
 

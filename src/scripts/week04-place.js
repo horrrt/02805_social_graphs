@@ -84,6 +84,12 @@ export function placeModel(data, whereWho) {
 // filings, so the three metro groups take violet, green and slate from the
 // page's CSS tokens instead of the colours in the data file.
 export const groups = (T) => [0, 1, 2].map((g) => T.token(`--w4-group-${g}`));
+// The group-count control's colour slots: the shown groups' own colours first,
+// then further groups, and a metro on its own (slot -1) in grey.
+const SLOTS = 6;
+const slotColour = (T, slot) => (slot < 0 ? T.token("--w4-group-alone") : T.token(`--w4-group-${slot}`)) || MUTE;
+/** A shown group's colour slot (week04_where.py: 2, slate, for the group with the most metros). */
+export const commSlot = (data, id) => data.communities[id]?.slot ?? id;
 const groupsDark = (T) => [0, 1, 2].map((g) => T.token(`--w4-group-${g}-dark`));
 
 /** The tokens the place charts read. */
@@ -94,6 +100,8 @@ export const PLACE_TOKENS = [
   "--w4-group-0-dark",
   "--w4-group-1-dark",
   "--w4-group-2-dark",
+  ...Array.from({ length: SLOTS - 3 }, (_, i) => `--w4-group-${i + 3}`),
+  "--w4-group-alone",
   "--ink-soft",
   "--w4-hero-lede",
   "--w4-hero-ink",
@@ -107,17 +115,19 @@ export const PLACE_TOKENS = [
   "--w4-grid",
 ];
 
-// The split Louvain finds second most often (week04_where.py "alternatives").
-const altSplit = (m) => m.data.alternatives?.[0] ?? null;
+/** The split on the map: the one for the chosen group count (week04_where.py
+ * "views"), else the partition the section is computed on. */
+export function viewFor(m, state) {
+  const views = m.data.views ?? [];
+  return views.find((v) => v.groups === state.groups) ?? views.find((v) => v.shown) ?? null;
+}
 
 function colourFor(m, state, T, city) {
   if (state.regionMode === "census") return m.data.census_colours[city.census] ?? MUTE;
-  if (state.regionMode === "split") {
-    const a = altSplit(m);
-    const g = a?.member[city.id];
-    return g === undefined ? MUTE : groups(T)[a.communities[g].colour] ?? MUTE;
-  }
-  return groups(T)[city.community] ?? MUTE;
+  const v = viewFor(m, state);
+  const g = v?.member[city.id];
+  if (g === undefined) return slotColour(T, commSlot(m.data, city.community));
+  return slotColour(T, v.communities[g].slot);
 }
 
 // Counts of positions or employers carry no placed-or-direct meaning, so
@@ -318,8 +328,18 @@ export function usMapOption(m, state, T, colourMode = "metric") {
 /** #place-region-legend: the chips under the region toggle. */
 export function legendChips(m, state, T) {
   if (state.regionMode === "census") return Object.entries(m.data.census_colours).map(([label, colour]) => ({ label, colour }));
-  if (state.regionMode === "split") return (altSplit(m)?.communities ?? []).map((c) => ({ label: c.label, colour: groups(T)[c.colour] ?? MUTE }));
-  return m.data.communities.map((c) => ({ label: c.label, colour: groups(T)[c.id] ?? MUTE }));
+  const v = viewFor(m, state);
+  if (!v) return m.data.communities.map((c) => ({ label: c.label, colour: slotColour(T, commSlot(m.data, c.id)) }));
+  // Groups past the last colour, and metros on their own, share one grey chip.
+  const grey = v.communities.filter((c) => c.slot < 0);
+  const chips = v.communities.filter((c) => c.slot >= 0).map((c) => ({ label: c.label, colour: slotColour(T, c.slot) }));
+  if (!grey.length) return chips;
+  const small = grey.filter((c) => c.slot === -2).map((c) => c.label);
+  const alone = grey.filter((c) => c.slot === -1).map((c) => c.label);
+  const label = [small.length ? `Smaller groups: ${small.join("; ")}` : "", alone.length ? `On their own: ${alone.join(", ")}` : ""]
+    .filter(Boolean)
+    .join(". ");
+  return [...chips, { label, colour: slotColour(T, -1) }];
 }
 
 /** #chart-backbone: the links the disparity filter keeps at the α on show. */
@@ -673,7 +693,8 @@ export function nullRows(data) {
   const n = data.null_model;
   const p = (v) => (v < 0.001 ? "< 0.001" : v.toFixed(3));
   return [
-    ["Partition shown: found in", `${n.modal_runs} of ${n.seeds} Louvain runs`],
+    ["Partition shown (highest Q): found in", `${n.shown_runs} of ${n.seeds} Louvain runs`],
+    ["Most frequent partition: found in", `${n.most_found_runs} of ${n.seeds} runs`],
     ["Distinct partitions found", String(n.partitions_found)],
     ["Q of the partition shown", n.Q.toFixed(3)],
     ["Q of rewired networks, mean ± sd", `${n.Q_null_mean.toFixed(3)} ± ${n.Q_null_std.toFixed(3)}`],
@@ -688,7 +709,7 @@ export function nullRows(data) {
   ];
 }
 
-// The start card's three groups: the page holds each head with its
+// The start card's groups: the page holds each head with its
 // data-community, and the paragraph under it lists the group's metros,
 // largest first.
 const GROUP_LIST_MAX = 12;
@@ -728,9 +749,9 @@ export function heroMapOption(m, state, T) {
   const { data, byId, byFilings, heroEdges } = m;
   const GROUP = groups(T);
   const GROUP_DARK = groupsDark(T);
-  // On the dark hero the third group takes the plain slate, so the two hub
-  // groups stand out against it.
-  const HERO_GROUP = [GROUP_DARK[0], GROUP_DARK[1], GROUP[2]];
+  // On the dark hero the smaller metros (slot 2) take the plain slate, so the
+  // hubs stand out against it in their light shade.
+  const HERO_GROUP = data.communities.map((c) => (commSlot(data, c.id) === 2 ? GROUP[2] : GROUP_DARK[commSlot(data, c.id)]));
   const selId = state.selected ?? m.heroDefault;
   const sel = byId[selId];
   const fmax = Math.max(...data.cities.map((x) => x.filings));
@@ -846,7 +867,7 @@ export function heroInspector(m, state, T) {
   return {
     name: city.name,
     codes: `${city.state} · 2025`,
-    dot: groups(T)[city.community],
+    dot: slotColour(T, commSlot(data, city.community)),
     group: `${data.communities[city.community]?.label ?? "–"} group`,
     stats: [
       ["Filings", fmt(city.filings)],

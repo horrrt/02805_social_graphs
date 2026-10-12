@@ -49,7 +49,7 @@ import json
 import math
 import random
 import re
-from collections import Counter
+from collections import Counter, defaultdict
 from itertools import combinations
 from pathlib import Path
 
@@ -279,6 +279,74 @@ def shuffled_nmi(a, b, rng, times=1000):
     return observed, (beats + 1) / (times + 1)
 
 
+def shown_partition(found, q_of):
+    """The partition the page shows, out of the Louvain runs' partitions (found:
+    partition -> runs, q_of: partition -> modularity): the highest modularity, ties
+    broken by how many runs found it. week04_where_who.py and week04_explore.py
+    call this too, so all three show the same split."""
+    return max(found, key=lambda k: (round(q_of[k], 9), found[k]))
+
+
+# The map can redraw the metros in 2 to 10 groups. Each size shows the split
+# Louvain finds most often at that size over a sweep of its resolution (higher
+# favours smaller groups); the shown partition stands for its own size.
+VIEW_GAMMAS = [round(0.98 + 0.01 * i, 2) for i in range(38)]  # 0.98 to 1.35
+VIEW_SEEDS = 50
+VIEW_SIZES = range(2, 11)
+COLOUR_SLOTS = 6  # --w4-group-0 to -5 in post.css; further groups are grey
+
+
+def group_views(g, shown, shown_slot, filings, by_id):
+    """One entry per group count: the split, its modularity, how often the sweep
+    found it, and a colour slot per group. A group takes the colour slot of the
+    shown group it shares most filings with (shown_slot: metro -> slot), the closest match
+    first; a group left without one takes the next free slot up to COLOUR_SLOTS;
+    a metro on its own takes slot -1 and a group past the last slot -2, both grey."""
+    seen = defaultdict(Counter)
+    for gamma in VIEW_GAMMAS:
+        for r in range(VIEW_SEEDS):
+            part, _ = louvain(g, SEED + r, resolution=gamma)
+            key = frozenset(frozenset(c) for c in part)
+            seen[len(key)][key] += 1
+    q = lambda key: nx.community.modularity(g, [set(c) for c in key], weight="weight")
+    out = []
+    for k in VIEW_SIZES:
+        if k == len(shown):
+            key = shown
+        elif seen[k]:
+            key = max(seen[k], key=lambda x: (seen[k][x], round(q(x), 9)))
+        else:
+            continue
+        parts = sorted(key, key=lambda c: (-sum(filings[m] for m in c), min(c)))
+        overlap = []
+        for i, part in enumerate(parts):
+            per = Counter()
+            for m in part:
+                per[shown_slot[m]] += filings[m]
+            overlap += [(v, i, s) for s, v in per.items()]
+        slot, taken = {}, set()
+        for _, i, s in sorted(overlap, key=lambda t: (-t[0], t[1], t[2])):
+            if i not in slot and s not in taken and len(parts[i]) > 1:
+                slot[i] = s
+                taken.add(s)
+        own = set(shown_slot.values())
+        free = iter([s for s in range(COLOUR_SLOTS) if s not in taken and s not in own] + [-2] * len(parts))
+        groups_k = []
+        for i, part in enumerate(parts):
+            big = sorted(part, key=lambda m: (-filings[m], m))
+            s = -1 if len(part) == 1 else slot.get(i, None)
+            if s is None:
+                s = next(free)
+            label_k = (by_id[big[0]]["name"] if len(part) == 1 else
+                       f"{by_id[big[0]]['name']}, {by_id[big[1]]['name']} and {len(part) - 2} more" if len(part) > 2 else
+                       f"{by_id[big[0]]['name']} and {by_id[big[1]]['name']}")
+            groups_k.append({"id": i, "metros": len(part), "slot": s, "label": label_k})
+        out.append({"groups": k, "Q": round(float(q(key)), 3),
+                    "found": seen[k][key] if key in seen[k] else 0, "shown": key == shown,
+                    "communities": groups_k, "member": {m: i for i, part in enumerate(parts) for m in part}})
+    return out
+
+
 def label(key):
     """A company's display name, from the same resolver as section 3."""
     return resolver().label(key)
@@ -390,11 +458,11 @@ def main():
     runs = [louvain(g, SEED + r)[0] for r in range(RUNS)]
     qs = np.array([nx.community.modularity(g, c, weight="weight") for c in runs])
     # Louvain does not always find the same partition on a graph this dense. The
-    # page shows the one found most often (ties: the higher modularity), and every
-    # number below is computed on that partition.
+    # page shows the one with the highest modularity any run reaches (ties: the one
+    # found more often), and every number below is computed on that partition.
     found = Counter(frozenset(frozenset(c) for c in part) for part in runs)
     q_of = {k: nx.community.modularity(g, [set(c) for c in k], weight="weight") for k in found}
-    modal = max(found, key=lambda k: (found[k], q_of[k]))
+    modal = shown_partition(found, q_of)
     best = [set(c) for c in sorted(modal, key=lambda c: (-len(c), min(c)))]
     member = {m: i for i, part in enumerate(best) for m in part}
     run_labels = [{m: i for i, part in enumerate(c) for m in part} for c in runs]
@@ -453,30 +521,16 @@ def main():
         })
     for c in cities:
         c["community"] = renumber[member[c["id"]]]
+    # Colour slots: the group with the most metros (the smaller metros) always
+    # takes slot 2, the page's slate; the others take 0, 1, 3 ... in order.
+    rest = max(communities, key=lambda c: (c["metros"], -c["id"]))["id"]
+    open_slots = iter(s for s in range(COLOUR_SLOTS) if s != 2)
+    for c in communities:
+        c["slot"] = 2 if c["id"] == rest else next(open_slots)
 
-    # The other partitions the runs find. The page shows the one found most
-    # often, but on a network this dense another can score higher modularity,
-    # so the map can show it too. Each of its groups takes the colour of the
-    # shown group it shares most filings with, so a colour keeps its meaning.
-    alternatives = []
-    for k in sorted(found, key=lambda k: (-found[k], -q_of[k])):
-        if k == modal:
-            continue
-        parts = sorted(k, key=lambda c: -sum(filings[m] for m in c))
-        groups_alt = []
-        for i, part in enumerate(parts):
-            big = sorted(part, key=lambda m: -filings[m])
-            overlap = Counter()
-            for m in part:
-                overlap[renumber[member[m]]] += filings[m]
-            groups_alt.append({
-                "id": i, "metros": len(part), "colour": overlap.most_common(1)[0][0],
-                "label": f"{by_id[big[0]]['name']}, {by_id[big[1]]['name']} and {len(part) - 2} more"
-                         if len(part) > 2 else " and ".join(by_id[m]["name"] for m in big),
-            })
-        alternatives.append({"groups": len(parts), "runs": found[k], "Q": round(float(q_of[k]), 3),
-                             "communities": groups_alt,
-                             "member": {m: i for i, part in enumerate(parts) for m in part}})
+    # The same metros in 2 to 10 groups, for the map's group-count control.
+    shown_slot = {m: communities[renumber[member[m]]]["slot"] for m in top}
+    views = group_views(g, modal, shown_slot, filings, by_id)
 
     # Infomap, the flow-based alternative: does a random walk split the metros at all?
     modules, codelength = infomap(g, SEED, trials=20)
@@ -525,7 +579,7 @@ def main():
     q_modal = q_of[modal]
     null_model = {
         "Q": round(float(q_modal), 3), "Q_runs_mean": round(float(qs.mean()), 3),
-        "partitions_found": len(found), "modal_runs": found[modal],
+        "partitions_found": len(found), "shown_runs": found[modal], "most_found_runs": max(found.values()),
         "Q_null_mean": round(float(null_q.mean()), 3), "Q_null_std": round(float(null_q.std()), 4),
         "z": round(float((q_modal - null_q.mean()) / null_q.std()), 2),
         "nmi_seeds": round(float(np.median(seeds_nmi)), 3), "nmi_seeds_min": round(float(min(seeds_nmi)), 3),
@@ -544,7 +598,7 @@ def main():
         },
         "cities": cities,
         "communities": communities,
-        "alternatives": alternatives,
+        "views": views,
         "census_colours": CENSUS_COLOURS,
         "backbone": {"alphas": ALPHAS, "default_alpha": DEFAULT_ALPHA, "gc_size": gc_size,
                      "edges_kept": edges_kept, "snap_alpha": snap, "snap_note": snap_note,
@@ -562,7 +616,8 @@ def main():
         "ranking": rank_check,
         "backbone": {k: v for k, v in page["backbone"].items() if k != "graphs"},
         "null_model": null_model, "infomap": infomap_check, "communities": communities,
-        "alternatives": [{k: v for k, v in a.items() if k != "member"} for a in alternatives],
+        "views": [{k: v for k, v in a.items() if k != "member"} for a in views],
+        "view_sweep": {"resolution": [VIEW_GAMMAS[0], VIEW_GAMMAS[-1]], "step": 0.01, "seeds": VIEW_SEEDS},
         "longhaul": longhaul_check,
         "shortlist": [label(e) for e in shortlist],
     }

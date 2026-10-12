@@ -543,6 +543,14 @@
   --w4-group-0: #6d4fd6;
   --w4-group-1: #15896a;
   --w4-group-2: #7a8fac;
+  /* Section 1's group-count control: three further groups, then grey for a metro
+     on its own or a group past the sixth colour. No orange or blue, which mean
+     placed and direct filings on this page; picked so the six stay apart (CAM02-UCS
+     distance >= 18) for normal vision, deuteranopia and protanopia. */
+  --w4-group-3: #a51212;
+  --w4-group-4: #a58f12;
+  --w4-group-5: #972074;
+  --w4-group-alone: #b4b2aa;
   --w4-group-0-dark: #b69cff;
   --w4-group-1-dark: #4fd1a5;
   --w4-group-2-dark: #c3cfdd;

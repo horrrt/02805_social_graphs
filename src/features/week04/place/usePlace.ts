@@ -11,13 +11,13 @@ import { PLACE_TOKENS, mainland, placeModel } from "@/scripts/week04-place.js";
 import { W4, useW4All } from "../useW4Data";
 import { place } from "./store.js";
 
-export type PlaceState = { metric: string; alpha: string; regionMode: string; employer: string | null; selected: string | null };
+export type PlaceState = { metric: string; alpha: string; regionMode: string; groups: number | null; employer: string | null; selected: string | null };
 export type T = { fs: (role: string) => number; family: (name?: string) => string; token: (name: string) => string };
 export type Model = ReturnType<typeof placeModel>;
 
 const whole = <S,>(s: S) => s;
 
-export type Raw = { metric: string; alpha: string | null; regionMode: string; employer: string | null; selected: string | null };
+export type Raw = { metric: string; alpha: string | null; regionMode: string; groups: number | null; employer: string | null; selected: string | null };
 
 const FILES = [W4.place, W4.usa, W4.data("where_who")];
 

@@ -99,7 +99,13 @@ export function methodsContext(explore, place) {
   const IDS = explore.metros.map((m) => m.id);
   const NAME = Object.fromEntries(explore.metros.map((m) => [m.id, m.name]));
   const GROUP = Object.fromEntries(explore.metros.map((m) => [m.id, m.community]));
-  return { CITY, IDS, NAME, GROUP, dotR: makeDotR(place.cities) };
+  // Group k's colour slot: the page's own groups keep their slot in week04_place.json
+  // (2, slate, for the smaller metros); a group the page does not have takes a free one.
+  const own = place.communities.map((c) => c.slot ?? c.id);
+  const SLOT = [0, 1, 2].map((k) => own[k]);
+  const free = [0, 1, 2].filter((s) => !own.includes(s));
+  for (let k = 0; k < 3; k++) if (SLOT[k] === undefined) SLOT[k] = free.shift();
+  return { CITY, IDS, NAME, GROUP, SLOT, dotR: makeDotR(place.cities) };
 }
 
 /** A static-domain line chart's geometry: axis, ticks, reference line and the series; `marker(i)` places the marker. */
@@ -321,14 +327,16 @@ export function modModel(explore, place, ctx) {
     for (let c = 0; c < 3; c++) Q += inside[c] / total - (tot[c] / (2 * total)) ** 2;
     return Q;
   }
+  const shownGroups = new Set(Object.values(GROUP)).size;
+  const NUMBER = { 2: "two", 3: "three", 4: "four", 5: "five" };
   return {
     page: { ...GROUP },
     computeQ,
     lead:
-      `Click a metro to move it to the next group and watch modularity, the share of link weight inside the groups minus what ` +
-      `chance would put there. Louvain’s three groups score ${full.Q_page_partition.toFixed(3)}; shuffled labels, or one big ` +
+      `Click a metro to move it to the next of three groups and watch modularity, the share of link weight inside the groups minus what ` +
+      `chance would put there. Louvain’s ${NUMBER[shownGroups] ?? shownGroups} groups score ${full.Q_page_partition.toFixed(3)}; shuffled labels, or one big ` +
       `group, score about zero.`,
-    qLabel: `modularity of your three groups, on all ${edges.length} weighted links`,
+    qLabel: `modularity of your groups, on all ${edges.length} weighted links`,
     strip: {
       loQ: -0.02,
       hiQ: 0.07,
@@ -354,7 +362,7 @@ export function modAct(m, ctx, g, act, random = Math.random) {
 
 export function modOption(ctx, g, token, T) {
   const { CITY, IDS, dotR } = ctx;
-  const GROUP_COLOR = [0, 1, 2].map((k) => token(`--w4-group-${k}`));
+  const GROUP_COLOR = [0, 1, 2].map((k) => token(`--w4-group-${ctx.SLOT[k]}`));
   const dots = IDS.map((id) => {
     const city = CITY[id];
     return {
@@ -493,7 +501,7 @@ export function louvainGo(m, s, act) {
 
 export function louvainOption(m, ctx, i, token, T) {
   const { CITY, IDS, dotR } = ctx;
-  const GROUP_COLOR = [0, 1, 2].map((k) => token(`--w4-group-${k}`));
+  const GROUP_COLOR = [0, 1, 2].map((k) => token(`--w4-group-${ctx.SLOT[k]}`));
   const st = m.steps[i];
   const dots = IDS.map((id) => {
     const city = CITY[id];

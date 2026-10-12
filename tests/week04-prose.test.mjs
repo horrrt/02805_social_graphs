@@ -32,7 +32,7 @@ const flows = json("public/weeks/week04/data/staffing_clients.json").years["2025
 const count = (n) => n.toLocaleString("en-US");
 const pct = (x, digits = 0) => `${(100 * x).toFixed(digits)}%`;
 const says = (t) => assert.ok(prose.includes(t), `section 3 should say "${t}"`);
-const WORDS = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"];
+const WORDS = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen"];
 
 test("how many workers sit at a client", () => {
   const now = fy["2025"];
@@ -243,19 +243,24 @@ test("section 1: communities against the null, runs, FY2024 and Census", () => {
   const has = (t) => assert.ok(regions.includes(t), `section 1 should say "${t}"`);
   has(`Modularity is ${n.Q.toFixed(3)} against ${n.Q_null_mean.toFixed(3)} for rewired networks`);
   has(`(z = ${Math.round(n.z)})`);
-  has(`Louvain finds the split shown in ${n.modal_runs} of ${n.seeds} runs; the other ${n.seeds - n.modal_runs} find one other split`);
+  const views = json("public/assets/data/week04_place.json").views;
+  const other = views.find((v) => v.groups === 3);
+  has(`Louvain finds the split shown in ${n.shown_runs} of ${n.seeds} runs; the other ${n.seeds - n.shown_runs} find one other split, into three groups`);
+  has(`at a lower modularity, ${other.Q.toFixed(3)}`);
+  assert.ok(other.Q < n.Q, '"a lower modularity" needs the three-group split below the one shown');
+  assert.equal(n.most_found_runs, n.seeds - n.shown_runs, "the other runs all find the three-group split");
   assert.ok(
     notices(html, "place-start").includes(
-      `The split is real but weak: modularity ${n.Q.toFixed(3)} against ${n.Q_null_mean.toFixed(3)} for rewired networks; Louvain finds it in ${n.modal_runs} of ${n.seeds} runs.`,
+      `The split is real but weak: modularity ${n.Q.toFixed(3)} against ${n.Q_null_mean.toFixed(3)} for rewired networks, the highest any of ${n.seeds} Louvain runs reaches.`,
     ),
     "section 1's notice should carry the modularity evidence",
   );
   assert.equal(n.partitions_found, 2, '"one other split" needs exactly two partitions');
-  assert.equal(o.fy2025_runs_equal_to_other_year, n.seeds - n.modal_runs, "FY2024's split is FY2025's other one");
-  has(`${o.year} gives that two-group split in all ${o.runs} runs`);
+  assert.equal(o.fy2025_runs_equal_to_other_year, n.shown_runs, "FY2024's split is the one shown");
+  has(`${o.year} gives the split shown in all ${o.runs} runs`);
   assert.equal(o.modal_runs, o.runs);
-  assert.equal(o.communities, 2);
-  has(`at NMI ${o.nmi_across_years_median.toFixed(2)}, against ${o.nmi_within_fy2025_median.toFixed(2)} between two 2025 runs`);
+  assert.equal(o.nmi_modal_partitions, 1, "FY2024's split must be exactly the one shown");
+  has(`the runs agree at NMI ${o.nmi_across_years_median.toFixed(2)}, against ${o.nmi_within_fy2025_median.toFixed(2)} between two 2025 runs`);
   has(`Census regions is ${n.nmi_census_region.toFixed(2)} and with divisions ${n.nmi_census_division.toFixed(2)}`);
   has(`(p = ${n.p_region.toFixed(2)} and ${n.p_division.toFixed(2)})`);
   assert.ok(Math.min(n.p_region, n.p_division) >= 0.05, '"no better than shuffled labels" needs both p at 0.05 or above');
@@ -458,11 +463,11 @@ test("the hero's numbers and map legend follow the analysis", () => {
   has(`${count(fy["2025"].certified_filings)} certified H-1B filings, 2025`);
   has(`${place.cities.length} metro areas with the most filings, ${pct(share, 1)} of the year’s total`);
   const size = (id) => place.cities.filter((c) => c.community === id).length;
-  const [hubs, tech, rest] = place.communities.map((c) => c.label);
+  const [hubs, rest] = place.communities.map((c) => c.label);
   has(`On the map: ${WORDS[place.communities.length]} Louvain groups`);
   has(`${hubs} ${WORDS[size(0)]} large hubs`);
-  has(`${tech} ${WORDS[size(1)]} tech hubs`);
-  has(`${rest} the other ${size(2)}`);
+  has(`${rest} the other ${size(1)}`);
+  assert.equal(place.communities[1].slot, 2, "the smaller metros take the slate on the hero");
 });
 
 test("section 1's start card names each group by its two largest metros", () => {
@@ -478,20 +483,19 @@ test("section 1's start card names each group by its two largest metros", () => 
   const cap = (w) => w[0].toUpperCase() + w.slice(1);
   const expect = {
     0: (m) => `${cap(WORDS[m.length])} large hubs led by ${m[0].name} and ${m[1].name}`,
-    1: (m) => `${cap(WORDS[m.length])} tech hubs led by ${m[0].name} and ${m[1].name}`,
-    2: (m) => `The other ${m.length} from ${m[0].name} and ${m[1].name} down`,
+    1: (m) => `The other ${m.length} from ${m[0].name} and ${m[1].name} down`,
   };
   for (const c of place.communities) {
     const t = expect[c.id](members(c.id));
     assert.ok(head(c.id).includes(t), `group ${c.id} should say "${t}"`);
   }
   // The map card's Background drawer opens with the same groups as a full sentence.
-  const [big, tech, rest] = [0, 1, 2].map(members);
-  const background = `Louvain splits the ${place.cities.length} metros into ${WORDS[big.length]} large hubs led by ${big[0].name} and ${big[1].name}, ${WORDS[tech.length]} tech hubs led by ${tech[0].name} and ${tech[1].name}, and the other ${rest.length}.`;
+  const [big, rest] = [0, 1].map(members);
+  const background = `Louvain splits the ${place.cities.length} metros into ${WORDS[big.length]} large hubs led by ${big[0].name} and ${big[1].name}, and the other ${rest.length} from ${rest[0].name} and ${rest[1].name} down.`;
   assert.ok(flatten(html).includes(background), `the map card's Background should say "${background}"`);
-  // The board's order: tech hubs, then large hubs, then the rest.
+  // The board's order: the hubs, then the rest.
   const order = [...start.matchAll(/data-community="(\d)"/g)].map((m) => Number(m[1]));
-  assert.deepEqual(order, [1, 0, 2]);
+  assert.deepEqual(order, [0, 1]);
 });
 
 test("section 2's first round: Software Developers' pairs follow the analysis", () => {
