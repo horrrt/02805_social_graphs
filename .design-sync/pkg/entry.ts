@@ -46,3 +46,9 @@ export { Tezguino } from "../../src/features/cold-read/Tezguino";
 export { MixDesk } from "../../src/features/cold-read/MixDesk";
 export { HotCold } from "../../src/features/cold-read/HotCold";
 export { LEVELS } from "../../src/features/cold-read/levels";
+
+// Week 6, the post at /weeks/week06/ ("Why do two Marvel pages read alike?") and
+// its essentials page: every figure on each, by part name, drawn from the pages'
+// own JSON on the live site.
+export { Part as LookalikesPart } from "../../src/features/week06/Parts";
+export { Essential as EssentialsPart } from "../../src/features/week06/Essentials";
