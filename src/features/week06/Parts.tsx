@@ -139,7 +139,18 @@ function Column({ title, rows, linked, women, other }: { title: string; rows: Ro
 function Explorer({ data }: { data: Data }) {
   const options = useMemo(() => choices(data) as { i: number; name: string }[], [data]);
   const picks = useMemo(() => PICKS.map((name: string) => [name, data.names.indexOf(name)] as const).filter(([, i]) => i >= 0), [data]);
-  const [value, setValue] = useState(String(Math.max(0, data.names.indexOf(START))));
+  // ?pick=Wolverine opens the explorer on that character, so a reader can link to a pick.
+  const [value, setPick] = useState(() => {
+    const asked = new URLSearchParams(window.location.search).get("pick");
+    const at = asked ? options.find((o) => o.name === asked || data.names[o.i] === asked) : undefined;
+    return String(at ? at.i : Math.max(0, data.names.indexOf(START)));
+  });
+  const setValue = (next: string) => {
+    setPick(next);
+    const url = new URL(window.location.href);
+    url.searchParams.set("pick", short(data.names[Number(next)]));
+    window.history.replaceState(null, "", url);
+  };
   const index = Number(value);
   const kept = useMemo(() => neighbourRows(data, index, "kept"), [data, index]);
   const removed = useMemo(() => neighbourRows(data, index, "removed"), [data, index]);
@@ -185,7 +196,7 @@ const same = (d: Data) => d;
 
 function ExplorerPart() {
   const { part: data, failed } = usePart<Data>(same);
-  return <div className="w6-explorer" id="explore-app">{data ? <Explorer data={data} /> : failed ? <Failed /> : null}</div>;
+  return <div className="w6-explorer" id="explore-app">{data ? <Explorer data={data} /> : failed ? <Failed /> : <p className="w6-note">Loading the 303 pages…</p>}</div>;
 }
 
 // ---- the hero's contrast: Storm's nearest pages, names kept and removed -----------------
