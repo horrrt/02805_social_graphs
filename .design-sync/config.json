@@ -45,7 +45,9 @@
     "WhoseLine": "../../src/features/cold-read/WhoseLine.tsx",
     "Tezguino": "../../src/features/cold-read/Tezguino.tsx",
     "MixDesk": "../../src/features/cold-read/MixDesk.tsx",
-    "HotCold": "../../src/features/cold-read/HotCold.tsx"
+    "HotCold": "../../src/features/cold-read/HotCold.tsx",
+    "LookalikesPart": "../../src/features/week06/Parts.tsx",
+    "EssentialsPart": "../../src/features/week06/Essentials.tsx"
   },
   "provider": {
     "component": "CorridorRoot"
@@ -53,7 +55,9 @@
   "docsDir": "gen/docs",
   "docsMap": {
     "CorridorRoot": "setup/CorridorRoot.md",
-    "ColdReadRoot": "setup/ColdReadRoot.md"
+    "ColdReadRoot": "setup/ColdReadRoot.md",
+    "LookalikesPart": "setup/LookalikesPart.md",
+    "EssentialsPart": "setup/EssentialsPart.md"
   },
   "readmeHeader": ".design-sync/conventions.md",
   "overrides": {
@@ -184,6 +188,12 @@
       "cardMode": "column"
     },
     "VectorAngle": {
+      "cardMode": "column"
+    },
+    "LookalikesPart": {
+      "cardMode": "column"
+    },
+    "EssentialsPart": {
       "cardMode": "column"
     }
   },

@@ -137,3 +137,12 @@ As found:
   with the component's size, so links vanish. Same on the kit page.
 - `PathQuest` mid-run draws only the pages seen so far at their full-map positions, so a short run
   sits in a corner of the map; the card shows the start panel instead.
+
+## Fourth pass (12 Oct): Week 6 post and essentials
+
+- `LookalikesPart` (`Part` from `src/features/week06/Parts.tsx`) and `EssentialsPart` (`Essential`
+  from `Essentials.tsx`), group `week06`, each with a doc in `pkg/setup/` listing its part names.
+  Both load their JSON through `asset()`, so from the live site (see `env.ts`).
+- `pkg/tsconfig.json` maps `@/kit` to `src/kit/index.ts`: the bundler's path plugin does not resolve
+  a folder to its index, and the Week 6 parts import the kit that way.
+- `PairsRead` (25 rows) runs past its card and scrolls there; kept, as the drawer shows it whole.

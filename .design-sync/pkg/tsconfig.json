@@ -1,5 +1,5 @@
 {
-  // The site's tsconfig, plus three swaps for the Claude Design bundle:
+  // The site's tsconfig, plus four swaps for the Claude Design bundle:
   // the vendor loader and next/error resolve to the shims beside this file.
   "extends": "../../tsconfig.json",
   "compilerOptions": {
@@ -13,6 +13,9 @@
     "paths": {
       "@/scripts/runtime/vendor.js": ["./vendor-shim.ts"],
       "next/error": ["./next-error-stub.tsx"],
+      // The bundler's path plugin does not resolve a folder to its index, and the
+      // Week 6 parts import the kit as "@/kit".
+      "@/kit": ["../../src/kit/index.ts"],
       "@/*": ["../../src/*"]
     }
   },
