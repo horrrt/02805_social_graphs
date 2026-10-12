@@ -2970,10 +2970,11 @@
 .corridor .kit-matrix table { border-collapse: collapse; font-size: var(--fs-small); font-variant-numeric: tabular-nums; table-layout: fixed; width: 100%; }
 .corridor .kit-matrix caption { caption-side: bottom; color: var(--ink-mute-text); font-size: var(--fs-caption); padding-top: 6px; text-align: left; }
 .corridor .kit-matrix th, .corridor .kit-matrix td { border: 1px solid var(--line-soft); overflow: hidden; padding: 4px 6px; text-overflow: ellipsis; white-space: nowrap; }
-.corridor .kit-matrix thead th { color: var(--ink-soft); font-size: var(--fs-caption); font-weight: 600; text-align: center; }
-.corridor .kit-matrix thead th:first-child, .corridor .kit-matrix th[scope="row"] { text-align: left; width: 8em; }
+/* Column heads take less side padding and break a long word only when it cannot fit, never with an ellipsis. */
+.corridor .kit-matrix thead th { color: var(--ink-soft); font-size: var(--fs-caption); font-weight: 600; overflow-wrap: anywhere; padding: 4px 2px; text-align: center; text-overflow: clip; white-space: normal; }
+.corridor .kit-matrix thead th:first-child, .corridor .kit-matrix th[scope="row"] { padding: 4px 6px; text-align: left; width: 8em; }
 .corridor .kit-matrix td { color: var(--ink); text-align: center; }
-.corridor .kit-matrix td.kit-zero { color: var(--ink-mute); }
+.corridor .kit-matrix td.kit-zero { color: var(--ink-mute-text); }
 .corridor .kit-matrix tr.kit-row-on th, .corridor .kit-matrix tr.kit-row-on td { border-bottom-color: var(--w4-accent); border-top-color: var(--w4-accent); font-weight: 700; }
 .corridor .kit-matrix tr.kit-row-on th { box-shadow: inset 3px 0 0 var(--w4-accent); }
 .corridor .kit-vector { margin: 10px 0 0; }
@@ -3123,7 +3124,8 @@
 /* ContributionBars: label, a bar either side of zero, value; then the total's gauge. */
 .corridor .kit-contrib ol { list-style: none; margin: 0; padding: 0; }
 .corridor .kit-contrib ol > li { align-items: center; border-bottom: 1px solid var(--line-soft); display: grid; font-size: var(--fs-small); gap: 8px; grid-template-columns: minmax(0, 9em) minmax(0, 1fr) 4em; padding: 3px 0; }
-.corridor .kit-contrib-label { color: var(--ink); font-family: var(--font-mono); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* A long label ("great (flipped)") wraps inside its column rather than being cut. */
+.corridor .kit-contrib-label { color: var(--ink); font-family: var(--font-mono); min-width: 0; overflow-wrap: anywhere; }
 .corridor .kit-contrib-track { background: var(--line-soft); border-radius: 3px; display: block; height: 10px; overflow: hidden; position: relative; }
 .corridor .kit-contrib-zero, .corridor .kit-contrib-mid { background: var(--ink-mute); bottom: 0; left: 50%; position: absolute; top: 0; width: 1px; }
 .corridor .kit-contrib-track :is(.kit-contrib-pos, .kit-contrib-neg) { bottom: 0; position: absolute; top: 0; }
@@ -3424,7 +3426,8 @@
 .corridor .kit-stages-strip button { align-items: center; background: var(--card); border: 1px solid var(--line); border-radius: 8px; color: var(--ink); cursor: pointer; display: flex; flex-direction: column; font: inherit; font-size: var(--fs-small); gap: 2px; min-width: 0; padding: 8px 6px; }
 .corridor .kit-stages-strip button[aria-selected="true"] { background: var(--w4-accent-soft); border-color: var(--w4-accent); }
 .corridor .kit-stages-n { color: var(--ink-mute-text); font-size: var(--fs-caption); font-variant-numeric: tabular-nums; }
-.corridor .kit-stages-title { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* A long stage name wraps onto a second balanced line rather than losing its end. */
+.corridor .kit-stages-title { max-width: 100%; overflow-wrap: anywhere; text-align: center; text-wrap: balance; }
 .corridor .kit-stages-card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; margin: 10px 0 0; overflow-wrap: anywhere; padding: 10px 14px; }
 .corridor .kit-stages-card h4 { color: var(--ink); font-size: var(--fs-body); margin: 0 0 6px; }
 .corridor .kit-stages-card dl { display: grid; gap: 3px; margin: 0; }
