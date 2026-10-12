@@ -193,10 +193,10 @@ export function neighbourRows(data, index, rep) {
 }
 
 /** The line under the picker: the picked page's nearest page each way and the words behind it. */
-export function pickNote(data, index) {
+export function pickNote(data, index, withWhy = true) {
   const [kept] = neighbourRows(data, index, "kept");
   const [removed] = neighbourRows(data, index, "removed");
-  const why = PICK_WHY[data.names[index]] ? `${PICK_WHY[data.names[index]]} ` : "";
+  const why = withWhy && PICK_WHY[data.names[index]] ? `${PICK_WHY[data.names[index]]} ` : "";
   return `${why}${short(data.names[index])}: nearest with names is ${kept.name}, on ${kept.words.slice(0, 2).join(" and ")}; without names, ${removed.name}, on ${removed.words.slice(0, 2).join(" and ")}.`;
 }
 
