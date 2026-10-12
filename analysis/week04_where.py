@@ -454,6 +454,30 @@ def main():
     for c in cities:
         c["community"] = renumber[member[c["id"]]]
 
+    # The other partitions the runs find. The page shows the one found most
+    # often, but on a network this dense another can score higher modularity,
+    # so the map can show it too. Each of its groups takes the colour of the
+    # shown group it shares most filings with, so a colour keeps its meaning.
+    alternatives = []
+    for k in sorted(found, key=lambda k: (-found[k], -q_of[k])):
+        if k == modal:
+            continue
+        parts = sorted(k, key=lambda c: -sum(filings[m] for m in c))
+        groups_alt = []
+        for i, part in enumerate(parts):
+            big = sorted(part, key=lambda m: -filings[m])
+            overlap = Counter()
+            for m in part:
+                overlap[renumber[member[m]]] += filings[m]
+            groups_alt.append({
+                "id": i, "metros": len(part), "colour": overlap.most_common(1)[0][0],
+                "label": f"{by_id[big[0]]['name']}, {by_id[big[1]]['name']} and {len(part) - 2} more"
+                         if len(part) > 2 else " and ".join(by_id[m]["name"] for m in big),
+            })
+        alternatives.append({"groups": len(parts), "runs": found[k], "Q": round(float(q_of[k]), 3),
+                             "communities": groups_alt,
+                             "member": {m: i for i, part in enumerate(parts) for m in part}})
+
     # Infomap, the flow-based alternative: does a random walk split the metros at all?
     modules, codelength = infomap(g, SEED, trials=20)
     info_member = {m: i for i, part in enumerate(modules) for m in part}
@@ -520,6 +544,7 @@ def main():
         },
         "cities": cities,
         "communities": communities,
+        "alternatives": alternatives,
         "census_colours": CENSUS_COLOURS,
         "backbone": {"alphas": ALPHAS, "default_alpha": DEFAULT_ALPHA, "gc_size": gc_size,
                      "edges_kept": edges_kept, "snap_alpha": snap, "snap_note": snap_note,
@@ -537,6 +562,7 @@ def main():
         "ranking": rank_check,
         "backbone": {k: v for k, v in page["backbone"].items() if k != "graphs"},
         "null_model": null_model, "infomap": infomap_check, "communities": communities,
+        "alternatives": [{k: v for k, v in a.items() if k != "member"} for a in alternatives],
         "longhaul": longhaul_check,
         "shortlist": [label(e) for e in shortlist],
     }

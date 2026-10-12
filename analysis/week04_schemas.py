@@ -121,10 +121,27 @@ class Meta(Model):
     script: str
 
 
+class AltGroup(Model):
+    id: int = Count
+    label: str
+    metros: int = Field(ge=1)
+    colour: int = Count  # the shown community whose colour it takes
+
+
+class Alternative(Model):
+    """A partition Louvain finds less often than the one shown."""
+    groups: int = Field(ge=1)
+    runs: int = Field(ge=1)
+    Q: float
+    communities: list[AltGroup] = Field(min_length=1)
+    member: dict[str, int]
+
+
 class Place(Model):
     meta: Meta
     cities: list[City] = Field(min_length=2)
     communities: list[Community] = Field(min_length=1)
+    alternatives: list[Alternative] = []
     census_colours: dict[str, str]
     backbone: Backbone
     null_model: NullModel

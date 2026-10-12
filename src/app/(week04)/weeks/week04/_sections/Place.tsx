@@ -167,7 +167,7 @@ export function Place() {
               One group holds New York, Dallas, Atlanta, Chicago, Houston, Philadelphia and Charlotte. The other holds San Jose, San Francisco, Seattle, Los Angeles, San Diego, Austin, Boston and Washington. The 25 smaller metros form the third. Modularity is 0.049 against 0.013 for rewired networks that keep each company's number of metros (z = 29).
             </p>
             <p className="sub">
-              Louvain finds the split shown in 65 of 100 runs; the other 35 find one other split, into two groups. 2024 gives that two-group split in all 100 runs, so it matches the split shown here at
+              Louvain finds the split shown in 65 of 100 runs; the other 35 find one other split, into two groups: the 12 largest hubs against the other 28. That split scores higher, modularity 0.057 against 0.049, so the page shows the split found most often, not the one that scores best; the maps below show both. 2024 gives that two-group split in all 100 runs, so it matches the split shown here at
               {" "}
               <GlossTerm id="w4-term-place-start-nmi" word="NMI">
                 Normalized mutual information: how alike two groupings are, from 0 for unrelated to 1 for the same.
@@ -199,7 +199,7 @@ export function Place() {
             </p>
           </Drawer>
           <Drawer label="Maps: groups and Census regions">
-            <p className="sub">Toggle Louvain communities against Census regions on the same map.</p>
+            <p className="sub">Colour the same map by Louvain's three groups, by the two-group split that scores higher (12 hubs against the other 28), or by Census region.</p>
             <PlacePart part="region" />
             <PlacePart part="legend" />
             <div className="plot" style={{"marginTop":"18px"}}>

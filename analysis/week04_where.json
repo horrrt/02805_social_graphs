@@ -152,6 +152,27 @@
    }
   }
  ],
+ "alternatives": [
+  {
+   "groups": 2,
+   "runs": 35,
+   "Q": 0.057,
+   "communities": [
+    {
+     "id": 0,
+     "metros": 12,
+     "colour": 1,
+     "label": "New York, Dallas and 10 more"
+    },
+    {
+     "id": 1,
+     "metros": 28,
+     "colour": 2,
+     "label": "Houston, Philadelphia and 26 more"
+    }
+   ]
+  }
+ ],
  "longhaul": {
   "backbone_links": 180,
   "threshold_km": 1500,
