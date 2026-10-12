@@ -93,7 +93,7 @@ export function minis({ facts: f }) {
     1: [{ domain: [0, n], real: f.names.first_linked_no_names, realLabel: `${f.names.first_linked_no_names} without names`,
       ref: f.names.first_linked, refLabel: `${f.names.first_linked} with`, aria: `Closest page linked: ${f.names.first_linked} of ${n} with names, ${f.names.first_linked_no_names} without` },
     `pages whose closest page is linked with them, of ${n}`],
-    2: [{ domain: [0, 5], real: f.names.hits, realLabel: two(f.names.hits), base: [f.null.mean, f.null.sd], baseLabel: `other words ${two(f.null.mean)}`,
+    2: [{ domain: [0, 5], real: f.names.hits, realLabel: two(f.names.hits), base: [f.null.mean, f.null.sd], baseLabel: `matched removal ${two(f.null.mean)}`,
       aria: `Names removed ${two(f.names.hits)} linked in ten, against ${two(f.null.mean)} when as many other words are removed` },
     `linked in ten without names, TF-IDF ${two(f.course.tfidf)}`],
     3: [{ domain: [0, 1], real: g.no_names.slots_to_women, realLabel: pct(g.no_names.slots_to_women), ref: g.female / n,
@@ -197,7 +197,7 @@ export function pickNote(data, index) {
   const [kept] = neighbourRows(data, index, "kept");
   const [removed] = neighbourRows(data, index, "removed");
   const why = PICK_WHY[data.names[index]] ? `${PICK_WHY[data.names[index]]} ` : "";
-  return `${why}${short(data.names[index])}: nearest with names is ${kept.name} (${kept.words.slice(0, 2).join(", ")}); without names, ${removed.name} (${removed.words.slice(0, 2).join(", ")}).`;
+  return `${why}${short(data.names[index])}: nearest with names is ${kept.name}, on ${kept.words.slice(0, 2).join(" and ")}; without names, ${removed.name}, on ${removed.words.slice(0, 2).join(" and ")}.`;
 }
 
 /** The hero's contrast: the first `n` nearest pages of one page, names kept and removed. */

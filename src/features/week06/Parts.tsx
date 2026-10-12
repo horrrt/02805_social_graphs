@@ -141,16 +141,26 @@ function Explorer({ data }: { data: Data }) {
   const picks = useMemo(() => PICKS.map((name: string) => [name, data.names.indexOf(name)] as const).filter(([, i]) => i >= 0), [data]);
   // ?pick=Wolverine opens the explorer on that character, so a reader can link to a pick.
   const [value, setPick] = useState(() => {
-    const asked = new URLSearchParams(window.location.search).get("pick");
-    const at = asked ? options.find((o) => o.name === asked || data.names[o.i] === asked) : undefined;
+    const asked = new URLSearchParams(window.location.search).get("pick")?.toLowerCase();
+    const at = asked ? options.find((o) => o.name.toLowerCase() === asked || data.names[o.i].toLowerCase() === asked) : undefined;
     return String(at ? at.i : Math.max(0, data.names.indexOf(START)));
   });
   const setValue = (next: string) => {
     setPick(next);
     const url = new URL(window.location.href);
     url.searchParams.set("pick", short(data.names[Number(next)]));
+    if (!url.hash) url.hash = "explore";
     window.history.replaceState(null, "", url);
   };
+  // An unknown ?pick falls back to the start page; say so in the address too.
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    const shown = short(data.names[Number(value)]);
+    if (url.searchParams.has("pick") && url.searchParams.get("pick") !== shown) {
+      url.searchParams.set("pick", shown);
+      window.history.replaceState(null, "", url);
+    }
+  }, []);
   const index = Number(value);
   const kept = useMemo(() => neighbourRows(data, index, "kept"), [data, index]);
   const removed = useMemo(() => neighbourRows(data, index, "removed"), [data, index]);

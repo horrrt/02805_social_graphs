@@ -86,7 +86,7 @@ test("the hand-read pairs match their counts", () => {
   assert.equal(storm.bucket, "story");
   const story = n(kept, "story") + n(kept, "mantle");
   says("findings", `Of the ${f.read.n} closest unlinked pairs, ${story} share a story or a title and ${n(kept, "name")} share only a name`);
-  says("closing", `Of the ${f.read.n} most similar pairs that do not link, ${story} still share a story or a title and ${n(kept, "name")} share only a name word`);
+  says("closing", `Of the ${f.read.n} most similar pairs that do not link, ${story} still share a story or a title and ${n(kept, "name")} share only a name word, though ${morituri} of the ${story} are Strikeforce: Morituri pages`);
   assert.equal(f.read.no_names_both_women, f.read.n);
   assert.equal(n(removed, "story") + n(removed, "template"), f.read.n);
   const W = ["Zero", "One", "Two", "Three", "Four"];
@@ -168,7 +168,7 @@ test("the explorer's start and picks are pages in the file", async () => {
 });
 
 test("the explorer's answer and notice match the lists", () => {
-  says("explore", "Without names, the match runs on she and her");
+  says("explore", "Without names, a woman's page matches on she and her, and a man's on whatever words remain");
   assert.doesNotMatch(flatten(block(html, "explore")), /wording of reception sections/);
   assert.doesNotMatch(flatten(block(html, "explore")), /whoever you pick/);
   const women = (rep, name) => data[rep][data.names.indexOf(name)].filter(([j]) => data.gender[j] === "female").length;

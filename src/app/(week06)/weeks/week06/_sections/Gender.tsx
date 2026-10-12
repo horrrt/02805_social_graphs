@@ -21,7 +21,7 @@ export function Gender() {
         section="gender"
         num="3A"
         question="With the names gone, which pages read alike, and why?"
-        answer="Pages about women. They take 48% of all ten-nearest slots and are 17% of the pages, and a woman's list holds 9.2 women in ten against 3.9 for a man's, mostly because TF-IDF weighs she and her far above he and his."
+        answer="Pages about women. They take 48% of all ten-nearest slots and are 17% of the pages, partly because their pages are longer. Within that, a woman's list holds 9.2 women in ten against 3.9 for a man's, mostly because TF-IDF weighs she and her far above he and his."
         layout="below"
         did={
           <TermProse as="p" className="sub" roots={["#gender-did p"]} terms={TERMS} after={[DATA]}>
