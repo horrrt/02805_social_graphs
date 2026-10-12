@@ -13,7 +13,6 @@ import { ESSENTIALS, FILES, START, pair } from "../src/scripts/week06-essentials
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const read = (name) => readFileSync(join(ROOT, name), "utf8");
 const json = (key) => JSON.parse(read(`public/${FILES[key]}`));
-// Both versions of the page quote the same numbers: the house-style page and the data story.
 const PAGE = process.env.W6E_PAGE ?? "out/weeks/week06/essentials/index.html";
 const html = builtPage(PAGE);
 const facts = JSON.parse(read("analysis/week06_essentials.json"));

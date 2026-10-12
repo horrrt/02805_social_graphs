@@ -53,10 +53,7 @@ export default function Page() {
               {" "}
               <a href="../">Week 6 post</a>
               {" "}
-              asks one question with the first half of these tools. The same page is also told as a
-              {" "}
-              <a href="story/">scrolling data story</a>
-              .
+              asks one question with the first half of these tools.
             </p>
           </div>
         </section>

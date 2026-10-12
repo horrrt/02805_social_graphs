@@ -1903,21 +1903,6 @@
       ]
     },
     {
-      "name": "Essentials story",
-      "kind": "week chart",
-      "what": "The eight essentials explorables as a story: toggle or pick, the ranking morphs, a short live note, with sticky chapter progress.",
-      "where": "src/features/week06/EssentialsStory.tsx",
-      "seen_at": "/weeks/week06/essentials/story/",
-      "week": 6,
-      "concepts": [
-        "search-tfidf",
-        "topic-models",
-        "word-context",
-        "embeddings",
-        "comparing-groups"
-      ]
-    },
-    {
       "name": "Give Baymax a voice",
       "kind": "game",
       "what": "Add one link to Baymax, who has no incoming links, choose its direction, and see how many articles can then find him or he can reach, across two missions and a replay.",
