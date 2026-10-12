@@ -90,6 +90,15 @@ export default function PathQuest({
   const mapSpec = (all: boolean) => {
     const shown = all ? Array.from({ length: n }, (_, v) => v) : [...seen].sort((a, b) => a - b);
     const target = quest.target;
+    // Mid-run only the pages seen are drawn; zoom in on them (at most 3x) so a short route fills the map.
+    const pts = shown.map((v) => at[v] ?? [0.5, 0.5]);
+    const [x0, x1] = [Math.min(...pts.map((p) => p[0])), Math.max(...pts.map((p) => p[0]))];
+    const [y0, y1] = [Math.min(...pts.map((p) => p[1])), Math.max(...pts.map((p) => p[1]))];
+    const zoom = all ? 1 : Math.min(3, 0.92 / (Math.max(x1 - x0, y1 - y0) || 1));
+    const fit = (v: number, axis: 0 | 1) => {
+      const p = at[v]?.[axis] ?? 0.5;
+      return all ? p : 0.5 + (p - (axis ? (y0 + y1) / 2 : (x0 + x1) / 2)) * zoom;
+    };
     return {
       ratio: RATIO,
       directed: true,
@@ -97,8 +106,8 @@ export default function PathQuest({
       labels: "beside" as const,
       nodes: shown.map((v) => ({
         id: v,
-        x: 0.1 + (at[v]?.[0] ?? 0.5) * 0.8,
-        y: 0.05 * RATIO + (at[v]?.[1] ?? 0.5) * 0.9 * RATIO,
+        x: 0.1 + fit(v, 0) * 0.8,
+        y: 0.05 * RATIO + fit(v, 1) * 0.9 * RATIO,
         label: name(v),
         state: v === here(quest) && !all ? ("picked" as const) : v === target || v === quest.home ? ("ring" as const) : stood.has(v) ? ("new" as const) : undefined,
       })),

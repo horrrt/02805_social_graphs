@@ -2,7 +2,7 @@
 // typed in (Krackhardt's kite and Zachary's karate club, as networkx ships
 // them) and the seeded layouts the demos draw them with. Nothing here is a
 // result of this project.
-import { forceLayout, mulberry32 } from "@/kit/graph-core";
+import { forceLayout, mulberry32, separate } from "@/kit/graph-core";
 import type { Point } from "@/kit/NetCanvas";
 
 export type Edge = [number, number];
@@ -28,9 +28,9 @@ export const KARATE: Edge[] = [
 ];
 
 let karateAt: Point[] | null = null;
-/** The club laid out once per page (seeded), in the unit square. */
+/** The club laid out once per page (seeded), in the unit square, with no two members' discs touching. */
 export function karateLayout(): Point[] {
-  karateAt ??= forceLayout(34, KARATE, { rng: mulberry32(34), iterations: 200 }) as Point[];
+  karateAt ??= separate(forceLayout(34, KARATE, { rng: mulberry32(34), iterations: 200 }), 0.1) as Point[];
   return karateAt;
 }
 
