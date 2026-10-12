@@ -251,6 +251,7 @@ function NullStats() {
 
 const REGIONS = [
   { value: "communities", label: "Communities", dataAttr: { name: "place-region", value: "communities" } },
+  { value: "split", label: "Two groups", dataAttr: { name: "place-region", value: "split" } },
   { value: "census", label: "Census regions", dataAttr: { name: "place-region", value: "census" } },
 ];
 
@@ -259,6 +260,9 @@ function RegionServer() {
     <div className="axis-modes" role="group" aria-label="Colour cities by">
       <button aria-pressed="true" data-place-region="communities" type="button">
         Communities
+      </button>{" "}
+      <button aria-pressed="false" data-place-region="split" type="button">
+        Two groups
       </button>{" "}
       <button aria-pressed="false" data-place-region="census" type="button">
         Census regions

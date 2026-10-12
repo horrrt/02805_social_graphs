@@ -107,8 +107,16 @@ export const PLACE_TOKENS = [
   "--w4-grid",
 ];
 
+// The split Louvain finds second most often (week04_where.py "alternatives").
+const altSplit = (m) => m.data.alternatives?.[0] ?? null;
+
 function colourFor(m, state, T, city) {
   if (state.regionMode === "census") return m.data.census_colours[city.census] ?? MUTE;
+  if (state.regionMode === "split") {
+    const a = altSplit(m);
+    const g = a?.member[city.id];
+    return g === undefined ? MUTE : groups(T)[a.communities[g].colour] ?? MUTE;
+  }
   return groups(T)[city.community] ?? MUTE;
 }
 
@@ -309,9 +317,9 @@ export function usMapOption(m, state, T, colourMode = "metric") {
 
 /** #place-region-legend: the chips under the region toggle. */
 export function legendChips(m, state, T) {
-  return state.regionMode === "census"
-    ? Object.entries(m.data.census_colours).map(([label, colour]) => ({ label, colour }))
-    : m.data.communities.map((c) => ({ label: c.label, colour: groups(T)[c.id] ?? MUTE }));
+  if (state.regionMode === "census") return Object.entries(m.data.census_colours).map(([label, colour]) => ({ label, colour }));
+  if (state.regionMode === "split") return (altSplit(m)?.communities ?? []).map((c) => ({ label: c.label, colour: groups(T)[c.colour] ?? MUTE }));
+  return m.data.communities.map((c) => ({ label: c.label, colour: groups(T)[c.id] ?? MUTE }));
 }
 
 /** #chart-backbone: the links the disparity filter keeps at the α on show. */
