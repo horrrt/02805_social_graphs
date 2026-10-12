@@ -69,8 +69,8 @@ export function Closing() {
               </b>
               {" "}
               TF-IDF and cosine on the 303 pages; names removed, or kept alone, by the brief's capital-letter rule; 20
-              removals of other words matched on rarity; 1,000 shuffles of Wikidata's gender labels; undirected network distances; 50 pairs read by
-              hand (
+              removals of other words matched on rarity; 1,000 shuffles of Wikidata's gender labels; undirected network distances; 50 pairs read
+              against their pages (
               <a href={`${CODE}week06_pairs_read.parquet`}>week06_pairs_read.parquet</a>
               ).
             </li>

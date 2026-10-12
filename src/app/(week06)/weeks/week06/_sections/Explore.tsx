@@ -23,7 +23,7 @@ export function Explore() {
         layout="below"
         did={
           <TermProse as="p" className="sub" roots={["#explore-did p"]} terms={TERMS} after={[DATA]}>
-            Pick a character. The left column lists the ten pages whose TF-IDF weights point closest to its page, by cosine; the right column does the same with every name taken out. Pages about women are tinted. Each row gives the character's gender where Wikidata has one, whether the two pages are linked or how many steps apart they sit, the cosine, and the words that add most to the match.
+            Pick a character. Left, the ten pages whose TF-IDF weights point closest to its page, by cosine; right, the same with every name taken out. Each row says whether the two pages link or how many steps apart they sit, gives the cosine, and lists the three words that add most to the match.
           </TermProse>
         }
         surprise={
@@ -36,7 +36,7 @@ export function Explore() {
         <Drawers variant="foot">
           <Drawer label="Method">
             <p>
-              Words are runs of letters in any alphabet with one inner apostrophe kept, lowercased: the course's rule, recovered by matching every page length in its lookalikes data. A word's weight on a page is its count over the page's length, times ln(303 / the number of pages that use it). The words behind a match are the four with the largest product of their weights on the two pages.
+              Words are runs of letters in any alphabet with one inner apostrophe kept, lowercased: the course's rule, recovered by matching every page length in its lookalikes data. A word's weight on a page is its count over the page's length, times ln(303 / the number of pages that use it). The words behind a match are the three with the largest product of their weights on the two pages.
             </p>
             <p id="explore-limit">
               TF-IDF reads each word on its own, so it cannot tell Storm the codename from Storm the surname. A static word vector, from the brief's second half, gives storm one vector too; telling the two apart needs the sentence around the word.
