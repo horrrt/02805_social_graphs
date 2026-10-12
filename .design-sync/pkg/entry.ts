@@ -52,3 +52,5 @@ export { LEVELS } from "../../src/features/cold-read/levels";
 // own JSON on the live site.
 export { Part as LookalikesPart } from "../../src/features/week06/Parts";
 export { Essential as EssentialsPart } from "../../src/features/week06/Essentials";
+export { default as EssentialsCard } from "./week06/EssentialsCard";
+export { default as EssentialsPage } from "./week06/EssentialsPage";

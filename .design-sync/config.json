@@ -47,7 +47,9 @@
     "MixDesk": "../../src/features/cold-read/MixDesk.tsx",
     "HotCold": "../../src/features/cold-read/HotCold.tsx",
     "LookalikesPart": "../../src/features/week06/Parts.tsx",
-    "EssentialsPart": "../../src/features/week06/Essentials.tsx"
+    "EssentialsPart": "../../src/features/week06/Essentials.tsx",
+    "EssentialsCard": "week06/EssentialsCard.tsx",
+    "EssentialsPage": "week06/EssentialsPage.tsx"
   },
   "provider": {
     "component": "CorridorRoot"
@@ -57,7 +59,9 @@
     "CorridorRoot": "setup/CorridorRoot.md",
     "ColdReadRoot": "setup/ColdReadRoot.md",
     "LookalikesPart": "setup/LookalikesPart.md",
-    "EssentialsPart": "setup/EssentialsPart.md"
+    "EssentialsPart": "setup/EssentialsPart.md",
+    "EssentialsCard": "week06/EssentialsCard.md",
+    "EssentialsPage": "week06/EssentialsPage.md"
   },
   "readmeHeader": ".design-sync/conventions.md",
   "overrides": {
@@ -195,6 +199,13 @@
     },
     "EssentialsPart": {
       "cardMode": "column"
+    },
+    "EssentialsCard": {
+      "cardMode": "column"
+    },
+    "EssentialsPage": {
+      "cardMode": "single",
+      "viewport": "1400x900"
     }
   },
   "guidelinesGlob": [

@@ -146,3 +146,12 @@ As found:
 - `pkg/tsconfig.json` maps `@/kit` to `src/kit/index.ts`: the bundler's path plugin does not resolve
   a folder to its index, and the Week 6 parts import the kit that way.
 - `PairsRead` (25 rows) runs past its card and scrolls there; kept, as the drawer shows it whole.
+
+## Fifth pass (12 Oct): the essentials page whole
+
+- `pkg/week06/EssentialsCard.tsx` renders one section of `/weeks/week06/essentials/` by part (the
+  page's own `_sections/Sections.tsx`: opener, question card, "Compared to what", the explorable in
+  its Plot, the Method drawer); `pkg/week06/EssentialsPage.tsx` renders the page's default export
+  (topbar to footer). Both sit in `pkg/week06/` so the pane groups them with `EssentialsPart`.
+- They import route files from `src/app/(week06essentials)/`; a moved route breaks the build here
+  first. The page story is a `single` card at 1400x900; the card itself is 9,618px tall.
