@@ -20,8 +20,8 @@ export function Gender() {
       <QuestionCard
         section="gender"
         num="3A"
-        question="With the names gone, what makes two pages read alike?"
-        answer="Pages about women. They take 48% of all ten-nearest slots and are 17% of the pages, and a woman's list holds 9.2 women in ten against 3.9 for a man's."
+        question="With the names gone, which pages read alike, and why?"
+        answer="Pages about women. They take 48% of all ten-nearest slots and are 17% of the pages, and a woman's list holds 9.2 women in ten against 3.9 for a man's, mostly because TF-IDF weighs she and her far above he and his."
         layout="below"
         did={
           <TermProse as="p" className="sub" roots={["#gender-did p"]} terms={TERMS} after={[DATA]}>
@@ -30,14 +30,14 @@ export function Gender() {
         }
         surprise={
           <Notice icon="💡" headline="What to notice">
-            Left, the lean: it survives removing he and she (48% to 44%). Women's pages are longer and long pages sit in more lists, but at equal length a woman's page still sits in 12.6 more lists (p = 0.01). Right, the quirk: he and his sit on nearly every page, so TF-IDF gives them almost no weight while she and her keep theirs; removing the pronouns cuts the gap from 51 to 13 points.
+            Left, the lean: it survives removing he and she (48% to 44%), so the pronouns do not explain it. Right, the quirk: he and his sit on nearly every page, so TF-IDF gives them almost no weight while she and her keep theirs; removing the pronouns cuts the gap from 51 to 13 points.
           </Notice>
         }
         figure={
           <div className="w5-two">
             <Plot
               title="Pages about women in everyone's ten nearest"
-              note="Share of all 3,030 ten-nearest slots that go to the 52 pages about women. Dashed line: their share of the 303 pages."
+              note="Share of all 3,030 ten-nearest slots that go to the 52 pages about women. Dashed line: their share of the 303 pages. Women's pages are longer and long pages sit in more lists, but at equal length a woman's page still sits in 12.6 more lists (p = 0.01)."
             >
               <Part part="lean" />
             </Plot>
