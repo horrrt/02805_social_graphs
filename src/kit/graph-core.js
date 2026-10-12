@@ -411,6 +411,34 @@ export function forceLayout(n, edges, opts = {}) {
   return normalise(pos);
 }
 
+/**
+ * Positions pushed apart until no two sit closer than `gap` (in the unit
+ * square), then fitted back into it: a force layout keeps the shape, this
+ * keeps a node's disc and label clear of its neighbours'. Deterministic.
+ */
+export function separate(pos, gap = 0.06, rounds = 60) {
+  const out = pos.map(([x, y]) => [x, y]);
+  for (let round = 0; round < rounds; round++) {
+    let moved = false;
+    for (let i = 0; i < out.length; i++)
+      for (let j = i + 1; j < out.length; j++) {
+        let dx = out[j][0] - out[i][0];
+        let dy = out[j][1] - out[i][1];
+        let d = Math.hypot(dx, dy);
+        if (d >= gap) continue;
+        if (d < 1e-9) [dx, dy, d] = [1e-3 * (j - i), 1e-3, Math.hypot(1e-3 * (j - i), 1e-3)];
+        const push = (gap - d) / 2 / d;
+        out[i][0] -= dx * push;
+        out[i][1] -= dy * push;
+        out[j][0] += dx * push;
+        out[j][1] += dy * push;
+        moved = true;
+      }
+    if (!moved) break;
+  }
+  return normalise(out);
+}
+
 /** Positions moved and scaled, keeping their shape, to fill the unit square with a small margin. */
 export function normalise(pos) {
   if (pos.length === 0) return pos;

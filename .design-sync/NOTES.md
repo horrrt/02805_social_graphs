@@ -123,7 +123,13 @@ can't write to it.
   opened offline shows the rounds' "did not load" notes.
 - Grades for the 49 new components live in `.design-sync/.cache/review/*.grade.json` (gitignored).
 
-## Component gaps found (third pass, site code, not fixed here)
+## Component gaps found (third pass), fixed in the follow-up PR
+
+All three below were fixed on 12 Oct: `separate()` in graph-core pushes the karate layout's
+nodes apart, ComponentGallery scales its node radius with the component's size, and PathQuest
+zooms its mid-run map to the pages seen. The PathQuest card shows both its start and a mid-run.
+
+As found:
 
 - `PartitionEditor` on `karateNodes(0.62)`: nodes 32/33, 8/30 and 3/7 overlap and hide their
   labels, on the kit page as in the card.

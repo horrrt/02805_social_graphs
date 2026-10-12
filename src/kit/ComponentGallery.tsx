@@ -25,6 +25,8 @@ function TileView({ part, index, labels, title, colour }: { part: Part; index: n
     return {
       ratio: 1,
       width: 240,
+      // A tile is about 200px of drawing: 7px discs fill it past a dozen nodes, so they shrink with the count.
+      radius: Math.max(2.5, Math.min(7, 26 / Math.sqrt(size))),
       nodes: part.nodes.map((v, i) => ({ id: v, x: 0.08 + pos[i][0] * 0.84, y: 0.08 + pos[i][1] * 0.84, group: colour, title: labels?.[v] })),
       links: part.edges.map(([a, b]) => ({ source: part.nodes[a], target: part.nodes[b] })),
       aria: `${title}: ${counts(part)}`,
