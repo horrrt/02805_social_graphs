@@ -19,7 +19,7 @@ export function Explore() {
         section="explore"
         num="1A"
         question="Which pages read most like a character, and why?"
-        answer="With names kept, pages that share a name, a team or a title with it. Without names, the match runs on she, her and the wording of reception sections; section 3 measures where that leads."
+        answer="With names kept, pages that share a name, a team or a title with it. Without names, the match runs on she and her; section 3 measures where that leads."
         layout="below"
         did={
           <TermProse as="p" className="sub" roots={["#explore-did p"]} terms={TERMS} after={[DATA]}>

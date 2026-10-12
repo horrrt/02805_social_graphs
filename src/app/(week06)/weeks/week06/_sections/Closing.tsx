@@ -10,7 +10,7 @@ const CODE = "https://github.com/horrrt/02805_social_graphs/blob/main/analysis/"
 export function Closing() {
   return (
     <PostSection id="closing" owner="Gyula">
-      <SectionOpener num="✓" title="Closing">Two Marvel pages read alike mostly because they share names, and names are where Wikipedia puts its links.</SectionOpener>
+      <SectionOpener num="✓" title="Closing">Two Marvel pages read alike mostly because they share names, and a shared name usually marks a shared story or a link.</SectionOpener>
       <ClosingCard
         takeaway={
           <>
@@ -45,7 +45,7 @@ export function Closing() {
           </>
         }
       >
-        <QaDisclosure id="methods" cue="Methods, data and AI use">
+        <QaDisclosure id="methods" cue="Methods and data">
           <p className="sub">
             Data: the course's snapshot of the 303 pages, their node table and their links, frozen on 26 August 2026
             and checked against a SHA-256 hash on every load, and Wikidata's sex or gender for each page's item, fetched

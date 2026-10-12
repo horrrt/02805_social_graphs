@@ -11,9 +11,9 @@ export const PICKS = ["Storm (Marvel Comics)", "Emma Frost", "Wolverine (charact
 
 /** Why each chip is there, shown in the note under the picker when that page is picked. */
 export const PICK_WHY = {
-  "Storm (Marvel Comics)": "The course brief's own example.",
+  "Storm (Marvel Comics)": "Her codename is the Human Torch's surname.",
   "Emma Frost": "Her surname is Jack Frost's codename.",
-  "Wolverine (character)": "Where the course's explorer starts.",
+  "Wolverine (character)": "A man whose list keeps six men once names go.",
   "Backhand (character)": "A Strikeforce: Morituri page; the team's pages copy one lead sentence.",
 };
 

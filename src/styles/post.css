@@ -2864,7 +2864,7 @@
 .corridor .w6e-grid { border-collapse: collapse; font-size: var(--fs-small); font-variant-numeric: tabular-nums; }
 .corridor .w6e-grid th, .corridor .w6e-grid td { border-bottom: 1px solid var(--line-soft); padding: 4px 8px; text-align: right; }
 .corridor .w6e-grid th[scope="row"] { text-align: left; }
-.corridor .w6e-grid td.w6e-zero { color: var(--ink-mute); }
+.corridor .w6e-grid td.w6e-zero { color: var(--ink-mute-text); }
 .corridor .w6e-topics { list-style: none; margin: 0 0 14px; padding: 0; }
 .corridor .w6e-topics li { border: 1px dashed var(--line); border-radius: 8px; display: grid; font-size: var(--fs-small); gap: 12px; grid-template-columns: 70px 1fr auto; margin: 0 0 6px; padding: 6px 10px; }
 .corridor .w6e-topics li.w6e-kept { border-style: solid; border-color: var(--w4-accent); }

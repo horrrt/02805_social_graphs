@@ -168,7 +168,8 @@ test("the explorer's start and picks are pages in the file", async () => {
 });
 
 test("the explorer's answer and notice match the lists", () => {
-  says("explore", "Without names, the match runs on she, her and the wording of reception sections");
+  says("explore", "Without names, the match runs on she and her");
+  assert.doesNotMatch(flatten(block(html, "explore")), /wording of reception sections/);
   assert.doesNotMatch(flatten(block(html, "explore")), /whoever you pick/);
   const women = (rep, name) => data[rep][data.names.indexOf(name)].filter(([j]) => data.gender[j] === "female").length;
   const men = (rep, name) => data[rep][data.names.indexOf(name)].filter(([j]) => data.gender[j] === "male").length;

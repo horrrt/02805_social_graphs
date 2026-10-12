@@ -14,7 +14,8 @@ export function Hero() {
         <>
           <b>When two Marvel pages read alike, is it a shared name, a shared story, or Wikipedia's template?</b>
           {" "}
-          Mostly a shared name, and names are where Wikipedia puts its links. Take the names out and most lists
+          Mostly a shared name, and a shared name usually marks a shared story: names are where Wikipedia puts
+          its links. Take the names out and most lists
           shift toward pages about women. We weighted the words of all 303 pages, found each page's
           ten nearest, and looked again without the names.
         </>
