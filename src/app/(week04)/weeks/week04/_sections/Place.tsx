@@ -237,7 +237,7 @@ export function Place() {
         <div className="w4-two">
           <div>
             <p className="sub">
-              The groups follow how much of a city's hiring runs through consulting and IT-services firms.
+              This card uses Louvain's three groups (3 on the map's group control): they follow how much of a city's hiring runs through consulting and IT-services firms.
             </p>
             <div className="notice">
               <span className="ico">💡</span>
@@ -276,7 +276,7 @@ export function Place() {
             </Drawers>
           </div>
           <div className="plot">
-            <h3>How well each labelling matches the Louvain groups</h3>
+            <h3>How well each labelling matches Louvain's three groups</h3>
             <p className="axis-note">
               Each bar is the
               {" "}
@@ -285,7 +285,7 @@ export function Place() {
               </GlossTerm>
               {" "}
               between
-              the Louvain groups and one labelling.
+              Louvain's three groups and one labelling.
               Orange bars describe who hires, grey bars where the city is.
             </p>
             <QuestionPart part="whereWho" />
