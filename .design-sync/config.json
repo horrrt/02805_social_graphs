@@ -37,14 +37,23 @@
     "BrandMark": "../../src/components/site/BrandMark.tsx",
     "PostTopbar": "../../src/components/site/PostTopbar.tsx",
     "SiteFooter": "../../src/components/site/SiteFooter.tsx",
-    "SkipLink": "../../src/components/site/SkipLink.tsx"
+    "SkipLink": "../../src/components/site/SkipLink.tsx",
+    "ColdReadRoot": "setup/ColdReadRoot.tsx",
+    "Frame": "../../src/features/cold-read/Frame.tsx",
+    "Campaign": "../../src/features/cold-read/Campaign.tsx",
+    "ClueShop": "../../src/features/cold-read/ClueShop.tsx",
+    "WhoseLine": "../../src/features/cold-read/WhoseLine.tsx",
+    "Tezguino": "../../src/features/cold-read/Tezguino.tsx",
+    "MixDesk": "../../src/features/cold-read/MixDesk.tsx",
+    "HotCold": "../../src/features/cold-read/HotCold.tsx"
   },
   "provider": {
     "component": "CorridorRoot"
   },
   "docsDir": "gen/docs",
   "docsMap": {
-    "CorridorRoot": "setup/CorridorRoot.md"
+    "CorridorRoot": "setup/CorridorRoot.md",
+    "ColdReadRoot": "setup/ColdReadRoot.md"
   },
   "readmeHeader": ".design-sync/conventions.md",
   "overrides": {
@@ -93,6 +102,88 @@
       "cardMode": "column"
     },
     "PostTopbar": {
+      "cardMode": "column"
+    },
+    "ColdReadRoot": {
+      "cardMode": "column"
+    },
+    "Frame": {
+      "cardMode": "single",
+      "viewport": "1280x900"
+    },
+    "Campaign": {
+      "cardMode": "single",
+      "viewport": "1280x900"
+    },
+    "ClueShop": {
+      "cardMode": "single",
+      "viewport": "1280x900"
+    },
+    "WhoseLine": {
+      "cardMode": "single",
+      "viewport": "1280x900"
+    },
+    "Tezguino": {
+      "cardMode": "single",
+      "viewport": "1280x900"
+    },
+    "MixDesk": {
+      "cardMode": "single",
+      "viewport": "1280x900"
+    },
+    "HotCold": {
+      "cardMode": "single",
+      "viewport": "1280x900"
+    },
+    "AnalogyPlot": {
+      "cardMode": "column"
+    },
+    "AttackGame": {
+      "cardMode": "column"
+    },
+    "AxisMap": {
+      "cardMode": "column"
+    },
+    "Dendrogram": {
+      "cardMode": "column"
+    },
+    "DistributionPlot": {
+      "cardMode": "column"
+    },
+    "FriendshipParadox": {
+      "cardMode": "column"
+    },
+    "GameShell": {
+      "cardMode": "column"
+    },
+    "GrowthLab": {
+      "cardMode": "column"
+    },
+    "GrowthReplay": {
+      "cardMode": "column"
+    },
+    "NullBars": {
+      "cardMode": "column"
+    },
+    "NullBoard": {
+      "cardMode": "column"
+    },
+    "NullHistogram": {
+      "cardMode": "column"
+    },
+    "PartitionEditor": {
+      "cardMode": "column"
+    },
+    "PathQuest": {
+      "cardMode": "column"
+    },
+    "SeatingGame": {
+      "cardMode": "column"
+    },
+    "SweepCurve": {
+      "cardMode": "column"
+    },
+    "VectorAngle": {
       "cardMode": "column"
     }
   },
