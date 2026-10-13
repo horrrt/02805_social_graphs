@@ -7,8 +7,8 @@ import "@/styles/post.css";
 
 const PAGE = {
   path: "weeks/week06/",
-  title: "The Week 6 essentials on 303 Marvel pages · Log–Log Legends",
-  description: "Every term on the Week 6 Essentials list, from TF-IDF to GloVe, used once on the course's 303 Marvel pages, each with an explorable and a baseline. Log–Log Legends.",
+  title: "Here, storm means Ororo, not the weather · Log–Log Legends",
+  description: "Eight ways of reading text, from TF-IDF to GloVe, each tried on the same 303 Marvel pages with an explorable and a baseline. Log–Log Legends.",
 };
 
 export const metadata: Metadata = pageMeta(PAGE);

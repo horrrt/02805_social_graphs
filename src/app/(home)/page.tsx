@@ -135,8 +135,8 @@ export default function Page() {
                 <li>
                   <a data-week="6" className="week-card current" href="weeks/week06/">
                     <span className="week-tag">Week 6 · NLP II</span>
-                    <h3>Seventeen Essentials</h3>
-                    <p className="week-q">Every essential term of Week 6, used once on the 303 Marvel pages, each with a baseline.</p>
+                    <h3>Storm, Not Weather</h3>
+                    <p className="week-q">What do counts, weights and word vectors give away about 303 Marvel pages?</p>
                     <span className="week-go">Read the post →</span>
                   </a>
                 </li>
