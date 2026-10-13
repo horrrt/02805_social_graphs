@@ -1,7 +1,6 @@
 // P0b base scenario for Week 1 (packs.js, cabinet.js): the pack machine, the
-// prediction, the logbook, the collection browser, the charts and the sketch.
+// prediction, the collection browser, the charts and the sketch.
 // Controls inside closed <details> are reached by opening each summary first.
-const LOGBOOK = "loglog-arcade-v1-20260826";
 const evidence = 'summary:has-text("Explore the explanations & evidence")';
 
 export default [
@@ -40,10 +39,6 @@ export default [
       { snap: true, label: "prediction typed" },
       { click: '.guess-form:has(#guess-w1-packs) button[type=submit]', label: "prediction submitted" },
       { snap: true },
-      { click: "#open-logbook" },
-      { snap: true, label: "logbook open" },
-      { click: "#close-logbook" },
-      { snap: true, label: "logbook closed" },
       { click: 'summary:has-text("Browse all 303 cards")' },
       { select: ["#collection-filter", "missing"] },
       { snap: true, label: "filter missing" },
@@ -59,26 +54,6 @@ export default [
       { snap: true, label: "sketch drawn" },
       { click: "#compare-sketch" },
       { snap: true, label: "sketch compared" },
-    ],
-  },
-  {
-    name: "w1-logbook",
-    url: "weeks/week01/",
-    steps: [
-      { click: evidence },
-      { click: 'summary:has-text("Try estimating the number of packs")' },
-      { click: '.guess-form:has(#guess-w1-packs) button[type=submit]', label: "prediction submitted" },
-      { click: "#open-logbook" },
-      { snap: true, label: "logbook open" },
-      { evaluate: "storageEvent", args: [LOGBOOK, JSON.stringify({ attempts: { "w1-packs": { id: "w1-packs", week: 1, prompt: "How many packs?", guess: 900, answer: 1755, score: 50, date: "2026-10-01T12:00:00.000Z" } } })], label: "storage event while open" },
-      { snap: true },
-      { dialog: "dismiss" },
-      { click: "#reset-logbook", label: "reset dismissed" },
-      { snap: true },
-      { dialog: "accept" },
-      { click: "#reset-logbook", label: "reset accepted (reloads)" },
-      { wait: 2500 },
-      { snap: true, label: "after reset reload" },
     ],
   },
 ];

@@ -463,35 +463,6 @@ dialog::backdrop {
   background: #000b;
   backdrop-filter: blur(5px);
 }
-.dialog-top {
-  display: flex;
-  gap: 20px;
-  align-items: start;
-  justify-content: space-between;
-}
-.score-list {
-  padding: 0;
-  list-style: none;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 10px;
-}
-.score-list li {
-  display: flex;
-  flex-direction: column;
-  border: 1px solid var(--line);
-  padding: 14px;
-}
-.score-list span {
-  font-weight: 700;
-  font-size: var(--fs-small);
-  line-height: normal;
-  font-family: var(--font-sans);
-  color: var(--accent);
-}
-.score-list strong {
-  margin: 9px 0;
-}
 .empty {
   color: var(--muted);
   padding: 25px;
@@ -886,9 +857,6 @@ dialog::backdrop {
   .stage {
     height: 330px;
   }
-  .score-list {
-    grid-template-columns: repeat(2, 1fr);
-  }
   .sketch-grid {
     gap: 5px;
   }
@@ -906,9 +874,6 @@ dialog::backdrop {
   .hist-row {
     grid-template-columns: 80px 1fr 45px;
     gap: 8px;
-  }
-  .dialog-top h2 {
-    font-size: var(--fs-h2);
   }
 }
 @media (prefers-reduced-motion: reduce) {

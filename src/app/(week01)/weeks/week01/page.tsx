@@ -1,4 +1,4 @@
-import { ArcadeTools, Logbook } from "@/features/arcade/Chrome";
+import { ArcadeUnlock } from "@/features/arcade/Chrome";
 import { ArcadeFooter, ArcadeNoscript } from "@/features/arcade/Frame";
 import { AppStatus } from "@/features/arcade/Status";
 import { type RailItem, SectionRail } from "@/components/post/SectionRail";
@@ -18,13 +18,13 @@ const RAIL: RailItem[] = [
 ];
 
 // One component per section in _sections/. The arcade islands
-// (src/features/arcade/) paint the bar's tools, the logbook and the loading line;
+// (src/features/arcade/) keep body.unlocked and paint the loading line;
 // Week 1's own islands live in src/features/week01/.
 export default function Page() {
   return (
     <>
       <a className="skip" href="#main">Skip to content</a>
-      <PostTopbar root="../../" current="weeks/week01/" tools={<ArcadeTools />} />
+      <PostTopbar root="../../" current="weeks/week01/" />
       <main className="wrap" id="main">
         <AppStatus file="week01_packs.json" />
         <ArcadeNoscript />
@@ -36,7 +36,7 @@ export default function Page() {
       </main>
       <ArcadeFooter />
       <SectionRail column={1120} items={RAIL} />
-      <Logbook />
+      <ArcadeUnlock />
     </>
   );
 }
