@@ -1,8 +1,10 @@
+import { PostTopbar } from "@/components/site/PostTopbar";
 import { Auditions, Draw, Foot, Null, Receipts, Rig, Snap, Tail, Vitals } from "@/features/screen-test/Sheet";
 
 export default function Page() {
   return (
     <>
+      <PostTopbar root="../../" />
       <div className="sheet">
         <header className="masthead">
           <p className="lbl crumbs">

@@ -266,6 +266,15 @@
   min-height: 44px;
   align-items: center;
 }
+/* The site's top bar (52px) sits above the chrome, so the section rail,
+   fixed at 96px on the corridor pages, starts below both here, and the bar's
+   Posts menu has to clear the chrome's z-index to open over it. */
+.guided-post .w4-rail {
+  top: 164px;
+}
+.guided-post .topbar {
+  z-index: 101;
+}
 @media (max-width: 640px) {
   .guided-post .wrap,
   .guided-lobby .wrap {

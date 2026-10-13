@@ -32,7 +32,7 @@ export { SegmentedControl, type SegmentButton } from "../../src/components/post/
 export { Term, termStore } from "../../src/components/post/Term";
 export { W4Figure } from "../../src/components/post/W4Figure";
 export { BrandMark } from "../../src/components/site/BrandMark";
-export { PostTopbar, type TopbarLink } from "../../src/components/site/PostTopbar";
+export { PostTopbar } from "../../src/components/site/PostTopbar";
 export { SiteFooter } from "../../src/components/site/SiteFooter";
 export { SkipLink } from "../../src/components/site/SkipLink";
 

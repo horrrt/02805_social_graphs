@@ -1,9 +1,11 @@
+import { PostTopbar } from "@/components/site/PostTopbar";
 import { Lab } from "@/features/play/Lab";
 
 export default function Page() {
   return (
     <>
       <a className="skip-link" href="#main">Skip to the mission</a>
+      <PostTopbar root="../" />
       <header className="signal-head wide">
         <a className="brand" href="../" aria-label="Log-Log Legends home">
           <span className="brand-mark" aria-hidden="true">↗</span>

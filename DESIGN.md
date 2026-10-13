@@ -22,6 +22,11 @@ A new post links `type.css`, `corridor.css` and `post.css` and nothing else. A r
 goes into `post.css` (`tests/stylesheets.test.mjs` checks this). The `/styleguide` page shows Week 3's
 palettes and skins live.
 
+Every page opens with the same top bar (`PostTopbar`): the wordmark on the left, the site nav (Home, Posts,
+About) on the right. Its rules are in `topbar.css`, which the component imports, so pages outside the corridor
+family get it too. There it keeps the corridor's light colours and scrolls with the page; on corridor pages
+`corridor.css` maps it to the page's tokens and skin and keeps it stuck to the top.
+
 ## Type
 
 `src/styles/type.css` defines every font size and family. Stylesheets and charts take their type from these

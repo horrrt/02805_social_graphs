@@ -1,3 +1,4 @@
+import { PostTopbar } from "@/components/site/PostTopbar";
 import { CardShell } from "@/features/mockups/CardShell";
 import { EmptyShortlist, Favourite, ReviewInit, Status, Summary, Tools, Viewer } from "@/features/mockups/Review";
 
@@ -5,6 +6,7 @@ export default function Page() {
   return (
     <>
       <a className="skip-link" href="#main">Skip to mockups</a>
+      <PostTopbar root="../" />
       <header className="site-head">
         <div className="wide head-row">
           <a className="brand" href="../" aria-label="Log-Log Legends home">

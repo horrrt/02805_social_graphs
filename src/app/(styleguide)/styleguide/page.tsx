@@ -1,5 +1,5 @@
 import { type RailItem, SectionRail } from "@/components/post/SectionRail";
-import { SiteNav } from "@/components/site/SiteNav";
+import { PostTopbar } from "@/components/site/PostTopbar";
 import { StyleMenu } from "@/features/styleguide/StyleMenu";
 
 // The section rail, drawn here too so the guide shows it under every skin.
@@ -15,27 +15,9 @@ export default function Page() {
   return (
     <>
       <a className="skip" href="#main">Skip to content</a>
-      <div className="topbar">
-        <div className="shell">
-          <a className="brand" href="../">
-            LOG–LOG
-            {" "}
-            <b>LEGENDS</b>
-          </a>
-          {" "}
-          <SiteNav root="../" />
-          <StyleMenu />
-          <nav aria-label="Sections of this guide" className="topnav">
-            <a className="here" href="#tokens">Tokens</a>
-            {" "}
-            <a href="#components">Components</a>
-            {" "}
-            <a href="#skins">Skins</a>
-            {" "}
-            <a href="#palettes">Palettes</a>
-          </nav>
-        </div>
-      </div>
+      <PostTopbar root="../">
+        <StyleMenu />
+      </PostTopbar>
       <main id="main">
         <section className="hero sg-hero" id="hero">
           <div className="shell">

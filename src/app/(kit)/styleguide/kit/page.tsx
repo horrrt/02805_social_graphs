@@ -1,4 +1,5 @@
 import { PostSection } from "@/components/post/PostSection";
+import { PostTopbar } from "@/components/site/PostTopbar";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { Demo } from "@/features/kit-page/demos";
 import { DemoNetworks } from "@/features/kit-page/demos-networks";
@@ -11,6 +12,7 @@ import { DemoGrowth } from "@/features/kit-page/demos-growth";
 export default function Page() {
   return (
     <>
+      <PostTopbar root="../../" />
       <main className="shell" id="main">
         <h1>Components</h1>
         <p className="w5-hint">

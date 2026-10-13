@@ -33,23 +33,7 @@ export default function Page() {
   return (
     <>
       <SkipLink />
-      <PostTopbar
-        root="../../"
-        brandSpace
-        current="weeks/week05/"
-        navLabel="Sections of this post"
-        links={[
-          { href: "#opening", label: "Opening" },
-          { href: "#relations", label: "1" },
-          { href: "#copying", label: "2" },
-          { href: "#search", label: "3" },
-          { href: "#autocomplete", label: "4" },
-          { href: "#heaps", label: "5" },
-          { href: "#fame", label: "6" },
-          { href: "#weird", label: "7" },
-          { href: "#closing", label: "Closing" },
-        ]}
-      />
+      <PostTopbar root="../../" current="weeks/week05/" />
       <main id="main">
         <Hero />
         <SectionRail items={RAIL} />

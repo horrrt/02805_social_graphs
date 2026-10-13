@@ -41,8 +41,9 @@
 
 /* ----------------------------------------------------------------- top bar */
 
-/* The bar is the site's: the same wordmark and site nav as the lobby.
-   Its colours follow the skin, so the terminal skin keeps a dark bar. */
+/* The bar is the site's (topbar.css, imported by PostTopbar.tsx): the same
+   wordmark and site nav on every page. Here its colours follow the skin, so
+   the terminal skin keeps a dark bar, and it stays in view as the post scrolls. */
 @font-face {
   font-family: Condensed;
   src: url("../fonts/barlow-condensed-800.ttf");
@@ -50,194 +51,18 @@
 }
 
 .corridor .topbar {
-  --bar: rgba(255, 255, 255, 0.92);
   --bar-text: var(--ink);
   --bar-muted: var(--ink-soft);
   --bar-line: var(--line);
-  --bar-accent: #14618f;
   --bar-hover: var(--line-soft);
   --bar-here: var(--access-soft);
-  backdrop-filter: saturate(160%) blur(12px);
-  background: var(--bar);
-  border-bottom: 1px solid var(--bar-line);
-  color: var(--bar-text);
-  height: 52px;
+  --bar-menu: var(--card);
+  --bar-menu-hover: var(--line-soft);
+  --bar-menu-here: var(--access-soft);
+  --bar-radius: var(--radius);
   position: sticky;
   top: 0;
   z-index: 40;
-}
-
-.corridor .topbar .shell {
-  align-items: center;
-  display: flex;
-  gap: 22px;
-  height: 100%;
-}
-
-.corridor .brand {
-  color: var(--bar-text);
-  font-family: var(--font-display);
-  font-size: var(--fs-h4);
-  font-weight: 800;
-  letter-spacing: 0.01em;
-  text-decoration: none;
-  white-space: nowrap;
-}
-
-.corridor .brand::before {
-  color: var(--bar-accent);
-  content: "✳";
-  font-size: var(--fs-h3);
-  margin-right: 8px;
-  vertical-align: -2px;
-}
-
-.corridor .brand b {
-  color: var(--bar-accent);
-  font-weight: inherit;
-}
-
-/* Home, Posts and About (SiteNav.tsx). Posts holds a menu of every post,
-   shown on hover and on focus inside it until the island hydrates and sets
-   data-open, which decides from then on. */
-.corridor .site-nav {
-  align-items: center;
-  display: flex;
-  gap: 2px;
-}
-
-.corridor .site-nav a,
-.corridor .site-nav-toggle {
-  border-radius: 999px;
-  color: var(--bar-muted);
-  font-size: var(--fs-body);
-  font-weight: 600;
-  text-decoration: none;
-  white-space: nowrap;
-}
-
-.corridor .site-nav > a,
-.corridor .site-nav-posts > a {
-  padding: 7px 13px;
-}
-
-.corridor .site-nav-posts > a {
-  padding-right: 4px;
-}
-
-.corridor .site-nav > a:hover,
-.corridor .site-nav-posts > a:hover,
-.corridor .site-nav-toggle:hover,
-.corridor .site-nav-posts[data-open="true"] > .site-nav-toggle {
-  background: var(--bar-hover);
-  color: var(--bar-text);
-}
-
-.corridor .site-nav a[aria-current="page"] {
-  background: var(--bar-here);
-  color: var(--bar-accent);
-}
-
-.corridor .site-nav a:focus-visible,
-.corridor .site-nav-toggle:focus-visible {
-  outline: 2px solid var(--bar-accent);
-  outline-offset: 2px;
-}
-
-.corridor .site-nav-posts {
-  align-items: center;
-  display: flex;
-  position: relative;
-}
-
-.corridor .site-nav-toggle {
-  background: none;
-  border: 0;
-  cursor: pointer;
-  font-family: inherit;
-  font-size: var(--fs-small);
-  line-height: 1;
-  padding: 8px 9px;
-}
-
-.corridor .site-nav-menu {
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 18px 44px rgba(15, 35, 64, 0.16);
-  display: none;
-  left: 0;
-  list-style: none;
-  margin: 0;
-  min-width: 240px;
-  padding: 6px;
-  position: absolute;
-  top: calc(100% + 9px);
-  z-index: 60;
-}
-
-/* Bridges the gap above the panel, so the pointer keeps it open on the way down. */
-.corridor .site-nav-menu::before {
-  content: "";
-  height: 10px;
-  left: 0;
-  position: absolute;
-  right: 0;
-  top: -10px;
-}
-
-.corridor .site-nav-posts:not([data-open]):hover > .site-nav-menu,
-.corridor .site-nav-posts:not([data-open]):focus-within > .site-nav-menu,
-.corridor .site-nav-posts[data-open="true"] > .site-nav-menu {
-  display: block;
-}
-
-.corridor .site-nav-menu ul {
-  list-style: none;
-  margin: 0;
-  padding: 0 0 0 14px;
-}
-
-.corridor .site-nav-menu a {
-  border-radius: calc(var(--radius) - 6px);
-  color: var(--ink-soft);
-  display: block;
-  padding: 8px 12px;
-}
-
-.corridor .site-nav-menu a:hover {
-  background: var(--line-soft);
-  color: var(--ink);
-}
-
-.corridor .site-nav-menu a[aria-current="page"] {
-  background: var(--access-soft);
-  color: var(--bar-accent);
-}
-
-.corridor .topnav {
-  display: flex;
-  gap: 4px;
-  margin-left: auto;
-}
-
-.corridor .topnav a {
-  border-radius: 999px;
-  color: var(--bar-muted);
-  font-size: var(--fs-body);
-  font-weight: 600;
-  padding: 7px 13px;
-  text-decoration: none;
-}
-
-.corridor .topnav a:hover {
-  background: var(--bar-hover);
-  color: var(--bar-text);
-}
-
-.corridor .topnav a.here {
-  background: var(--bar-here);
-  color: var(--bar-accent);
 }
 
 /* Sticky topbar is 52px; leave room so section titles are not hidden under it. */

@@ -1,5 +1,6 @@
 import { type RailItem, SectionRail } from "@/components/post/SectionRail";
 import { TermLayer } from "@/components/post/TermLayer";
+import { PostTopbar } from "@/components/site/PostTopbar";
 import { PlacePart } from "@/features/week04/place/Place";
 import { Router } from "@/features/week04/frame/Router";
 import { Beyond } from "./_sections/Beyond";
@@ -12,7 +13,6 @@ import { Hero } from "./_sections/Hero";
 import { Jobs } from "./_sections/Jobs";
 import { Opening } from "./_sections/Opening";
 import { Place } from "./_sections/Place";
-import { Topbar } from "./_sections/Topbar";
 import { Who } from "./_sections/Who";
 
 // The section rail down the left margin: each section with its questions, and the deep dive's topics.
@@ -78,7 +78,7 @@ export default function Page() {
   return (
     <>
       <a className="skip" href="#main">Skip to content</a>
-      <Topbar />
+      <PostTopbar root="../../" current="weeks/week04/" />
       <main id="main">
         {/* Hero: the text, the metro map, the inspector ------------------ */}
         <Hero />

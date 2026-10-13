@@ -20,7 +20,7 @@ site lays it out: the topbar and footer sit outside `<main>`, and the hero runs 
 ```tsx
 <CorridorRoot page>
   <SkipLink />
-  <PostTopbar root="../../" siteLink navLabel="Sections of this post" links={[{ href: "#opening", label: "Opening" }]} />
+  <PostTopbar root="../../" current="weeks/week05/" />
   <main id="main">
     <PostHero id="hero" eyebrow="Week 5" title="…" body={…} caution={…} stats={…} />
     <div className="shell">

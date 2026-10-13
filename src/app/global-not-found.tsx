@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import "@/styles/type.css";
 import "@/styles/corridor.css";
+import { PostTopbar } from "@/components/site/PostTopbar";
 
-// GitHub Pages serves out/404.html for any unknown path, so every URL in it
-// is absolute and carries the base path. It has no layout, so it imports its
-// own stylesheets.
+// GitHub Pages serves out/404.html for any unknown path, so every URL in it,
+// the top bar's included, is absolute and carries the base path. It has no
+// layout, so it imports its own stylesheets.
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 export const metadata: Metadata = {
@@ -16,6 +17,7 @@ export default function GlobalNotFound() {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="corridor">
+        <PostTopbar root={`${BASE}/`} />
         <main id="main" className="shell" style={{ padding: "96px 24px" }}>
           <p className="eyebrow">404</p>
           <h1>No page here</h1>
