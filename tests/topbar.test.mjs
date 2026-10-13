@@ -85,14 +85,9 @@ for (const [route, path] of PAGES) {
 }
 
 for (const week of ["week01", "week02"]) {
-  test(`/weeks/${week}/ keeps its data link and logbook in the bar, before the site nav`, () => {
-    const route = `weeks/${week}/`;
-    const b = bar(builtPage(`out/${route}index.html`));
-    const tools = b.html.match(/<div class="topbar-tools">([\s\S]*?)<\/div><nav class="site-nav"/);
-    assert.ok(tools, "the bar has tools just before the site nav");
-    const data = tools[1].match(/<a href="([^"]*)">The data<\/a>/);
-    assert.ok(data, "The data is in the bar's tools");
-    assert.equal(links(data[0], route)[0], "#top", "The data goes to the top of the home page");
-    assert.match(tools[1], /<button type="button" data-progress="[^"]*" id="open-logbook">LOGBOOK 0\/\d+<\/button>/, "the LOGBOOK button is in the bar's tools");
+  test(`/weeks/${week}/ has no data link or logbook in the bar`, () => {
+    const html = builtPage(`out/weeks/${week}/index.html`);
+    assert.doesNotMatch(bar(html).html, /topbar-tools/, "the bar has no page tools");
+    assert.doesNotMatch(html, />The data<\/a>|id="open-logbook"|<dialog id="logbook"/, "no data link, LOGBOOK button or logbook dialog");
   });
 }
