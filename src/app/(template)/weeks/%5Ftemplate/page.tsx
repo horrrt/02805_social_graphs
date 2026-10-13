@@ -14,17 +14,7 @@ export default function Page() {
   return (
     <>
       <SkipLink />
-      <PostTopbar
-        root="../../"
-        brandSpace
-        navLabel="Sections of this post"
-        links={[
-          { href: "#opening", label: "Opening" },
-          { href: "#first", label: "1" },
-          { href: "#second", label: "2" },
-          { href: "#closing", label: "Closing" },
-        ]}
-      />
+      <PostTopbar root="../../" />
       <main id="main">
         <Hero />
         <div className="shell">

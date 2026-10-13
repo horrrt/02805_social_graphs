@@ -1,0 +1,206 @@
+/* The bar across the top of every page (PostTopbar.tsx): the wordmark on the
+   left, the site nav (Home, Posts and About, SiteNav.tsx) on the right, and
+   any control a page puts between them (Week 3's and the style guide's style
+   menu). PostTopbar imports this sheet, so it reaches pages that do not load
+   corridor.css. Like rail.css, the bar keeps the corridor's light colours on
+   those pages, whose tokens mean other things (Week 1's --ink is white), and
+   follows the page's tokens on corridor pages, skins included (corridor.css
+   maps them and makes the bar sticky there). Elsewhere it sits in the flow
+   and scrolls away, so it never covers a page's own sticky header. Selectors
+   carry .topbar so the base rules of the older sheets (arcade.css's buttons,
+   site.css's .brand) do not reach in. */
+
+.topbar {
+  --bar: rgba(255, 255, 255, 0.92);
+  --bar-text: #0f2340;
+  --bar-muted: #46618a;
+  --bar-line: #dce5f0;
+  --bar-accent: #14618f;
+  --bar-hover: #eaf0f7;
+  --bar-here: #d9ecf9;
+  --bar-menu: #ffffff;
+  --bar-menu-hover: #eaf0f7;
+  --bar-menu-here: #d9ecf9;
+  --bar-radius: 14px;
+  -webkit-font-smoothing: antialiased;
+  backdrop-filter: saturate(160%) blur(12px);
+  background: var(--bar);
+  border-bottom: 1px solid var(--bar-line);
+  box-sizing: border-box;
+  color: var(--bar-text);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  height: 52px;
+  line-height: normal;
+  position: relative;
+  z-index: 40;
+}
+
+.topbar *,
+.topbar *::before,
+.topbar *::after {
+  box-sizing: border-box;
+}
+
+.topbar > .shell {
+  align-items: center;
+  display: flex;
+  gap: 22px;
+  height: 100%;
+  margin: 0 auto;
+  max-width: 1180px;
+  padding: 0 24px;
+}
+
+.topbar .brand {
+  color: var(--bar-text);
+  display: block;
+  font-family: var(--font-display);
+  font-size: var(--fs-h4);
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  line-height: normal;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.topbar .brand::before {
+  color: var(--bar-accent);
+  content: "✳";
+  font-size: var(--fs-h3);
+  margin-right: 8px;
+  vertical-align: -2px;
+}
+
+.topbar .brand b {
+  color: var(--bar-accent);
+  font-weight: inherit;
+}
+
+/* Home, Posts and About. Posts holds a menu of every post, shown on hover and
+   on focus inside it until the island hydrates and sets data-open, which
+   decides from then on. */
+.topbar .site-nav {
+  align-items: center;
+  display: flex;
+  gap: 2px;
+  margin-left: auto;
+}
+
+.topbar .site-nav a,
+.topbar .site-nav-toggle {
+  border-radius: 999px;
+  color: var(--bar-muted);
+  font-size: var(--fs-body);
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.topbar .site-nav > a,
+.topbar .site-nav-posts > a {
+  padding: 7px 13px;
+}
+
+.topbar .site-nav-posts > a {
+  padding-right: 4px;
+}
+
+.topbar .site-nav > a:hover,
+.topbar .site-nav-posts > a:hover,
+.topbar .site-nav-toggle:hover,
+.topbar .site-nav-posts[data-open="true"] > .site-nav-toggle {
+  background: var(--bar-hover);
+  color: var(--bar-text);
+}
+
+.topbar .site-nav a[aria-current="page"] {
+  background: var(--bar-here);
+  color: var(--bar-accent);
+}
+
+.topbar .site-nav a:focus-visible,
+.topbar .site-nav-toggle:focus-visible {
+  outline: 2px solid var(--bar-accent);
+  outline-offset: 2px;
+}
+
+.topbar .site-nav-posts {
+  align-items: center;
+  display: flex;
+  position: relative;
+}
+
+.topbar .site-nav-toggle {
+  align-items: center;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  display: flex;
+  filter: none;
+  font-family: inherit;
+  font-size: var(--fs-small);
+  line-height: 1;
+  min-height: 0;
+  padding: 8px 9px;
+}
+
+/* The nav sits at the right edge, so the menu opens leftwards from Posts. */
+.topbar .site-nav-menu {
+  background: var(--bar-menu);
+  border: 1px solid var(--bar-line);
+  border-radius: var(--bar-radius);
+  box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 18px 44px rgba(15, 35, 64, 0.16);
+  display: none;
+  list-style: none;
+  margin: 0;
+  min-width: 240px;
+  padding: 6px;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 9px);
+  z-index: 60;
+}
+
+/* Bridges the gap above the panel, so the pointer keeps it open on the way down. */
+.topbar .site-nav-menu::before {
+  content: "";
+  height: 10px;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: -10px;
+}
+
+.topbar .site-nav-posts:not([data-open]):hover > .site-nav-menu,
+.topbar .site-nav-posts:not([data-open]):focus-within > .site-nav-menu,
+.topbar .site-nav-posts[data-open="true"] > .site-nav-menu {
+  display: block;
+}
+
+.topbar .site-nav-menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 14px;
+}
+
+.topbar .site-nav-menu li {
+  margin: 0;
+}
+
+.topbar .site-nav-menu a {
+  border-radius: calc(var(--bar-radius) - 6px);
+  color: var(--bar-muted);
+  display: block;
+  padding: 8px 12px;
+}
+
+.topbar .site-nav-menu a:hover {
+  background: var(--bar-menu-hover);
+  color: var(--bar-text);
+}
+
+.topbar .site-nav-menu a[aria-current="page"] {
+  background: var(--bar-menu-here);
+  color: var(--bar-accent);
+}

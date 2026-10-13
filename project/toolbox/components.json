@@ -597,7 +597,7 @@
     {
       "name": "PostTopbar",
       "kind": "post component",
-      "what": "The bar across the top of a post: the brand, the All posts link and the section links.",
+      "what": "The bar across the top of every page: the brand on the left and the site nav (Home, Posts, About) on the right.",
       "where": "src/components/site/PostTopbar.tsx",
       "seen_at": "/weeks/week05/",
       "week": null,

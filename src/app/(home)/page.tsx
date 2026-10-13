@@ -1,19 +1,10 @@
-import { SiteNav } from "@/components/site/SiteNav";
+import { PostTopbar } from "@/components/site/PostTopbar";
 
 export default function Page() {
   return (
     <>
       <a className="skip" href="#main">Skip to content</a>
-      <div className="topbar">
-        <div className="shell">
-          <a className="brand" href="./">
-            LOG–LOG
-            {" "}
-            <b>LEGENDS</b>
-          </a>
-          <SiteNav root="./" current="home" />
-        </div>
-      </div>
+      <PostTopbar root="./" current="home" />
       <main id="main">
         <section className="hero home-hero" id="top">
           <div className="shell">

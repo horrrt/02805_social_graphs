@@ -19,8 +19,7 @@ coloured by community, tables of counts, and quoted text evidence. Every compone
 ```tsx
 <CorridorRoot page>
   <SkipLink />
-  <PostTopbar root="../../" siteLink navLabel="Sections of this post"
-    links={[{ href: "#opening", label: "Opening" }, { href: "#relations", label: "1" }]} />
+  <PostTopbar root="../../" current="weeks/week05/" />
   <main id="main">
     <PostHero id="hero" eyebrow="…" title="…" body={…} caution={…} stats={<HeroStat value="303" label="pages" />} />
     <div className="shell">

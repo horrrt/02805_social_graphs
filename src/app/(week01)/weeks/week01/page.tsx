@@ -2,6 +2,7 @@ import { ArcadeChrome, Logbook } from "@/features/arcade/Chrome";
 import { ArcadeFooter, ArcadeNoscript } from "@/features/arcade/Frame";
 import { AppStatus } from "@/features/arcade/Status";
 import { type RailItem, SectionRail } from "@/components/post/SectionRail";
+import { PostTopbar } from "@/components/site/PostTopbar";
 import { Evidence } from "./_sections/Evidence";
 import { Hero } from "./_sections/Hero";
 import { Post } from "./_sections/Post";
@@ -23,6 +24,7 @@ export default function Page() {
   return (
     <>
       <a className="skip" href="#main">Skip to content</a>
+      <PostTopbar root="../../" current="weeks/week01/" />
       <ArcadeChrome />
       <main className="wrap" id="main">
         <AppStatus file="week01_packs.json" />

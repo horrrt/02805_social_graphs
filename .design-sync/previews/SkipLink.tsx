@@ -11,18 +11,7 @@ export const Focused = () => {
   return (
     <div ref={ref} style={{ position: "relative", paddingTop: 56 }}>
       <SkipLink />
-      <PostTopbar
-        root="../../"
-        brandSpace
-        siteLink
-        navLabel="Sections of this post"
-        links={[
-          { href: "#opening", label: "Opening" },
-          { href: "#first", label: "1" },
-          { href: "#second", label: "2" },
-          { href: "#closing", label: "Closing" },
-        ]}
-      />
+      <PostTopbar root="../../" />
     </div>
   );
 };

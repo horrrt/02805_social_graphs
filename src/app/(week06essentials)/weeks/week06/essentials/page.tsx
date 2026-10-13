@@ -31,16 +31,7 @@ export default function Page() {
   return (
     <>
       <SkipLink />
-      <PostTopbar
-        root="../../../"
-        brandSpace
-        current="weeks/week06/essentials/"
-        navLabel="Sections of this page"
-        links={[
-          ...SECTIONS.map(([id, num, label]) => ({ href: `#${id}`, label: num, name: `${num}: ${label}` })),
-          { href: "#closing", label: "Closing" },
-        ]}
-      />
+      <PostTopbar root="../../../" current="weeks/week06/essentials/" />
       <main id="main">
         <section className="hero w4-hero w6e-hero" id="top">
           <div className="shell">

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
+import "@/styles/type.css";
 import "@/styles/site.css";
 import "@/styles/mockups.css";
 
