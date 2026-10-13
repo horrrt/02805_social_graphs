@@ -1,5 +1,6 @@
+import { SiteNav } from "@/components/site/SiteNav";
 import { StyleMenu } from "@/features/week03/menu/StyleMenu";
-// The top bar: brand, site link, the Views menu host and the section links.
+// The top bar: brand, site nav, the Views menu host and the section links.
 export function Topbar() {
   return (
     <>
@@ -12,7 +13,7 @@ export function Topbar() {
             <b>LEGENDS</b>
           </a>
           {" "}
-          <a className="site-link" href="../../#weeks">All posts</a>
+          <SiteNav root="../../" current="weeks/week03/" />
           <StyleMenu />
           <nav className="topnav" aria-label="Sections of this post">
             <a className="here" href="#globe">Migration</a>

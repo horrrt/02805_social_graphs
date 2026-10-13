@@ -41,7 +41,7 @@
 
 /* ----------------------------------------------------------------- top bar */
 
-/* The bar is the site's: the same wordmark and "All posts" link as the lobby.
+/* The bar is the site's: the same wordmark and site nav as the lobby.
    Its colours follow the skin, so the terminal skin keeps a dark bar. */
 @font-face {
   font-family: Condensed;
@@ -97,7 +97,18 @@
   font-weight: inherit;
 }
 
-.corridor .site-link {
+/* Home, Posts and About (SiteNav.tsx). Posts holds a menu of every post,
+   shown on hover and on focus inside it until the island hydrates and sets
+   data-open, which decides from then on. */
+.corridor .site-nav {
+  align-items: center;
+  display: flex;
+  gap: 2px;
+}
+
+.corridor .site-nav a,
+.corridor .site-nav-toggle {
+  border-radius: 999px;
   color: var(--bar-muted);
   font-size: var(--fs-body);
   font-weight: 600;
@@ -105,8 +116,103 @@
   white-space: nowrap;
 }
 
-.corridor .site-link:hover {
+.corridor .site-nav > a,
+.corridor .site-nav-posts > a {
+  padding: 7px 13px;
+}
+
+.corridor .site-nav-posts > a {
+  padding-right: 4px;
+}
+
+.corridor .site-nav > a:hover,
+.corridor .site-nav-posts > a:hover,
+.corridor .site-nav-toggle:hover,
+.corridor .site-nav-posts[data-open="true"] > .site-nav-toggle {
+  background: var(--bar-hover);
   color: var(--bar-text);
+}
+
+.corridor .site-nav a[aria-current="page"] {
+  background: var(--bar-here);
+  color: var(--bar-accent);
+}
+
+.corridor .site-nav a:focus-visible,
+.corridor .site-nav-toggle:focus-visible {
+  outline: 2px solid var(--bar-accent);
+  outline-offset: 2px;
+}
+
+.corridor .site-nav-posts {
+  align-items: center;
+  display: flex;
+  position: relative;
+}
+
+.corridor .site-nav-toggle {
+  background: none;
+  border: 0;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: var(--fs-small);
+  line-height: 1;
+  padding: 8px 9px;
+}
+
+.corridor .site-nav-menu {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 18px 44px rgba(15, 35, 64, 0.16);
+  display: none;
+  left: 0;
+  list-style: none;
+  margin: 0;
+  min-width: 240px;
+  padding: 6px;
+  position: absolute;
+  top: calc(100% + 9px);
+  z-index: 60;
+}
+
+/* Bridges the gap above the panel, so the pointer keeps it open on the way down. */
+.corridor .site-nav-menu::before {
+  content: "";
+  height: 10px;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: -10px;
+}
+
+.corridor .site-nav-posts:not([data-open]):hover > .site-nav-menu,
+.corridor .site-nav-posts:not([data-open]):focus-within > .site-nav-menu,
+.corridor .site-nav-posts[data-open="true"] > .site-nav-menu {
+  display: block;
+}
+
+.corridor .site-nav-menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 14px;
+}
+
+.corridor .site-nav-menu a {
+  border-radius: calc(var(--radius) - 6px);
+  color: var(--ink-soft);
+  display: block;
+  padding: 8px 12px;
+}
+
+.corridor .site-nav-menu a:hover {
+  background: var(--line-soft);
+  color: var(--ink);
+}
+
+.corridor .site-nav-menu a[aria-current="page"] {
+  background: var(--access-soft);
+  color: var(--bar-accent);
 }
 
 .corridor .topnav {
@@ -1728,7 +1834,8 @@ body > .chart-tip[hidden] {
 .corridor[data-skin="terminal"] .card,
 .corridor[data-skin="terminal"] .panel,
 .corridor[data-skin="terminal"] .type,
-.corridor[data-skin="terminal"] .style-bar {
+.corridor[data-skin="terminal"] .style-bar,
+.corridor[data-skin="terminal"] .site-nav-menu {
   box-shadow: none;
 }
 

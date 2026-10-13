@@ -1,4 +1,5 @@
 import { type RailItem, SectionRail } from "@/components/post/SectionRail";
+import { SiteNav } from "@/components/site/SiteNav";
 import { StyleMenu } from "@/features/styleguide/StyleMenu";
 
 // The section rail, drawn here too so the guide shows it under every skin.
@@ -22,7 +23,7 @@ export default function Page() {
             <b>LEGENDS</b>
           </a>
           {" "}
-          <a className="site-link" href="../#weeks">All posts</a>
+          <SiteNav root="../" />
           <StyleMenu />
           <nav aria-label="Sections of this guide" className="topnav">
             <a className="here" href="#tokens">Tokens</a>

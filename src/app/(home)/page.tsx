@@ -1,3 +1,5 @@
+import { SiteNav } from "@/components/site/SiteNav";
+
 export default function Page() {
   return (
     <>
@@ -9,11 +11,7 @@ export default function Page() {
             {" "}
             <b>LEGENDS</b>
           </a>
-          <nav className="topnav" aria-label="Sections of this page">
-            <a className="here" href="#weeks">Posts</a>
-            {" "}
-            <a href="#about">About</a>
-          </nav>
+          <SiteNav root="./" current="home" />
         </div>
       </div>
       <main id="main">
