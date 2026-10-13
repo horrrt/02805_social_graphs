@@ -5,22 +5,9 @@ export default function Page() {
   return (
     <>
       <a className="skip-link" href="#main">Skip to the mission</a>
-      <PostTopbar root="../" />
-      <header className="signal-head wide">
-        <a className="brand" href="../" aria-label="Log-Log Legends home">
-          <span className="brand-mark" aria-hidden="true">↗</span>
-          <span>
-            LOG–LOG
-            <br />
-            LEGENDS
-          </span>
-        </a>
-        {" "}
-        <span className="signal-edition">A PLAYABLE DATA STORY · ISSUE 01</span>
-        {" "}
-        <a className="text-link" href="#results">Just the findings ↓</a>
-      </header>
+      <PostTopbar root="../" tools={<a href="#results">Just the findings ↓</a>} />
       <main id="main">
+        <p className="signal-edition wide">A PLAYABLE DATA STORY · ISSUE 01</p>
         <section className="signal-opening wide" aria-labelledby="signal-title">
           <div>
             <p className="eyebrow">ONE HERO. NO CONNECTIONS. YOUR MOVE.</p>

@@ -213,42 +213,6 @@ strong {
 .skip:focus {
   top: 10px;
 }
-.chrome {
-  position: relative;
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  padding: 18px max(24px, calc((100vw - 1360px) / 2));
-  border-bottom: 1px solid var(--line);
-  background: var(--bg);
-}
-.arcade-wordmark {
-  font-family: var(--font-display);
-  font-size: var(--fs-h3);
-  letter-spacing: 0.035em;
-  text-decoration: none;
-  white-space: nowrap;
-}
-.arcade-wordmark b {
-  color: var(--accent);
-}
-.chrome nav {
-  display: flex;
-  gap: 22px;
-  align-items: center;
-  font-size: var(--fs-body);
-  font-weight: 600;
-}
-.chrome nav a {
-  text-decoration: none;
-}
-.chrome nav button {
-  min-height: 36px;
-  padding: 6px 10px;
-  font-size: var(--fs-small);
-}
 .wrap {
   width: min(1280px, calc(100% - 64px));
   margin-inline: auto;
@@ -850,23 +814,6 @@ dialog::backdrop {
   .wrap {
     width: calc(100% - 32px);
   }
-  .chrome {
-    padding: 14px 16px;
-    gap: 12px;
-  }
-  .chrome nav {
-    gap: 10px;
-  }
-  .chrome nav > a {
-    font-size: var(--fs-body);
-  }
-  .arcade-wordmark {
-    font-size: var(--fs-h3);
-  }
-  .chrome nav button {
-    font-size: var(--fs-small);
-    padding: 6px;
-  }
   .hero {
     padding: 40px 0 28px;
   }
@@ -991,7 +938,7 @@ html:not(.js) #os-boot {
   display: none;
 }
 @media print {
-  .chrome,
+  .topbar,
   .prediction,
   button,
   canvas,

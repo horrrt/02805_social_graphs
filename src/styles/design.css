@@ -6,41 +6,6 @@
   width: min(1120px, calc(100% - 64px));
   max-width: 1120px;
 }
-/* Week 3's bar: translucent white over the page, one hairline below. */
-.visual-design .chrome {
-  min-height: 64px;
-  padding: 10px max(32px, calc((100vw - 1120px) / 2));
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: saturate(160%) blur(12px);
-  border-bottom: 1px solid var(--line);
-}
-.visual-design .arcade-wordmark {
-  font-size: var(--fs-h4);
-  letter-spacing: -0.025em;
-}
-.visual-design .arcade-wordmark::before {
-  content: "✳";
-  font-size: var(--fs-h2);
-  margin-right: 10px;
-  color: var(--accent);
-  vertical-align: middle;
-}
-.visual-design .chrome nav {
-  gap: 28px;
-  font-size: var(--fs-body);
-}
-.visual-design .chrome nav a {
-  opacity: 1;
-}
-.visual-design .chrome nav button {
-  font-size: var(--fs-small);
-  min-height: 36px;
-  padding: 6px 14px;
-  background: transparent;
-  color: var(--muted);
-  border: 1px solid var(--line);
-  border-radius: 30px;
-}
 .visual-design .hero {
   border: 0;
 }

@@ -1,9 +1,11 @@
 "use client";
-// The arcade chrome that cabinet.js setupChrome() painted on main: the header
-// (#arcade-chrome) swaps its server links for the LEGENDS wordmark, the site
-// links and the LOGBOOK button once hydrated, and the #logbook dialog lists
-// the first guesses saved in this browser. The dialog also owns body.unlocked
-// and re-reads the log when another tab writes it.
+// The arcade's controls that cabinet.js setupChrome() painted in its own
+// header on main. The header is gone: "The data" and the LOGBOOK button now
+// sit in the site's top bar (PostTopbar's tools, #arcade-tools), which
+// reads the log once hydrated and again when another tab writes it. "The
+// data" opens the home page at its top (#top), where its old #network link
+// landed once that section was gone. The #logbook dialog lists the first
+// guesses saved in this browser and owns body.unlocked.
 import { useEffect, useRef } from "react";
 import { island } from "@/lib/island";
 import { useBodyClass } from "@/lib/useBody";
@@ -28,18 +30,18 @@ function useProgress() {
   return { state, weeks, p };
 }
 
-// ---- the header -----------------------------------------------------------------
+// ---- the bar's tools --------------------------------------------------------------
 
-function HeaderHost() {
+function ToolsHost() {
   return (
-    <header className="chrome" id="arcade-chrome">
-      <a className="arcade-wordmark" href="../../">LOG–LOG ARCADE</a>
-      <a href="#post">The post</a>
-    </header>
+    <span className="arcade-tools" id="arcade-tools">
+      <a href="../../#top">The data</a>
+      <button type="button" data-progress id="open-logbook">{`LOGBOOK 0/${liveWeeks().length}`}</button>
+    </span>
   );
 }
 
-function HeaderView() {
+function ToolsView() {
   const hydrated = useHydrated();
   const { state, p } = useProgress();
   // cabinet.js read the log at setupChrome(); here once hydrated, and again on every storage event.
@@ -49,24 +51,18 @@ function HeaderView() {
     window.addEventListener("storage", () => loadLog(), { signal: controller.signal });
     return () => controller.abort();
   }, []);
-  if (!hydrated) return <HeaderHost />;
+  if (!hydrated) return <ToolsHost />;
   return (
-    <header className="chrome" id="arcade-chrome">
-      <a className="arcade-wordmark" href={url("")}>
-        LOG–LOG <b>LEGENDS</b>
-      </a>
-      <nav aria-label="Site navigation">
-        <a href={url("#weeks")}>Posts</a>
-        <a href={url("#network")}>The data</a>
-        <button className="quiet" data-progress id="open-logbook" onClick={openLogbook}>
-          {`LOGBOOK ${state.loaded ? p.weeks : 0}/${p.total}`}
-        </button>
-      </nav>
-    </header>
+    <span className="arcade-tools" id="arcade-tools">
+      <a href={url("#top")}>The data</a>
+      <button type="button" data-progress id="open-logbook" onClick={openLogbook}>
+        {`LOGBOOK ${state.loaded ? p.weeks : 0}/${p.total}`}
+      </button>
+    </span>
   );
 }
 
-export const ArcadeChrome = island("arcade/chrome/Header", HeaderView, HeaderHost, { roots: ["#arcade-chrome"] });
+export const ArcadeTools = island("arcade/chrome/Tools", ToolsView, ToolsHost, { roots: ["#arcade-tools"] });
 
 // ---- the logbook dialog -------------------------------------------------------------
 

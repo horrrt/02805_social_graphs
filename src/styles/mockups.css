@@ -1,7 +1,9 @@
 /* A quiet review surface around the full-page design concepts. */
 html { scrollbar-gutter: stable; }
 body.mockups { background: #f5f6f3; color: #20231e; color-scheme: light; }
-.mockups .site-head { color: var(--paper); }
+/* The site's top bar stays at the top, as the old header did, and the review
+   tools stick just under its 52px. */
+.mockups .topbar { position: sticky; top: 0; }
 .mockups .wide { width: min(100% - 64px, 1440px); }
 .review-intro { padding: 36px 0 26px; }
 .review-intro .eyebrow { margin-bottom: 12px; color: #5a6253; }
@@ -11,7 +13,7 @@ body.mockups { background: #f5f6f3; color: #20231e; color-scheme: light; }
 .starting-points { display: flex; gap: 8px 18px; align-items: baseline; flex-wrap: wrap; margin-top: 18px; font-size: 15px; }
 .starting-points span { color: #60675c; }
 .starting-points a { font-weight: 600; }
-.review-tools { position: sticky; top: 86px; z-index: 15; padding: 16px 0; background: #f5f6f3; border-top: 1px solid #d5d9cf; border-bottom: 1px solid #d5d9cf; }
+.review-tools { position: sticky; top: 52px; z-index: 15; padding: 16px 0; background: #f5f6f3; border-top: 1px solid #d5d9cf; border-bottom: 1px solid #d5d9cf; }
 .tools-row, .filters, .shortlist-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 .tools-row { justify-content: space-between; gap: 16px; }
 .review-button { display: inline-flex; justify-content: center; align-items: center; gap: 8px; min-height: 44px; padding: 9px 14px; border: 1px solid #c7cdc0; border-radius: 5px; background: white; color: #20231e; text-decoration: none; font: 600 14px/1.3 Barlow, Arial, sans-serif; }
@@ -92,14 +94,9 @@ body.viewer-open { overflow: hidden; }
   .mockup-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 18px; }
   .review-tools { position: static; }
   .review-intro { padding-top: 40px; }
-  .mockups .site-head nav { display: flex; }
-  .mockups .head-row { gap: 20px; }
-  .mockups .site-head nav { gap: 16px; }
 }
 @media (max-width: 520px) {
   .mockups .wide { width: calc(100% - 32px); }
-  .mockups .head-row { min-height: 72px; }
-  .mockups .site-head nav { font-size: 12px; gap: 14px; }
   .review-intro .lede { font-size: 18px; }
   .filters { display: grid; grid-template-columns: 1fr 1fr; width: 100%; }
   .shortlist-actions { width: 100%; }

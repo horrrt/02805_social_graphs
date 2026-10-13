@@ -8,10 +8,6 @@ export default function Page() {
       <div className="sheet">
         <header className="masthead">
           <p className="lbl crumbs">
-            <a href="../../">Log–Log Legends</a>
-            {" "}
-            /
-            {" "}
             <a href="../../weeks/week02/">Week 2: Marvel Transit Authority</a>
           </p>
           <p className="lbl">02805 Social graphs &amp; interactions · Week 2 · Models &amp; null models</p>

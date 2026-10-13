@@ -4,17 +4,16 @@ import { Fullscreen } from "./Fullscreen";
 import { SoundToggle } from "./SoundToggle";
 
 // The page around the Cold Read campaign, the practice menu and every round's
-// practice page: the site's top bar, full width, then the site link, the two
-// places to play and the title. `home` is the relative path to the campaign
-// page, so the links work from any page; `page` says which of the two the
-// reader is in.
+// practice page: the site's top bar, full width, with the two places to play,
+// the sound switch and full screen as its tools, then the title. `home` is
+// the relative path to the campaign page, so the links work from any page;
+// `page` says which of the two the reader is in.
 export function Frame({ page, home, children }: { page: "campaign" | "practice"; home: string; children: ReactNode }) {
   return (
     <>
-      <PostTopbar root={`${home}../../`} />
-      <div className="cr-shell">
-        <header className="cr-top">
-          <a href={`${home}../../`}>Log–Log Legends</a>
+      <PostTopbar
+        root={`${home}../../`}
+        tools={
           <nav className="cr-rounds" aria-label="Ways to play">
             <a href={home} aria-current={page === "campaign" ? "page" : undefined}>
               Campaign
@@ -25,7 +24,9 @@ export function Frame({ page, home, children }: { page: "campaign" | "practice";
             <SoundToggle />
             <Fullscreen />
           </nav>
-        </header>
+        }
+      />
+      <div className="cr-shell">
         <main id="main">
           <h1 className="cr-title">
             Cold <span>Read</span>
