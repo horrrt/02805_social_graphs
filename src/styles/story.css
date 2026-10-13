@@ -252,29 +252,6 @@
   outline: 2px solid var(--accent);
   outline-offset: 5px;
 }
-.guided-post .chrome,
-.guided-lobby .chrome {
-  position: relative;
-}
-.guided-post .chrome nav,
-.guided-lobby .chrome nav {
-  gap: 16px;
-}
-.guided-post .chrome nav > a,
-.guided-lobby .chrome nav > a {
-  display: inline-flex;
-  min-height: 44px;
-  align-items: center;
-}
-/* The site's top bar (52px) sits above the chrome, so the section rail,
-   fixed at 96px on the corridor pages, starts below both here, and the bar's
-   Posts menu has to clear the chrome's z-index to open over it. */
-.guided-post .w4-rail {
-  top: 164px;
-}
-.guided-post .topbar {
-  z-index: 101;
-}
 @media (max-width: 640px) {
   .guided-post .wrap,
   .guided-lobby .wrap {
@@ -283,17 +260,6 @@
   .guided-post .story-hero,
   .guided-lobby .hero {
     padding-top: 32px;
-  }
-  .guided-post .chrome,
-  .guided-lobby .chrome {
-    padding: 12px 18px;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-  .guided-post .chrome nav,
-  .guided-lobby .chrome nav {
-    width: 100%;
-    justify-content: space-between;
   }
   .guided-post .section-head {
     flex-direction: column;

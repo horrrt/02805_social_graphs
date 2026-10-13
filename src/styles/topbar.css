@@ -1,7 +1,7 @@
 /* The bar across the top of every page (PostTopbar.tsx): the wordmark on the
-   left, the site nav (Home, Posts and About, SiteNav.tsx) on the right, and
-   any control a page puts between them (Week 3's and the style guide's style
-   menu). PostTopbar imports this sheet, so it reaches pages that do not load
+   left, the site nav (Home, Posts and About, SiteNav.tsx) on the right, a
+   control a page puts after the brand (Week 3's and the style guide's style
+   menu) and the page's own tools just left of the site nav. PostTopbar imports this sheet, so it reaches pages that do not load
    corridor.css. Like rail.css, the bar keeps the corridor's light colours on
    those pages, whose tokens mean other things (Week 1's --ink is white), and
    follows the page's tokens on corridor pages, skins included (corridor.css
@@ -75,6 +75,82 @@
 .topbar .brand b {
   color: var(--bar-accent);
   font-weight: inherit;
+}
+
+/* A page's own tools (PostTopbar's `tools`): links and buttons right of
+   centre, set off from the site nav by a hairline. They take the nav's look,
+   so the bar reads as one row whatever page it is on; buttons keep an outline
+   to show they act on the page rather than leave it. */
+.topbar .topbar-tools {
+  align-items: center;
+  display: flex;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.topbar .topbar-tools::after {
+  background: var(--bar-line);
+  content: "";
+  height: 22px;
+  margin-left: 18px;
+  width: 1px;
+}
+
+.topbar .topbar-tools + .site-nav {
+  margin-left: 0;
+}
+
+.topbar .topbar-tools > nav,
+.topbar .topbar-tools > span {
+  align-items: center;
+  display: flex;
+  gap: 4px;
+}
+
+.topbar .topbar-tools a,
+.topbar .topbar-tools button {
+  align-items: center;
+  border-radius: 999px;
+  color: var(--bar-muted);
+  display: inline-flex;
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: normal;
+  padding: 7px 13px;
+  text-decoration: none;
+  text-transform: none;
+  white-space: nowrap;
+}
+
+.topbar .topbar-tools button {
+  background: none;
+  border: 1px solid var(--bar-line);
+  cursor: pointer;
+  filter: none;
+  font-size: var(--fs-small);
+  gap: 6px;
+  margin: 0;
+  min-height: 0;
+  padding: 6px 12px;
+}
+
+.topbar .topbar-tools a:hover,
+.topbar .topbar-tools button:hover {
+  background: var(--bar-hover);
+  color: var(--bar-text);
+}
+
+.topbar .topbar-tools a[aria-current="page"] {
+  background: var(--bar-here);
+  color: var(--bar-accent);
+}
+
+.topbar .topbar-tools a:focus-visible,
+.topbar .topbar-tools button:focus-visible {
+  outline: 2px solid var(--bar-accent);
+  outline-offset: 2px;
 }
 
 /* Home, Posts and About. Posts holds a menu of every post, shown on hover and

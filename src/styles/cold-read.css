@@ -65,24 +65,6 @@ body.cold-read {
   padding: 26px 32px 64px;
 }
 
-.cr-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  font-size: var(--fs-small);
-  font-weight: 600;
-  color: var(--ink-soft);
-}
-
-.cr-top a {
-  color: var(--ink);
-  text-decoration: none;
-  font-family: var(--font-display);
-  font-size: var(--fs-h4);
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-}
-
 .cr-title {
   margin: 28px 0 22px;
   font-family: var(--font-display);
@@ -896,49 +878,6 @@ body.cold-read {
   color: var(--ink-mute-text);
   max-width: 92ch;
 }
-
-/* ---------- rounds nav ---------- */
-
-.cr-rounds {
-  display: flex;
-  gap: 4px;
-  align-items: center;
-  white-space: nowrap;
-}
-
-.cr-rounds a {
-  display: flex;
-  gap: 6px;
-  align-items: baseline;
-  padding: 6px 12px;
-  border-radius: 999px;
-  color: var(--ink-soft);
-  text-decoration: none;
-  font-size: var(--fs-small);
-  font-family: var(--font-sans);
-  text-transform: none;
-  letter-spacing: 0;
-}
-
-.cr-rounds a:hover {
-  background: var(--card);
-}
-
-.cr-rounds a {
-  font-weight: 700;
-}
-
-.cr-rounds a[aria-current="page"] {
-  background: var(--ink);
-  color: #fff;
-}
-
-.cr-rounds b {
-  font-family: var(--font-display);
-  font-size: var(--fs-strong);
-  color: var(--people);
-}
-
 
 /* ---------- round 5: hot and cold ---------- */
 

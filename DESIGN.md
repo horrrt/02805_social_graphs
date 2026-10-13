@@ -23,9 +23,12 @@ goes into `post.css` (`tests/stylesheets.test.mjs` checks this). The `/styleguid
 palettes and skins live.
 
 Every page opens with the same top bar (`PostTopbar`): the wordmark on the left, the site nav (Home, Posts,
-About) on the right. Its rules are in `topbar.css`, which the component imports, so pages outside the corridor
-family get it too. There it keeps the corridor's light colours and scrolls with the page; on corridor pages
-`corridor.css` maps it to the page's tokens and skin and keeps it stuck to the top.
+About) on the right. It is the page's only header: a page's own controls go in the bar as `tools`, just left
+of the site nav behind a hairline (Weeks 1 and 2's data link and logbook, Cold Read's ways to play), never in a
+second header under it. Its rules are in `topbar.css`, which the component imports, so pages outside the
+corridor family get it too. There it keeps the corridor's light colours and scrolls with the page (the
+mockups page keeps it stuck to the top); on corridor pages `corridor.css` maps it to the page's tokens and
+skin and keeps it stuck to the top.
 
 ## Type
 

@@ -6,23 +6,7 @@ export default function Page() {
   return (
     <>
       <a className="skip-link" href="#main">Skip to mockups</a>
-      <PostTopbar root="../" />
-      <header className="site-head">
-        <div className="wide head-row">
-          <a className="brand" href="../" aria-label="Log-Log Legends home">
-            <span className="brand-mark" aria-hidden="true">↗</span>
-            <span>
-              LOG–LOG
-              <br />
-              LEGENDS
-            </span>
-          </a>
-          <nav aria-label="Main navigation">
-            <a href="../weeks/week02/">Back to Week 2</a>
-            <a href="../#weeks">All weeks</a>
-          </nav>
-        </div>
-      </header>
+      <PostTopbar root="../" tools={<a href="../weeks/week02/">Back to Week 2</a>} />
       <main id="main" className="wide">
         <section className="review-intro" aria-labelledby="review-title">
           <p className="eyebrow">THE DESIGN REVIEW · 48 VISUAL CONCEPTS</p>

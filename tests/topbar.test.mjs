@@ -1,7 +1,8 @@
 // Every page opens with the site's top bar (PostTopbar): the brand on the
 // left, the site nav (Home, Posts, About) on the right, and no in-page
-// section links. Pages are every page.tsx under src/app, read from out/,
-// plus out/404.html, which GitHub Pages serves for any unknown path.
+// section links. It is the page's only header: no second logo or site links
+// under it. Pages are every page.tsx under src/app, read from out/, plus
+// out/404.html, which GitHub Pages serves for any unknown path.
 import test from "node:test";
 import assert from "node:assert/strict";
 import { join, relative, sep } from "node:path";
@@ -56,8 +57,42 @@ for (const [route, path] of PAGES) {
     const home = b.html.match(/<a href="([^"]*)"[^>]*>Home<\/a>/);
     assert.equal(target(home[1], route), "", "Home links to the site's root");
     assert.doesNotMatch(b.html, /class="topnav"|aria-label="Sections of this/, "no section links in the bar");
-    const current = [...b.html.matchAll(/<a href="([^"]*)" aria-current="page">/g)].map((m) => target(m[1], route));
+    // Only the site nav's own links; a page's tools (Cold Read's Campaign) mark their own.
+    const current = [...b.html.slice(b.nav - b.start).matchAll(/<a href="([^"]*)" aria-current="page">/g)].map((m) => target(m[1], route));
     const own = route === "" ? [""] : POSTS_HREFS.includes(route) ? [route] : [];
     assert.deepEqual(current, own, "the nav marks this page current when it is home or a post");
+  });
+}
+
+// The page without its <main> and <footer>: what is left is the header, so a
+// second header's logo or site links show up here. Links back to the posts
+// inside the story ("Back to weekly posts") and in the footer stay out of it.
+const chrome = (html) => html.replace(/<main[\s>][\s\S]*?<\/main>/g, "").replace(/<footer[\s>][\s\S]*?<\/footer>/g, "");
+const links = (html, route) => [...html.matchAll(/<a [^>]*href="([^"]*)"[^>]*>/g)].map((m) => {
+  const url = new URL(m[1].replace(/&amp;/g, "&"), served(route));
+  return url.pathname.slice(BASE.length) + url.hash;
+});
+
+for (const [route, path] of PAGES) {
+  test(`/${route === "404" ? "404.html" : route} has one header: one logo, one link home besides Home, one to the posts`, () => {
+    const html = builtPage(path);
+    const logos = html.match(/<a [^>]*(class="[^"]*\b(brand|[a-z-]*wordmark)\b[^"]*"|aria-label="[^"]*\bhome")[^>]*>/gi) ?? [];
+    assert.equal(logos.length, 1, "one brand or logo link on the page");
+    const head = links(chrome(html), route);
+    assert.equal(head.filter((href) => href === "").length, 2, "the brand and Home are the header's only links to the site's root");
+    assert.equal(head.filter((href) => href === "#weeks").length, 1, "Posts is the header's only link to the list of posts");
+  });
+}
+
+for (const week of ["week01", "week02"]) {
+  test(`/weeks/${week}/ keeps its data link and logbook in the bar, before the site nav`, () => {
+    const route = `weeks/${week}/`;
+    const b = bar(builtPage(`out/${route}index.html`));
+    const tools = b.html.match(/<div class="topbar-tools">([\s\S]*?)<\/div><nav class="site-nav"/);
+    assert.ok(tools, "the bar has tools just before the site nav");
+    const data = tools[1].match(/<a href="([^"]*)">The data<\/a>/);
+    assert.ok(data, "The data is in the bar's tools");
+    assert.equal(links(data[0], route)[0], "#top", "The data goes to the top of the home page");
+    assert.match(tools[1], /<button type="button" data-progress="[^"]*" id="open-logbook">LOGBOOK 0\/\d+<\/button>/, "the LOGBOOK button is in the bar's tools");
   });
 }
