@@ -23,17 +23,17 @@ test("Home, Posts and About link to the root, its post list and its about sectio
   assert.ok(document.getElementById("site-nav-menu"), "the chevron controls a menu that exists");
 });
 
-test("the menu lists every post, essentials under Week 6, and marks this page current", () => {
-  render(<SiteNav root="../../../" current="weeks/week06/essentials/" />);
+test("the menu lists every post, the alternative under Week 6, and marks this page current", () => {
+  render(<SiteNav root="../../../" current="weeks/week06/alternative/" />);
   const menu = within(document.getElementById("site-nav-menu")!);
-  const labels = ["Week 1 · Hero Packs", "Week 2 · Transit Authority", "Week 3 · Corridor Control", "Week 4 · Who Hires", "Week 5 · Marvel in Words", "Week 6 · Marvel Lookalikes"];
+  const labels = ["Week 1 · Hero Packs", "Week 2 · Transit Authority", "Week 3 · Corridor Control", "Week 4 · Who Hires", "Week 5 · Marvel in Words", "Week 6 · Seventeen Essentials"];
   assert.deepEqual(POSTS.map((p) => p.label), labels);
   for (const [i, label] of labels.entries()) assert.equal(menu.getByRole("link", { name: label }).getAttribute("href"), `../../../weeks/week0${i + 1}/`);
-  const essentials = menu.getByRole("link", { name: "Week 6 essentials" });
-  assert.equal(essentials.getAttribute("href"), "../../../weeks/week06/essentials/");
-  assert.ok(menu.getByRole("link", { name: labels[5] }).closest("li")!.contains(essentials), "essentials sits under Week 6");
+  const alternative = menu.getByRole("link", { name: "Week 6 alternative" });
+  assert.equal(alternative.getAttribute("href"), "../../../weeks/week06/alternative/");
+  assert.ok(menu.getByRole("link", { name: labels[5] }).closest("li")!.contains(alternative), "the alternative sits under Week 6");
   const current = screen.getAllByRole("link").filter((a) => a.getAttribute("aria-current") === "page");
-  assert.deepEqual(current, [essentials]);
+  assert.deepEqual(current, [alternative]);
 });
 
 test("on the home page Home is current", () => {

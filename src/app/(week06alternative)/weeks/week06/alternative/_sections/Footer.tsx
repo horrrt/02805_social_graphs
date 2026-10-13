@@ -21,7 +21,7 @@ export function Footer() {
       <span>
         Why do two Marvel pages read alike? ·
         {" "}
-        <a href="../../">Log–Log Legends</a>
+        <a href="../../../">Log–Log Legends</a>
         {" "}
         · DTU 02805
       </span>

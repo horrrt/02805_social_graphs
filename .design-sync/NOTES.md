@@ -149,11 +149,12 @@ As found:
 
 ## Fifth pass (12 Oct): the essentials page whole
 
-- `pkg/week06/EssentialsCard.tsx` renders one section of `/weeks/week06/essentials/` by part (the
-  page's own `_sections/Sections.tsx`: opener, question card, "Compared to what", the explorable in
+- `pkg/week06/EssentialsCard.tsx` renders one section of the essentials page by part (the
+  page's own `_sections/Sections.tsx`: opener, card, "Compared to what", the explorable in
   its Plot, the Method drawer); `pkg/week06/EssentialsPage.tsx` renders the page's default export
   (topbar to footer). Both sit in `pkg/week06/` so the pane groups them with `EssentialsPart`.
-- They import route files from `src/app/(week06essentials)/`; a moved route breaks the build here
+- They import route files from `src/app/(week06)/` (`src/app/(week06essentials)/` until 13 Oct, when the
+  essentials page became the Week 6 post at `/weeks/week06/`); a moved route breaks the build here
   first. The page story is a `single` card at 1400x900; the card itself is 9,618px tall.
 
 ## Migrated to Claude (12 Oct 2026)

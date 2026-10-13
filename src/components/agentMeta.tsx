@@ -34,8 +34,8 @@ export function pageMeta({ path, title, description }: Page): Metadata {
 const authors = GROUP.members.map((name) => ({ "@type": "Person", name }));
 const website = { "@type": "WebSite", name: SITE_NAME, url: SITE_URL };
 
-/** schema.org JSON-LD: the site on the lobby, an Article for a week's post. */
-export function JsonLd({ week, title, description }: { week?: number; title: string; description: string }) {
+/** schema.org JSON-LD: the site on the lobby, an Article for a week's post, at `path` when the post is not the week's own page. */
+export function JsonLd({ week, path, title, description }: { week?: number; path?: string; title: string; description: string }) {
   const post = WEEKS.find((w) => w.n === week);
   const data = post
     ? {
@@ -43,7 +43,7 @@ export function JsonLd({ week, title, description }: { week?: number; title: str
         "@type": "Article",
         headline: title,
         description,
-        url: SITE_URL + `weeks/week${String(week).padStart(2, "0")}/`,
+        url: SITE_URL + (path ?? `weeks/week${String(week).padStart(2, "0")}/`),
         datePublished: post.date,
         inLanguage: "en",
         author: authors,

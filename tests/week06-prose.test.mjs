@@ -1,6 +1,7 @@
-// Pins the Week 6 page (#explore, #names, #gender, the hero, findings and
-// closing) to lookalikes.json, so a rerun of analysis/week06_lookalikes.py
-// that moves a number fails here instead of leaving the prose behind.
+// Pins the alternative Week 6 post, /weeks/week06/alternative/ (#explore,
+// #names, #gender, the hero, findings and closing) to lookalikes.json, so a
+// rerun of analysis/week06_lookalikes.py that moves a number fails here
+// instead of leaving the prose behind.
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
@@ -12,7 +13,7 @@ import { builtPage } from "./built-page.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const read = (name) => readFileSync(join(ROOT, name), "utf8");
-const html = builtPage("out/weeks/week06/index.html");
+const html = builtPage("out/weeks/week06/alternative/index.html");
 const data = JSON.parse(read("public/weeks/week06/data/lookalikes.json"));
 const f = data.facts;
 const lean = JSON.parse(read("public/weeks/week06/data/lean.json"));
