@@ -81,10 +81,10 @@ export const WEEKS = [
     date: "2026-10-07",
     status: "live",
     cabinet: {
-      name: "Seventeen Essentials",
-      marquee: "ESSENTIALS",
+      name: "Storm, Not Weather",
+      marquee: "STORM",
       href: "weeks/week06/",
-      blurb: "Every essential term of Week 6, used once on the 303 Marvel pages, each with a baseline.",
+      blurb: "What do counts, weights and word vectors give away about 303 Marvel pages?",
     },
   },
   { n: 7, courseTitle: "NLP III", short: "NLP III", date: "2026-10-21", status: "coming" },

@@ -26,7 +26,7 @@ test("Home, Posts and About link to the root, its post list and its about sectio
 test("the menu lists every post, the alternative under Week 6, and marks this page current", () => {
   render(<SiteNav root="../../../" current="weeks/week06/alternative/" />);
   const menu = within(document.getElementById("site-nav-menu")!);
-  const labels = ["Week 1 · Hero Packs", "Week 2 · Transit Authority", "Week 3 · Corridor Control", "Week 4 · Who Hires", "Week 5 · Marvel in Words", "Week 6 · Seventeen Essentials"];
+  const labels = ["Week 1 · Hero Packs", "Week 2 · Transit Authority", "Week 3 · Corridor Control", "Week 4 · Who Hires", "Week 5 · Marvel in Words", "Week 6 · Storm, Not Weather"];
   assert.deepEqual(POSTS.map((p) => p.label), labels);
   for (const [i, label] of labels.entries()) assert.equal(menu.getByRole("link", { name: label }).getAttribute("href"), `../../../weeks/week0${i + 1}/`);
   const alternative = menu.getByRole("link", { name: "Week 6 alternative" });

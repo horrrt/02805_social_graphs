@@ -174,12 +174,35 @@ export default function Page() {
       <main id="main">
         <section className="hero w4-hero w6e-hero" id="top">
           <div className="shell">
-            <p className="eyebrow">Week 6 · The language half · Essentials</p>
-            <h1>Seventeen essentials, one Marvel corpus</h1>
+            <p className="eyebrow">Week 6 · The language half</p>
+            <h1>Here, storm means Ororo, not the weather</h1>
             <p className="w6e-lede">
-              Every essential term of Week 6&apos;s language half, used once on the course&apos;s 303 Marvel pages, each with
-              something to try and a baseline to compare it with. First documents, represented by their words; then words,
-              represented by their contexts. The
+              Count the words on Storm&apos;s page and
+              {" "}
+              <em>the</em>
+              {" "}
+              comes first, 583 times. Weight them by how few pages use them and
+              {" "}
+              <em>storm</em>
+              {" "}
+              rises to the top. Eight ways of reading text, each tried on the same 303 Marvel pages, end with word vectors
+              that put
+              {" "}
+              <em>vision</em>
+              {" "}
+              beside
+              {" "}
+              <em>wanda</em>
+              {" "}
+              here and beside
+              {" "}
+              <em>sense</em>
+              {" "}
+              and
+              {" "}
+              <em>image</em>
+              {" "}
+              in everyday English. The
               {" "}
               <a href="alternative/">alternative Week 6 post</a>
               {" "}
@@ -249,7 +272,7 @@ export default function Page() {
         </span>
         {" "}
         <span>
-          Week 6 essentials ·
+          Week 6 ·
           {" "}
           <a href="../../">Log–Log Legends</a>
           {" "}
