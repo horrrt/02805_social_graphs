@@ -11,7 +11,7 @@ export default function Page() {
   return (
     <>
       <SkipLink />
-      <PostTopbar root="../" brandSpace siteLink navLabel="Toolbox sections" links={[{ href: "#toolbox", label: "Toolbox" }]} />
+      <PostTopbar root="../" brandSpace navLabel="Toolbox sections" links={[{ href: "#toolbox", label: "Toolbox" }]} />
       <main id="main">
         <PostHero
           id="top"

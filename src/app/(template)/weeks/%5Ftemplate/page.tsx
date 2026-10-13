@@ -17,7 +17,6 @@ export default function Page() {
       <PostTopbar
         root="../../"
         brandSpace
-        siteLink
         navLabel="Sections of this post"
         links={[
           { href: "#opening", label: "Opening" },

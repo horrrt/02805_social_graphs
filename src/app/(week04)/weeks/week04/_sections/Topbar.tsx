@@ -1,6 +1,7 @@
+import { SiteNav } from "@/components/site/SiteNav";
 import { TopNav } from "@/features/week04/frame/TopNav";
 
-// The top bar with the brand and the section links.
+// The top bar with the brand, the site nav and the section links.
 export function Topbar() {
   return (
     <div className="topbar">
@@ -11,7 +12,7 @@ export function Topbar() {
           <b>LEGENDS</b>
         </a>
         {" "}
-        <a className="site-link" href="../../#weeks">All posts</a>
+        <SiteNav root="../../" current="weeks/week04/" />
         <TopNav />
       </div>
     </div>

@@ -34,7 +34,7 @@ export default function Page() {
       <PostTopbar
         root="../../../"
         brandSpace
-        siteLink
+        current="weeks/week06/essentials/"
         navLabel="Sections of this page"
         links={[
           ...SECTIONS.map(([id, num, label]) => ({ href: `#${id}`, label: num, name: `${num}: ${label}` })),
