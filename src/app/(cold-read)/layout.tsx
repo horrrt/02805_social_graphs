@@ -7,7 +7,7 @@ import "../../../public/assets/vendor/katex-0.19.0/katex.min.css";
 import "@/styles/type.css";
 import "@/styles/cold-read.css";
 
-// Hidden for now: noindex, and no page on the site links here. Share the URL.
+// Kept out of search (noindex); the Week 6 post links here from its game card.
 export const metadata: Metadata = {
   title: "Cold Read · Log–Log Legends",
   description: "A Marvel page is hidden. Flip word cards that show only how often the word appears here and on how many pages, and name the page. A game about TF-IDF and cosine similarity, Week 6.",

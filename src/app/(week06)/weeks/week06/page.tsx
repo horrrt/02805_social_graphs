@@ -4,6 +4,7 @@ import { SectionOpener } from "@/components/post/SectionOpener";
 import { PostTopbar } from "@/components/site/PostTopbar";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SkipLink } from "@/components/site/SkipLink";
+import { Game } from "./_sections/Game";
 import { Contexts, Contrast, Cosine, Glove, Pmi, Topics, Vectors, Weights } from "./_sections/Sections";
 
 // The Week 6 post: every term on the brief's Essentials list used once on the
@@ -221,6 +222,7 @@ export default function Page() {
           <Pmi />
           <Vectors />
           <Glove />
+          <Game />
           <PostSection id="closing" owner="Gyula">
             <SectionOpener num="✓" title="What the toolkit found">
               Weighting and association do the work; counting alone finds grammar, and a corpus decides what its words mean.
