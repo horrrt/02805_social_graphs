@@ -11,7 +11,7 @@ import { builtPage, codeFiles, ROOT } from "./built-page.mjs";
 
 const BASE = "/02805_social_graphs/";
 // The pages the site nav lists as posts (src/components/site/posts.ts).
-const POSTS_HREFS = [...liveWeeks().map((w) => w.cabinet.href), "weeks/week06/essentials/"];
+const POSTS_HREFS = [...liveWeeks().map((w) => w.cabinet.href), "weeks/week06/alternative/"];
 
 // "src/app/(week04)/weeks/week04/page.tsx" -> "weeks/week04/"; route groups drop out.
 const routes = codeFiles(join(ROOT, "src/app"), /^page\.tsx$/).map((file) =>
@@ -39,7 +39,7 @@ const served = (route) => `https://example.org${BASE}${route === "404" ? "missin
 const target = (href, route) => new URL(href, served(route)).pathname.slice(BASE.length);
 
 test("the routes cover every kind of page", () => {
-  for (const route of ["", "weeks/week01/", "weeks/week02/", "weeks/week04/", "weeks/week06/essentials/", "play/", "play/cold-read/", "play/cold-read/round-3/", "styleguide/kit/states/", "mockups/", "prototypes/screen-test/"])
+  for (const route of ["", "weeks/week01/", "weeks/week02/", "weeks/week04/", "weeks/week06/", "weeks/week06/alternative/", "weeks/week06/essentials/", "play/", "play/cold-read/", "play/cold-read/round-3/", "styleguide/kit/states/", "mockups/", "prototypes/screen-test/"])
     assert.ok(routes.includes(route), `no page.tsx found for /${route}`);
 });
 

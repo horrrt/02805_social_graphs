@@ -90,7 +90,10 @@ tokenizer the course used. If they do not match, report the gap and its cause; d
 
 ## What we built
 
-Post: [src/app/(week06)/weeks/week06/](../src/app/(week06)/weeks/week06/), owner Gyula for every section.
+Post: [src/app/(week06alternative)/weeks/week06/alternative/](../src/app/(week06alternative)/weeks/week06/alternative/),
+owner Gyula for every section. Since 13 October 2026 it is the alternative Week 6 post at /weeks/week06/alternative/;
+the essentials page, [src/app/(week06)/weeks/week06/](../src/app/(week06)/weeks/week06/) (`analysis/week06_essentials.py`,
+`tests/week06-essentials.test.mjs`), is the Week 6 post at /weeks/week06/, and /weeks/week06/essentials/ redirects there.
 Script: `analysis/week06_lookalikes.py` writes `analysis/week06_lookalikes.json` and the page file
 `public/weeks/week06/data/lookalikes.json`; `tests/week06-prose.test.mjs` pins the prose to it.
 

@@ -38,9 +38,9 @@ export function Closing() {
             lightning". Rerunning the explorer with them tests whether a page can find its story without leaning on a
             name or a pronoun.
             {" "}
-            The
+            The main
             {" "}
-            <a href="essentials/">essentials page</a>
+            <a href="../">Week 6 post</a>
             {" "}
             uses every other term on this week&apos;s list on the same 303 pages.
           </>

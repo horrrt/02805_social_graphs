@@ -18,12 +18,14 @@ export const FILES = {
 export const START = {
   page: "Storm (Marvel Comics)",
   pair: ["Storm (Marvel Comics)", "Human Torch"],
-  k: 8,
+  k: 5,
   topicPage: "Storm (Marvel Comics)",
   word: "storm",
   window: "5",
   pmiWord: "web",
+  pmiList: "ppmi",
   vectorWord: "symbiote",
+  vectorList: "skipgram",
   gloveWord: "vision",
 };
 
@@ -37,6 +39,8 @@ export const ESSENTIALS = [
 ];
 
 export const two = (v) => v.toFixed(2);
+/** `digits` decimals with a true minus sign: signed(-11.351, 2) -> "−11.35". */
+export const signed = (v, digits = 2) => `${v < 0 ? "−" : ""}${Math.abs(v).toFixed(digits)}`;
 export const three = (v) => v.toFixed(3);
 export const pct = (v) => `${Math.round(v * 100)}%`;
 /** "Storm (Marvel Comics)" -> "Storm": the disambiguation Wikipedia adds to a title. */
@@ -73,4 +77,12 @@ export function topicOverlap(data, k) {
     const set = new Set(b[i].map(([w]) => w));
     return t.filter(([w]) => set.has(w)).length / t.length;
   });
+}
+
+/** The words past |z| = 1.96 and how many of them are names. `beyond` counts the
+ * unrounded z; the terms carry z to two decimals, so the names are counted strictly
+ * past 1.96 and the other words are what is left. */
+export function leaning(data) {
+  const names = data.terms.filter((t) => t[6] && Math.abs(t[5]) > 1.96).length;
+  return { all: data.beyond, names, words: data.beyond - names };
 }

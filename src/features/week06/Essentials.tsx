@@ -10,8 +10,9 @@ import { SegmentedControl } from "@/components/post/SegmentedControl";
 import { island, useIslandReady } from "@/lib/island";
 import { useData } from "@/lib/useData";
 import { useHydrated } from "@/lib/useHydrated";
+import { useTokens, useTypeScale } from "@/lib/useTypeScale";
 import { asset } from "@/scripts/site.js";
-import { FILES, START, fit, lengths, pair, short, three, topicOverlap, two } from "@/scripts/week06-essentials.js";
+import { FILES, START, fit, leaning, lengths, pair, short, signed, three, topicOverlap } from "@/scripts/week06-essentials.js";
 
 type Any = any; // eslint-disable-line @typescript-eslint/no-explicit-any
 type Key = keyof typeof FILES;
@@ -43,16 +44,18 @@ function Picker({ id, label, value, options, onChange }: { id: string; label: st
   );
 }
 
-/** A ranked list with a bar per row, scaled to the list's largest value. */
-function Bars({ title, rows, note }: { title: ReactNode; rows: { key: string; label: ReactNode; value: number; text: string; mark?: boolean }[]; note?: ReactNode }) {
-  const max = Math.max(...rows.map((r) => Math.abs(r.value)), 1e-12);
+type Row = { key: string; label: ReactNode; value: number; text: string; mark?: boolean; weak?: boolean };
+
+/** A ranked list with a bar per row, scaled to `max` or else the list's largest value. */
+function Bars({ title, rows, note, max: scale }: { title: ReactNode; rows: Row[]; note?: ReactNode; max?: number }) {
+  const max = scale ?? Math.max(...rows.map((r) => Math.abs(r.value)), 1e-12);
   return (
     <div className="w6e-list">
       <h3>{title}</h3>
       {note ? <p className="w6e-note">{note}</p> : null}
       <ol>
         {rows.map((r) => (
-          <li key={r.key} className={r.mark ? "w6e-mark" : undefined}>
+          <li key={r.key} className={r.mark ? "w6e-mark" : r.weak ? "w6e-weak" : undefined}>
             <span className="w6e-word">{r.label}</span>
             <span className="w6e-track"><span className="w6e-bar" style={{ width: `${(Math.abs(r.value) / max) * 100}%` }}></span></span>
             <span className="w6e-num">{r.text}</span>
@@ -81,7 +84,7 @@ function Weights() {
   const p = (data.pages as Any[]).find((x) => x.name === page) ?? data.pages[0];
   const row = ([w, count, df, idf, tfidf]: Any, by: "count" | "tfidf") => ({
     key: w, label: w, value: by === "count" ? count : tfidf, mark: idf < 0.1,
-    text: by === "count" ? `${count} · on ${df} pages` : `idf ${idf.toFixed(2)} · ${tfidf.toFixed(4)}`,
+    text: by === "count" ? `${count} · on ${df} pages` : `${tfidf.toFixed(4)} · idf ${idf.toFixed(2)}`,
   });
   return (
     <div className="w6e-app" id="weights-app">
@@ -91,7 +94,7 @@ function Weights() {
       </div>
       <div className="w6e-cols">
         <Bars title="By raw count" rows={p.count.map((r: Any) => row(r, "count"))} />
-        <Bars title="By TF-IDF" rows={p.tfidf.map((r: Any) => row(r, "tfidf"))} note="TF is count over page length; IDF is ln(303 / pages using the word)." />
+        <Bars title="By TF-IDF" rows={p.tfidf.map((r: Any) => row(r, "tfidf"))} />
       </div>
     </div>
   );
@@ -109,10 +112,10 @@ function Cosine() {
   const options = (data.pages as string[]).map((n) => [n, short(n)] as [string, string]);
   const rec = pair(data, a, b);
   const len = lengths(data, a, Number(times));
-  const part = (cos: number, words: [string, number][], name: string) => (
+  const part = (cos: number, words: [string, number][], name: string, note?: string) => (
     <Bars
       title={<>{`${name}: cosine ${three(cos)}`}</>}
-      note="The words that add most to the cosine; every word adds its own small term, and the terms sum to the cosine."
+      note={note}
       rows={words.map(([w, v]) => ({ key: w, label: w, value: v, text: three(v) }))}
     />
   );
@@ -124,7 +127,7 @@ function Cosine() {
       </div>
       {rec ? (
         <div className="w6e-cols">
-          {part(rec.raw, rec.rawWords, "Raw counts")}
+          {part(rec.raw, rec.rawWords, "Raw counts", "The words that add most to the cosine; every word adds its own small term, and the terms sum to the cosine.")}
           {part(rec.tfidf, rec.tfidfWords, "TF-IDF")}
         </div>
       ) : <p className="w6e-note">Pick two different pages.</p>}
@@ -140,7 +143,7 @@ function Cosine() {
       </div>
       <p className="w6e-note" aria-live="polite">
         {rec
-          ? `Raw-count vector length ${len.raw.toFixed(0)}, TF-IDF length ${len.tfidf.toFixed(4)}. The cosine stays ${three(rec.raw)} under raw counts and ${three(rec.tfidf)} under TF-IDF: cosine compares direction, and copying a page only stretches its vector.`
+          ? `Raw-count vector length ${len.raw.toFixed(0)}, TF-IDF length ${len.tfidf.toFixed(4)}. The cosine stays ${three(rec.raw)} under raw counts and ${three(rec.tfidf)} under TF-IDF: cosine compares direction: copying a page stretches its raw-count vector and leaves its TF-IDF vector as it was.`
           : ""}
       </p>
     </div>
@@ -149,12 +152,16 @@ function Cosine() {
 
 // ---- 3. contrast (Scattertext) -------------------------------------------------------------
 
+const CORNER_TOKENS = ["--ink", "--card"] as const;
+
 function Contrast() {
   const { data, failed } = useSection("contrast");
+  const scale = useTypeScale();
+  const tokens = useTokens(CORNER_TOKENS);
   const [names, setNames] = useState("hide");
   const [find, setFind] = useState("");
   const option = useMemo(() => {
-    if (!data) return null;
+    if (!data || !scale || !tokens) return null;
     const cut = data.null.top_z_max as number;
     const term = (data.terms as Any[]).filter((t) => names === "show" || !t[6]);
     const q = find.trim().toLowerCase();
@@ -166,8 +173,14 @@ function Contrast() {
       grid: { left: 56, right: 16, top: 16, bottom: 72 },
       xAxis: { type: "value", min: 0, max: 1, name: "frequency rank on men's pages (0 rare, 1 common)", nameLocation: "middle", nameGap: 28 },
       yAxis: { type: "value", min: 0, max: 1, name: "on women's pages", nameLocation: "middle", nameGap: 38 },
-      tooltip: { formatter: (p: Any) => `${p.data.name}: ${p.data.f} times on women's pages, ${p.data.m} on men's; z ${p.data.z}` },
+      tooltip: { formatter: (p: Any) => `${p.data.name}: ${p.data.f} times on women's pages, ${p.data.m} on men's; z ${signed(p.data.z)}` },
       legend: { bottom: 0, data: ["no clear lean", "leans, |z| over 1.96", "beyond every shuffle"] },
+      // The four words past every shuffle sit in the top-right corner, where their dots overlap; the label
+      // names them from below the dots' layer, so it never hides one.
+      graphic: [{
+        type: "text", right: 70, top: 30, z: 0, silent: true,
+        style: { text: "her, she, his and he →", fill: tokens["--ink"], font: scale.font("small", 700), textShadowColor: tokens["--card"], textShadowBlur: 3 },
+      }],
       series: [
         series("no clear lean", group((t) => Math.abs(t[5]) <= 1.96), 3, "rgba(120,130,150,0.35)"),
         series("leans, |z| over 1.96", group((t) => Math.abs(t[5]) > 1.96 && Math.abs(t[5]) <= cut), 5),
@@ -175,12 +188,21 @@ function Contrast() {
         ...(hit.length ? [{ ...series("your word", hit, 14), label: { show: true, formatter: (p: Any) => p.data.name, position: "right" } }] : []),
       ],
     };
-  }, [data, names, find]);
+  }, [data, names, find, scale, tokens]);
   if (failed) return <div className="w6e-app" id="contrast-app"><Failed /></div>;
   if (!data || !option) return <div className="w6e-app" id="contrast-app"></div>;
   const list = (side: "female" | "male") => (data.top[names === "show" ? side : `${side}_no_names`] as [string, number][]).slice(0, 10);
+  // Both lists on one scale, so a bar's length compares across them.
+  const max = Math.max(...[...list("female"), ...list("male")].map(([, z]) => Math.abs(z)));
+  const rows = (side: "female" | "male") => list(side).map(([w, z]) => ({ key: w, label: w, value: z, text: `z ${signed(z)}`, weak: Math.abs(z) < 1.96 }));
+  const lean = leaning(data);
   return (
     <div className="w6e-app" id="contrast-app">
+      <p className="axis-note" aria-live="polite">
+        {names === "show"
+          ? `With names shown, all ${lean.all} leaning words are plotted; ${lean.names} of them are names.`
+          : `With names hidden, ${lean.words} of the ${lean.all} leaning words remain; the rest are names.`}
+      </p>
       <div className="w6e-controls">
         <span className="w6e-label" id="w6e-names-label">Character names</span>
         <SegmentedControl className="rx-seg" ariaLabelledBy="w6e-names-label" buttons={[{ value: "hide", label: "hidden" }, { value: "show", label: "shown" }]} value={names} onChange={setNames} />
@@ -191,8 +213,8 @@ function Contrast() {
       </div>
       <EChart option={option} height={420} renderer="canvas" />
       <div className="w6e-cols">
-        <Bars title="Leans to women's pages" rows={list("female").map(([w, z]) => ({ key: w, label: w, value: z, text: `z ${z}` }))} />
-        <Bars title="Leans to men's pages" rows={list("male").map(([w, z]) => ({ key: w, label: w, value: z, text: `z ${z}` }))} />
+        <Bars title="Leans to women's pages" max={max} rows={rows("female")} />
+        <Bars title="Leans to men's pages" max={max} note="Grey rows have |z| under 1.96: no clear lean." rows={rows("male")} />
       </div>
     </div>
   );
@@ -279,21 +301,31 @@ function Contexts() {
 function Pmi() {
   const { data, failed } = useSection("pmi");
   const [word, setWord] = useState(START.pmiWord);
+  const [beside, setBeside] = useState(START.pmiList);
   if (failed) return <div className="w6e-app" id="pmi-app"><Failed /></div>;
   if (!data) return <div className="w6e-app" id="pmi-app"></div>;
   const r = data.rows[word];
   const rows = (list: [string, number, number][], by: "count" | "pmi") =>
-    list.map(([w, n, v]) => ({ key: w, label: w, value: by === "count" ? n : v, text: by === "count" ? `${n} · PMI ${two(v)}` : `${two(v)} · seen ${n}×` }));
+    list.map(([w, n, v]) => ({ key: w, label: w, value: by === "count" ? n : v, text: by === "count" ? `${n} · PMI ${signed(v)}` : `${signed(v)} · seen ${n}×` }));
   return (
     <div className="w6e-app" id="pmi-app">
       <div className="w6e-controls">
         <Picker id="w6e-pmi-word" label="Word" value={word} options={wordOptions(data.targets)} onChange={setWord} />
         <span className="w6e-note" aria-live="polite">{`${r.negative_cells} of the row's ${r.cells} cells have negative PMI; PPMI sets them to 0.`}</span>
+        <span className="w6e-label" id="w6e-pmi-list-label">Beside the counts</span>
+        <SegmentedControl
+          className="rx-seg"
+          ariaLabelledBy="w6e-pmi-list-label"
+          buttons={[{ value: "pmi", label: "PMI, any count" }, { value: "ppmi", label: `PPMI, seen ${r.min_count}+ times` }]}
+          value={beside}
+          onChange={setBeside}
+        />
       </div>
-      <div className="w6e-cols w6e-three">
+      <div className="w6e-cols">
         <Bars title="By count" rows={rows(r.count, "count")} />
-        <Bars title="By PMI" note={`Rare contexts rise: the top five are seen at most ${Math.max(...r.pmi_any.slice(0, 5).map(([, n]: Any) => n))}×.`} rows={rows(r.pmi_any, "pmi")} />
-        <Bars title={`By PPMI, seen ${r.min_count}+ times`} rows={rows(r.ppmi, "pmi")} />
+        {beside === "pmi"
+          ? <Bars title="By PMI" note={`Rare contexts rise: the top five are seen at most ${Math.max(...r.pmi_any.slice(0, 5).map(([, n]: Any) => n))}×.`} rows={rows(r.pmi_any, "pmi")} />
+          : <Bars title={`By PPMI, seen ${r.min_count}+ times`} rows={rows(r.ppmi, "pmi")} />}
       </div>
     </div>
   );
@@ -304,21 +336,34 @@ function Pmi() {
 function Vectors() {
   const { data, failed } = useSection("vectors");
   const [word, setWord] = useState(START.vectorWord);
+  const [beside, setBeside] = useState(START.vectorList);
   const [ex, setEx] = useState("0");
   if (failed) return <div className="w6e-app" id="vectors-app"><Failed /></div>;
   if (!data) return <div className="w6e-app" id="vectors-app"></div>;
   const n = data.near[word];
   const rows = (list: [string, number][]) => list.map(([w, s]) => ({ key: w, label: w, value: s, text: three(s) }));
   const e = data.examples[Number(ex)];
+  const dim = data.settings.dim as number;
+  // A window cut short on the left starts at the page's first word.
+  const from = e.window.indexOf(e.centre) < data.settings.window ? `${short(e.page)}'s first sentence` : `${short(e.page)}'s page, where ${e.centre} first appears`;
   return (
     <div className="w6e-app" id="vectors-app">
       <div className="w6e-controls">
         <Picker id="w6e-vec-word" label="Word" value={word} options={wordOptions(data.targets)} onChange={setWord} />
+        <span className="w6e-label" id="w6e-vec-list-label">Beside the PPMI rows</span>
+        <SegmentedControl
+          className="rx-seg"
+          ariaLabelledBy="w6e-vec-list-label"
+          buttons={[{ value: "skipgram", label: "Skip-gram" }, { value: "cbow", label: "CBOW" }]}
+          value={beside}
+          onChange={setBeside}
+        />
       </div>
-      <div className="w6e-cols w6e-three">
+      <div className="w6e-cols">
         <Bars title="PPMI rows" note="Sparse: one column per context word." rows={rows(n.ppmi)} />
-        <Bars title="Skip-gram" note="100 numbers, trained to predict the context from the word." rows={rows(n.skipgram)} />
-        <Bars title="CBOW" note="100 numbers, trained to predict the word from its context." rows={rows(n.cbow)} />
+        {beside === "cbow"
+          ? <Bars title="CBOW" note={`${dim} numbers, trained to predict the word from its context.`} rows={rows(n.cbow)} />
+          : <Bars title="Skip-gram" note={`${dim} numbers, trained to predict the context from the word.`} rows={rows(n.skipgram)} />}
       </div>
       <div className="w6e-step">
         <div className="w6e-controls">
@@ -328,7 +373,7 @@ function Vectors() {
         <p className="w6e-window">
           {(e.window as string[]).map((w, i) => <span key={i} className={w === e.centre ? "w6e-centre" : "w6e-ctx"}>{w}</span>)}
         </p>
-        <p className="w6e-note">{`From ${short(e.page)}. Each real pair, such as (${e.centre}, ${e.positive[0]}), is scored up; for that pair the model also scores down 5 words drawn at random, more often the more common they are:`}</p>
+        <p className="w6e-note">{`From ${from}. For each real pair, such as (${e.centre}, ${e.positive[0]}), the model scores the pair up and these ${e.negative.length} sampled words down:`}</p>
         <p className="w6e-window">{(e.negative as string[]).map((w, i) => <span key={i} className="w6e-neg">{w}</span>)}</p>
       </div>
     </div>

@@ -1724,7 +1724,7 @@
       "kind": "week chart",
       "what": "Storm's nearest pages with names kept and with names removed.",
       "where": "src/features/week06/Parts.tsx",
-      "seen_at": "/weeks/week06/#top",
+      "seen_at": "/weeks/week06/alternative/#top",
       "week": 6,
       "concepts": [
         "search-tfidf"
@@ -1735,7 +1735,7 @@
       "kind": "week chart",
       "what": "Each section's number against its baseline.",
       "where": "src/features/week06/Parts.tsx",
-      "seen_at": "/weeks/week06/#findings",
+      "seen_at": "/weeks/week06/alternative/#findings",
       "week": 6,
       "concepts": [
         "null-models"
@@ -1746,7 +1746,7 @@
       "kind": "week chart",
       "what": "Choose a character and see its ten nearest pages by TF-IDF with names kept and removed, marked linked, women, in both lists, with cosine and the words behind each match.",
       "where": "src/features/week06/Parts.tsx",
-      "seen_at": "/weeks/week06/#explore",
+      "seen_at": "/weeks/week06/alternative/#explore",
       "week": 6,
       "concepts": [
         "search-tfidf",
@@ -1758,7 +1758,7 @@
       "kind": "week chart",
       "what": "Linked neighbours in ten per representation, against a null that removes as many other words.",
       "where": "src/features/week06/Parts.tsx",
-      "seen_at": "/weeks/week06/#names",
+      "seen_at": "/weeks/week06/alternative/#names",
       "week": 6,
       "concepts": [
         "search-tfidf",
@@ -1770,7 +1770,7 @@
       "kind": "week chart",
       "what": "The numbers behind the ladder, distances, and hand-read pairs with names kept.",
       "where": "src/features/week06/Parts.tsx",
-      "seen_at": "/weeks/week06/#names",
+      "seen_at": "/weeks/week06/alternative/#names",
       "week": 6,
       "concepts": [
         "search-tfidf"
@@ -1781,7 +1781,7 @@
       "kind": "week chart",
       "what": "The share of every page's ten nearest that are about women, against women's share of all pages.",
       "where": "src/features/week06/Parts.tsx",
-      "seen_at": "/weeks/week06/#gender",
+      "seen_at": "/weeks/week06/alternative/#gender",
       "week": 6,
       "concepts": [
         "homophily",
@@ -1793,7 +1793,7 @@
       "kind": "week chart",
       "what": "Women's share among women's lists minus among men's, against 1,000 label shuffles.",
       "where": "src/features/week06/Parts.tsx",
-      "seen_at": "/weeks/week06/#gender",
+      "seen_at": "/weeks/week06/alternative/#gender",
       "week": 6,
       "concepts": [
         "homophily",
@@ -1805,7 +1805,7 @@
       "kind": "week chart",
       "what": "The words that carry the matches between women by share of summed cosine, and hand-read pairs with names removed.",
       "where": "src/features/week06/Parts.tsx",
-      "seen_at": "/weeks/week06/#gender",
+      "seen_at": "/weeks/week06/alternative/#gender",
       "week": 6,
       "concepts": [
         "search-tfidf",
@@ -1817,7 +1817,7 @@
       "kind": "week chart",
       "what": "Which words make a page: IDF weighting picks out Marvel's own stopwords.",
       "where": "src/features/week06/Essentials.tsx",
-      "seen_at": "/weeks/week06/essentials/#weights",
+      "seen_at": "/weeks/week06/#weights",
       "week": 6,
       "concepts": [
         "search-tfidf",
@@ -1829,7 +1829,7 @@
       "kind": "week chart",
       "what": "Which pages are close: cosine similarity between pages under different weightings.",
       "where": "src/features/week06/Essentials.tsx",
-      "seen_at": "/weeks/week06/essentials/#cosine",
+      "seen_at": "/weeks/week06/#cosine",
       "week": 6,
       "concepts": [
         "search-tfidf"
@@ -1840,7 +1840,7 @@
       "kind": "week chart",
       "what": "What women's pages say that men's don't: a Scattertext contrast tested against chance.",
       "where": "src/features/week06/Essentials.tsx",
-      "seen_at": "/weeks/week06/essentials/#contrast",
+      "seen_at": "/weeks/week06/#contrast",
       "week": 6,
       "concepts": [
         "comparing-groups",
@@ -1852,7 +1852,7 @@
       "kind": "week chart",
       "what": "What themes recur across the pages, and how the topics move when the seed moves.",
       "where": "src/features/week06/Essentials.tsx",
-      "seen_at": "/weeks/week06/essentials/#topics",
+      "seen_at": "/weeks/week06/#topics",
       "week": 6,
       "concepts": [
         "topic-models"
@@ -1863,7 +1863,7 @@
       "kind": "week chart",
       "what": "What company a word keeps: its row of context counts.",
       "where": "src/features/week06/Essentials.tsx",
-      "seen_at": "/weeks/week06/essentials/#contexts",
+      "seen_at": "/weeks/week06/#contexts",
       "week": 6,
       "concepts": [
         "word-context"
@@ -1874,7 +1874,7 @@
       "kind": "week chart",
       "what": "Which neighbours belong to a word: context rows reweighted by association instead of frequency.",
       "where": "src/features/week06/Essentials.tsx",
-      "seen_at": "/weeks/week06/essentials/#pmi",
+      "seen_at": "/weeks/week06/#pmi",
       "week": 6,
       "concepts": [
         "word-context"
@@ -1885,7 +1885,7 @@
       "kind": "week chart",
       "what": "Whether 303 pages can teach a model what a word means, packing a row into 100 numbers.",
       "where": "src/features/week06/Essentials.tsx",
-      "seen_at": "/weeks/week06/essentials/#vectors",
+      "seen_at": "/weeks/week06/#vectors",
       "week": 6,
       "concepts": [
         "embeddings"
@@ -1896,7 +1896,7 @@
       "kind": "week chart",
       "what": "Whether a word means the same in general English as in the Marvel pages.",
       "where": "src/features/week06/Essentials.tsx",
-      "seen_at": "/weeks/week06/essentials/#glove",
+      "seen_at": "/weeks/week06/#glove",
       "week": 6,
       "concepts": [
         "embeddings"

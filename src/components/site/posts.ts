@@ -6,7 +6,7 @@ import { liveWeeks } from "@/scripts/weeks.js";
 export type Post = { href: string; label: string; parts?: Post[] };
 
 const PARTS: Record<number, Post[]> = {
-  6: [{ href: "weeks/week06/essentials/", label: "Week 6 essentials" }],
+  6: [{ href: "weeks/week06/alternative/", label: "Week 6 alternative" }],
 };
 
 const weeks = liveWeeks() as { n: number; cabinet: { name: string; href: string } }[];

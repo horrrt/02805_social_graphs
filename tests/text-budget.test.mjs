@@ -19,9 +19,10 @@ import { ROOT, builtPage } from "./built-page.mjs";
 const WEEKS = fileURLToPath(new URL("../out/weeks/", import.meta.url));
 const LIMITS = { section: 350, subsection: 200, deep: 350 };
 
+// A week's post, and the alternative post beside it where the week has one (Week 6).
 const pages = readdirSync(WEEKS)
   .filter((d) => d === "_template" || (/^week\d+$/.test(d) && Number(d.slice(4)) >= 3))
-  .map((d) => join(WEEKS, d, "index.html"))
+  .flatMap((d) => [join(WEEKS, d, "index.html"), join(WEEKS, d, "alternative", "index.html")])
   .filter(existsSync);
 
 /** Any card: the plain `card` class, which also matches `w4-card`. Week 3
@@ -64,6 +65,7 @@ function elements(html, open, tag) {
 
 test("the budget test sees pages", () => {
   assert.ok(["week03", "week04", "_template"].every((w) => pages.some((p) => p.includes(`/${w}/`))));
+  assert.ok(pages.some((p) => p.includes("/week06/alternative/")), "the alternative Week 6 post is held to the budget too");
 });
 
 const idOf = (tag) => tag.match(/\bid="([^"]+)"/)?.[1];

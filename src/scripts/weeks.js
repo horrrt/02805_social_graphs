@@ -81,10 +81,10 @@ export const WEEKS = [
     date: "2026-10-07",
     status: "live",
     cabinet: {
-      name: "Marvel Lookalikes",
-      marquee: "LOOKALIKES",
+      name: "Seventeen Essentials",
+      marquee: "ESSENTIALS",
       href: "weeks/week06/",
-      blurb: "Why do two Marvel pages read alike? Names, then she and her.",
+      blurb: "Every essential term of Week 6, used once on the 303 Marvel pages, each with a baseline.",
     },
   },
   { n: 7, courseTitle: "NLP III", short: "NLP III", date: "2026-10-21", status: "coming" },

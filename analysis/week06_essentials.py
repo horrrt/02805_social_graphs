@@ -1,11 +1,11 @@
 """Week 6 essentials: every term in the brief's Essentials list, used once on the 303 Marvel pages.
 
-Owner: Gyula. The page /weeks/week06/essentials/ has eight sections; this script writes one JSON
+Owner: Gyula. The page /weeks/week06/ (the Week 6 post) has eight sections; this script writes one JSON
 per section to public/weeks/week06/data/essentials-*.json, and a summary of every quoted number to
 analysis/week06_essentials.json.
 
 Part A, documents (one row per page), uses week06_lookalikes.Corpus and its token rule, so every
-number matches the Week 6 post:
+number matches the alternative Week 6 post (Marvel Lookalikes):
   1 weights   TF, DF, IDF and TF-IDF for each page's words
   2 cosine    cosine under raw counts and TF-IDF for curated pairs, split into per-word terms
   3 contrast  a Scattertext comparison of women's and men's pages (Wikidata labels)
