@@ -260,11 +260,6 @@
   font-size: var(--fs-body);
   font-weight: 400;
 }
-.visual-design .footer {
-  margin-top: 24px;
-  padding: 24px 0;
-  font-size: var(--fs-caption);
-}
 /* Posts open on a text-only introduction; the illustrations were removed. */
 .visual-design.guided-post .story-hero {
   display: grid;

@@ -35,9 +35,6 @@ export default function Page() {
         <span>
           Sources: game lists in <code>project/games/</code>, materials in <code>project/materials/</code>, components and libraries in{" "}
           <code>project/toolbox/</code>. Rebuild with <code>python scripts/toolbox_data.py</code>.
-        </span>{" "}
-        <span>
-          Toolbox · <a href="../">Log–Log Legends</a> · DTU 02805
         </span>
       </SiteFooter>
     </>

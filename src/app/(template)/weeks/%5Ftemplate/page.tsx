@@ -29,14 +29,6 @@ export default function Page() {
       </main>
       <SiteFooter>
         <span>Credit each data source here, in the form its licence asks for.</span>
-        {" "}
-        <span>
-          Post template ·
-          {" "}
-          <a href="../../">Log–Log Legends</a>
-          {" "}
-          · DTU 02805
-        </span>
       </SiteFooter>
       {/* The space after the footer is in the page's markup; keep it. */}
       {" "}

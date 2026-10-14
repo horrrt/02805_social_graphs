@@ -1,6 +1,6 @@
 import { SiteFooter } from "@/components/site/SiteFooter";
 
-// Footer: the credits the pages' and Wikidata's licences ask for, then the post's name and the link home.
+// Footer: the credits the pages' and Wikidata's licences ask for.
 export function Footer() {
   return (
     <SiteFooter>
@@ -16,14 +16,6 @@ export function Footer() {
         {" "}
         <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0</a>
         , fetched 6 October 2026.
-      </span>
-      {" "}
-      <span>
-        Why do two Marvel pages read alike? ·
-        {" "}
-        <a href="../../../">Log–Log Legends</a>
-        {" "}
-        · DTU 02805
       </span>
     </SiteFooter>
   );

@@ -2869,6 +2869,7 @@
 .corridor .w6e-hero h1 { color: #fff; font-size: var(--fs-display); line-height: 1.05; margin: 8px 0 16px; }
 .corridor .w6e-lede { color: #dbe6f5; font-size: var(--fs-lead); line-height: 1.5; max-width: 760px; }
 .corridor .w6e-lede a { color: #fff; }
+.corridor .w6e-part#documents { border-top: 0; }
 .corridor .w6e-part { border-top: 1px solid var(--line); color: var(--ink-soft); font-size: var(--fs-small); font-weight: 700; letter-spacing: 0.04em; margin: 48px 0 0; padding-top: 16px; }
 /* A label, not a paragraph: "What we did" keeps one <p>; it reads like the paragraph under it. */
 /* A display formula between two paragraphs of what we did, typeset by KaTeX (src/lib/Tex.tsx). */
@@ -2927,8 +2928,12 @@
 .corridor .w6e-centre { background: var(--w4-accent); color: #fff; font-weight: 700; }
 .corridor .w6e-neg { background: var(--line-soft); color: var(--ink-soft); text-decoration: line-through; }
 .corridor .w6e-closing h3 { font-size: var(--fs-h4); margin: 0 0 10px; }
-.corridor .w6e-takeaways { margin: 0 0 24px; padding-left: 20px; }
-.corridor .w6e-takeaways li { font-size: var(--fs-body); line-height: 1.55; margin: 0 0 8px; }
+/* The takeaways as numbered tiles, two to a row, in the game card's tile style. */
+.corridor .w6e-takeaways { counter-reset: takeaway; display: grid; gap: 12px; grid-template-columns: 1fr 1fr; list-style: none; margin: 4px 0 0; padding: 0; }
+.corridor .w6e-takeaways li { background: var(--ground); border: 1px solid var(--line); border-radius: 12px; counter-increment: takeaway; font-size: var(--fs-body); line-height: 1.6; padding: 16px 18px 16px 58px; position: relative; }
+.corridor .w6e-takeaways li::before { align-items: center; background: var(--card); border: 1px solid var(--line); border-radius: 50%; color: var(--accent); content: counter(takeaway); display: flex; font-family: var(--font-display); font-size: var(--fs-strong); height: 28px; justify-content: center; left: 18px; position: absolute; top: 15px; width: 28px; }
+.corridor .w6e-takeaways li:last-child:nth-child(odd) { grid-column: 1 / -1; }
+.corridor .w6e-takeaways b { color: var(--ink); }
 
 /* ==== Kit: text explorables (VectorAngle, SplitBars, SweepCurve, TokenWindow,
    CountMatrix, MixtureBar, RankedBars, AxisMap, AnalogyPlot, GuessRanker in
@@ -3524,10 +3529,12 @@
 .corridor .w6e-wordmark { color: var(--ink); flex: none; font-family: var(--font-display); font-size: var(--fs-display); letter-spacing: 0.01em; line-height: 0.9; margin: 0; text-transform: uppercase; white-space: nowrap; }
 .corridor .w6e-wordmark span { color: color-mix(in srgb, var(--people) 85%, black); }
 .corridor .w6e-game-lede { color: var(--ink-soft); flex: 1 1 auto; font-size: var(--fs-lead); margin: 0; max-width: 70ch; min-width: 0; }
-.corridor .w6e-game-cta { align-items: end; display: flex; flex: none; flex-direction: column; gap: 8px; }
-.corridor .w6e-play { background: var(--people); border-radius: 999px; box-shadow: 0 6px 18px color-mix(in srgb, var(--people) 35%, transparent); color: var(--ink); display: inline-block; font-size: var(--fs-strong); font-weight: 800; padding: 12px 26px; text-decoration: none; }
+.corridor .w6e-game-cta { display: grid; flex: none; gap: 8px; }
+.corridor .w6e-play { background: var(--people); border-radius: 999px; box-shadow: 0 6px 18px color-mix(in srgb, var(--people) 35%, transparent); color: var(--ink); display: block; font-size: var(--fs-strong); font-weight: 800; padding: 12px 26px; text-align: center; text-decoration: none; }
 .corridor .w6e-play:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
-.corridor .w6e-practice { color: var(--accent); font-size: var(--fs-small); }
+.corridor .w6e-practice { background: var(--card); border: 1px solid var(--line); border-radius: 999px; color: var(--ink); display: block; font-size: var(--fs-body); font-weight: 700; padding: 9px 26px; text-align: center; text-decoration: none; transition: background 0.15s ease, border-color 0.15s ease; }
+.corridor .w6e-practice:hover { background: var(--ground); border-color: var(--ink-soft); }
+.corridor .w6e-practice:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 .corridor .w6e-levels { display: grid; gap: 10px; grid-template-columns: repeat(5, 1fr); list-style: none; margin: 0; padding: 0; }
 .corridor .w6e-levels li { align-items: start; background: var(--ground); border: 1px solid var(--line); border-radius: 12px; display: flex; gap: 10px; padding: 14px 14px 12px; }
 .corridor .w6e-lv-num { background: var(--card); border: 1px solid var(--line); border-radius: 50%; color: var(--ink-soft); display: grid; flex: none; font-family: var(--font-display); font-size: var(--fs-strong); height: 28px; place-items: center; width: 28px; }

@@ -1,4 +1,4 @@
-import { Fragment, type ReactNode } from "react";
+import type { ReactNode } from "react";
 import { PostSection } from "@/components/post/PostSection";
 import { SectionOpener } from "@/components/post/SectionOpener";
 import { TermLayer } from "@/components/post/TermLayer";
@@ -13,19 +13,12 @@ import { Contexts, Contrast, Cosine, Glove, Pmi, Topics, Vectors, Weights } from
 // represented by their contexts, as the brief splits the week. The earlier
 // post, Marvel Lookalikes, is the alternative at alternative/.
 
-const SECTIONS = [
-  ["weights", "1", "Weights"], ["cosine", "2", "Cosine"], ["contrast", "3", "Scattertext"], ["topics", "4", "Topics"],
-  ["contexts", "5", "Contexts"], ["pmi", "6", "PMI"], ["vectors", "7", "Word2Vec"], ["glove", "8", "GloVe"],
-] as const;
-
-const TITLE = Object.fromEntries(SECTIONS.map(([id, num, label]) => [id, `${num} · ${label}`]));
-
-// The takeaways, each with the sections it comes from.
-const TAKEAWAYS: [string, string[], ReactNode][] = [
-  ["weights", ["weights"], (
+// The takeaways, one per finding, in the order of the sections.
+const TAKEAWAYS: [string, ReactNode][] = [
+  ["weights", (
     <>
-      <b>IDF zeroes the words on every page</b>
-      , Marvel&apos;s own included (
+      IDF zeroes every word on all 303 pages, Marvel&apos;s own
+      {" "}
       <em>character</em>
       ,
       {" "}
@@ -35,35 +28,37 @@ const TAKEAWAYS: [string, string[], ReactNode][] = [
       {" "}
       <em>marvel</em>
       {" "}
-      weigh 0), but few stopwords:
+      included, yet
       {" "}
-      <b>151 of NLTK&apos;s 198</b>
+      <b>
+        151 of NLTK&apos;s 198
+      </b>
       {" "}
-      keep weight.
+      stopwords keep weight.
     </>
   )],
-  ["cosine", ["cosine"], (
+  ["cosine", (
     <>
-      <b>Similarity needs weighting:</b>
+      Similarity needs weighting. Under raw counts the 99th-percentile pair of pages sits only
       {" "}
-      under raw counts the 99th-percentile pair of pages sits only
+      <b>
+        0.122
+      </b>
       {" "}
-      <b>0.122</b>
+      above the 0.754 median, and under TF-IDF it sits at
       {" "}
-      above the 0.754 median; under TF-IDF it sits at
-      {" "}
-      <b>eleven times</b>
+      <b>
+        eleven times
+      </b>
       {" "}
       the 0.0096 median.
     </>
   )],
-  ["contrast", ["contrast"], (
+  ["contrast", (
     <>
-      Between women&apos;s and men&apos;s pages,
+      Only
       {" "}
       <b>
-        only
-        {" "}
         <em>her</em>
         ,
         {" "}
@@ -77,45 +72,51 @@ const TAKEAWAYS: [string, string[], ReactNode][] = [
         <em>he</em>
       </b>
       {" "}
-      lean further than the strongest word in any shuffle of the labels.
+      split women&apos;s pages from men&apos;s further than any word in a label shuffle.
     </>
   )],
-  ["topics", ["topics"], (
+  ["topics", (
     <>
-      At five topics
+      At five topics,
       {" "}
-      <b>four of five</b>
+      <b>
+        four of five
+      </b>
       {" "}
-      keep at least half their top ten words when the seed changes, at eight only four of eight;
+      keep at least half their top ten words when the seed changes. At eight, only four of eight do, so
       {" "}
-      <b>a topic&apos;s label is a reading, not a finding.</b>
+      <b>
+        a topic&apos;s label is a reading, not a finding.
+      </b>
     </>
   )],
-  ["pmi", ["contexts", "pmi"], (
+  ["pmi", (
     <>
-      <b>Counting finds grammar, association finds the telling neighbours:</b>
+      By count,
       {" "}
       <em>the</em>
       {" "}
       is the top neighbour of
       {" "}
-      <b>24 of 26</b>
+      <b>
+        24 of 26
+      </b>
       {" "}
-      words, with a PMI of at most 0.70.
+      words, but its PMI is at most 0.70, so association finds the telling neighbours.
     </>
   )],
-  ["vectors", ["vectors"], (
+  ["vectors", (
     <>
-      <b>303 pages give stable Marvel neighbours:</b>
+      303 pages give stable Marvel neighbours. Retrained from another seed, skip-gram keeps
       {" "}
-      retrained from another seed, skip-gram keeps
-      {" "}
-      <b>71%</b>
+      <b>
+        71%
+      </b>
       {" "}
       of each top ten, and
       {" "}
       <em>symbiote</em>
-      &apos;s nearest words are
+      &apos;s nearest are
       {" "}
       <em>venom</em>
       ,
@@ -131,11 +132,11 @@ const TAKEAWAYS: [string, string[], ReactNode][] = [
       .
     </>
   )],
-  ["glove", ["glove"], (
+  ["glove", (
     <>
-      <b>A static vector holds its corpus&apos;s sense:</b>
+      A static vector keeps its corpus&apos;s sense.
       {" "}
-      <em>vision</em>
+      <em>Vision</em>
       {" "}
       sits beside
       {" "}
@@ -161,9 +162,11 @@ const TAKEAWAYS: [string, string[], ReactNode][] = [
       {" "}
       in GloVe, and
       {" "}
-      <b>11 of 26</b>
+      <b>
+        11 of 26
+      </b>
       {" "}
-      words share no neighbour even among words both models know.
+      words share no neighbour, even among words both models know.
     </>
   )],
 ];
@@ -183,12 +186,12 @@ export default function Page() {
               {" "}
               <em>the</em>
               {" "}
-              comes first, 583 times. Weight them by how few pages use them and
+              comes first, 583 times. Weight each word by how few pages use it and
               {" "}
               <em>storm</em>
               {" "}
-              rises to the top. Eight ways of reading text, each tried on the same 303 Marvel pages, end with word vectors
-              that put
+              rises to the top. We try eight ways of reading text on the same 303 Marvel pages, and they end with word
+              vectors that put
               {" "}
               <em>vision</em>
               {" "}
@@ -196,7 +199,7 @@ export default function Page() {
               {" "}
               <em>wanda</em>
               {" "}
-              here and beside
+              here, and beside
               {" "}
               <em>sense</em>
               {" "}
@@ -226,33 +229,15 @@ export default function Page() {
           <Game />
           <PostSection id="closing" owner="Gyula">
             <SectionOpener num="✓" title="What the toolkit found">
-              Weighting and association do the work; counting alone finds grammar, and a corpus decides what its words mean.
+              Weighting and association do the work. Counting alone turns up grammar, and a corpus decides what its words mean.
             </SectionOpener>
             <div className="card w4-card w6e-closing">
-              {/* One list per part, so neither runs past the subsection word budget. */}
-              {([["Takeaways · Part A, documents", 0, 4], ["Takeaways · Part B, words", 4, TAKEAWAYS.length]] as const).map(([title, from, to]) => (
-                <Fragment key={title}>
-                  <h3>{title}</h3>
-                  <ol className="w6e-takeaways" start={from + 1}>
-                    {TAKEAWAYS.slice(from, to).map(([key, ids, text]) => (
-                      <li key={key}>
-                        {text}
-                        {ids.map((id, i) => (
-                          <Fragment key={id}>
-                            {i ? " · " : " "}
-                            <a href={`#${id}`}>{TITLE[id]}</a>
-                          </Fragment>
-                        ))}
-                      </li>
-                    ))}
-                  </ol>
-                </Fragment>
-              ))}
-              <p className="sub">
-                Methods: analysis/week06_essentials.py writes every number on this page. An AI coding assistant (Claude) wrote
-                the analysis and the page and drafted the text; a review read each claim against the data files, and
-                tests/week06-essentials.test.mjs checks every quoted number against them.
-              </p>
+              <h3>Takeaways</h3>
+              <ol className="w6e-takeaways">
+                {TAKEAWAYS.map(([key, text]) => (
+                  <li key={key}>{text}</li>
+                ))}
+              </ol>
             </div>
           </PostSection>
         </div>
@@ -271,15 +256,9 @@ export default function Page() {
           . GloVe vectors by Pennington, Socher and Manning,
           {" "}
           <a href="https://opendatacommons.org/licenses/pddl/1-0/">PDDL 1.0</a>
-          .
-        </span>
-        {" "}
-        <span>
-          Week 6 ·
-          {" "}
-          <a href="../../">Log–Log Legends</a>
-          {" "}
-          · DTU 02805
+          . Every number comes from analysis/week06_essentials.py. An AI coding assistant (Claude) wrote the analysis
+          and the page and drafted the text, and tests/week06-essentials.test.mjs checks every quoted number against the
+          data files.
         </span>
       </SiteFooter>
       <TermLayer />

@@ -9,7 +9,7 @@ export function Game() {
     <PostSection id="game" owner="Gyula">
       <header className="w4-opener w6e-game-opener">
         <div>
-          <h2>Now play it: a timed game on the 303 Marvel pages</h2>
+          <h2>Play it as a timed game on the 303 Marvel pages</h2>
         </div>
       </header>
       <div className="card w4-card w5-card w6e-game">
@@ -19,10 +19,10 @@ export function Game() {
             {" "}
             <span>Read</span>
           </p>
-          <p className="w6e-game-lede">Five levels, one per method. Every level is timed and scored; the five add up to one total.</p>
+          <p className="w6e-game-lede">There are five levels, one per method. Each one is timed and scored, and the five scores add up to one total.</p>
           <div className="w6e-game-cta">
             <a className="w6e-play" href="../../play/cold-read/">Play Cold Read →</a>
-            <a className="w6e-practice" href="../../play/cold-read/practice/">or practise one level</a>
+            <a className="w6e-practice" href="../../play/cold-read/practice/">Practise one level</a>
           </div>
         </div>
         <ol className="w6e-levels">
