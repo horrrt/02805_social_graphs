@@ -69,12 +69,6 @@ export function lines(data, label) {
   return { caption: `${LABEL[label]}: ${data.precision[label].right} of ${data.precision[label].read} right`, rows };
 }
 
-// ---- glossary terms. Main's first call, "Louvain" (w5-term-relations-louvain),
-// matched no text in #relations-did, so only "communities" is placed.
-export const TERMS = [
-  { phrase: "communities", definition: "Groups of characters linked more among themselves than to the rest of the network.", id: "w5-term-relations-communities" },
-];
-
 // ---- the map: the pairs one kind of word labels, over the communities
 
 /** The kind the map opens on, and its aria label for each kind. */

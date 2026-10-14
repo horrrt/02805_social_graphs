@@ -1,5 +1,6 @@
 import { Drawer } from "@/components/post/Drawer";
 import { Drawers } from "@/components/post/Drawers";
+import { Gloss } from "@/components/post/Gloss";
 import { Notice } from "@/components/post/Notice";
 import { Plot } from "@/components/post/Plot";
 import { PostSection } from "@/components/post/PostSection";
@@ -7,10 +8,15 @@ import { QuestionCard } from "@/components/post/QuestionCard";
 import { SectionOpener } from "@/components/post/SectionOpener";
 import { TermProse } from "@/components/post/TermProse";
 import { Fame as Part } from "@/features/week05/fame/Fame";
-import { FAME, TERMS } from "@/scripts/week05-fame.js";
+import { termFor } from "@/lib/glossary";
+import { FAME } from "@/scripts/week05-fame.js";
+import { ExpResidual, LnInDegree, LnWords, P } from "./Formulas";
 
 // Section 6: page length against incoming links. The fame islands (src/features/week05/fame/) draw the
 // scatter, the outlier table and the passages; the term in "what we did" waits for fame.json, as on main.
+// Main's "isolates" (w5-term-fame-isolates) and "residual" (w5-term-fame-residual) matched no text in
+// #fame-did, so only "in-degree" is placed there; both are terms in the Method.
+const TERMS = [termFor("in-degree", "in-degree", "w5-term-fame-indegree", "Here, the pages that link to a page; only links among the 303 Marvel pages count.")];
 export function Fame() {
   return (
     <PostSection id="fame" owner="Niklas">
@@ -30,7 +36,16 @@ export function Fame() {
         }
         surprise={
           <Notice icon="💡" headline="What to notice">
-            Of two likely explanations, one holds across all 303 pages: the 46 hub pages sit 0.25 below the rest (×0.78, p = 0.008). Being named on other pages without a link barely goes with a longer page (Spearman 0.07, p = 0.202).
+            Of two likely explanations, one holds across all 303 pages: the 46 hub pages sit 0.25 below the rest (×0.78,
+            {" "}
+            <P v="0.008" />
+            ). Being named on other pages without a link barely goes with a longer page (
+            <Gloss id="w5-term-spearman" />
+            {" "}
+            0.07,
+            {" "}
+            <P v="0.202" />
+            ).
           </Notice>
         }
         figure={
@@ -48,7 +63,31 @@ export function Fame() {
               A character's in-degree is the number of the other pages that link to its page. We counted the words on each of the 303 pages by the rule sections 5 to 7 share: runs of letters in any alphabet, an inner apostrophe or hyphen kept, lowercased, a possessive 's removed; digits and punctuation dropped.
             </p>
             <p>
-              We fitted a straight line to ln(words) against ln(1 + in-degree) by ordinary least squares over all 303 pages. The 1 + keeps the 58 pages nobody links to, 17 of them isolates with no links at all. The slope is 0.72: each doubling of 1 + in-degree multiplies the predicted length by 1.65, starting from 546 words at zero in-degree. A page's residual is its distance from the line in natural-log units, so exp(residual) is its length over the predicted length: ×2 means twice as long as the line predicts.
+              We fitted a straight line to
+              {" "}
+              <LnWords />
+              {" "}
+              against
+              {" "}
+              <LnInDegree />
+              {" "}
+              by
+              {" "}
+              <Gloss id="w5-term-ols" />
+              {" "}
+              over all 303 pages. The 1 + keeps the 58 pages nobody links to, 17 of them
+              {" "}
+              <Gloss id="w5-term-isolate" />
+              {" "}
+              with no links at all. The slope is 0.72: each doubling of 1 + in-degree multiplies the predicted length by 1.65, starting from 546 words at zero in-degree. A page&apos;s
+              {" "}
+              <Gloss id="w5-term-residual" />
+              {" "}
+              is its distance from the line in natural-log units, so
+              {" "}
+              <ExpResidual />
+              {" "}
+              is its length over the predicted length: ×2 means twice as long as the line predicts.
             </p>
             <p>
               What we measured for each of the ten: whether the page is an isolate; how many other pages name the character and how many of those link to it, where a name is its title without the disambiguation plus the real name its node description gives in brackets, as in section 1; whether the page is for a codename several characters share, which we call a hub page (its first sentence says several characters share its title, the rule section 7 uses); and its section headings before the references.
@@ -62,13 +101,18 @@ export function Fame() {
           </Drawer>
           <Drawer label="More numbers">
             <p>
-              Out-degree, the links a page makes, tracks length even more closely (Spearman 0.78), but a longer page has more room for links, so it partly measures length itself. PageRank, which counts a link from a much-linked page for more, gives 0.71.
+              Out-degree, the links a page makes, tracks length even more closely (Spearman 0.78), but a longer page has more room for links, so it partly measures length itself. <Gloss id="w5-term-pagerank" />
+              , which counts a link from a much-linked page for more, gives 0.71.
             </p>
             <p>
               The names we counted come from the text alone, which lost its infoboxes, so a page can link to a character without naming it in our copy.
             </p>
             <p>
-              Pages named without a link: Spearman 0.07 with the residual, against 0.00 ± 0.06 in shuffles (p = 0.202). The 46 hub pages: mean residual −0.21, against 0.04 for the other pages (p = 0.008).
+              Pages named without a link: Spearman 0.07 with the residual, against 0.00 ± 0.06 in shuffles
+              {" "}
+              (<P v="0.202" />). The 46 hub pages: mean residual −0.21, against 0.04 for the other pages
+              {" "}
+              (<P v="0.008" />).
             </p>
             <p>
               Each of the two explanations, hub pages and names without a link, shows at its extreme in one outlier: Brian Braddock's codename, Captain Britain, is on 14 other pages but linked from 1, and Quasar is a page for a name four characters share, with 24 incoming links.

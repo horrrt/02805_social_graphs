@@ -3,6 +3,7 @@ import { Notice } from "@/components/post/Notice";
 import { PostSection } from "@/components/post/PostSection";
 import { QaDisclosure } from "@/components/post/QaDisclosure";
 import { SectionOpener } from "@/components/post/SectionOpener";
+import { HeapsLaw } from "./Formulas";
 
 // Closing: the takeaway, the one limit, then the methods and the AI-use note.
 export function Closing() {
@@ -92,8 +93,9 @@ export function Closing() {
                 <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week05_heaps.py">week05_heaps.py</a>
               </b>
               {" "}
-              Vocabulary growth in link order against 500 random orders and 500 orders that keep page length, and Heaps' law V = K·n
-              <sup>β</sup>
+              Vocabulary growth in link order against 500 random orders and 500 orders that keep page length, and Heaps&apos; law
+              {" "}
+              <HeapsLaw dot />
               {" "}
               fitted to their mean.
             </li>

@@ -52,6 +52,14 @@ test("every glossary term resolves to a shared definition", () => {
   assert.deepEqual(missing, []);
 });
 
+test("every term a page script places resolves to a shared definition", () => {
+  const missing = [];
+  for (const [path, text] of files) {
+    for (const [, concept] of text.matchAll(/\btermFor\("([\w-]+)"/g)) if (!TERMS.includes(concept)) missing.push(`${path}: ${concept}`);
+  }
+  assert.deepEqual(missing, []);
+});
+
 test("converted pages define no term inline", () => {
   const inline = files.filter(([path, text]) => CONVERTED.test(path) && /<Term\s/.test(text)).map(([path]) => path);
   assert.deepEqual(inline, [], "use <Gloss id> with an entry in TERMS");

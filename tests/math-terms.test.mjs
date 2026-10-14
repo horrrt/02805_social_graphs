@@ -56,6 +56,18 @@ const POSTS = {
     formulas: 37,
     terms: ["w4-term-standard-deviation", "w4-term-infomap", "w4-term-bootstrap-interval"],
   },
+  // Week 5's section terms are placed by phrase once each section's data has
+  // loaded (TermProse), so the built HTML holds only the ones listed here.
+  week05: {
+    page: "weeks/week05/",
+    src: "src/app/(week05)/weeks/week05/page.tsx",
+    formulas: 32,
+    terms: [
+      "w5-term-n-gram", "w5-term-concordance", "w5-term-document-term-matrix", "w5-term-pearson", "w5-term-louvain", "w5-term-nmi",
+      "w5-term-modularity", "w5-term-heaps-law", "w5-term-standard-deviation", "w5-term-log-log", "w5-term-spearman", "w5-term-ols",
+      "w5-term-isolate", "w5-term-residual", "w5-term-pagerank", "w5-term-z-score",
+    ],
+  },
 };
 
 const formulas = (html) => [...html.matchAll(/<(span|div) class="tex[^"]*"[^>]*>([^<]*)<\/\1>/g)].map((m) => m[2]);

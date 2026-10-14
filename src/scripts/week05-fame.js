@@ -119,10 +119,3 @@ export function passages(data) {
     return { lead: `${short(o.name)}, ${times(o.ratio)} predicted. `, reason: o.reason + from, page: o.quote.page, text: o.quote.text, highlight: o.quote.highlight };
   });
 }
-
-// ---- glossary terms. Main's "isolates" (w5-term-fame-isolates) and
-// "residual" (w5-term-fame-residual) matched no text in #fame-did, so only
-// "in-degree" is placed.
-export const TERMS = [
-  { phrase: "in-degree", definition: "The number of pages that link to a page. Here only links among the 303 Marvel pages count.", id: "w5-term-fame-indegree" },
-];

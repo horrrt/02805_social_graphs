@@ -44,6 +44,11 @@ export const EXPLAIN = {
   "p-context": "P(c): how often the context word c is counted at all. P(w) times P(c) is how often the pair would meet by chance.",
   max: "max: the larger of the two, so a score below 0 becomes 0.",
   zero: "0: every pair that meets less often than chance scores 0.",
+  "types-seen": "V: the number of types, distinct words, met so far.",
+  "heaps-k": "K: a constant that sets the height of the curve.",
+  "tokens-read": "n: the number of tokens, words as they occur, read so far.",
+  "beta-heaps": "β: Heaps' exponent. Below 1, the count of distinct words grows more slowly than the text, because more and more words are ones already met.",
+  "log-fit": "log: the logarithm. Taking logs turns a power law into a straight line whose slope is the exponent.",
 
   // ---- drawing at random
   "p-draw": "p: the chance of drawing this item on one draw.",
@@ -105,6 +110,12 @@ export const EXPLAIN = {
   "p-fit": "p: the share of synthetic datasets drawn from the fitted power law that fit it worse than the real data. Below 0.1 the power law is ruled out.",
   r2: "R²: how much of the variation the model accounts for, from 0 (none) to 1 (all).",
   rho: "ρ: Spearman's rank correlation between two rankings. 1 when they agree exactly, 0 when they are unrelated.",
+  "pearson-r": "r: Pearson's correlation. It's 1 when the points lie on a rising straight line and 0 when there is no straight-line relation.",
+  "z-neighbours": "z: how many standard deviations a document's score sits from the average score of the documents nearest it in length. The sign says on which side.",
+  "ln-length": "ln: the natural log. Each doubling is the same step on it, so short and long documents fit on one straight line.",
+  "words-doc": "Words: the document's length in words.",
+  exp: "exp: e raised to the value, which undoes the natural log.",
+  "residual-log": "Residual: how far a point sits above (positive) or below (negative) the fitted line, in natural-log units.",
 } as const satisfies Record<string, string>;
 
 export type ExplainId = keyof typeof EXPLAIN;
@@ -139,6 +150,15 @@ export const TERMS: Record<string, { word: string; definition: string }> = {
   "negative-sampling": { word: "negative sampling", definition: "A training shortcut. Instead of scoring every word in the vocabulary, the model learns to tell a real neighbour from a few randomly drawn words." },
   "static-word-embedding": { word: "static", definition: "A static word embedding gives each word one fixed list of numbers, learned from a corpus, whatever sentence the word appears in." },
   glove: { word: "GloVe", definition: "Global Vectors: a method that learns word vectors from how often every pair of words appears near each other across a whole corpus." },
+  token: { word: "tokens", definition: "Words as they occur in a text: \"the Hulk smashes the tank\" has 5 tokens." },
+  type: { word: "types", definition: "Distinct words: \"the Hulk smashes the tank\" has 4 types, since \"the\" comes twice." },
+  "n-gram": { word: "n-grams", definition: "Runs of n words in a row, in the order they appear in the text: an 8-gram is eight words in a row." },
+  concordance: { word: "concordances", definition: "Every place a word occurs, each shown with the words around it." },
+  "bag-of-words": { word: "Bag of Words", definition: "A document or a query as a list of word counts, with the word order thrown away." },
+  "trigram-model": { word: "trigram model", definition: "A table of how often each word follows each pair of words. It predicts the next word from the two before it." },
+  "house-style": { word: "house style", definition: "Wording Wikipedia editors repeat on page after page, such as the first sentence of almost every character's article." },
+  mattr: { word: "MATTR", definition: "Moving-average type-token ratio: the share of different words in each window of a fixed number of words, averaged over every window." },
+  "heaps-law": { word: "Heaps' law", definition: "The rule that the number of distinct words in a text grows as a power of its length below 1, so each new stretch of text brings fewer new words than the last." },
 
   // ---- networks
   hub: { word: "hub", definition: "A node with far more links than most of the others." },
@@ -167,6 +187,8 @@ export const TERMS: Record<string, { word: string; definition: string }> = {
   pagerank: { word: "PageRank", definition: "A score that a node earns from the nodes linking to it, each passing on a share of its own score, so a link from a high-scoring node counts for more." },
   "damping-factor": { word: "damping factor", definition: "The chance that PageRank follows a link at each step rather than jumping to a random node." },
   "in-out-degree": { word: "in- and out-degree", definition: "A node's number of incoming links (in-degree) and of outgoing links (out-degree)." },
+  "in-degree": { word: "in-degree", definition: "The number of nodes that link to a node." },
+  isolate: { word: "isolates", definition: "Nodes with no links at all." },
   community: { word: "community", definition: "A group of nodes joined by more and heavier links among themselves than to the rest of the network." },
   "ultra-peripheral": { word: "ultra-peripheral", definition: "A role: not a hub, with nearly all of its links inside its own community." },
   peripheral: { word: "peripheral", definition: "A role: not a hub, with most of its links inside its own community." },
@@ -191,6 +213,9 @@ export const TERMS: Record<string, { word: string; definition: string }> = {
   "one-sided": { word: "one-sided", definition: "Counting only null results as extreme as the real one in the same direction." },
   unadjusted: { word: "unadjusted", definition: "Not corrected for testing several results at once, so one small p among many can still be luck." },
   "standard-deviation": { word: "standard deviation", definition: "How far values typically sit from their average." },
+  "random-orders": { word: "random orders", definition: "The same documents read in a shuffled order, many times over. Their spread shows how much a count moves by chance." },
+  "label-shuffle": { word: "shuffle", definition: "A baseline that deals the same labels out again at random over the same items, while everything else stays as it was." },
+  ols: { word: "ordinary least squares", definition: "Fitting a line by making the sum of the squared vertical distances from the points to the line as small as possible." },
   "confidence-interval": { word: "confidence interval", definition: "A 95% confidence interval: the range that would hold the true value in 95 of 100 repeats of the study." },
   "bootstrap-interval": { word: "bootstrap interval", definition: "A range for a result found by recomputing it on many resamples of the data, drawn at random with repeats; 95% of the resampled results fall inside it." },
   resamples: { word: "resamples", definition: "Copies of the data made by drawing from it at random, with repeats allowed; how a result varies across them shows its uncertainty." },
@@ -214,3 +239,12 @@ export const TERMS: Record<string, { word: string; definition: string }> = {
 
 /** The concept behind a glossary term's id: w6-term-tf-idf is tf-idf. */
 export const termConcept = (id: string) => id.replace(/^(w\d+a?|sg)-term-/, "");
+
+/** A term a page script places by phrase (TermProse, termify()), with the
+ * shared definition of `concept` and a page's own words appended (`more`).
+ * The id stays the page's own, so it need not name the concept. */
+export function termFor(concept: string, phrase: string, id: string, more?: string) {
+  const entry = TERMS[concept];
+  if (!entry) throw new Error(`${id}: no entry for "${concept}" in src/lib/glossary.ts`);
+  return { phrase, id, definition: more ? `${entry.definition} ${more}` : entry.definition };
+}

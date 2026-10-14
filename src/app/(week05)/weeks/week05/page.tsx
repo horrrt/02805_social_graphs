@@ -1,4 +1,5 @@
 import { SectionRail } from "@/components/post/SectionRail";
+import { TermLayer } from "@/components/post/TermLayer";
 import { PostTopbar } from "@/components/site/PostTopbar";
 import { SkipLink } from "@/components/site/SkipLink";
 import { Autocomplete } from "./_sections/Autocomplete";
@@ -33,6 +34,7 @@ export default function Page() {
   return (
     <>
       <SkipLink />
+      <TermLayer />
       <PostTopbar root="../../" current="weeks/week05/" />
       <main id="main">
         <Hero />

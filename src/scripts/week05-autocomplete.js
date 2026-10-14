@@ -113,10 +113,3 @@ export function copiedRun(data) {
     passage: { page: run.page, text: run.sentence, highlight: run.highlight },
   };
 }
-
-// ---- glossary terms. Main's first two calls, "Louvain" (w5-term-autocomplete-louvain)
-// and "normalised mutual information" (w5-term-autocomplete-nmi), matched no
-// text in #autocomplete-did, so only "trigram model" is placed.
-export const TERMS = [
-  { phrase: "trigram model", definition: "A table of how often each word follows each pair of words. It predicts the next word from the two before it.", id: "w5-term-autocomplete-trigram" },
-];

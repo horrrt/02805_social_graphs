@@ -44,7 +44,9 @@ function bounds(el: Element) {
   return { left, top, bottom, width: right - left, height: bottom - top };
 }
 
-export function Tex({ tex, block = false, label, explain }: { tex: string; block?: boolean; label?: string; explain?: Record<string, string> }) {
+export type TexProps = { tex: string; block?: boolean; label?: string; explain?: Record<string, string> };
+
+export function Tex({ tex, block = false, label, explain }: TexProps) {
   const katex = useVendor<Katex>("katex-0.19.0/katex.min.js", "katex");
   const html = useMemo(() => (katex.lib ? katex.lib.renderToString(tex, options(block)) : null), [katex.lib, tex, block]);
   const [tip, setTip] = useState<Tip | null>(null);

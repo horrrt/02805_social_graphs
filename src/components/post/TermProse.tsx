@@ -4,10 +4,11 @@
 // order, each JSX string child stays its own text node (React prints a
 // <!-- --> between adjacent ones), numbers become strings, fragments flatten,
 // server components are called and their output converted, and <Term> becomes
-// a term node. Any other client component fails the build. The target renders
+// a term node, and <Tex> a formula node. Any other client component fails the build. The target renders
 // only the attributes its server markup has: one without an id passes roots,
 // e.g. roots={["#second-did p"]}.
 import { Fragment, isValidElement, type ReactNode } from "react";
+import { Tex, type TexProps } from "@/lib/Tex";
 import { Term } from "./Term";
 import { Termified, type TermDef, type TermElement, type TermNode } from "./Termified";
 
@@ -59,6 +60,10 @@ function convert(node: ReactNode, out: TermNode[]) {
     out.push({ term: { id: String(props.id), word: textOf(props.word as ReactNode, "word"), definition: textOf(props.children as ReactNode, "definition") } });
     return;
   }
+  if (type === Tex) {
+    out.push({ tex: props as TexProps });
+    return;
+  }
   if (typeof type === "string") {
     const { children, ...attrs } = props;
     // Raw HTML stays in ChartTip (R13); a tree holds text, elements and terms only.
@@ -67,7 +72,7 @@ function convert(node: ReactNode, out: TermNode[]) {
     return;
   }
   if ((type as { $$typeof?: symbol }).$$typeof === CLIENT_REFERENCE)
-    throw new Error(`TermProse: ${typeName(type)} is a client component; only <Term> may sit in termified prose`);
+    throw new Error(`TermProse: ${typeName(type)} is a client component; only <Term> and <Tex> may sit in termified prose`);
   if (typeof type === "function") {
     const result = (type as (p: unknown) => unknown)(props);
     if (result instanceof Promise) throw new Error(`TermProse: ${typeName(type)} is async`);

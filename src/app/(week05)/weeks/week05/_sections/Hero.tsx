@@ -1,6 +1,8 @@
+import { Gloss } from "@/components/post/Gloss";
 import { HeroStat } from "@/components/post/HeroStat";
 import { PostHero } from "@/components/post/PostHero";
 import { Frame } from "@/features/week05/frame/Frame";
+import { R } from "./Formulas";
 
 // Hero: the post's question, the scope caution, two numbers and the fame scatter (#chart-hero-fame,
 // drawn by the frame island).
@@ -16,7 +18,17 @@ export function Hero() {
           <b>Does a character's place in the link network show in the words of its page?</b>
           {" "}
           We read the 303 Marvel Wikipedia pages as text, with this week's tools: tokens,
-          counts, n-grams, concordances and the document-term matrix, and asked seven
+          counts,
+          {" "}
+          <Gloss id="w5-term-n-gram" />
+          ,
+          {" "}
+          <Gloss id="w5-term-concordance" />
+          {" "}
+          and the
+          {" "}
+          <Gloss id="w5-term-document-term-matrix" />
+          , and asked seven
           questions where the words meet the links.
         </>
       }
@@ -32,7 +44,11 @@ export function Hero() {
         <Frame part="hero" />
         <figcaption className="w5-hero-caption">
           Each dot is a page; both axes are logarithmic. Pages with more incoming links are longer:
-          Pearson r = 0.77 on the logs, against 0.00 ± 0.06 when in-degree is shuffled over the pages.
+          <Gloss id="w5-term-pearson" />
+          {" "}
+          <R v="0.77" />
+          {" "}
+          on the logs, against 0.00 ± 0.06 when in-degree is shuffled over the pages.
           {" "}
           <a href="#fame">Section 6</a>
           {" "}

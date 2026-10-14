@@ -7,11 +7,20 @@ import { SectionOpener } from "@/components/post/SectionOpener";
 import { TermProse } from "@/components/post/TermProse";
 import { Panel } from "@/components/week05/Panel";
 import { Search as Part } from "@/features/week05/search/Search";
-import { LIVE, SEARCH, TERMS } from "@/scripts/week05-search.js";
+import { termFor } from "@/lib/glossary";
+import { LIVE, SEARCH } from "@/scripts/week05-search.js";
+import { PTest } from "./Formulas";
 
 // Section 3: a Bag-of-Words search over the 303 pages. The search islands (src/features/week05/search/)
 // fill the stats row, the query chips, the search box and its live ranking, the query table, its detail
 // panel and the passage; the terms in "what we did" wait for search.json and search_live.json, as on main.
+// In main's call order. "document-term matrix" (w5-term-search-dtm) matched no text in #search-did, so
+// it is not placed; the hero defines it.
+const TERMS = [
+  termFor("bag-of-words", "Bag of Words", "w5-term-search-bow"),
+  termFor("cosine-similarity", "cosine similarity", "w5-term-search-cosine", "Here, the dot product of two count vectors divided by both their lengths."),
+  termFor("stopword", "stopwords", "w5-term-search-stop"),
+];
 export function Search() {
   return (
     <PostSection id="search" owner="Àngela">
@@ -31,7 +40,11 @@ export function Search() {
         }
         surprise={
           <Notice icon="💡" headline="What to notice">
-            Even one first place beats chance (p = 0.036 against the 1 in 303 of a random ranking). Removing stopwords lifts the hits to 2 first and 10 in the top five, so stopwords cost real hits. Page length costs most of the rest: without stopwords, 7 of the 9 misses still lose to a page at most a third as long as the target, because cosine divides by the length of the count vector.
+            Even one first place beats chance
+            {" "}
+            (<PTest v="0.036" />
+            {" "}
+            against the 1 in 303 of a random ranking). Removing stopwords lifts the hits to 2 first and 10 in the top five, so stopwords cost real hits. Page length costs most of the rest: without stopwords, 7 of the 9 misses still lose to a page at most a third as long as the target, because cosine divides by the length of the count vector.
           </Notice>
         }
         figure={

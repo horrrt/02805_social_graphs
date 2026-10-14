@@ -14,12 +14,12 @@ export function unclass(tex) {
   return s;
 }
 
-const GREEK = { alpha: "α", rho: "ρ", mu: "μ", sigma: "σ" };
+const GREEK = { alpha: "α", beta: "β", rho: "ρ", mu: "μ", sigma: "σ" };
 
 /** LaTeX with the hover tags unwrapped and a Greek letter written as itself,
  * \alpha as α: the symbols a sentence quotes. */
 export function symbols(tex) {
-  return unclass(tex).replace(/\\(alpha|rho|mu|sigma)(?![a-zA-Z])/g, (_, name) => GREEK[name]);
+  return unclass(tex).replace(/\\(alpha|beta|rho|mu|sigma)(?![a-zA-Z])/g, (_, name) => GREEK[name]);
 }
 
 /** LaTeX as the sentence reads it: the \htmlClass{x-…}{…} tags that drive the
