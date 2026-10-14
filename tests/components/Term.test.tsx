@@ -1,5 +1,5 @@
 // Glossary terms: the word is a button its pop-up describes, and with
-// TermLayer mounted (Week 4) a click keeps one pop-up open, a second click or
+// TermLayer mounted (Weeks 4 and 6) a click keeps one pop-up open, a second click or
 // a click elsewhere closes it, and Escape closes it and leaves the button.
 // Without TermLayer a term stays inert.
 import "./dom";

@@ -10,6 +10,7 @@ import { SegmentedControl } from "@/components/post/SegmentedControl";
 import { island, useIslandReady } from "@/lib/island";
 import { useData } from "@/lib/useData";
 import { useHydrated } from "@/lib/useHydrated";
+import { Tex } from "@/lib/Tex";
 import { useTokens, useTypeScale } from "@/lib/useTypeScale";
 import { asset } from "@/scripts/site.js";
 import { FILES, START, fit, leaning, lengths, pair, short, signed, three, topicOverlap } from "@/scripts/week06-essentials.js";
@@ -214,7 +215,7 @@ function Contrast() {
       <EChart option={option} height={420} renderer="canvas" />
       <div className="w6e-cols">
         <Bars title="Leans to women's pages" max={max} rows={rows("female")} />
-        <Bars title="Leans to men's pages" max={max} note="Grey rows have |z| under 1.96: no clear lean." rows={rows("male")} />
+        <Bars title="Leans to men's pages" max={max} note={<>Grey rows have <Tex tex={String.raw`\lvert z \rvert`} label="absolute z" /> under 1.96: no clear lean.</>} rows={rows("male")} />
       </div>
     </div>
   );
