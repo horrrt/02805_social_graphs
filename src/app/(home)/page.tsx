@@ -63,7 +63,7 @@ export default function Page() {
                 <li className="live">
                   <a href="weeks/week05/">
                     <span>W5</span>
-                    The language half · NLP I
+                    NLP I
                     <i aria-hidden="true">→</i>
                   </a>
                 </li>
@@ -127,7 +127,7 @@ export default function Page() {
                 </li>
                 <li>
                   <a data-week="5" className="week-card" href="weeks/week05/">
-                    <span className="week-tag">Week 5 · The language half · NLP I</span>
+                    <span className="week-tag">Week 5 · NLP I</span>
                     <h3>Marvel in Words</h3>
                     <p className="week-q">Does a character's place in the network show in the words of its page?</p>
                     <span className="week-go">Read the post →</span>

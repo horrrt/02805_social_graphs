@@ -63,7 +63,7 @@ export const WEEKS = [
   },
   {
     n: 5,
-    courseTitle: "The language half · NLP I",
+    courseTitle: "NLP I",
     short: "NLP I",
     date: "2026-09-30",
     status: "live",
