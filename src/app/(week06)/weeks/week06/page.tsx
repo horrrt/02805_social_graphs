@@ -188,12 +188,12 @@ export default function Page() {
               {" "}
               <em>the</em>
               {" "}
-              comes first, 583 times. Weight them by how few pages use them and
+              comes first, 583 times. Weight each word by how few pages use it and
               {" "}
               <em>storm</em>
               {" "}
-              rises to the top. Eight ways of reading text, each tried on the same 303 Marvel pages, end with word vectors
-              that put
+              rises to the top. We try eight ways of reading text on the same 303 Marvel pages, and they end with word
+              vectors that put
               {" "}
               <em>vision</em>
               {" "}
@@ -201,7 +201,7 @@ export default function Page() {
               {" "}
               <em>wanda</em>
               {" "}
-              here and beside
+              here, and beside
               {" "}
               <em>sense</em>
               {" "}
@@ -231,7 +231,7 @@ export default function Page() {
           <Game />
           <PostSection id="closing" owner="Gyula">
             <SectionOpener num="✓" title="What the toolkit found">
-              Weighting and association do the work; counting alone finds grammar, and a corpus decides what its words mean.
+              Weighting and association do the work. Counting alone turns up grammar, and a corpus decides what its words mean.
             </SectionOpener>
             <div className="card w4-card w6e-closing">
               <h3>Takeaways</h3>
@@ -243,9 +243,9 @@ export default function Page() {
               <Drawers variant="foot">
                 <Drawer label="Method">
                   <p>
-                    analysis/week06_essentials.py writes every number on this page. An AI coding assistant (Claude) wrote
-                    the analysis and the page and drafted the text; a review read each claim against the data files, and
-                    tests/week06-essentials.test.mjs checks every quoted number against them.
+                    Every number on this page comes from analysis/week06_essentials.py. An AI coding assistant (Claude)
+                    wrote the analysis and the page and drafted the text. A review read each claim against the data files,
+                    and tests/week06-essentials.test.mjs checks every quoted number against them.
                   </p>
                 </Drawer>
               </Drawers>
