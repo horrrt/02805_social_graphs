@@ -30,7 +30,7 @@ function useSection(key: Key) {
 }
 
 function Failed() {
-  return <p className="w6-failed">This part needs its data file, which did not load. Reload the page to try again.</p>;
+  return <p className="w6-failed">This part's data file didn't load. Reload the page to try again.</p>;
 }
 
 /** A labelled native select over `options` ([value, label]). */
@@ -91,7 +91,7 @@ function Weights() {
     <div className="w6e-app" id="weights-app">
       <div className="w6e-controls">
         <Picker id="w6e-weights-page" label="Page" value={p.name} options={options} onChange={setPage} />
-        <span className="w6e-note">{`${p.size.toLocaleString("en")} words on this page. A grey row is a word with IDF under 0.1.`}</span>
+        <span className="w6e-note">{`This page has ${p.size.toLocaleString("en")} words. Grey rows are words with an IDF under 0.1.`}</span>
       </div>
       <div className="w6e-cols">
         <Bars title="By raw count" rows={p.count.map((r: Any) => row(r, "count"))} />
@@ -128,7 +128,7 @@ function Cosine() {
       </div>
       {rec ? (
         <div className="w6e-cols">
-          {part(rec.raw, rec.rawWords, "Raw counts", "The words that add most to the cosine; every word adds its own small term, and the terms sum to the cosine.")}
+          {part(rec.raw, rec.rawWords, "Raw counts", "The words that add most to the cosine. Every word adds its own small term, and the terms sum to the cosine.")}
           {part(rec.tfidf, rec.tfidfWords, "TF-IDF")}
         </div>
       ) : <p className="w6e-note">Pick two different pages.</p>}
@@ -144,7 +144,7 @@ function Cosine() {
       </div>
       <p className="w6e-note" aria-live="polite">
         {rec
-          ? `Raw-count vector length ${len.raw.toFixed(0)}, TF-IDF length ${len.tfidf.toFixed(4)}. The cosine stays ${three(rec.raw)} under raw counts and ${three(rec.tfidf)} under TF-IDF: cosine compares direction: copying a page stretches its raw-count vector and leaves its TF-IDF vector as it was.`
+          ? `Raw-count vector length ${len.raw.toFixed(0)}, TF-IDF length ${len.tfidf.toFixed(4)}. The cosine stays ${three(rec.raw)} under raw counts and ${three(rec.tfidf)} under TF-IDF. Cosine compares direction, and copying a page stretches its raw-count vector and leaves its TF-IDF vector as it was.`
           : ""}
       </p>
     </div>
@@ -201,8 +201,8 @@ function Contrast() {
     <div className="w6e-app" id="contrast-app">
       <p className="axis-note" aria-live="polite">
         {names === "show"
-          ? `With names shown, all ${lean.all} leaning words are plotted; ${lean.names} of them are names.`
-          : `With names hidden, ${lean.words} of the ${lean.all} leaning words remain; the rest are names.`}
+          ? `With names shown, all ${lean.all} leaning words are plotted, and ${lean.names} of them are names.`
+          : `With names hidden, ${lean.words} of the ${lean.all} leaning words remain. The rest are names.`}
       </p>
       <div className="w6e-controls">
         <span className="w6e-label" id="w6e-names-label">Character names</span>
@@ -215,7 +215,7 @@ function Contrast() {
       <EChart option={option} height={420} renderer="canvas" />
       <div className="w6e-cols">
         <Bars title="Leans to women's pages" max={max} rows={rows("female")} />
-        <Bars title="Leans to men's pages" max={max} note={<>Grey rows have <Tex tex={String.raw`\lvert z \rvert`} label="absolute z" /> under 1.96: no clear lean.</>} rows={rows("male")} />
+        <Bars title="Leans to men's pages" max={max} note={<>Grey rows have <Tex tex={String.raw`\lvert z \rvert`} label="absolute z" /> under 1.96, which means no clear lean.</>} rows={rows("male")} />
       </div>
     </div>
   );
@@ -243,7 +243,7 @@ function Topics() {
         <span className="w6e-label" id="w6e-seed-label">Seed</span>
         <SegmentedControl className="rx-seg" ariaLabelledBy="w6e-seed-label" buttons={[{ value: "0", label: "0" }, { value: "1", label: "1" }]} value={seed} onChange={setSeed} />
       </div>
-      <p className="w6e-note" aria-live="polite">{`${data.stability[k].kept} of ${k} topics keep at least half their top ten words when the seed changes; on average they keep ${Math.round(data.stability[k].mean_overlap * 100)}%.`}</p>
+      <p className="w6e-note" aria-live="polite">{`${data.stability[k].kept} of ${k} topics keep at least half their top ten words when the seed changes. On average they keep ${Math.round(data.stability[k].mean_overlap * 100)}%.`}</p>
       <ol className="w6e-topics">
         {(f.topics as [string, number][][]).map((t, n) => (
           <li key={n} className={overlap[n] >= 0.5 ? "w6e-kept" : undefined}>
@@ -279,7 +279,7 @@ function Contexts() {
         <SegmentedControl className="rx-seg" ariaLabelledBy="w6e-win-label" buttons={["2", "5", "10"].map((v) => ({ value: v, label: v }))} value={win} onChange={setWin} />
       </div>
       <div className="w6e-cols">
-        <Bars title={`The row for "${word}"`} note="Each bar is one cell: how often that word sits within the window." rows={row.map(([w, n]) => ({ key: w, label: w, value: n, text: String(n) }))} />
+        <Bars title={`The row for "${word}"`} note="Each bar is one cell, the number of times that word sits within the window." rows={row.map(([w, n]) => ({ key: w, label: w, value: n, text: String(n) }))} />
         <div className="w6e-list">
           <h3>A corner of the matrix, window 5</h3>
           <p className="w6e-note">A row is a target word, a column a context word, a cell their count.</p>
@@ -312,7 +312,7 @@ function Pmi() {
     <div className="w6e-app" id="pmi-app">
       <div className="w6e-controls">
         <Picker id="w6e-pmi-word" label="Word" value={word} options={wordOptions(data.targets)} onChange={setWord} />
-        <span className="w6e-note" aria-live="polite">{`${r.negative_cells} of the row's ${r.cells} cells have negative PMI; PPMI sets them to 0.`}</span>
+        <span className="w6e-note" aria-live="polite">{`${r.negative_cells} of the row's ${r.cells} cells have negative PMI, and PPMI sets them to 0.`}</span>
         <span className="w6e-label" id="w6e-pmi-list-label">Beside the counts</span>
         <SegmentedControl
           className="rx-seg"
@@ -325,7 +325,7 @@ function Pmi() {
       <div className="w6e-cols">
         <Bars title="By count" rows={rows(r.count, "count")} />
         {beside === "pmi"
-          ? <Bars title="By PMI" note={`Rare contexts rise: the top five are seen at most ${Math.max(...r.pmi_any.slice(0, 5).map(([, n]: Any) => n))}×.`} rows={rows(r.pmi_any, "pmi")} />
+          ? <Bars title="By PMI" note={`Rare contexts rise. The top five are seen at most ${Math.max(...r.pmi_any.slice(0, 5).map(([, n]: Any) => n))}×.`} rows={rows(r.pmi_any, "pmi")} />
           : <Bars title={`By PPMI, seen ${r.min_count}+ times`} rows={rows(r.ppmi, "pmi")} />}
       </div>
     </div>
@@ -361,7 +361,7 @@ function Vectors() {
         />
       </div>
       <div className="w6e-cols">
-        <Bars title="PPMI rows" note="Sparse: one column per context word." rows={rows(n.ppmi)} />
+        <Bars title="PPMI rows" note="Sparse, with one column per context word." rows={rows(n.ppmi)} />
         {beside === "cbow"
           ? <Bars title="CBOW" note={`${dim} numbers, trained to predict the word from its context.`} rows={rows(n.cbow)} />
           : <Bars title="Skip-gram" note={`${dim} numbers, trained to predict the context from the word.`} rows={rows(n.skipgram)} />}
@@ -374,7 +374,7 @@ function Vectors() {
         <p className="w6e-window">
           {(e.window as string[]).map((w, i) => <span key={i} className={w === e.centre ? "w6e-centre" : "w6e-ctx"}>{w}</span>)}
         </p>
-        <p className="w6e-note">{`From ${from}. For each real pair, such as (${e.centre}, ${e.positive[0]}), the model scores the pair up and these ${e.negative.length} sampled words down:`}</p>
+        <p className="w6e-note">{`From ${from}. For each real pair, such as (${e.centre}, ${e.positive[0]}), the model scores the pair up and scores these ${e.negative.length} sampled words down.`}</p>
         <p className="w6e-window">{(e.negative as string[]).map((w, i) => <span key={i} className="w6e-neg">{w}</span>)}</p>
       </div>
     </div>

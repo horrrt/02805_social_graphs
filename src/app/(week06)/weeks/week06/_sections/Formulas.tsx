@@ -19,12 +19,12 @@ export const TfIdfFormula = () => (
     )} \times ${x("idf", String.raw`${x("ln", String.raw`\ln`)} \frac{${x("n", "303")}}{${x("df", String.raw`\text{DF}(w)`)}}`)}`}
     label="TF-IDF of word w on page d equals TF times IDF: the count of w on d over the length of d, times the natural log of 303 over DF of w"
     explain={{
-      tfidf: "TF-IDF(w, d): how much the word w tells you about page d. High when w is frequent on d and rare on the other pages.",
+      tfidf: "TF-IDF(w, d): how much the word w tells you about page d. It's high when w is frequent on d and rare on the other pages.",
       tf: "TF, the term frequency: the word's share of the page's words.",
       count: "count(w, d): how many times w appears on page d.",
-      len: "|d|: how many words page d has in all, so a long page does not win by its size.",
-      idf: "IDF, the inverse document frequency: how rare the word is across pages. 0 when every page uses it.",
-      ln: "ln: the natural log. It grows slowly, so a very rare word does not swamp the rest.",
+      len: "|d|: how many words page d has in all, so a long page doesn't win by its size.",
+      idf: "IDF, the inverse document frequency: how rare the word is across pages. It's 0 when every page uses it.",
+      ln: "ln: the natural log. It grows slowly, so a very rare word doesn't swamp the rest.",
       n: "303: all the pages.",
       df: "DF(w), the document frequency: how many of the pages use w.",
     }}
@@ -58,7 +58,7 @@ export const CosineFormula = () => (
     )}}{${x("na", String.raw`\lVert a \rVert`)} \, ${x("nb", String.raw`\lVert b \rVert`)}}`}
     label="cosine of a and b equals a dot b over the length of a times the length of b, which is the sum over words w of a w times b w, over the same lengths"
     explain={{
-      cos: "cos(a, b): how alike two pages' word vectors point. 1 when they point the same way, 0 when they share no word.",
+      cos: "cos(a, b): how alike two pages' word vectors point. It's 1 when they point the same way and 0 when they share no word.",
       dot: "a · b, the dot product: multiply the two vectors word by word and add up.",
       sum: "The dot product written out, one term per word. Each bar in the chart below is one of these terms, divided by the two lengths.",
       aw: "a_w: the word w's count or TF-IDF on page a.",
@@ -77,7 +77,7 @@ export const PmiFormula = () => (
     label="PMI of w and c equals the natural log of P of w and c over P of w times P of c"
     explain={{
       pmi: "PMI(w, c): how much more often the word w and the context word c meet than chance would put them together.",
-      ln: "ln: the natural log. 0 when the pair meets exactly as often as chance predicts, above 0 when more often, below when less.",
+      ln: "ln: the natural log. The score is 0 when the pair meets exactly as often as chance predicts, above 0 when it meets more often and below 0 when it meets less often.",
       joint: "P(w, c): how often w and c sit within the window of each other, as a share of all the pairs counted.",
       pw: "P(w): how often the word w is counted at all.",
       pc: "P(c): how often the context word c is counted at all. P(w) times P(c) is how often the pair would meet by chance.",
@@ -92,7 +92,7 @@ export const PpmiFormula = () => (
     tex={String.raw`${x("ppmi", String.raw`\operatorname{PPMI}(w, c)`)} = ${x("max", String.raw`\max`)}\bigl(${x("pmi", String.raw`\operatorname{PMI}(w, c)`)}, ${x("zero", "0")}\bigr)`}
     label="PPMI of w and c equals the larger of PMI of w and c and zero"
     explain={{
-      ppmi: "PPMI(w, c), positive PMI: the pair's PMI when it is above 0, else 0.",
+      ppmi: "PPMI(w, c), positive PMI: the pair's PMI when that's above 0, and 0 otherwise.",
       max: "max: the larger of the two.",
       pmi: "PMI(w, c): the score above.",
       zero: "0: every pair that meets less often than chance scores 0.",

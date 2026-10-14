@@ -58,12 +58,12 @@ test("each section has one heading, its opener; no card repeats it as a question
 
 test("1 · weights", () => {
   const w = facts.weights;
-  const worked = `He is on ${w.pronouns.he.df} pages, so its IDF is ${w.pronouns.he.idf.toFixed(2)}; she is on ${w.pronouns.she.df}, so \\ln \\tfrac{303}{${w.pronouns.she.df}} = ${w.pronouns.she.idf.toFixed(2)}`;
+  const worked = `He is on ${w.pronouns.he.df} pages, so its IDF is ${w.pronouns.he.idf.toFixed(2)}, while she is on ${w.pronouns.she.df}, so \\ln \\tfrac{303}{${w.pronouns.she.df}} = ${w.pronouns.she.idf.toFixed(2)}`;
   assert.ok(tex("weights").includes(worked), `weights should say "${worked}"`);
   const other = w.stop_size - w.low_idf_stop;
-  says("weights", `NLTK's English list, ${w.stop_size} words). Only ${w.low_idf} words get an IDF under 0.1, and ${w.low_idf_stop} of them are NLTK stopwords; of NLTK's other ${other}, ${other - w.stop_not_low} never appear on these pages and ${w.stop_not_low} keep real weight`);
+  says("weights", `NLTK's English list of ${w.stop_size} words. Only ${w.low_idf} words get an IDF under 0.1, and ${w.low_idf_stop} of them are NLTK stopwords. Of NLTK's other ${other}, ${other - w.stop_not_low} never appear on these pages and ${w.stop_not_low} keep real weight`);
   for (const x of ["character", "comics", "marvel"]) assert.ok(w.everywhere.includes(x), x);
-  says("weights", `${count(w.tokens)} words, ${count(w.vocab)} different ones`);
+  says("weights", `The pages hold ${count(w.tokens)} words, ${count(w.vocab)} of them different`);
   // The list rows show the bar's value first.
   const storm = json("weights").pages.find((p) => p.name === START.page);
   assert.equal(storm.tfidf[0][0], "storm");
@@ -72,33 +72,35 @@ test("1 · weights", () => {
 test("2 · cosine", () => {
   const c = facts.cosine.all_pairs;
   const p = pair(json("cosine"), ...START.pair);
-  says("cosine", `Storm and the Human Torch have a raw-count cosine of ${p.raw.toFixed(3)}, of which the gives ${p.rawWords[0][1].toFixed(3)}. Under TF-IDF it is ${p.tfidf.toFixed(3)}, and storm gives ${p.tfidfWords[0][1].toFixed(3)}`);
+  says("cosine", `Storm and the Human Torch have a raw-count cosine of ${p.raw.toFixed(3)}, and the gives ${p.rawWords[0][1].toFixed(3)} of it. Under TF-IDF it's ${p.tfidf.toFixed(3)}, and storm, Johnny Storm's surname, gives ${p.tfidfWords[0][1].toFixed(3)}`);
   assert.equal(p.rawWords[0][0], "the");
   assert.equal(p.tfidfWords[0][0], "storm");
-  says("cosine", `All ${count((303 * 302) / 2)} pairs of pages`);
-  says("cosine", `Under raw counts the median pair scores ${c.raw.median.toFixed(3)} and the 99th percentile ${c.raw.p99.toFixed(3)}; under TF-IDF the median is ${c.tfidf.median} and the 99th percentile ${c.tfidf.p99.toFixed(3)}, ${WORDS[Math.round(c.tfidf.p99 / c.tfidf.median)]} times as high`);
+  says("cosine", `Every one of the ${count((303 * 302) / 2)} pairs of pages`);
+  says("cosine", `Under raw counts the median pair scores ${c.raw.median.toFixed(3)} and the 99th percentile ${c.raw.p99.toFixed(3)}. Under TF-IDF the median is ${c.tfidf.median} and the 99th percentile ${c.tfidf.p99.toFixed(3)}, ${WORDS[Math.round(c.tfidf.p99 / c.tfidf.median)]} times as high`);
   assert.ok(facts.cosine.triple_diff < 1e-15, "tripling a page moves no cosine under either weighting");
-  says("cosine", `every one of the ${facts.cosine.pairs * 2} ordered pairs under both weightings: no cosine moves by more than 10^{-15}`);
-  says("cosine", `${facts.cosine.pairs} pairs`);
+  says("cosine", `checks all ${facts.cosine.pairs * 2} ordered pairs under both weightings, and no cosine moves by more than 10^{-15}`);
+  const shown = json("cosine").pages.length;
+  says("cosine", `${shown} pages a reader will know, which make ${facts.cosine.pairs} pairs`);
+  assert.equal((shown * (shown - 1)) / 2, facts.cosine.pairs, "the chart's pages make its pairs");
 });
 
 test("3 · contrast", () => {
   const c = facts.contrast;
   const terms = json("contrast").terms;
-  says("contrast", `labels ${c.pages.female} pages as women and ${c.pages.male} as men, ${count(c.words.female)} and ${count(c.words.male)} words`);
+  says("contrast", `labels ${c.pages.female} pages as women and ${c.pages.male} as men. The women's pages hold ${count(c.words.female)} words and the men's ${count(c.words.male)}`);
   says("contrast", `each of the ${count(c.plotted)} words seen 20 times or more`);
-  says("contrast", `The same ${c.pages.female + c.pages.male} pages with the labels shuffled, ${c.null.runs} times. ${c.beyond} words pass z = 1.96 for real, and shuffles give ${c.null.min} to ${c.null.max}`);
-  says("contrast", `The largest z any shuffle produced is ${c.null.top_z_max}`);
+  says("contrast", `The same ${c.pages.female + c.pages.male} pages with their labels shuffled, ${c.null.runs} times over. On the real labels, ${c.beyond} words pass z = 1.96 and the shuffles give ${c.null.min} to ${c.null.max}`);
+  says("contrast", `The largest z any shuffle produced is ${c.null.top_z_max}. Only`);
   const beyond = terms.filter((t) => Math.abs(t[5]) > c.null.top_z_max).map((t) => t[0]);
   assert.deepEqual([...beyond].sort(), ["he", "her", "his", "she"]);
   assert.equal(c.beyond_null_top, 4);
-  says("contrast", `only her (${c.top.female[0][1].toFixed(1)}), she, his and he go further`);
+  says("contrast", `Only her (${c.top.female[0][1].toFixed(1)}), she, his and he go further`);
   says("contrast", "Her, she, his and he sit together in the top-right corner");
   for (const w of beyond) {
     const t = terms.find((x) => x[0] === w);
     assert.ok(t[3] > 0.95 && t[4] > 0.95, `${w} is common in both groups, so it sits in the top-right corner`);
   }
-  says("contrast", `${303 - c.pages.female - c.pages.male} pages without a woman or man label are left out`);
+  says("contrast", `the ${303 - c.pages.female - c.pages.male} pages without a woman or man label are left out`);
 });
 
 test("3 · contrast: the names caption counts from the data", () => {
@@ -115,11 +117,11 @@ test("3 · contrast: the names caption counts from the data", () => {
 
 test("4 · topics", () => {
   const t = facts.topics;
-  says("topics", `on ${count(t.vocab_size)} words`);
-  says("topics", `words on fewer than 5 or more than ${Math.floor(303 / 2)} pages removed`);
+  says("topics", `on the ${count(t.vocab_size)} words left after removing`);
+  says("topics", `words on fewer than 5 or more than ${Math.floor(303 / 2)} pages.`);
   says("topics", "twice each, with seeds 0 and 1");
   const p = (k) => pct(t.stability[k].mean_overlap);
-  says("topics", `they share ${p("5")} of their top ten words at five topics, ${p("8")} at eight and ${p("10")} at ten`);
+  says("topics", `The twins share ${p("5")} of their top ten words at five topics, ${p("8")} at eight and ${p("10")} at ten`);
   assert.equal(START.k, 5, "the topics open at five");
 });
 
@@ -131,7 +133,7 @@ test("5 · contexts", () => {
   const rank = (w, win, x) => c.rows[w][win].findIndex(([y]) => y === x) + 1;
   assert.equal(rank("hammer", "2", "mjolnir"), 4);
   assert.equal(rank("hammer", "5", "mjolnir"), 8);
-  says("contexts", "Within two words, mjolnir is hammer's fourth neighbour; within five, its eighth; the stays first at every size");
+  says("contexts", "Within two words, mjolnir is hammer's fourth neighbour, and within five it's the eighth. The stays first at every size");
   for (const w of ["2", "5", "10"]) assert.equal(c.rows.hammer[w][0][0], "the", `the is hammer's first neighbour at window ${w}`);
   const g = c.grid;
   const cell = (r, col) => g.cells[g.rows.indexOf(r)][g.cols.indexOf(col)];
@@ -143,9 +145,9 @@ test("6 · PMI", () => {
   const the = Object.values(facts.words.the);
   says("pmi", `The is the most common neighbour of ${the.filter((x) => x.count_rank === 1).length} of the ${the.length} words`);
   const pmi = the.map((x) => x.pmi);
-  says("pmi", `its PMI ranges from ${signed(Math.min(...pmi))} to ${signed(Math.max(...pmi))}, at most twice what independence predicts`);
+  says("pmi", `its PMI ranges from ${signed(Math.min(...pmi))} to ${signed(Math.max(...pmi))}, at most twice what independence predicts.`);
   assert.ok(Math.exp(Math.max(...pmi)) <= 2.05);
-  says("pmi", `web's top PPMI neighbour, ${p.ppmi[0][0]}, scores ${p.ppmi[0][2].toFixed(2)}`);
+  says("pmi", `Web's top PPMI neighbour, ${p.ppmi[0][0]}, scores ${p.ppmi[0][2].toFixed(2)}`);
   assert.ok(p.pmi_any.slice(0, 5).every(([, n]) => n <= 2), "plain PMI's top contexts are seen once or twice");
   assert.equal(START.pmiList, "ppmi", "PPMI sits beside the counts at first");
 });
@@ -158,11 +160,11 @@ test("7 · vectors", () => {
   const ex = v.examples[0];
   assert.equal(ex.window[0], ex.centre, "Storm's example starts the page");
   says("vectors", `skip-gram makes pairs such as (${ex.centre}, ${ex.positive[0]}) and (${ex.centre}, ${ex.positive[1]}), while CBOW makes one example, (${ex.positive.join(", ")}) → ${ex.centre}`);
-  says("vectors", `each real pair is set against ${v.settings.negative} random words`);
+  says("vectors", `Each real pair is set against ${v.settings.negative} random words`);
   const storm = v.near.storm.skipgram.map(([x]) => x);
   for (const x of ["cyclops", "panther", "pryde", "ororo"]) assert.ok(storm.includes(x), x);
   for (const x of ["weather", "rain", "wind", "hurricane"]) assert.ok(!storm.includes(x), `storm's skip-gram list has no ${x}`);
-  says("vectors", "on these pages storm is the character, not the weather, and its nearest words are cyclops, panther, pryde and ororo");
+  says("vectors", "On these pages storm is the character, not the weather, and its nearest words are cyclops, panther, pryde and ororo");
   says("vectors", `A word's ten nearest average a cosine of ${w.skipgram_near_cos.toFixed(3)} under skip-gram, but words drawn at random have ten nearest averaging ${w.skipgram_random_top.toFixed(3)}`);
   says("vectors", `skip-gram keeps ${pct(w.seed_overlap.skipgram)} of each top ten and CBOW ${pct(w.seed_overlap.cbow)}`);
   says("vectors", `words seen 20 times or more (${count(w.vocab_20)})`);
