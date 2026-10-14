@@ -11,7 +11,7 @@ import { builtPage, codeFiles, ROOT } from "./built-page.mjs";
 
 const BASE = "/02805_social_graphs/";
 // The pages the site nav lists as posts (src/components/site/posts.ts).
-const POSTS_HREFS = [...liveWeeks().map((w) => w.cabinet.href), "weeks/week06/alternative/"];
+const POSTS_HREFS = liveWeeks().map((w) => w.cabinet.href);
 
 // "src/app/(week04)/weeks/week04/page.tsx" -> "weeks/week04/"; route groups drop out.
 const routes = codeFiles(join(ROOT, "src/app"), /^page\.tsx$/).map((file) =>
