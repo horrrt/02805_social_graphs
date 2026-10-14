@@ -1,5 +1,6 @@
 import { type RailItem, SectionRail } from "@/components/post/SectionRail";
 import { PostTopbar } from "@/components/site/PostTopbar";
+import { SiteFooter } from "@/components/site/SiteFooter";
 import { StyleMenu } from "@/features/styleguide/StyleMenu";
 
 // The section rail, drawn here too so the guide shows it under every skin.
@@ -1135,21 +1136,17 @@ export default function Page() {
             </div>
           </section>
         </div>
-        <footer className="foot">
-          <div className="shell">
-            <span>
-              Style guide for
-              {" "}
-              <a href="../weeks/week03/">Corridor Control</a>
-              . One stylesheet,
-              {" "}
-              <code>src/styles/corridor.css</code>
-              ; a test asserts every class the post uses appears on this page.
-            </span>
+        <SiteFooter>
+          <span>
+            Style guide for
             {" "}
-            <span>Log–Log Legends · DTU 02805</span>
-          </div>
-        </footer>
+            <a href="../weeks/week03/">Corridor Control</a>
+            . One stylesheet,
+            {" "}
+            <code>src/styles/corridor.css</code>
+            ; a test asserts every class the post uses appears on this page.
+          </span>
+        </SiteFooter>
       </main>
       <SectionRail column={1132} items={RAIL} />
     </>

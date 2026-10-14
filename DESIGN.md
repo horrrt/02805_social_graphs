@@ -30,6 +30,12 @@ corridor family get it too. There it keeps the corridor's light colours and scro
 mockups page keeps it stuck to the top); on corridor pages `corridor.css` maps it to the page's tokens and
 skin and keeps it stuck to the top.
 
+Every page closes with the same footer (`SiteFooter`): "02805 Social graphs and interactions · Fall 2026" on
+the left, a Credits disclosure beside it and the GitHub link on the right. The page's data credits, in the form
+each licence asks for, and any AI-use note that sat in the footer go inside Credits, which opens below its
+summary. Its rules are in `footer.css`, which the component imports; `corridor.css` maps its colours to the
+page's tokens and skin, as it does for the bar.
+
 ## Type
 
 `src/styles/type.css` defines every font size and family. Stylesheets and charts take their type from these

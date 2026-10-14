@@ -260,14 +260,6 @@ export default function Page() {
           and the page and drafted the text, and tests/week06-essentials.test.mjs checks every quoted number against the
           data files.
         </span>
-        {" "}
-        <span>
-          Week 6 ·
-          {" "}
-          <a href="../../">Log–Log Legends</a>
-          {" "}
-          · DTU 02805
-        </span>
       </SiteFooter>
       <TermLayer />
     </>
