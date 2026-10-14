@@ -19,8 +19,8 @@ import { Contexts, Contrast, Cosine, Glove, Pmi, Topics, Vectors, Weights } from
 const TAKEAWAYS: [string, ReactNode][] = [
   ["weights", (
     <>
-      <b>IDF zeroes the words on every page</b>
-      , Marvel&apos;s own included (
+      IDF zeroes every word on all 303 pages, Marvel&apos;s own
+      {" "}
       <em>character</em>
       ,
       {" "}
@@ -30,33 +30,37 @@ const TAKEAWAYS: [string, ReactNode][] = [
       {" "}
       <em>marvel</em>
       {" "}
-      weigh 0), but few stopwords:
+      included, yet
       {" "}
-      <b>151 of NLTK&apos;s 198</b>
+      <b>
+        151 of NLTK&apos;s 198
+      </b>
       {" "}
-      keep weight.
+      stopwords keep weight.
     </>
   )],
   ["cosine", (
     <>
-      <b>Similarity needs weighting:</b>
+      Similarity needs weighting. Under raw counts the 99th-percentile pair of pages sits only
       {" "}
-      under raw counts the 99th-percentile pair of pages sits only
+      <b>
+        0.122
+      </b>
       {" "}
-      <b>0.122</b>
+      above the 0.754 median, and under TF-IDF it sits at
       {" "}
-      above the 0.754 median; under TF-IDF it sits at
-      {" "}
-      <b>eleven times</b>
+      <b>
+        eleven times
+      </b>
       {" "}
       the 0.0096 median.
     </>
   )],
   ["contrast", (
     <>
+      Only
+      {" "}
       <b>
-        Only
-        {" "}
         <em>her</em>
         ,
         {" "}
@@ -70,45 +74,51 @@ const TAKEAWAYS: [string, ReactNode][] = [
         <em>he</em>
       </b>
       {" "}
-      lean further between women&apos;s and men&apos;s pages than any word in a shuffled split.
+      split women&apos;s pages from men&apos;s further than any word in a label shuffle.
     </>
   )],
   ["topics", (
     <>
-      At five topics
+      At five topics,
       {" "}
-      <b>four of five</b>
+      <b>
+        four of five
+      </b>
       {" "}
-      keep at least half their top ten words when the seed changes, at eight only four of eight;
+      keep at least half their top ten words when the seed changes. At eight, only four of eight do, so
       {" "}
-      <b>a topic&apos;s label is a reading, not a finding.</b>
+      <b>
+        a topic&apos;s label is a reading, not a finding.
+      </b>
     </>
   )],
   ["pmi", (
     <>
-      <b>Counting finds grammar, association finds the telling neighbours:</b>
+      By count,
       {" "}
       <em>the</em>
       {" "}
       is the top neighbour of
       {" "}
-      <b>24 of 26</b>
+      <b>
+        24 of 26
+      </b>
       {" "}
-      words, with a PMI of at most 0.70.
+      words, but its PMI is at most 0.70, so association finds the telling neighbours.
     </>
   )],
   ["vectors", (
     <>
-      <b>303 pages give stable Marvel neighbours:</b>
+      303 pages give stable Marvel neighbours. Retrained from another seed, skip-gram keeps
       {" "}
-      retrained from another seed, skip-gram keeps
-      {" "}
-      <b>71%</b>
+      <b>
+        71%
+      </b>
       {" "}
       of each top ten, and
       {" "}
       <em>symbiote</em>
-      &apos;s nearest words are
+      &apos;s nearest are
       {" "}
       <em>venom</em>
       ,
@@ -126,9 +136,9 @@ const TAKEAWAYS: [string, ReactNode][] = [
   )],
   ["glove", (
     <>
-      <b>A static vector holds its corpus&apos;s sense:</b>
+      A static vector keeps its corpus&apos;s sense.
       {" "}
-      <em>vision</em>
+      <em>Vision</em>
       {" "}
       sits beside
       {" "}
@@ -154,9 +164,11 @@ const TAKEAWAYS: [string, ReactNode][] = [
       {" "}
       in GloVe, and
       {" "}
-      <b>11 of 26</b>
+      <b>
+        11 of 26
+      </b>
       {" "}
-      words share no neighbour even among words both models know.
+      words share no neighbour, even among words both models know.
     </>
   )],
 ];

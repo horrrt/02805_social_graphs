@@ -189,13 +189,13 @@ test("the closing takeaways quote the same numbers", () => {
   const words = facts.words;
   const the = Object.values(words.the);
   const g = json("glove").compare.vision;
-  says("closing", `${w.stop_not_low} of NLTK's ${w.stop_size} keep weight`);
-  says("closing", `under raw counts the 99th-percentile pair of pages sits only ${(c.raw.p99 - c.raw.median).toFixed(3)} above the ${c.raw.median.toFixed(3)} median; under TF-IDF it sits at ${WORDS[Math.round(c.tfidf.p99 / c.tfidf.median)]} times the ${c.tfidf.median} median`);
-  says("closing", `At five topics ${WORDS[t["5"].kept]} of five keep at least half their top ten words when the seed changes, at eight only ${WORDS[t["8"].kept]} of eight`);
-  says("closing", `the is the top neighbour of ${the.filter((x) => x.count_rank === 1).length} of ${the.length} words, with a PMI of at most ${Math.max(...the.map((x) => x.pmi)).toFixed(2)}`);
-  says("closing", `skip-gram keeps ${pct(words.seed_overlap.skipgram)} of each top ten, and symbiote's nearest words are ${and(json("vectors").near.symbiote.skipgram.slice(0, 4).map(([x]) => x))}`);
-  says("closing", `vision sits beside ${and(g.marvel.slice(0, 3).map(([x]) => x))} on these pages and beside ${and(g.glove.slice(0, 3).map(([x]) => x))} in GloVe`);
-  says("closing", `${Object.values(words.glove_shared).filter((n) => n === 0).length} of ${Object.keys(words.glove_shared).length} words share no neighbour even among words both models know`);
+  says("closing", `${w.stop_not_low} of NLTK's ${w.stop_size} stopwords keep weight`);
+  says("closing", `Under raw counts the 99th-percentile pair of pages sits only ${(c.raw.p99 - c.raw.median).toFixed(3)} above the ${c.raw.median.toFixed(3)} median, and under TF-IDF it sits at ${WORDS[Math.round(c.tfidf.p99 / c.tfidf.median)]} times the ${c.tfidf.median} median`);
+  says("closing", `At five topics, ${WORDS[t["5"].kept]} of five keep at least half their top ten words when the seed changes. At eight, only ${WORDS[t["8"].kept]} of eight do`);
+  says("closing", `By count, the is the top neighbour of ${the.filter((x) => x.count_rank === 1).length} of ${the.length} words, but its PMI is at most ${Math.max(...the.map((x) => x.pmi)).toFixed(2)}, so association finds the telling neighbours`);
+  says("closing", `skip-gram keeps ${pct(words.seed_overlap.skipgram)} of each top ten, and symbiote's nearest are ${and(json("vectors").near.symbiote.skipgram.slice(0, 4).map(([x]) => x))}`);
+  says("closing", `Vision sits beside ${and(g.marvel.slice(0, 3).map(([x]) => x))} on these pages and beside ${and(g.glove.slice(0, 3).map(([x]) => x))} in GloVe`);
+  says("closing", `${Object.values(words.glove_shared).filter((n) => n === 0).length} of ${Object.keys(words.glove_shared).length} words share no neighbour, even among words both models know`);
   assert.doesNotMatch(block(html, "closing"), /<ol class="w6e-takeaways">[\s\S]*?<a href="#/, "the takeaways carry no section links");
 });
 
