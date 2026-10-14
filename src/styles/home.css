@@ -281,19 +281,6 @@ a.week-card:hover {
   max-width: 68ch;
 }
 
-.home footer.foot .shell {
-  align-items: center;
-}
-
-.home footer.foot .home-github {
-  color: var(--ink);
-  display: inline-flex;
-}
-
-.home footer.foot .home-github:hover {
-  color: var(--accent);
-}
-
 /* Team portraits: a round photo above each name. */
 .home .members {
   gap: 28px;

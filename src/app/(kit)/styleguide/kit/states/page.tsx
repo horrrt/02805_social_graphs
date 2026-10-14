@@ -518,13 +518,7 @@ export default function Page() {
         {/* ==== end Kit batch E2: Growth ==== */}
       </main>
       <SiteFooter>
-        <span>
-          Toy data for the component edge states ·
-          {" "}
-          <a href="../../../">Log–Log Legends</a>
-          {" "}
-          · DTU 02805
-        </span>
+        <span>Toy data for the component edge states.</span>
       </SiteFooter>
     </>
   );

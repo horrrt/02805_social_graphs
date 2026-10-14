@@ -1,0 +1,118 @@
+/* The footer of every page (SiteFooter.tsx): the course and term on the left,
+   the Credits disclosure beside them and the GitHub link on the right.
+   SiteFooter imports this sheet, so it reaches pages that do not load
+   corridor.css. Like topbar.css, the footer keeps the corridor's light colours
+   on those pages, whose tokens mean other things (Week 1's --ink is white),
+   and follows the page's tokens on corridor pages, skins included (corridor.css
+   maps them). Credits opens in the flow, below its summary, so the row above
+   stays where it is. */
+
+footer.foot {
+  --foot-text: #59708f;
+  --foot-link: #46618a;
+  --foot-icon: #0f2340;
+  --foot-line: #dce5f0;
+  --foot-accent: #14618f;
+  border-top: 1px solid var(--foot-line);
+  box-sizing: border-box;
+  color: var(--foot-text);
+  font-family: var(--font-sans);
+  font-size: var(--fs-caption);
+  line-height: 1.6;
+  margin-top: 34px;
+  padding: 18px 0 40px;
+}
+
+footer.foot *,
+footer.foot *::before,
+footer.foot *::after {
+  box-sizing: border-box;
+}
+
+footer.foot > .shell {
+  align-items: flex-start;
+  display: flex;
+  gap: 16px;
+  margin: 0 auto;
+  max-width: 1180px;
+  padding: 0 24px;
+}
+
+/* The course line and the summary share the icon's height, so all three sit
+   on one line whether Credits is open or not. */
+footer.foot > .shell > span,
+footer.foot .foot-credits > summary {
+  line-height: 28px;
+  white-space: nowrap;
+}
+
+footer.foot a {
+  color: var(--foot-link);
+}
+
+/* Border, padding and weight are reset because arcade.css styles every
+   details and summary on Weeks 1 and 2. */
+footer.foot .foot-credits {
+  border: 0;
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 0;
+}
+
+footer.foot .foot-credits > summary {
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 400;
+  list-style: none;
+  min-height: 0;
+  text-decoration: underline;
+  text-decoration-color: var(--foot-line);
+  text-underline-offset: 3px;
+}
+
+footer.foot .foot-credits > summary::-webkit-details-marker {
+  display: none;
+}
+
+footer.foot .foot-credits > summary::after {
+  content: " ▸";
+}
+
+footer.foot .foot-credits[open] > summary::after {
+  content: " ▾";
+}
+
+footer.foot .foot-credits > summary:hover {
+  color: var(--foot-accent);
+}
+
+footer.foot .foot-credits > summary:focus-visible,
+footer.foot .home-github:focus-visible {
+  outline: 2px solid var(--foot-accent);
+  outline-offset: 2px;
+}
+
+footer.foot .foot-credits-body {
+  max-width: 96ch;
+  padding: 6px 0 2px;
+}
+
+footer.foot .foot-credits-body > span {
+  display: block;
+}
+
+footer.foot .foot-credits-body > span + span {
+  margin-top: 6px;
+}
+
+footer.foot .home-github {
+  color: var(--foot-icon);
+  display: inline-flex;
+  flex: none;
+  margin-left: auto;
+}
+
+footer.foot .home-github:hover {
+  color: var(--foot-accent);
+}

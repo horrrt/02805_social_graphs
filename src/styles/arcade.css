@@ -440,15 +440,6 @@ details p {
   font-size: var(--fs-body);
   color: var(--muted);
 }
-.footer {
-  padding: 25px 0;
-  border-top: 1px solid var(--line);
-  display: flex;
-  justify-content: space-between;
-  gap: 24px;
-  font-size: var(--fs-caption);
-  color: var(--muted);
-}
 dialog {
   width: min(720px, calc(100% - 28px));
   max-height: 90vh;
@@ -864,10 +855,6 @@ dialog::backdrop {
     padding: 6px;
     font-size: var(--fs-small);
   }
-  .footer {
-    flex-direction: column;
-    gap: 10px;
-  }
   .control-row > label {
     min-width: 130px;
   }
@@ -907,7 +894,7 @@ html:not(.js) #os-boot {
   .prediction,
   button,
   canvas,
-  .footer {
+  footer.foot {
     display: none !important;
   }
   .js [data-gated] {

@@ -836,23 +836,13 @@
 
 /* ------------------------------------------------------------------ footer */
 
+/* The footer is the site's (footer.css, imported by SiteFooter.tsx): the same
+   row on every page. Here its colours follow the skin. */
 .corridor footer.foot {
-  border-top: 1px solid var(--line);
-  color: var(--ink-mute-text);
-  font-size: var(--fs-caption);
-  margin-top: 34px;
-  padding: 18px 0 40px;
-}
-
-.corridor footer.foot .shell {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  justify-content: space-between;
-}
-
-.corridor footer.foot a {
-  color: var(--ink-soft);
+  --foot-text: var(--ink-mute-text);
+  --foot-link: var(--ink-soft);
+  --foot-icon: var(--ink);
+  --foot-line: var(--line);
 }
 
 .corridor .status-line {
