@@ -9,6 +9,9 @@
 // shows its explanation; the innermost tagged part wins. The explanation
 // renders into <body> and stays inside the window, so a part near the edge of
 // a clipped panel still shows all of it.
+//
+// A client component, so a server page can place a formula with props alone.
+"use client";
 import { type MouseEvent, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useVendor } from "@/lib/useVendor";

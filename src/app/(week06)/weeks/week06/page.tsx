@@ -1,6 +1,7 @@
 import { Fragment, type ReactNode } from "react";
 import { PostSection } from "@/components/post/PostSection";
 import { SectionOpener } from "@/components/post/SectionOpener";
+import { TermLayer } from "@/components/post/TermLayer";
 import { PostTopbar } from "@/components/site/PostTopbar";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SkipLink } from "@/components/site/SkipLink";
@@ -281,6 +282,7 @@ export default function Page() {
           · DTU 02805
         </span>
       </SiteFooter>
+      <TermLayer />
     </>
   );
 }

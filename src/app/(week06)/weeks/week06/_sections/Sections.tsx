@@ -5,12 +5,18 @@ import { Notice } from "@/components/post/Notice";
 import { Plot } from "@/components/post/Plot";
 import { PostSection } from "@/components/post/PostSection";
 import { SectionOpener } from "@/components/post/SectionOpener";
+import { Term } from "@/components/post/Term";
 import { Essential } from "@/features/week06/Essentials";
+import { Tex } from "@/lib/Tex";
+import { CosineFormula, IdfInline, IdfWorked, PmiFormula, PpmiFormula, TfIdfFormula } from "./Formulas";
 
 // One section per group of essentials. The opener is the section's only
 // heading; the card under it holds what we did, the baseline it is compared
 // to, the explorable and a Method drawer. Every number is in
 // analysis/week06_essentials.json; tests/week06-essentials.test.mjs pins them.
+// A section that defines a measure shows it as a display formula under the
+// paragraph of what we did (formula); the first use of each new term
+// in the prose is a glossary term (Term), opened by the page's TermLayer.
 
 type Props = {
   id: "weights" | "cosine" | "contrast" | "topics" | "contexts" | "pmi" | "vectors" | "glove";
@@ -19,13 +25,14 @@ type Props = {
   lead: ReactNode;
   essentials: string;
   did: ReactNode;
+  formula?: ReactNode;
   compared: ReactNode;
   plot: string;
   note: ReactNode;
   method: ReactNode;
 };
 
-function Essay({ id, num, title, lead, essentials, did, compared, plot, note, method }: Props) {
+function Essay({ id, num, title, lead, essentials, did, formula, compared, plot, note, method }: Props) {
   return (
     <PostSection id={id} owner="Gyula">
       <SectionOpener num={num} title={title}>{lead}</SectionOpener>
@@ -34,6 +41,7 @@ function Essay({ id, num, title, lead, essentials, did, compared, plot, note, me
           <div id={`${id}-did`}>
             <div className="w6e-uses">{`Uses: ${essentials}`}</div>
             <p className="sub">{did}</p>
+            {formula ? <div className="w6e-formula">{formula}</div> : null}
           </div>
           <div id={`${id}-surprise`}>
             <Notice icon="⚖️" headline="Compared to what">{compared}</Notice>
@@ -58,11 +66,34 @@ export function Weights() {
       id="weights"
       num="1"
       title="IDF finds Marvel's own stopwords"
-      lead="The most frequent words on a page say least about it; TF-IDF works that out from the 303 pages themselves."
+      lead={
+        <>
+          The most frequent words on a page say least about it;
+          {" "}
+          <Term id="w6-term-tf-idf" word="TF-IDF">A word&apos;s weight on one page: high when the word is frequent on that page and rare on the other pages.</Term>
+          {" "}
+          works that out from the 303 pages themselves.
+        </>
+      }
       essentials="term frequency (TF), document frequency (DF), inverse document frequency (IDF), TF-IDF"
       did={
         <>
-          A word&apos;s TF on a page is its count over the page&apos;s length; its DF is how many of the 303 pages use it; its IDF is ln(303 / DF). TF-IDF multiplies the two.
+          A word&apos;s
+          {" "}
+          <Term id="w6-term-tf" word="TF">Term frequency: how often a word appears on a page, divided by the number of words on that page.</Term>
+          {" "}
+          on a page is its count over the page&apos;s length; its
+          {" "}
+          <Term id="w6-term-df" word="DF">Document frequency: the number of pages a word appears on at least once.</Term>
+          {" "}
+          is how many of the 303 pages use it; its
+          {" "}
+          <Term id="w6-term-idf" word="IDF">Inverse document frequency: a weight that is high for a word few pages use and 0 for a word every page uses.</Term>
+          {" "}
+          is
+          {" "}
+          <IdfInline />
+          . TF-IDF multiplies the two.
           {" "}
           <em>He</em>
           {" "}
@@ -70,12 +101,23 @@ export function Weights() {
           {" "}
           <em>she</em>
           {" "}
-          is on 191, so ln(303 / 191) = 0.46. The alternative Week 6 post shows what that gap does once names are removed. Together these make a document-term matrix: one row per page, one column per word, each cell a word&apos;s TF-IDF on that page.
+          is on 191, so
+          {" "}
+          <IdfWorked df={191} value="0.46" />
+          . The alternative Week 6 post shows what that gap does once names are removed. Together these make a
+          {" "}
+          <Term id="w6-term-document-term-matrix" word="document-term matrix">A table with one row per document and one column per word; each cell says how much that word counts in that document.</Term>
+          : one row per page, one column per word, each cell a word&apos;s TF-IDF on that page.
         </>
       }
+      formula={<TfIdfFormula />}
       compared={
         <>
-          A hand-written stopword list (NLTK&apos;s English list, 198 words). Only 38 words get an IDF under 0.1, and 23 of them are NLTK stopwords; of NLTK&apos;s other 175, 24 never appear on these pages and 151 keep real weight. IDF also catches words no English list has:
+          A hand-written
+          {" "}
+          <Term id="w6-term-stopword" word="stopword">A very common word, such as the, and or of, that says little about a text on its own. Analyses often drop them using a fixed list.</Term>
+          {" "}
+          list (NLTK&apos;s English list, 198 words). Only 38 words get an IDF under 0.1, and 23 of them are NLTK stopwords; of NLTK&apos;s other 175, 24 never appear on these pages and 151 keep real weight. IDF also catches words no English list has:
           {" "}
           <em>character</em>
           ,
@@ -106,7 +148,9 @@ export function Cosine() {
       essentials="cosine similarity"
       did={
         <>
-          Cosine is the dot product of two vectors over the product of their lengths: the cosine of the angle between them, 1 when they point the same way, 0 when they share no word. Written word by word, it is a sum with one term per word, so we can show which words carry it. Storm and the Human Torch have a raw-count cosine of 0.845, of which
+          <Term id="w6-term-cosine-similarity" word="Cosine">Cosine similarity: how alike two lists of numbers are by their direction alone, ignoring their size. 1 when they point the same way, 0 when they share nothing.</Term>
+          {" "}
+          is the dot product of two vectors over the product of their lengths: the cosine of the angle between them, 1 when they point the same way, 0 when they share no word. Written word by word, it is a sum with one term per word, so we can show which words carry it. Storm and the Human Torch have a raw-count cosine of 0.845, of which
           {" "}
           <em>the</em>
           {" "}
@@ -117,6 +161,7 @@ export function Cosine() {
           gives 0.234: Johnny Storm&apos;s surname.
         </>
       }
+      formula={<CosineFormula />}
       compared={
         <>
           All 45,753 pairs of pages. Under raw counts the median pair scores 0.754 and the 99th percentile 0.876; under TF-IDF the median is 0.0096 and the 99th percentile 0.109, eleven times as high. Copying a page three times triples its raw-count vector and leaves every cosine where it was.
@@ -124,7 +169,14 @@ export function Cosine() {
       }
       plot="Two pages' cosine, word by word"
       note="24 pages a reader will know, 276 pairs. Each bar is one word's term in the sum."
-      method={<p>Tripling a page triples its raw counts but not its TF-IDF vector, because TF divides by the page&apos;s length. The analysis checks every one of the 552 ordered pairs under both weightings: no cosine moves by more than 10⁻¹⁵.</p>}
+      method={
+        <p>
+          Tripling a page triples its raw counts but not its TF-IDF vector, because TF divides by the page&apos;s length. The analysis checks every one of the 552 ordered pairs under both weightings: no cosine moves by more than
+          {" "}
+          <Tex tex="10^{-15}" label="10 to the minus 15" />
+          .
+        </p>
+      }
     />
   );
 }
@@ -135,16 +187,29 @@ export function Contrast() {
       id="contrast"
       num="3"
       title="Pronouns split women's pages from men's beyond chance"
-      lead="Scattertext places every word by how common it is in two groups of pages; shuffling the groups shows how much of that is chance."
+      lead={
+        <>
+          <Term id="w6-term-scattertext" word="Scattertext">A tool that plots every word used by two groups of documents by how common it is in each group, so the words one group uses more stand out.</Term>
+          {" "}
+          places every word by how common it is in two groups of pages; shuffling the groups shows how much of that is chance.
+        </>
+      }
       essentials="Scattertext"
       did={
         <>
-          Wikidata labels 52 pages as women and 145 as men, 197,637 and 397,709 words. Scattertext places each of the 3,188 words seen 20 times or more by its frequency rank in each group and gives it a z-score: how far it leans, in standard deviations; beyond ±1.96 counts as a lean.
+          Wikidata labels 52 pages as women and 145 as men, 197,637 and 397,709 words. Scattertext places each of the 3,188 words seen 20 times or more by its frequency rank in each group and gives it a
+          {" "}
+          <Term id="w6-term-z-score" word="z-score">How far a value lies from what chance would give, measured in standard deviations, the typical size of chance&apos;s swings. The farther from 0, the less likely chance alone produced it.</Term>
+          : how far it leans, in standard deviations; beyond ±1.96 counts as a lean.
         </>
       }
       compared={
         <>
-          The same 197 pages with the labels shuffled, 20 times. 145 words pass z = 1.96 for real, and shuffles give 99 to 143, so a count of leaning words says little on its own. The largest z any shuffle produced is 9.2; only
+          The same 197 pages with the labels shuffled, 20 times. 145 words pass
+          {" "}
+          <Tex tex="z = 1.96" label="z equals 1.96" />
+          {" "}
+          for real, and shuffles give 99 to 143, so a count of leaning words says little on its own. The largest z any shuffle produced is 9.2; only
           {" "}
           <em>her</em>
           {" "}
@@ -193,11 +258,21 @@ export function Topics() {
       id="topics"
       num="4"
       title="Topics move when the seed moves"
-      lead="LDA finds recurring word groups, but which groups it finds depends on the number of topics and where it starts."
+      lead={
+        <>
+          <Term id="w6-term-lda" word="LDA">Latent Dirichlet allocation: a topic model that treats each document as a mix of topics and each topic as a mix of words, and learns both from the text.</Term>
+          {" "}
+          finds recurring word groups, but which groups it finds depends on the number of topics and where it starts.
+        </>
+      }
       essentials="topic model, LDA"
       did={
         <>
-          A topic model looks for groups of words that recur together across documents; LDA is one such model. LDA treats each topic as a distribution over words and each page as a mixture of topics. We fitted it with 5 to 12 topics, twice each, with seeds 0 and 1, on 5,824 words: names, stopwords, words under three letters, and words on fewer than 5 or more than 151 pages removed.
+          A
+          {" "}
+          <Term id="w6-term-topic-model" word="topic model">A method that finds groups of words that tend to appear together across many documents and treats each group as a topic.</Term>
+          {" "}
+          looks for groups of words that recur together across documents; LDA is one such model. LDA treats each topic as a distribution over words and each page as a mixture of topics. We fitted it with 5 to 12 topics, twice each, with seeds 0 and 1, on 5,824 words: names, stopwords, words under three letters, and words on fewer than 5 or more than 151 pages removed.
         </>
       }
       compared={
@@ -228,7 +303,11 @@ export function Contexts() {
       }
       lead={
         <>
-          Words that occur in similar contexts tend to have related meanings, but counted raw,
+          The
+          {" "}
+          <Term id="w6-term-distributional-hypothesis" word="distributional hypothesis">The idea that a word&apos;s meaning can be read from the words that usually appear around it.</Term>
+          {" "}
+          says words that occur in similar contexts tend to have related meanings, but counted raw,
           {" "}
           <em>the</em>
           {" "}
@@ -238,7 +317,13 @@ export function Contexts() {
       essentials="distributional hypothesis, word-context matrix"
       did={
         <>
-          Each row is a target word, each column a context word, each cell how often the context sits within the window, inside one page. We count windows of 2, 5 and 10 words on either side.
+          In a
+          {" "}
+          <Term id="w6-term-word-context-matrix" word="word-context matrix">A table with one row per word and one column per neighbouring word; each cell counts how often the two appear close together.</Term>
+          , each row is a target word, each column a context word, each cell how often the context sits within the
+          {" "}
+          <Term id="w6-term-context-window" word="window">The context window: the words counted as a word&apos;s neighbours, a fixed number of words on either side of it.</Term>
+          , inside one page. We count windows of 2, 5 and 10 words on either side.
         </>
       }
       compared={
@@ -282,11 +367,27 @@ export function Pmi() {
       id="pmi"
       num="6"
       title="Association, not frequency, finds the telling neighbours"
-      lead="PMI asks whether two words meet more often than chance would have them meet; PPMI keeps only the yes."
+      lead={
+        <>
+          <Term id="w6-term-pmi" word="PMI">Pointwise mutual information: how much more, or less, often two words appear together than they would if they had nothing to do with each other.</Term>
+          {" "}
+          asks whether two words meet more often than chance would have them meet;
+          {" "}
+          <Term id="w6-term-ppmi" word="PPMI">Positive PMI: PMI with every negative score set to 0, so only pairs that meet more often than chance keep a score.</Term>
+          {" "}
+          keeps only the yes.
+        </>
+      }
       essentials="PMI, PPMI"
       did={
         <>
-          PMI is ln[P(w, c) / (P(w) P(c))], the natural log. Above 0, the pair meets more often than independence predicts; below, less. PPMI sets the negatives to 0.
+          PMI is the natural log of how often a word and a context word meet, over how often they would meet if independent. Above 0, the pair meets more often than independence predicts; below, less. PPMI sets the negatives to 0.
+        </>
+      }
+      formula={
+        <>
+          <PmiFormula />
+          <PpmiFormula />
         </>
       }
       compared={
@@ -306,7 +407,19 @@ export function Pmi() {
       }
       plot="One word's neighbours by count, and by PMI or PPMI"
       note="Window 5. Plain PMI favours contexts seen once; the PPMI list needs five sightings."
-      method={<p>Probabilities from the window-5 word-context matrix of section 5: P(w, c) is a cell over all cells, P(w) a row total over all cells.</p>}
+      method={
+        <p>
+          Probabilities from the window-5 word-context matrix of section 5:
+          {" "}
+          <Tex tex="P(w, c)" label="P of w and c" />
+          {" "}
+          is a cell over all cells,
+          {" "}
+          <Tex tex="P(w)" label="P of w" />
+          {" "}
+          a row total over all cells.
+        </p>
+      }
     />
   );
 }
@@ -319,7 +432,13 @@ export function Vectors() {
       title="Prediction packs a row into 100 numbers"
       lead={
         <>
-          Word2Vec learns 100 numbers per word by predicting its neighbours; retrained from another seed, skip-gram keeps 71% of each top ten, and
+          <Term id="w6-term-word2vec" word="Word2Vec">A family of small neural networks that learn a short list of numbers for each word by predicting words from their neighbours.</Term>
+          {" "}
+          learns 100 numbers per word by predicting its neighbours; retrained from another seed,
+          {" "}
+          <Term id="w6-term-skip-gram" word="skip-gram">A Word2Vec model that learns each word&apos;s numbers by predicting the words around it from the word itself.</Term>
+          {" "}
+          keeps 71% of each top ten, and
           {" "}
           <em>symbiote</em>
           &apos;s nearest are
@@ -341,7 +460,17 @@ export function Vectors() {
       essentials="static word embedding, skip-gram, CBOW, negative sampling"
       did={
         <>
-          Skip-gram predicts the context from the word, CBOW the word from its context: from Storm&apos;s opening words, skip-gram makes pairs such as (storm, is) and (storm, a), while CBOW makes one example, (is, a, superhero, appearing, in) → storm. Both train with negative sampling: each real pair is set against 5 random words, drawn more often the more common they are. Both are static: one vector per word, whatever the sentence, so a word with two senses gets one vector for both; on these pages
+          Skip-gram predicts the context from the word,
+          {" "}
+          <Term id="w6-term-cbow" word="CBOW">Continuous bag of words: a Word2Vec model that learns each word&apos;s numbers by predicting the word from the words around it.</Term>
+          {" "}
+          the word from its context: from Storm&apos;s opening words, skip-gram makes pairs such as (storm, is) and (storm, a), while CBOW makes one example, (is, a, superhero, appearing, in) → storm. Both train with
+          {" "}
+          <Term id="w6-term-negative-sampling" word="negative sampling">A training shortcut: rather than scoring every word in the vocabulary, the model learns to tell a real neighbour from a few randomly drawn words.</Term>
+          : each real pair is set against 5 random words, drawn more often the more common they are. Both are
+          {" "}
+          <Term id="w6-term-static-embedding" word="static">A static word embedding gives each word one fixed list of numbers, learned from a corpus, whatever sentence the word appears in.</Term>
+          : one vector per word, whatever the sentence, so a word with two senses gets one vector for both; on these pages
           {" "}
           <em>storm</em>
           {" "}
@@ -379,7 +508,13 @@ export function Glove() {
       id="glove"
       num="8"
       title="General English and Marvel English disagree"
-      lead="GloVe learns static vectors from six billion words of news and Wikipedia; the same words mean other things there."
+      lead={
+        <>
+          <Term id="w6-term-glove" word="GloVe">Global Vectors: a method that learns word vectors from how often every pair of words appears near each other across a whole corpus.</Term>
+          {" "}
+          learns static vectors from six billion words of news and Wikipedia; the same words mean other things there.
+        </>
+      }
       essentials="GloVe"
       did={
         <>

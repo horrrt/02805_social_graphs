@@ -2872,6 +2872,20 @@
 .corridor .w6e-part { border-top: 1px solid var(--line); color: var(--ink-soft); font-size: var(--fs-small); font-weight: 700; letter-spacing: 0.04em; margin: 48px 0 0; padding-top: 16px; }
 /* A label, not a paragraph: "What we did" keeps one <p>; it reads like the paragraph under it. */
 .corridor .w6e-uses { color: var(--ink-soft); font-size: var(--fs-body); line-height: 1.62; margin: 0; max-width: 68ch; }
+/* A display formula between two paragraphs of what we did, typeset by KaTeX (src/lib/Tex.tsx). */
+.corridor .w6e-formula { color: var(--ink); overflow: auto hidden; padding: 3px 0; }
+.corridor .w6e-formula .katex-display { margin: 0; }
+.corridor .w6e-formula .tex + .tex { margin-top: 8px; }
+/* Hover a part of a formula to explain it; the explanation (.tex-tip) renders into <body>. */
+.corridor .tex-explain { position: relative; }
+.corridor .tex-explain [class*="x-"] { cursor: help; }
+.corridor .tex-mark { background: color-mix(in srgb, var(--w4-accent) 18%, transparent); border-radius: 4px; pointer-events: none; position: absolute; }
+/* KaTeX's fraction layout layers sit over the parts; let the pointer through to them. */
+.corridor .tex-explain :is(.vlist, .vlist-r, .vlist-t) { pointer-events: none; }
+.corridor .tex-explain .vlist [class*="x-"] { pointer-events: auto; }
+.corridor .tex-tip { background: var(--w4-tip-bg); border-radius: 9px; box-shadow: 0 12px 32px rgba(15, 35, 64, 0.18); color: var(--w4-tip-ink); font-family: var(--font-sans); font-size: var(--fs-small); font-weight: 400; line-height: 1.55; max-width: 300px; padding: 10px 12px; pointer-events: none; position: fixed; text-align: left; white-space: normal; width: max-content; z-index: 60; }
+/* Until KaTeX has loaded, the LaTeX shows as code. */
+.corridor .tex-pending { font-family: var(--font-mono); font-size: var(--fs-small); }
 .corridor .w6e-app { min-height: 120px; }
 .corridor .w6e-controls { align-items: center; display: flex; flex-wrap: wrap; gap: 10px 16px; margin: 0 0 14px; }
 .corridor .w6e-picker { align-items: center; display: inline-flex; gap: 8px; }

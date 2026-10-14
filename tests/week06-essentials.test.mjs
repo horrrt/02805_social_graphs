@@ -26,6 +26,16 @@ const WORDS = ["zero", "one", "two", "three", "four", "five", "six", "seven", "e
 // sentence reads as one string.
 const text = (where) => flatten(block(html, where).replace(/<\/?(em|b|a)\b[^>]*>/g, ""));
 const says = (where, sentence) => assert.ok(text(where).includes(sentence), `${where} should say "${sentence}"`);
+// A formula's LaTeX as the server renders it (KaTeX typesets it after load),
+// with the \htmlClass{x-…}{…} tags that drive its hover explanations unwrapped.
+const untag = (s) => {
+  for (let prev; prev !== s; ) {
+    prev = s;
+    s = s.replace(/\\htmlClass\{x-[\w-]+\}\{((?:[^{}]|\{[^{}]*\})*)\}/g, "$1");
+  }
+  return s;
+};
+const tex = (where) => untag(text(where));
 // "a, b, c and d" from a list of words.
 const and = (words) => `${words.slice(0, -1).join(", ")} and ${words.at(-1)}`;
 
@@ -47,7 +57,8 @@ test("each section has one heading, its opener; no card repeats it as a question
 
 test("1 · weights", () => {
   const w = facts.weights;
-  says("weights", `He is on ${w.pronouns.he.df} pages, so its IDF is ${w.pronouns.he.idf.toFixed(2)}; she is on ${w.pronouns.she.df}, so ln(303 / ${w.pronouns.she.df}) = ${w.pronouns.she.idf.toFixed(2)}`);
+  const worked = `He is on ${w.pronouns.he.df} pages, so its IDF is ${w.pronouns.he.idf.toFixed(2)}; she is on ${w.pronouns.she.df}, so \\ln \\tfrac{303}{${w.pronouns.she.df}} = ${w.pronouns.she.idf.toFixed(2)}`;
+  assert.ok(tex("weights").includes(worked), `weights should say "${worked}"`);
   const other = w.stop_size - w.low_idf_stop;
   says("weights", `NLTK's English list, ${w.stop_size} words). Only ${w.low_idf} words get an IDF under 0.1, and ${w.low_idf_stop} of them are NLTK stopwords; of NLTK's other ${other}, ${other - w.stop_not_low} never appear on these pages and ${w.stop_not_low} keep real weight`);
   for (const x of ["character", "comics", "marvel"]) assert.ok(w.everywhere.includes(x), x);
@@ -66,7 +77,7 @@ test("2 · cosine", () => {
   says("cosine", `All ${count((303 * 302) / 2)} pairs of pages`);
   says("cosine", `Under raw counts the median pair scores ${c.raw.median.toFixed(3)} and the 99th percentile ${c.raw.p99.toFixed(3)}; under TF-IDF the median is ${c.tfidf.median} and the 99th percentile ${c.tfidf.p99.toFixed(3)}, ${WORDS[Math.round(c.tfidf.p99 / c.tfidf.median)]} times as high`);
   assert.ok(facts.cosine.triple_diff < 1e-15, "tripling a page moves no cosine under either weighting");
-  says("cosine", `every one of the ${facts.cosine.pairs * 2} ordered pairs under both weightings: no cosine moves by more than 10⁻¹⁵`);
+  says("cosine", `every one of the ${facts.cosine.pairs * 2} ordered pairs under both weightings: no cosine moves by more than 10^{-15}`);
   says("cosine", `${facts.cosine.pairs} pairs`);
 });
 
