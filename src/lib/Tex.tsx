@@ -69,7 +69,8 @@ export function Tex({ tex, block = false, label, explain }: TexProps) {
   if (!explain) return <Tag className="tex" aria-label={label} dangerouslySetInnerHTML={{ __html: html }} />;
 
   const over = (e: MouseEvent<HTMLElement>) => {
-    const part = (e.target as Element).closest?.('[class*="x-"]');
+    // A tag's class starts with x-; KaTeX's own classes can hold "x-" too (katex-sizing).
+    const part = (e.target as Element).closest?.('[class^="x-"], [class*=" x-"]');
     const name = part ? [...part.classList].find((c) => c.startsWith("x-"))?.slice(2) : undefined;
     if (!part || !name || !explain[name]) return setTip(null);
     const box = e.currentTarget.getBoundingClientRect();
