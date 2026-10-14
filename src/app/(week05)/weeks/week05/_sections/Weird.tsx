@@ -1,5 +1,6 @@
 import { Drawer } from "@/components/post/Drawer";
 import { Drawers } from "@/components/post/Drawers";
+import { Gloss } from "@/components/post/Gloss";
 import { Notice } from "@/components/post/Notice";
 import { Plot } from "@/components/post/Plot";
 import { PostSection } from "@/components/post/PostSection";
@@ -7,11 +8,17 @@ import { QuestionCard } from "@/components/post/QuestionCard";
 import { SectionOpener } from "@/components/post/SectionOpener";
 import { TermProse } from "@/components/post/TermProse";
 import { Weird as Part } from "@/features/week05/weird/Weird";
-import { TERMS, WEIRD } from "@/scripts/week05-weird.js";
+import { termFor } from "@/lib/glossary";
+import { WEIRD } from "@/scripts/week05-weird.js";
+import { PTest, ZNear } from "./Formulas";
 
 // Section 7: MATTR against page length. The weird islands (src/features/week05/weird/) draw the scatter
 // with its drawer of all pages, the passages and the top and bottom table; the term in "what we did"
 // waits for weird.json, as on main.
+// Main built the MATTR definition from weird.json's meta.window, 100; the server renders the terms, so
+// the window is written out. "z-score" (w5-term-weird-z) and "House phrasing" (w5-term-weird-house)
+// matched no text in #weird-did, so only MATTR is placed there; z-score is a term in the Method.
+const TERMS = [termFor("mattr", "MATTR", "w5-term-weird-mattr", "Here each window is 100 words.")];
 export function Weird() {
   return (
     <PostSection id="weird" owner="Niklas">
@@ -31,7 +38,14 @@ export function Weird() {
         }
         surprise={
           <Notice icon="💡" headline="What to notice">
-            The winners are real writing: 4 of the top 5 carry less house phrasing than their length neighbours, and 4 use more rare words. The losers are partly paperwork: 10 of the 30 lowest pages are about several characters sharing one name, against 4.6 expected by chance (p = 0.0071), and 4 of the bottom 5 carry more house phrasing than their neighbours. Ms. Marvel comes last (z = −4.15). Across all 303 pages, more house phrasing goes with a lower score (rank correlation −0.28, p &lt; 0.001).
+            The winners are real writing: 4 of the top 5 carry less house phrasing than their length neighbours, and 4 use more rare words. The losers are partly paperwork: 10 of the 30 lowest pages are about several characters sharing one name, against 4.6 expected by chance
+            {" "}
+            (<PTest v="0.0071" />), and 4 of the bottom 5 carry more house phrasing than their neighbours. Ms. Marvel comes last
+            {" "}
+            (<ZNear v="−4.15" />). Across all 303 pages, more house phrasing goes with a lower score (rank correlation −0.28,
+            {" "}
+            <PTest v="0.001" below />
+            ).
           </Notice>
         }
         figure={
@@ -49,7 +63,11 @@ export function Weird() {
               We split each page into words: runs of letters in any alphabet, an inner apostrophe or hyphen kept, lowercased, a possessive 's removed; digits and punctuation dropped. We keep stopwords and do not lemmatise. The 303 pages hold 713,617 words.
             </p>
             <p>
-              MATTR has no trend with length, but short pages spread more because they have fewer windows to average: a standard deviation of 0.031 in the shortest quarter of pages against 0.021 in the longest. So each page gets a z-score against the 30 pages nearest to it in length. Then we read the five highest and the five lowest.
+              MATTR has no trend with length, but short pages spread more because they have fewer windows to average: a standard deviation of 0.031 in the shortest quarter of pages against 0.021 in the longest. So each page gets a
+              {" "}
+              <Gloss id="w5-term-z-score" />
+              {" "}
+              against the 30 pages nearest to it in length. Then we read the five highest and the five lowest.
             </p>
             <p>
               The score passes its length checks. Its rank correlation with page length is 0.02, its z-scores spread 1.11 in the shortest quarter and 1.00 in the longest, and 6 of the top 10 pages are shorter than the median page of 1,218 words. With a 50-word window instead of 100, 7 of the top 10 and 8 of the bottom 10 stay in their ten (rank correlation 0.945 over all pages).

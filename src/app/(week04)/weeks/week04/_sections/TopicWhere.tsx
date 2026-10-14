@@ -4,6 +4,7 @@ import { TocItem } from "@/features/week04/frame/DeepShell";
 import { Methods } from "@/features/week04/methods/Methods";
 import { PlacePart } from "@/features/week04/place/Place";
 import { StripPart } from "@/features/week04/strips/Strips";
+import { Alpha } from "./Formulas";
 import { GlossTerm } from "./GlossTerm";
 
 // Deep dive topic: where the hiring is.
@@ -56,7 +57,9 @@ export function TopicWhere() {
               A filter that keeps a link only when it carries an unusually large share of either metro’s total weight.
             </GlossTerm>
             {" "}
-            α from Week 4.
+            <Alpha />
+            {" "}
+            from Week 4.
           </p>
           <div className="rx-seg-row">
             <span className="rx-seg-label" id="place-alpha-label">Backbone α</span>
@@ -65,7 +68,9 @@ export function TopicWhere() {
           <div className="plot">
             <h3>Backbone at this α</h3>
             <p className="axis-note">
-              Each line is a link the filter keeps at the α set above, thicker
+              Each line is a link the filter
+              {" "}
+              keeps at the <Alpha /> set above, thicker
               when more filings share it.
             </p>
             <PlacePart part="backbone" />
@@ -96,7 +101,11 @@ export function TopicWhere() {
             </Drawer>
             <Drawer label="Method">
               <p className="sub">
-                Two metros are linked when a company files in both; the weight adds up, over those companies, the smaller of its two filing counts. One weight threshold would keep the links among the big hubs and cut a mid-size metro's strongest tie, which is light next to New York and Dallas. The disparity filter keeps a link when it carries an unusually large share of either endpoint's weight at level α, the method the course used for the philosophers backbone.
+                Two metros are linked when a company files in both; the weight adds up, over those companies, the smaller of its two filing counts. One weight threshold would keep the links among the big hubs and cut a mid-size metro's strongest tie, which is light next to New York and Dallas. The disparity filter keeps a link when it carries an unusually large share of either endpoint's
+                {" "}
+                weight at level <Alpha />, the method
+                {" "}
+                the course used for the philosophers backbone.
               </p>
               <PlacePart part="alphaTable" />
               <p>
@@ -128,7 +137,9 @@ export function TopicWhere() {
             <div className="plot">
               <h3>Distance vs weight</h3>
               <p className="axis-note">
-                Each point is a link in the backbone at α = 0.2, the default
+                Each point is a link in the
+                {" "}
+                backbone at <Alpha v="0.2" />, the default
                 above; size grows with its weight.
               </p>
               <PlacePart part="longhaul" />
@@ -136,7 +147,11 @@ export function TopicWhere() {
             <div className="plot">
               <h3>One employer’s map</h3>
               <p className="axis-note">
-                The backbone links (α = 0.2) this company leads: of all the
+                The backbone
+                {" "}
+                links (<Alpha v="0.2" />) this
+                {" "}
+                company leads: of all the
                 companies filing in both cities, it adds the most to the
                 link's weight.
               </p>

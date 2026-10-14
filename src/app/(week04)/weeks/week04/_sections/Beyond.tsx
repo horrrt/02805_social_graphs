@@ -1,7 +1,9 @@
+import { Gloss } from "@/components/post/Gloss";
 import { Drawer } from "@/components/post/Drawer";
 import { Drawers } from "@/components/post/Drawers";
 import { QuestionPart } from "@/features/week04/questions/Questions";
 import { StripPart } from "@/features/week04/strips/Strips";
+import { P, Z } from "./Formulas";
 import { GlossTerm } from "./GlossTerm";
 
 // Section 5: beyond the three networks.
@@ -92,7 +94,9 @@ export function Beyond() {
                   Random copies of the network in which every company and law firm keeps its number of partners, but the partners are dealt out again at random.
                 </GlossTerm>
                 : real
-                (z = 15) and small.
+                (
+                <Z v="15" />
+                ) and small.
                 {" "}
                 <GlossTerm id="w4-term-beyond-law-modularity" word="Modularity">
                   How much more of the link weight falls inside the groups than a random network would put there. Higher means cleaner groups.
@@ -171,7 +175,11 @@ export function Beyond() {
                 <p>
                   For each company with 20 or more H-1B filings we divided its 2025 PERM filings by its H-1B filings, matching companies by name and tax number.
                 </p>
-                <p>Pooled over the companies in each bar, with a 95% bootstrap interval for the first two.</p>
+                <p>Pooled over the companies in each bar,
+                {" "}
+                with a 95% <Gloss id="w4-term-bootstrap-interval" word="bootstrap interval" /> for
+                {" "}
+                the first two.</p>
               </Drawer>
               <Drawer label="More numbers">
                 <p>
@@ -187,7 +195,9 @@ export function Beyond() {
                     We dealt the companies out to the groups again at random, many times, to see how big a spread chance alone produces.
                   </GlossTerm>
                   {" "}
-                  match 28% of the time (p = 0.28).
+                  match 28% of the time (
+                  <P v="0.28" />
+                  ).
                 </p>
               </Drawer>
             </Drawers>

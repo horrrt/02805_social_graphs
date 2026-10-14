@@ -2,6 +2,7 @@
 // page by counting its nested tags, so a drawer or card that closes early no
 // longer ends a region; flatten() turns that slice into the sentences a reader sees.
 import assert from "node:assert/strict";
+import { symbols } from "./math-text.mjs";
 
 // The element whose id="…" is `id`, from its opening tag to the tag that closes it.
 export const block = (html, id) => {
@@ -23,10 +24,12 @@ export const blockAt = (html, start) => {
   assert.fail(`<${name}> at ${start} never closes`);
 };
 
-// Text of a fragment: glossary terms become their word, the remaining popovers
-// with plain text go, tags become spaces and whitespace collapses.
+// Text of a fragment: formulas become their LaTeX with the hover tags
+// unwrapped and Greek letters as themselves (src/lib/Tex.tsx), glossary terms become their word, the remaining
+// popovers with plain text go, tags become spaces and whitespace collapses.
 export const flatten = (fragment) =>
   fragment
+    .replace(/<(span|div) class="tex[^"]*"[^>]*>([^<]*)<\/\1>/g, (_, _tag, tex) => symbols(tex))
     .replace(/<span class="w4-term">\s*<button[^>]*>([^<]*)<\/button>\s*<span class="w4-pop"[^>]*>[^<]*<\/span>\s*<\/span>/g, "$1")
     .replace(/<span class="w4-pop[^"]*"[^>]*>[^<]*<\/span>/g, " ")
     .replace(/<[^>]+>/g, " ")

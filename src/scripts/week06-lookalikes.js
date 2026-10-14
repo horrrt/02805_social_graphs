@@ -213,10 +213,3 @@ export function choices(data) {
 
 /** How many of a page's ten nearest pages link to it, per column. */
 export const linkedCount = (rows) => rows.filter((r) => r.linked).length;
-
-// The glossary terms the "what we did" paragraphs carry, each placed once lookalikes.json has loaded.
-export const TERMS = [
-  { phrase: "TF-IDF", definition: "A word's weight on a page: how often the page uses it, as a share of the page's length, times the log of 303 over the number of pages that use it. A word on every page gets 0.", id: "w6-term-tfidf" },
-  { phrase: "cosine", definition: "How closely two pages' weight vectors point the same way: 1 for the same direction, 0 when they share no weighted word. A long page and a short one can score 1.", id: "w6-term-cosine" },
-  { phrase: "shuffle", definition: "The baseline: the same labels dealt out again at random over the same pages, while every page keeps its ten nearest pages.", id: "w6-term-shuffle" },
-];

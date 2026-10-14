@@ -1,6 +1,7 @@
 import { Drawer } from "@/components/post/Drawer";
 import { Drawers } from "@/components/post/Drawers";
 import { QuestionPart } from "@/features/week04/questions/Questions";
+import { P, Z } from "./Formulas";
 import { GlossTerm } from "./GlossTerm";
 
 // Section 4: the networks without the biggest firms.
@@ -98,7 +99,13 @@ export function Footprint() {
             0.90 and 0.81) but shift more than random cuts of the same volume do.
           </p>
           <p>
-            Removing the five placing firms changes little: the groups stay close to the full network's (NMI 0.92, random cuts 0.85 ± 0.14), and the regional match rises only to 0.09, inside the range of random cuts (0.04 ± 0.05). Without the ten largest filers the clusters also sharpen, modularity rising from 0.27 to 0.30. Every version still beats its own rewired networks by a wide margin (z = 25 or more). Without the ten largest filers the regional match (AMI 0.13, p = 0.013) sits 4.6 standard deviations above random cuts (0.01 ± 0.03). Random cuts leave the job clusters closer to the full network's (0.96 and 0.88, 2.9 and 4.3 standard deviations away), so the biggest firms do shape which jobs cluster together.
+            Removing the five placing firms changes little: the groups stay close to the full network's (NMI 0.92, random cuts 0.85 ± 0.14), and the regional match rises only to 0.09, inside the range of random cuts (0.04 ± 0.05). Without the ten largest filers the clusters also sharpen, modularity rising from 0.27 to 0.30. Every version still beats its own rewired networks by a wide margin
+            {" "}
+            (<Z v="25" /> or more). Without the ten largest filers the regional match
+            {" "}
+            (AMI 0.13, <P v="0.013" />)
+            {" "}
+            sits 4.6 standard deviations above random cuts (0.01 ± 0.03). Random cuts leave the job clusters closer to the full network's (0.96 and 0.88, 2.9 and 4.3 standard deviations away), so the biggest firms do shape which jobs cluster together.
           </p>
         </Drawer>
       </Drawers>
@@ -154,7 +161,9 @@ export function Footprint() {
           </Drawer>
           <Drawer label="More numbers">
             <p>
-              Amazon's 0.14 sits 3.5 standard deviations above its random cuts. No other single firm pushes the match up beyond its random cuts: removing EY, Meta, Deloitte or Apple alone tips Louvain into a two-group split that ignores regions (AMI −0.005). Removed in rank order, the largest filers keep the match above random cuts at every step from one to twenty, but not smoothly: it dips to about 0.07 without the top 17 to 19, where several partitions compete, and peaks at 0.20 without the top 20. 2024 tells the same story more strongly. Its full network shows no regional match (AMI −0.005); without its ten largest filers the match is 0.22 (p = 0.001), against −0.01 ± 0.01 for random cuts.
+              Amazon's 0.14 sits 3.5 standard deviations above its random cuts. No other single firm pushes the match up beyond its random cuts: removing EY, Meta, Deloitte or Apple alone tips Louvain into a two-group split that ignores regions (AMI −0.005). Removed in rank order, the largest filers keep the match above random cuts at every step from one to twenty, but not smoothly: it dips to about 0.07 without the top 17 to 19, where several partitions compete, and peaks at 0.20 without the top 20. 2024 tells the same story more strongly. Its full network shows no regional match (AMI −0.005); without its ten largest filers the match is
+              {" "}
+              0.22 (<P v="0.001" />), against −0.01 ± 0.01 for random cuts.
             </p>
           </Drawer>
         </Drawers>

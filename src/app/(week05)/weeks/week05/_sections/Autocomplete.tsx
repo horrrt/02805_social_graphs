@@ -1,5 +1,6 @@
 import { Drawer } from "@/components/post/Drawer";
 import { Drawers } from "@/components/post/Drawers";
+import { Gloss } from "@/components/post/Gloss";
 import { Notice } from "@/components/post/Notice";
 import { Plot } from "@/components/post/Plot";
 import { PostSection } from "@/components/post/PostSection";
@@ -7,11 +8,17 @@ import { QuestionCard } from "@/components/post/QuestionCard";
 import { SectionOpener } from "@/components/post/SectionOpener";
 import { TermProse } from "@/components/post/TermProse";
 import { Autocomplete as Part } from "@/features/week05/autocomplete/Autocomplete";
-import { AUTOCOMPLETE, TERMS } from "@/scripts/week05-autocomplete.js";
+import { termFor } from "@/lib/glossary";
+import { AUTOCOMPLETE } from "@/scripts/week05-autocomplete.js";
+import { Z } from "./Formulas";
 
 // Section 4: one trigram model per consensus community and a quiz on its fake pages. The autocomplete
 // islands (src/features/week05/autocomplete/) fill the quiz, the community map, the modularity strip and
 // the copied run; the term in "what we did" waits for autocomplete.json, as on main.
+// Main's first two calls, "Louvain" (w5-term-autocomplete-louvain) and "normalised mutual information"
+// (w5-term-autocomplete-nmi), matched no text in #autocomplete-did, so only "trigram model" is placed;
+// NMI and modularity are terms in the Method.
+const TERMS = [termFor("trigram-model", "trigram model", "w5-term-autocomplete-trigram")];
 export function Autocomplete() {
   return (
     <PostSection id="autocomplete" owner="Àngela">
@@ -54,7 +61,11 @@ export function Autocomplete() {
         <Drawers variant="foot">
           <Drawer label="Method">
             <p>
-              First the communities. Louvain ran 100 times on the giant component of the link network, the 277 of 303 pages joined to each other by links. The runs disagree: they found 89 different partitions, the most common one in only 4 runs, and 77 runs found 8 groups. Two runs agree with a median normalised mutual information of 0.90. So we kept a consensus: two pages share a group when at least half the runs put them together, which gives 8 groups, the same for all 100 seeds we tried on it. The 9 Strikeforce: Morituri pages link only to each other and form a ninth group; the 17 pages with no links have none.
+              First the communities. Louvain ran 100 times on the giant component of the link network, the 277 of 303 pages joined to each other by links. The runs disagree: they found 89 different partitions, the most common one in only 4 runs, and 77 runs found 8 groups. Two runs agree with a median
+              {" "}
+              <Gloss id="w5-term-nmi" word="normalised mutual information" />
+              {" "}
+              of 0.90. So we kept a consensus: two pages share a group when at least half the runs put them together, which gives 8 groups, the same for all 100 seeds we tried on it. The 9 Strikeforce: Morituri pages link only to each other and form a ninth group; the 17 pages with no links have none.
             </p>
             <p>
               A trigram model is next-token prediction, what a large language model does, with a two-word window and a table of counts in place of a neural network. Each fake page opens with one sentence we wrote by hand ("Aetherion is a character appearing in American comic books published by Marvel Comics.") and continues with 5 sentences the model samples word by word.
@@ -81,7 +92,13 @@ export function Autocomplete() {
             </p>
             <p>Without the mask, 7 of the 9 fakes name a member of their own group.</p>
             <p>
-              The links hold these groups together far more tightly than chance. Louvain's modularity averages 0.503 over the 100 runs, against 0.347 ± 0.004 on 100 rewired copies of the network (z = 36.6). The consensus groups score 0.506. The rewiring swaps the ends of two links of equal weight, 50 swaps per link, so every page keeps its number of partners and its total link weight.
+              The links hold these groups together far more tightly than chance. Louvain&apos;s
+              {" "}
+              <Gloss id="w5-term-modularity" />
+              {" "}
+              averages 0.503 over the 100 runs, against 0.347 ± 0.004 on 100 rewired copies of the network
+              {" "}
+              (<Z v="36.6" />). The consensus groups score 0.506. The rewiring swaps the ends of two links of equal weight, 50 swaps per link, so every page keeps its number of partners and its total link weight.
             </p>
             <Plot
               title="Modularity of the groups against rewired networks"

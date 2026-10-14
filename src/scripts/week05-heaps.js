@@ -172,15 +172,3 @@ export function passages(data) {
     highlight: s.surface,
   }));
 }
-
-// ---- glossary terms, in main's call order. "Heaps' law" (w5-term-heaps-law)
-// matched no text in #heaps-did, so it is not placed; "types" goes in the
-// notice of #heaps-surprise.
-export const TERMS = [
-  { phrase: "tokens", definition: "Words as they occur on the page: \"the Hulk smashes the tank\" has 5 tokens.", id: "w5-term-heaps-tokens" },
-  { phrase: "random orders", definition: "The same 303 pages shuffled into a random order, 500 times with fixed seeds. Their spread shows how much the count moves by chance.", id: "w5-term-heaps-random" },
-];
-
-export const SURPRISE_TERMS = [
-  { phrase: "types", definition: "Distinct words: \"the Hulk smashes the tank\" has 4 types, since \"the\" comes twice.", id: "w5-term-heaps-types" },
-];

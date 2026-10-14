@@ -2,6 +2,7 @@ import { ArcadeUnlock } from "@/features/arcade/Chrome";
 import { ArcadeFooter, ArcadeNoscript } from "@/features/arcade/Frame";
 import { AppStatus } from "@/features/arcade/Status";
 import { type RailItem, SectionRail } from "@/components/post/SectionRail";
+import { TermLayer } from "@/components/post/TermLayer";
 import { PostTopbar } from "@/components/site/PostTopbar";
 import { Evidence } from "./_sections/Evidence";
 import { Hero } from "./_sections/Hero";
@@ -37,6 +38,7 @@ export default function Page() {
       <ArcadeFooter />
       <SectionRail column={1120} items={RAIL} />
       <ArcadeUnlock />
+      <TermLayer />
     </>
   );
 }

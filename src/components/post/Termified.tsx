@@ -11,16 +11,19 @@ import { island, useIslandReady } from "@/lib/island";
 import { islandOptions } from "@/lib/islandOptions";
 import { useData } from "@/lib/useData";
 import { useHydrated } from "@/lib/useHydrated";
+import { Tex, type TexProps } from "@/lib/Tex";
 import { registerIsland } from "@/scripts/runtime/islands.js";
 import { asset } from "@/scripts/site.js";
 import { termifyTree } from "@/scripts/week04-ui.js";
 import { Term } from "./Term";
 
-/** A text node, an element with its props in JSX order, or a glossary term. */
+/** A text node, an element with its props in JSX order, a glossary term, or a
+ * formula (Tex), which termifyTree passes over as it has no children. */
 export type TermNode =
   | string
   | { tag: string; attrs: Record<string, unknown>; children: TermNode[] }
-  | { term: { id: string; word: string; definition: string } };
+  | { term: { id: string; word: string; definition: string } }
+  | { tex: TexProps };
 export type TermElement = Extract<TermNode, { tag: string }>;
 export type TermDef = { phrase: string; definition: string; id: string };
 export type TermifiedProps = { tree: TermElement; terms: TermDef[]; after: string[]; roots?: string[] };
@@ -32,6 +35,7 @@ const NAME = "post/Termified";
 function render(node: TermNode): ReactNode {
   if (typeof node === "string") return node;
   if ("term" in node) return createElement(Term, { id: node.term.id, word: node.term.word }, node.term.definition);
+  if ("tex" in node) return createElement(Tex, node.tex);
   return createElement(node.tag, node.attrs, ...node.children.map(render));
 }
 

@@ -1,3 +1,5 @@
+import { Gloss } from "@/components/post/Gloss";
+import { FitP, Step, Xmin } from "@/features/week03/Formulas";
 // Methods, and what this cannot tell you.
 export function Methods() {
   return (
@@ -28,8 +30,10 @@ export function Methods() {
                   <p className="sub">
                     <b>Betweenness.</b>
                     {" "}
-                    Weighted and directed, distance = 1 /
-                    people, so a heavy corridor is a short step. Run it
+                    Weighted and directed,
+                    {" "}
+                    <Step per="people" named />
+                    , so a heavy corridor is a short step. Run it
                     unweighted and the top brokers come out as Australia,
                     Norway and Denmark, which ranks statistics offices: a
                     register names hundreds of tiny origins, a survey buckets
@@ -51,7 +55,10 @@ export function Methods() {
                     count ranks countries at Spearman 0.87 and misses volume
                     by up to a factor of 14.5 (see the fineprint below).
                     Degree and betweenness
-                    use the same formulas, distance = 1 / routes, so the
+                    use the same formulas,
+                    {" "}
+                    <Step per="routes" named />
+                    , so the
                     scatter compares one quantity across two networks.
                   </p>
                   <p className="sub">
@@ -84,7 +91,10 @@ export function Methods() {
                     , on the same
                     graph section 8 partitions: undirected, weighted by
                     people both ways, corridors under 10,000 people dropped.
-                    Two coordinates per country, both computed on strength
+                    Two coordinates per country, both computed on
+                    {" "}
+                    <Gloss id="w3-term-strength" word="strength" />
+                    {" "}
                     rather than on a count of partners, because a corridor
                     here runs from a dozen people to four million. Louvain is
                     stochastic, so each year is partitioned 100 times, every
@@ -156,13 +166,15 @@ export function Methods() {
                     countries share 86 distinct in-degrees. The exponent was
                     never wrong, and corridor weights, which barely tie, were
                     right to the digit. But the inflated distance moved the
-                    x
-                    <sub>min</sub>
+                    <Xmin />
                     {" "}
                     that minimises it, so all three degree
                     tails had been fitted above the wrong cut. Destinations
                     per origin is the one that changes its mind: it used to
-                    read p = 0.88, a power law surviving comfortably, and it
+                    read
+                    {" "}
+                    <FitP v="0.88" />
+                    , a power law surviving comfortably, and it
                     reads 0.03.
                   </p>
                   <p className="sub">
@@ -322,8 +334,13 @@ export function Methods() {
                     {" "}
                     Every interval on this page is
                     computed rather than assumed. Correlations carry a
-                    Fisher interval; the weighted median of distance
-                    carries a percentile interval over 400 resamples of the
+                    <Gloss id="w3-term-fisher-interval" word="Fisher interval" />
+                    ; the weighted median of distance
+                    carries a percentile interval over 400
+                    {" "}
+                    <Gloss id="w3-term-resamples" word="resamples" />
+                    {" "}
+                    of the
                     corridors, resampled by corridor because a corridor is
                     the thing that was observed. The null model runs 100
                     shuffles, so the finest p it can express is one in a

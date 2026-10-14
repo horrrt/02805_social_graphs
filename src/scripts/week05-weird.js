@@ -161,11 +161,3 @@ export function passages(data) {
     return { head: `Rank ${q.rank} of ${P} · ${q.name} · ${row.read}`, page: q.node, text: q.text };
   });
 }
-
-// ---- glossary terms. Main built the MATTR definition from weird.json's
-// meta.window, 100; the server renders the terms, so the window is written
-// out. "z-score" (w5-term-weird-z) and "House phrasing" (w5-term-weird-house)
-// matched no text in #weird-did, so only MATTR is placed.
-export const TERMS = [
-  { phrase: "MATTR", definition: "Moving-average type-token ratio: the share of different words in each 100-word window of a page, averaged over every window.", id: "w5-term-weird-mattr" },
-];

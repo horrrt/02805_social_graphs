@@ -1,5 +1,7 @@
+import { Gloss } from "@/components/post/Gloss";
 import { Chart } from "@/features/week03/frame/Chart";
 import { Slot } from "@/features/week03/frame/Slot";
+import { Damping, Step } from "@/features/week03/Formulas";
 // 3: popular is not bridge, big is not prestigious.
 export function Bridge() {
   return (
@@ -16,14 +18,27 @@ export function Bridge() {
             <div className="plot">
               <h3>Betweenness vs origins (in-degree), log–log</h3>
               <p className="axis-note">
-                One point per country. Migration graph is directed and
-                weighted; distance along a corridor is 1 / people, so a heavy
+                One point per country. Migration graph is
+                {" "}
+                <Gloss id="w3-term-directed" word="directed" />
+                {" "}
+                and
+                {" "}
+                <Gloss id="w3-term-weighted" word="weighted" />
+                ; distance along a corridor is
+                {" "}
+                <Step per="people" />
+                , so a heavy
                 corridor is a short step. Click any point to select that
                 country; every chart and panel on the page follows.
               </p>
               <p className="axis-note">
                 A "path" here is a chain of migrant-stock corridors, A to B
-                to C, not a route anyone travels. Betweenness counts how
+                to C, not a route anyone travels.
+                {" "}
+                <Gloss id="w3-term-betweenness" word="Betweenness" />
+                {" "}
+                counts how
                 often a country sits on the strongest such chains linking
                 other countries: a structural position in the stock
                 network, not a measure of people passing through.
@@ -73,8 +88,14 @@ export function Bridge() {
             <div className="plot">
               <h3>Big ≠ prestigious: rank by people, rank by PageRank</h3>
               <p className="axis-note">
-                PageRank on the weighted migration graph, damping factor
-                α = 0.85: a country's score is mostly what its senders hand
+                <Gloss id="w3-term-pagerank" word="PageRank" />
+                {" "}
+                on the weighted migration graph,
+                {" "}
+                <Gloss id="w3-term-damping-factor" word="damping factor" />
+                {" "}
+                <Damping />
+                : a country's score is mostly what its senders hand
                 it, and only a small constant share comes from anywhere at
                 random.
               </p>

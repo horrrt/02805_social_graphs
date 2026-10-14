@@ -7,11 +7,15 @@ import { QuestionCard } from "@/components/post/QuestionCard";
 import { SectionOpener } from "@/components/post/SectionOpener";
 import { TermProse } from "@/components/post/TermProse";
 import { Copying as Part } from "@/features/week05/copying/Copying";
-import { COPYING, TERMS } from "@/scripts/week05-copying.js";
+import { termFor } from "@/lib/glossary";
+import { COPYING } from "@/scripts/week05-copying.js";
 
 // Section 2: pages that share a passage of 30 words or more. The copying islands
 // (src/features/week05/copying/) draw the linked strip, the copying network, the cluster table and the
 // passages; the term in "what we did" waits for copying.json, as on main.
+// Main's first call, "8-gram" (w5-term-copying-ngram), matched no text in #copying-did, so only
+// "house style" is placed; the hero defines n-grams.
+const TERMS = [termFor("house-style", "house style", "w5-term-copying-house")];
 export function Copying() {
   return (
     <PostSection id="copying" owner="Gyula">

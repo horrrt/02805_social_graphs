@@ -1,5 +1,6 @@
 import { Drawer } from "@/components/post/Drawer";
 import { Drawers } from "@/components/post/Drawers";
+import { Gloss } from "@/components/post/Gloss";
 import { Notice } from "@/components/post/Notice";
 import { Plot } from "@/components/post/Plot";
 import { PostSection } from "@/components/post/PostSection";
@@ -7,11 +8,16 @@ import { QuestionCard } from "@/components/post/QuestionCard";
 import { SectionOpener } from "@/components/post/SectionOpener";
 import { TermProse } from "@/components/post/TermProse";
 import { Relations as Part } from "@/features/week05/relations/Relations";
-import { RELATIONS, TERMS } from "@/scripts/week05-relations.js";
+import { termFor } from "@/lib/glossary";
+import { RELATIONS } from "@/scripts/week05-relations.js";
+import { Z } from "./Formulas";
 
 // Section 1: links labelled by the sentence that names them, against shuffled labels. The relations
 // islands (src/features/week05/relations/) draw the crossing strip, the map with its switch, the label
 // chips and the checked sentences; the term in "what we did" waits for relations.json, as on main.
+// Main's first call, "Louvain" (w5-term-relations-louvain), matched no text in #relations-did, so
+// only "communities" is placed there; Louvain is a term in the Method.
+const TERMS = [termFor("community", "communities", "w5-term-relations-communities")];
 export function Relations() {
   return (
     <PostSection id="relations" owner="Gyula">
@@ -31,7 +37,11 @@ export function Relations() {
         }
         surprise={
           <Notice icon="💡" headline="What to notice">
-            54% of enemy links join two communities, against 42% when the labels are shuffled (z = 4.3). Family links cross only 23% of the time (z = −4.6). Allies cross 31%, still within chance; teammate and killed links look like shuffled ones. Only 5 of the 12 enemy sentences we read describe A and B as enemies, so the gap is a tendency, not a count of feuds.
+            54% of enemy links join two communities, against 42% when the labels are shuffled
+            {" "}
+            (<Z v="4.3" />). Family links cross only 23% of the time
+            {" "}
+            (<Z v="−4.6" />). Allies cross 31%, still within chance; teammate and killed links look like shuffled ones. Only 5 of the 12 enemy sentences we read describe A and B as enemies, so the gap is a tendency, not a count of feuds.
           </Notice>
         }
         figure={
@@ -60,7 +70,11 @@ export function Relations() {
               A small word list labels each sentence: killed, family, enemy, ally or teammate. It matches lower-case words only, so a name such as Doctor Nemesis supplies no label. 836 of the sentences (55%) match no word at all.
             </p>
             <p>
-              The communities come from 100 Louvain runs on the link network. For each label we counted how often its links join two different communities, averaged over the runs, and compared it with 1,000 shuffles of the labels over the 677 labelled links.
+              The communities come from 100
+              {" "}
+              <Gloss id="w5-term-louvain" />
+              {" "}
+              runs on the link network. For each label we counted how often its links join two different communities, averaged over the runs, and compared it with 1,000 shuffles of the labels over the 677 labelled links.
             </p>
             <p>
               Each page splits into paragraphs at its line breaks and into sentences with spaCy's rule-based sentencizer. Sentences under References, External links, Notes, See also and Further reading are dropped. A character is found by its page title without the disambiguation ("Storm (Marvel Comics)" is "Storm") and by the real name its description gives in brackets ("Emil Blonsky" for the Abomination), as a whole word. A name several pages go by belongs to the main page: "Spider-Man" is the main Spider-Man, not the Mangaverse one.
@@ -74,7 +88,17 @@ export function Relations() {
           </Drawer>
           <Drawer label="More numbers">
             <p>
-              A stricter shuffle only swaps labels between links that leave the same page, so a page written in hostile words throughout cannot carry the result. Enemies still cross more than it predicts (46%, z = 3.6) and family less (33%, z = −3.7). A pair of characters who link both ways counts twice above; counting each pair once gives z = 3.6 for enemies and −4.0 for family.
+              A stricter shuffle only swaps labels between links that leave the same page, so a page written in hostile words throughout cannot carry the result. Enemies still cross more than it predicts (46%,
+              {" "}
+              <Z v="3.6" />
+              ) and family less (33%,
+              {" "}
+              <Z v="−3.7" />
+              ). A pair of characters who link both ways counts twice above; counting each pair once gives
+              {" "}
+              <Z v="3.6" />
+              {" "}
+              for enemies and −4.0 for family.
             </p>
             <p>
               The labelled links: 217 teammate, 202 enemy, 116 family, 84 killed and 58 ally. 113 sentences match more than one label.

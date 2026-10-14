@@ -773,3 +773,93 @@
 .visual-design .story-hero .eyebrow {
   color: var(--accent);
 }
+
+/* Glossary terms (src/components/post/Term.tsx) and formulas (src/lib/Tex.tsx)
+   on Weeks 1 and 2, drawn as post.css draws them on the later posts. The
+   arcade sheets style every button, so the term's button is reset first. */
+.visual-design {
+  --w4-tip-bg: rgba(11, 31, 58, 0.97);
+  --w4-tip-ink: #cfe0f2;
+}
+.visual-design .w4-term {
+  display: inline;
+  position: relative;
+}
+.visual-design .w4-term > button {
+  all: unset;
+  border-bottom: 1px dotted currentColor;
+  cursor: help;
+}
+.visual-design .w4-term > button:focus-visible {
+  outline: 3px solid var(--hot);
+  outline-offset: 2px;
+}
+.visual-design .w4-term > .w4-pop {
+  background: var(--w4-tip-bg);
+  border-radius: 9px;
+  box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 18px 44px rgba(15, 35, 64, 0.16);
+  color: var(--w4-tip-ink);
+  display: none;
+  font-size: var(--fs-small);
+  font-style: normal;
+  font-weight: 400;
+  left: 0;
+  letter-spacing: 0;
+  line-height: 1.55;
+  padding: 12px 14px;
+  position: absolute;
+  text-align: left;
+  text-transform: none;
+  top: calc(100% + 6px);
+  white-space: normal;
+  width: 330px;
+  z-index: 40;
+}
+.visual-design .w4-term:hover > .w4-pop,
+.visual-design .w4-term:focus-within > .w4-pop,
+.visual-design .w4-term.is-open > .w4-pop {
+  display: block;
+}
+/* Hover a part of a formula to explain it; the explanation (.tex-tip) renders into <body>. */
+.visual-design .tex-explain {
+  position: relative;
+}
+.visual-design .tex-explain [class*="x-"] {
+  cursor: help;
+}
+.visual-design .tex-mark {
+  background: color-mix(in srgb, var(--accent) 18%, transparent);
+  border-radius: 4px;
+  pointer-events: none;
+  position: absolute;
+}
+/* KaTeX's fraction layout layers sit over the parts; let the pointer through to them. */
+.visual-design .tex-explain :is(.vlist, .vlist-r, .vlist-t) {
+  pointer-events: none;
+}
+.visual-design .tex-explain .vlist [class*="x-"] {
+  pointer-events: auto;
+}
+.visual-design .tex-tip {
+  background: var(--w4-tip-bg);
+  border-radius: 9px;
+  box-shadow: 0 12px 32px rgba(15, 35, 64, 0.18);
+  color: var(--w4-tip-ink);
+  font-family: var(--font-sans);
+  font-size: var(--fs-small);
+  font-weight: 400;
+  line-height: 1.55;
+  max-width: 300px;
+  padding: 10px 12px;
+  pointer-events: none;
+  position: fixed;
+  text-align: left;
+  white-space: normal;
+  width: max-content;
+  z-index: 60;
+}
+/* Until KaTeX has loaded, the LaTeX shows as code. */
+.visual-design .tex-pending {
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+}

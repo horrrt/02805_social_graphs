@@ -2137,6 +2137,7 @@ export function prestigeNotes() {
   return { note: prestigeNote(rows), movers: movers(shown) };
 }
 
+// Each ρ is a <tex> tag, typeset as a formula by Rich (src/features/week03/Rich.tsx).
 function prestigeNote(rows) {
   const people = rankCorrelation(rows.map((r) => ({ a: r.m.pagerank, b: r.m.in_strength })));
   const partners = rankCorrelation(rows.map((r) => ({ a: r.m.pagerank, b: r.m.in_degree })));
@@ -2145,7 +2146,7 @@ function prestigeNote(rows) {
     "each side. PageRank runs on the same weighted graph as the rest of the page " +
     "with the standard damping factor, 0.85, so a link is people: it tracks the " +
     "people ranking closely " +
-    `(ρ = ${people.toFixed(2)}) and the partner count loosely (ρ = ${partners.toFixed(2)}). ` +
+    `(<tex name="rho" v="${people.toFixed(2)}"></tex>) and the partner count loosely (<tex name="rho" v="${partners.toFixed(2)}"></tex>). ` +
     "The lines that cross are the point. Click a country to see which senders " +
     "give it its score."
   );
@@ -3205,11 +3206,12 @@ export function twinView() {
   // sequence leaves unexplained keeps the same question and drops that
   // artifact; z stays as the test for getting on the list at all.
   const ranked = brokers(y);
+  // Each z is a <tex> tag, typeset as a formula by Rich (src/features/week03/Rich.tsx).
   const top = ranked
     .slice(0, 6)
     .map(
       (r) =>
-        `<li><span>${r.n.name} <span style="color:#7a8fac">z = ${r.m.z.toFixed(1)}</span></span>` +
+        `<li><span>${r.n.name} <span style="color:#7a8fac"><tex name="z" v="${r.m.z.toFixed(1)}"></tex></span></span>` +
         `<b>+${r.excess.toFixed(3)}</b></li>`,
     )
     .join("");
@@ -3221,9 +3223,9 @@ export function twinView() {
   const rest = fragile.length > 3 ? ` and ${fragile.length - 3} more` : "";
   const floor = tail.length
     ? `Ranked by betweenness beyond the null's average, not by z. ${tail.length} more ` +
-      `countries clear z = 2. ${fragile.length} of them (${named}${rest}) broker under a ` +
+      `countries clear <tex name="z" v="2"></tex>. ${fragile.length} of them (${named}${rest}) broker under a ` +
       "twentieth of what the top of this list does, and still score up to " +
-      `z = ${Math.max(...fragile.map((r) => r.m.z)).toFixed(1)}: their betweenness is zero ` +
+      `<tex name="z" v="${Math.max(...fragile.map((r) => r.m.z)).toFixed(1)}"></tex>: their betweenness is zero ` +
       `in most shuffles, so the null spread collapses and the z inflates.`
     : "";
   return {

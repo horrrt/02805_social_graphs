@@ -123,9 +123,3 @@ export function passages(data) {
   }
   return shown;
 }
-
-// ---- glossary terms. Main's first call, "8-gram" (w5-term-copying-ngram),
-// matched no text in #copying-did, so only "house style" is placed.
-export const TERMS = [
-  { phrase: "house style", definition: "Wording Wikipedia editors repeat on page after page, such as the first sentence of almost every character's article.", id: "w5-term-copying-house" },
-];

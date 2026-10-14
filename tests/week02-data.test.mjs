@@ -9,12 +9,14 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { builtPage } from "./built-page.mjs";
+import { unmath } from "./math-text.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const read = (name) => readFileSync(join(ROOT, name), "utf8");
 const loadJson = (name) => JSON.parse(read(join("public/assets/data", name)));
 
-const html = builtPage("out/weeks/week02/index.html");
+// Formulas read as their LaTeX and glossary terms as their word (math-text.mjs).
+const html = unmath(builtPage("out/weeks/week02/index.html"));
 // Prose wraps across source lines; collapse runs of whitespace so a sentence
 // spanning several lines still matches a single-line regex.
 const prose = html.replace(/\s+/g, " ");

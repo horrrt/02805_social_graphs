@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { JsonLd, pageMeta } from "@/components/agentMeta";
+// KaTeX's stylesheet and fonts, vendored unmodified, for the formulas.
+import "../../../public/assets/vendor/katex-0.19.0/katex.min.css";
 import "@/styles/type.css";
 import "@/styles/corridor.css";
 import "@/styles/post.css";

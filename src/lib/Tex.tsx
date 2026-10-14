@@ -44,7 +44,9 @@ function bounds(el: Element) {
   return { left, top, bottom, width: right - left, height: bottom - top };
 }
 
-export function Tex({ tex, block = false, label, explain }: { tex: string; block?: boolean; label?: string; explain?: Record<string, string> }) {
+export type TexProps = { tex: string; block?: boolean; label?: string; explain?: Record<string, string> };
+
+export function Tex({ tex, block = false, label, explain }: TexProps) {
   const katex = useVendor<Katex>("katex-0.19.0/katex.min.js", "katex");
   const html = useMemo(() => (katex.lib ? katex.lib.renderToString(tex, options(block)) : null), [katex.lib, tex, block]);
   const [tip, setTip] = useState<Tip | null>(null);
@@ -67,7 +69,8 @@ export function Tex({ tex, block = false, label, explain }: { tex: string; block
   if (!explain) return <Tag className="tex" aria-label={label} dangerouslySetInnerHTML={{ __html: html }} />;
 
   const over = (e: MouseEvent<HTMLElement>) => {
-    const part = (e.target as Element).closest?.('[class*="x-"]');
+    // A tag's class starts with x-; KaTeX's own classes can hold "x-" too (katex-sizing).
+    const part = (e.target as Element).closest?.('[class^="x-"], [class*=" x-"]');
     const name = part ? [...part.classList].find((c) => c.startsWith("x-"))?.slice(2) : undefined;
     if (!part || !name || !explain[name]) return setTip(null);
     const box = e.currentTarget.getBoundingClientRect();

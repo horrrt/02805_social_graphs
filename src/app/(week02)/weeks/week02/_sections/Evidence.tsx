@@ -1,11 +1,14 @@
+import { Gloss } from "@/components/post/Gloss";
 import { ServiceState } from "@/features/week02/transit/Closure";
 import { RoutePlanner } from "@/features/week02/transit/Planner";
 import { TransitMap } from "@/features/week02/transit/TransitMap";
+import { EdgeMean, Gnm, GnmM, GnmN, HubShare, PIs, Tail, ZIs } from "./Formulas";
 
 // "Curious? Go deeper.": the clustering baseline, the shuffle tests, the
 // friendship paradox and the methods. The service board's state, the
 // interchange map and the route planner are islands
-// (src/features/week02/transit/).
+// (src/features/week02/transit/). Formulas are KaTeX (./Formulas); the first
+// use of each new term is a glossary term (Term), opened by the page's TermLayer.
 export function Evidence() {
   return (
     <section className="section evidence" id="evidence">
@@ -16,11 +19,35 @@ export function Evidence() {
       <div className="companion-callout">
         <h3>Missing two more models? Play Screen Test.</h3>
         <p>
-          This post covers the degree-preserving shuffle, the
-          Erdős–Rényi random graph, the friendship
-          paradox and clustering, and compares path length against both
-          nulls. Screen Test adds two more candidates, Watts–Strogatz
-          and Barabási–Albert, and the degree tail: three
+          This post covers the
+          {" "}
+          <Gloss id="w2-term-degree-preserving-shuffle" word="degree-preserving shuffle" />
+          , the
+          {" "}
+          <Gloss id="w2-term-erdos-renyi" word="Erdős–Rényi random graph" />
+          , the
+          {" "}
+          <Gloss id="w2-term-friendship-paradox" word="friendship paradox" />
+          {" "}
+          and
+          {" "}
+          <Gloss id="w2-term-clustering" word="clustering" />
+          , and compares
+          {" "}
+          <Gloss id="w2-term-path-length" word="path length" />
+          {" "}
+          against both
+          nulls. Screen Test adds two more candidates,
+          {" "}
+          <Gloss id="w2-term-watts-strogatz" word="Watts–Strogatz" />
+          {" "}
+          and
+          {" "}
+          <Gloss id="w2-term-barabasi-albert" word="Barabási–Albert" />
+          , and the
+          {" "}
+          <Gloss id="w2-term-degree-tail" word="degree tail" />
+          : three
           mechanisms audition against the Marvel network, and only one
           measurement says which properties survive.
         </p>
@@ -95,15 +122,36 @@ export function Evidence() {
           </figure>
           <p>
             As a shuffle test: Spider-Man strands 5 against a shuffle mean of
-            1.41, empirical p = 0.010; Black Widow strands 3 against 0.19, p =
-            0.001 — no rewired world managed more than 2. Doctor Strange’s 2
-            against 0.51 gives p = 0.086, and Hulk’s 0 against 0.58 is the
-            most ordinary outcome there is (p = 1.0).
+            1.41, empirical
+            {" "}
+            <PIs v="0.010" kind="removal" />
+            ; Black Widow strands 3 against 0.19,
+            {" "}
+            <PIs v="0.001" kind="removal" />
+            {" "}
+            — no rewired world managed more than 2. Doctor Strange’s 2
+            against 0.51 gives
+            {" "}
+            <PIs v="0.086" kind="removal" />
+            , and Hulk’s 0 against 0.58 is the
+            most ordinary outcome there is (
+            <PIs v="1.0" kind="removal" />
+            ).
           </p>
           <p>
             Black Widow was chosen after scanning all 277 removals, so her
-            p-value describes her rank rather than testing a prior guess.
-            The four p-values are one-sided and unadjusted.
+            {" "}
+            <Gloss id="w2-term-p-value" word="p-value" />
+            {" "}
+            describes her rank rather than testing a prior guess.
+            The four p-values are
+            {" "}
+            <Gloss id="w2-term-one-sided" word="one-sided" />
+            {" "}
+            and
+            {" "}
+            <Gloss id="w2-term-unadjusted" word="unadjusted" />
+            .
           </p>
           <p className="fine">
             A z-score describes distance from the null mean in standard
@@ -154,7 +202,14 @@ export function Evidence() {
                   an article unlinked.
                 </p>
                 <p className="fine">
-                  Keeps: n and m. Destroys: the degree sequence too.
+                  Keeps:
+                  {" "}
+                  <GnmN />
+                  {" "}
+                  and
+                  {" "}
+                  <GnmM />
+                  . Destroys: the degree sequence too.
                 </p>
               </div>
             </div>
@@ -162,7 +217,9 @@ export function Evidence() {
               <img alt="Six panels, each with two histograms of 1,000 null draws and a dashed line at the real value. Clustering: the real 0.307 sits far right of both nulls. The friendship paradox: the real 24.22 sits inside the shuffle distribution and far right of the random one. Chance the friend is at least as linked: the real 0.753 sits just left of the shuffle. Islands: the real 19 sits at the top edge of a shuffle distribution concentrated on 18, while the random null gives 1. Distances: the real 2.674 sits just right of the shuffle and left of the random null. Degree assortativity: the real minus 0.098 sits at the right edge of the shuffle distribution, while the random null centres on zero." height="774" loading="lazy" src="figures/null_survivors.svg" width="1260" />
               <figcaption>
                 Lavender is the degree-preserving shuffle, salmon is random
-                G(n, m), the dashed line is the real network. Read each
+                {" "}
+                <Gnm />
+                , the dashed line is the real network. Read each
                 panel by asking one question: is the dashed line inside the
                 lavender bars or outside them?
                 {" "}
@@ -177,8 +234,10 @@ export function Evidence() {
                     Twelve quantities, each measured on the real network and
                     on 1,000 draws from each null. z is the number of null
                     standard deviations between the real value and the null
-                    mean; p is the nearer empirical tail, computed as (1 +
-                    draws at least as extreme) / (1 + 1,000), so 0.001 is the
+                    mean; p is the nearer empirical tail, computed as
+                    {" "}
+                    <Tail total="1,000" />
+                    , so 0.001 is the
                     floor and means not one draw reached the real value.
                   </caption>
                   <thead>
@@ -316,7 +375,13 @@ export function Evidence() {
               </div>
               <p className="fine">
                 Two rows have no z and no p. The mean degree at the end of a
-                random link is ⟨k²⟩/⟨k⟩, and the hub’s share is 106 / 2,868:
+                random link is
+                {" "}
+                <EdgeMean />
+                , and the hub’s share is
+                {" "}
+                <HubShare />
+                :
                 both are functions of the degree sequence alone, so the
                 degree-preserving shuffle reproduces them to every decimal
                 place across all 1,000 draws. The standard deviation is
@@ -328,21 +393,35 @@ export function Evidence() {
             <h3>What changes under the shuffle</h3>
             <p>
               Some quantities change little under degree-preserving rewiring.
-              Degree assortativity is −0.098 in the data versus a null mean of
-              −0.120 (z = +2.0, empirical p = 0.024). The observed network is
+              <Gloss id="w2-term-assortativity" word="Degree assortativity" />
+              {" "}
+              is −0.098 in the data versus a null mean of
+              −0.120 (
+              <ZIs v="+2.0" />
+              , empirical
+              {" "}
+              <PIs v="0.024" kind="shuffle" />
+              ). The observed network is
               slightly less disassortative than this baseline. The result is
               exploratory: these one-sided p-values are unadjusted across
               twelve quantities.
             </p>
             <p>
               Mean distance is 2.674 in the largest observed component versus
-              2.631 under the shuffle (z = +2.9, empirical p = 0.005). The
+              2.631 under the shuffle (
+              <ZIs v="+2.9" />
+              , empirical
+              {" "}
+              <PIs v="0.005" kind="shuffle" />
+              ). The
               difference is small but not zero. Short paths alone do not
               establish unusual wiring; the choice of baseline matters.
             </p>
             <p>
               Part of that gap is the shuffle merging islands into the
-              giant. Swaps cannot link the 17 isolates, since a degree-zero
+              {" "}
+              <Gloss id="w2-term-giant-component" word="giant" />
+              . Swaps cannot link the 17 isolates, since a degree-zero
               article stays degree zero, which leaves 286 linked articles
               (303 minus 17). In all 1,000 draws those 286 land in a single
               component: the nine-character Morituri island is absorbed
@@ -351,7 +430,9 @@ export function Evidence() {
               to split off elsewhere, leaving a giant of 284. A
               like-for-like check that holds the population fixed instead,
               shuffling only the 277-article core used in Screen Test,
-              gives 2.674 against a null mean of 2.601 (z = +5.2, from 400
+              gives 2.674 against a null mean of 2.601 (
+              <ZIs v="+5.2" />
+              , from 400
               shuffles at 10 swaps per link, fewer than the 1,000 draws at
               20 swaps per link used elsewhere on this page).
             </p>
@@ -364,20 +445,37 @@ export function Evidence() {
             </p>
             <h3>The same number, two nulls, two conclusions</h3>
             <p>
-              Clustering is about ten times the G(n, m) mean (0.032), but
+              Clustering is about ten times the
+              {" "}
+              <Gnm />
+              {" "}
+              mean (0.032), but
               about 2.2 times the degree-preserving mean (0.143). Holding
               degrees fixed reduces the apparent excess without eliminating
-              it. The two nulls answer different questions; G(n, m) does not
+              it. The two nulls answer different questions;
+              {" "}
+              <Gnm />
+              {" "}
+              does not
               control for hubs.
             </p>
             <p>
               The observed 19 components compare with 18.04 under
-              degree-preserving rewiring (p = 0.039) and about 1.02 under G(n,
-              m) (z = +131.6). The shuffle retains the 17 isolates, and it
+              degree-preserving rewiring (
+              <PIs v="0.039" kind="shuffle" />
+              ) and about 1.02 under
+              {" "}
+              <Gnm />
+              {" "}
+              (
+              <ZIs v="+131.6" />
+              ). The shuffle retains the 17 isolates, and it
               absorbs the nine-character Morituri island into the giant
               component in every one of the 1,000 draws: the largest
               component averages 285.9 nodes versus the observed 277
-              (z = −23.3). The draws that reach 19 components (38 of 1,000)
+              (
+              <ZIs v="−23.3" />
+              ). The draws that reach 19 components (38 of 1,000)
               do so because a different, unrelated pair of articles splits
               off elsewhere, not because the shuffle keeps the Morituri
               island separate. Treat the component-count p-value as
@@ -389,9 +487,15 @@ export function Evidence() {
               <p>
                 Average clustering is 0.307, compared with 0.143 (sd 0.008) in
                 1,000 degree-preserving shuffles. The observed value exceeds
-                every draw (empirical p = 0.001 with the add-one correction).
-                The degree sequence explains part of the difference from G(n,
-                m), but an excess remains after controlling for degrees.
+                every draw (empirical
+                {" "}
+                <PIs v="0.001" kind="shuffle" />
+                {" "}
+                with the add-one correction).
+                The degree sequence explains part of the difference from
+                {" "}
+                <Gnm />
+                , but an excess remains after controlling for degrees.
               </p>
             </div>
           </section>
@@ -408,14 +512,25 @@ export function Evidence() {
               have 10.0 links. Now pick one of their friends at random: that
               friend has 24.2. Three times out of four (75.3%) the friend is
               at least as linked as the character you started from. Nobody is
-              lying; picking a friend is degree-biased sampling, because a hub
+              lying; picking a friend is
+              {" "}
+              <Gloss id="w2-term-degree-biased" word="degree-biased sampling" />
+              , because a hub
               is a friend to many and therefore keeps getting picked.
             </p>
             <p>
               For a uniformly selected linked article followed by one random
               neighbour, the observed mean is 24.22 versus a shuffle mean of
-              24.19 (z = +0.1, p = 0.47). This quantity can change with
-              rewiring. The edge-sampled mean, ⟨k²⟩/⟨k⟩ = 22.08, is different:
+              24.19 (
+              <ZIs v="+0.1" />
+              ,
+              {" "}
+              <PIs v="0.47" kind="shuffle" />
+              ). This quantity can change with
+              rewiring. The edge-sampled mean,
+              {" "}
+              <EdgeMean v="22.08" />
+              , is different:
               it depends only on degrees and is exactly preserved.
             </p>
             <p>
@@ -425,15 +540,23 @@ export function Evidence() {
               per-character form tells a different story. The share of
               linked articles whose random friend is at least as linked as
               they are is 75.3% in the real network against a shuffle mean
-              of 76.3% (z = −3.5) — below every one of the 1,000 draws.
+              of 76.3% (
+              <ZIs v="−3.5" />
+              ) — below every one of the 1,000 draws.
               By this measure Marvel is slightly less paradoxical than
               degree-preserving rewiring predicts.
             </p>
             <p>
-              It does not need hubs to exist, only variance. Under random G(n,
-              m), where the biggest article has around 19 links, the paradox
+              It does not need hubs to exist, only variance. Under random
+              {" "}
+              <Gnm />
+              , where the biggest article has around 19 links, the paradox
               weakens but refuses to die: 10.44 for a random friend against
-              9.47 for a random character. A Poisson distribution still has a
+              9.47 for a random character. A
+              {" "}
+              <Gloss id="w2-term-poisson" word="Poisson distribution" />
+              {" "}
+              still has a
               variance, and a variance is all the paradox asks for.
             </p>
             <h3>The two characters nobody out-links</h3>
@@ -455,12 +578,24 @@ export function Evidence() {
             <p style={{"marginTop":"24px"}}>
               Spider-Man is the largest hub, with 106 links. Radian has six
               links on the nine-character Morituri island, where no neighbour
-              has more. Both are local degree maxima, despite their very
+              has more. Both are
+              {" "}
+              <Gloss id="w2-term-local-maxima" word="local degree maxima" />
+              , despite their very
               different degrees.
             </p>
             <p>
               The shuffle produces 1.26 local maxima on average versus the
-              observed two (z = +1.3, p = 0.205). G(n, m) gives 16.7 on
+              observed two (
+              <ZIs v="+1.3" />
+              ,
+              {" "}
+              <PIs v="0.205" kind="shuffle" />
+              ).
+              {" "}
+              <Gnm />
+              {" "}
+              gives 16.7 on
               average. These comparisons do not establish that the observed
               pair is exceptional.
             </p>
@@ -554,7 +689,9 @@ export function Evidence() {
             benchmark has 1,000 connected degree-preserving rewires per tested
             article; each accepts 20 swaps per edge, with a separate
             50-swaps-per-edge sensitivity run. The 16-hub drawing uses an
-            edge-disjoint greedy path decomposition. Route finding includes
+            {" "}
+            <Gloss id="w2-term-path-decomposition" word="edge-disjoint greedy path decomposition" />
+            . Route finding includes
             all 303 nodes and explicitly selects directed or undirected
             travel.
           </p>
@@ -574,8 +711,10 @@ export function Evidence() {
             {" "}
             for the random one. Every
             shuffle draw asserts that the degree sequence is unchanged
-            before it is measured. Empirical tails are (1 + draws at least as extreme) / (1
-            + draws), one-sided and unadjusted across the twelve quantities,
+            before it is measured. Empirical tails are
+            {" "}
+            <Tail total="draws" />
+            , one-sided and unadjusted across the twelve quantities,
             so treat any single p near 0.05 as a hint rather than a result. A
             finite swap chain approximates the null ensemble rather than
             sampling it uniformly.
@@ -584,7 +723,11 @@ export function Evidence() {
             The random null matches the course's random Marvel network.
             Across the 1,000 random draws the biggest hub has 19 links on
             average and the average distance is 2.78; the course brief gives
-            about 19 and 2.8, drawing each link with p = 0.031 where we fix
+            about 19 and 2.8, drawing each link with
+            {" "}
+            <PIs v="0.031" kind="link" />
+            {" "}
+            where we fix
             the number of links. See analysis/course_reference.py.
           </p>
           <p>

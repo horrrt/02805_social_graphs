@@ -5,6 +5,11 @@ elements. This file records each call so the section batches can replace it with
 relations, copying, autocomplete; W5-3: search, heaps, fame, weird). Source:
 `scripts/parity/fixtures/terms/week05.json`, captured on main.
 
+Each section now builds its `terms` with `termFor()` from the site's shared glossary
+(`src/lib/glossary.ts`), keeping the ids below; the definitions in the last column are main's wording, kept
+as the record. Other new terms are server-rendered `<Gloss>` terms at their first use in the prose: the
+hero, the Fame notice and the Method drawers.
+
 ## How main places a term
 
 - `termify(el, phrase, definition, id)` walks the text nodes under `el` in document order and wraps the first

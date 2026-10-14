@@ -105,11 +105,3 @@ export function checked(data) {
   const c = data.checked;
   return c ? { page: c.winner, text: c.quote, highlight: c.terms[0] } : null;
 }
-
-// ---- glossary terms, in main's call order. "document-term matrix"
-// (w5-term-search-dtm) matched no text in #search-did, so it is not placed.
-export const TERMS = [
-  { phrase: "Bag of Words", definition: "A page or a query as a list of word counts, with the word order thrown away.", id: "w5-term-search-bow" },
-  { phrase: "cosine similarity", definition: "How close two count vectors point: their dot product divided by both their lengths, from 0 (no shared word) to 1 (the same proportions).", id: "w5-term-search-cosine" },
-  { phrase: "stopwords", definition: "Very common words such as the, of and with, dropped before counting.", id: "w5-term-search-stop" },
-];

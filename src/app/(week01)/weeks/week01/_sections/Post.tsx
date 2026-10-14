@@ -1,7 +1,10 @@
+import { Gloss } from "@/components/post/Gloss";
 import { Comparison } from "@/features/week01/odds/Comparison";
+import { EqualOdds, OurOdds, SeenFormula } from "./Formulas";
 
 // "What we found": the finding, the equal-odds comparison (an island) and the
-// exact odds, then what we asked, did and found surprising.
+// exact odds, then what we asked, did and found surprising. The first use of
+// each new term is a glossary term (Term), opened by the page's TermLayer.
 export function Post() {
   return (
     <section aria-labelledby="post-title" className="section post" id="post">
@@ -36,11 +39,18 @@ export function Post() {
           <summary>How are these averages calculated?</summary>
           <p>
             For a card with draw probability p, the chance of seeing it at
-            least once in d independent draws is 1 − (1 − p)
-            <sup>d</sup>
+            least once in d independent draws is
+            {" "}
+            <SeenFormula />
             . Add
-            that chance over all 303 cards. Equal odds use p = 1/303; our rule
-            uses p = (incoming links + 1)/2,087.
+            that chance over all 303 cards. Equal odds use
+            {" "}
+            <EqualOdds />
+            ; our rule
+            uses
+            {" "}
+            <OurOdds p />
+            .
           </p>
         </details>
       </section>
@@ -75,10 +85,19 @@ export function Post() {
           <p>
             We loaded all 303 roster entries before adding a single edge,
             so the 17 isolates survive. Then we plotted in-degree and
-            out-degree on linear and log–log axes, drew the whole roster
-            to find what sits outside the giant component, and built a
+            out-degree on linear and
+            {" "}
+            <Gloss id="w1-term-log-log" word="log–log axes" />
+            , drew the whole roster
+            to find what sits outside the
+            {" "}
+            <Gloss id="w1-term-giant-component" word="giant component" />
+            , and built a
             five-card pack rule where each draw picks an article with
-            weight (incoming links + 1) / 2,087. Finally we asked
+            weight
+            {" "}
+            <OurOdds spaced />
+            . Finally we asked
             Wikipedia's API to re-derive three articles' out-links and
             checked them against the snapshot.
           </p>
@@ -98,7 +117,11 @@ export function Post() {
             of the roster never.
           </p>
           <p>
-            Under our rule the hubs are the easy cards by construction: a
+            Under our rule the
+            {" "}
+            <Gloss id="w1-term-hub" word="hubs" />
+            {" "}
+            are the easy cards by construction: a
             card's odds grow with its incoming links, so those same 106
             links make Spider-Man common while 58 articles, including all
             17 isolates, share the lowest drop rate. Finishing the set

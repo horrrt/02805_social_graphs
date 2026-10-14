@@ -1,4 +1,5 @@
 import { PlacePart } from "@/features/week04/place/Place";
+import { Alpha } from "./Formulas";
 import { GlossTerm } from "./GlossTerm";
 
 // Hero: the text, the metro map, the inspector.
@@ -42,7 +43,10 @@ export function Hero() {
                 <li>
                   <i className="rx-leg-line"></i>
                   <b>Links</b>
-                  <span>kept by the disparity filter at α = 0.2</span>
+                  <span>kept by the disparity filter at
+                  {" "}
+                  <Alpha v="0.2" />
+                  </span>
                 </li>
               </ul>
             </div>

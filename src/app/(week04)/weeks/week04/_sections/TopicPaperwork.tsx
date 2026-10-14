@@ -3,6 +3,7 @@ import { Drawers } from "@/components/post/Drawers";
 import { W4Table } from "@/features/week04/W4Table";
 import { TocItem } from "@/features/week04/frame/DeepShell";
 import { StripPart } from "@/features/week04/strips/Strips";
+import { Alpha, P, Z } from "./Formulas";
 import { GlossTerm } from "./GlossTerm";
 
 const RIGHT = { textAlign: "right" as const };
@@ -70,7 +71,11 @@ export function TopicPaperwork() {
                   A way to thin a network: it keeps a link only when its weight is larger than chance would give, judged against each firm's own total. α sets how strict that test is.
                 </GlossTerm>
                 {" "}
-                was made for. A weight threshold of four shared filings keeps 771 links and spends 26% of them on the five largest firms. The disparity filter at α = 0.2 keeps 697 and spends 19%. It also keeps 115 small firms the threshold drops, such as one law office whose link to BBI Law Group is 3 of its 5 shared filings and 3 of BBI's 342. The threshold keeps the larger connected core, 395 firms against the filter's 351. Another 144 firms stay only because they form a pair linked to nobody else, where neither end can judge the link.
+                was made for. A weight threshold of four shared filings keeps 771 links and spends 26% of them on the five largest firms. The disparity
+                {" "}
+                filter at <Alpha v="0.2" /> keeps
+                {" "}
+                697 and spends 19%. It also keeps 115 small firms the threshold drops, such as one law office whose link to BBI Law Group is 3 of its 5 shared filings and 3 of BBI's 342. The threshold keeps the larger connected core, 395 firms against the filter's 351. Another 144 firms stay only because they form a pair linked to nobody else, where neither end can judge the link.
               </p>
               <p>
                 <GlossTerm id="w4-term-staffing-lawyers-louvain" word="Louvain">
@@ -83,7 +88,9 @@ export function TopicPaperwork() {
                   How much more of the link weight falls inside the groups than a random network would put there. Higher means cleaner groups.
                 </GlossTerm>
                 {" "}
-                0.67, against 0.55 for rewired networks that keep each employer's and each law firm's number of partners (z = 12). The groups are barely regional (
+                0.67, against 0.55 for rewired networks that keep each employer's and each law firm's number of partners
+                {" "}
+                (<Z v="12" />). The groups are barely regional (
                 <GlossTerm id="w4-term-staffing-lawyers-nmi" word="NMI">
                   Normalised mutual information: how much two groupings of the same items agree, from 0 (unrelated) to 1 (identical).
                 </GlossTerm>
@@ -131,7 +138,11 @@ export function TopicPaperwork() {
           <Drawers variant="foot">
             <Drawer label="More numbers">
               <p>
-                If the high firms clustered, a high firm's Louvain group would be mostly high firms. It is 51.2% high, against 50.0% when the labels are shuffled (p = 0.001 over 1,000 shuffles), and
+                If the high firms clustered, a high firm's Louvain group would be mostly high firms. It is 51.2% high, against 50.0% when the labels are shuffled
+                {" "}
+                (<P v="0.001" /> over
+                {" "}
+                1,000 shuffles), and
                 {" "}
                 <GlossTerm id="w4-term-staffing-lottery-ami" word="AMI">
                   Adjusted mutual information: how closely two ways of grouping the same firms agree. 0 is what chance gives, 1 is a perfect match.

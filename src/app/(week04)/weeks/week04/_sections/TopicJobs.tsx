@@ -4,6 +4,7 @@ import { DeepPanel, TocItem } from "@/features/week04/frame/DeepShell";
 import { JobsNum, JobsPart } from "@/features/week04/jobs/Jobs";
 import { PageRank } from "@/features/week04/pagerank/PageRank";
 import { Skills } from "@/features/week04/skills/Skills";
+import { Alpha } from "./Formulas";
 import { GlossTerm } from "./GlossTerm";
 
 // Deep dive topic: jobs and skills.
@@ -183,7 +184,9 @@ export function TopicJobs() {
                 {" "}
                 <JobsNum k="lift1-chance" />
                 {" "}
-                on average with the same cluster labels. So an occupation now counts only when its ratio beats its own ratio in every rewired network. The disparity filter at α =
+                on average with the same cluster labels. So an occupation now counts only when its ratio beats its own ratio in every rewired network.
+                {" "}
+                The disparity filter at <Alpha /> =
                 {" "}
                 <JobsNum k="bb-alpha" />
                 , as in the place section, keeps
