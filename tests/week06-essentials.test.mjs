@@ -39,11 +39,12 @@ const tex = (where) => untag(text(where));
 // "a, b, c and d" from a list of words.
 const and = (words) => `${words.slice(0, -1).join(", ")} and ${words.at(-1)}`;
 
-test("every essential is used in a section that exists, on its Uses line", () => {
+test("every essential is an underlined glossary term in the section that uses it", () => {
   assert.equal(ESSENTIALS.length, 17);
   for (const [term, id] of ESSENTIALS) {
-    const uses = block(html, `${id}-did`).match(/<div class="w6e-uses">Uses: ([^<]*)<\/div>/)?.[1] ?? "";
-    assert.ok(uses.toLowerCase().includes(term.split(",")[0].toLowerCase()), `${term} is on #${id}'s Uses line`);
+    // "Term frequency, TF" is marked by its abbreviation; the rest by the term itself.
+    const slug = (term.split(", ")[1] ?? term).toLowerCase().replace(/[^a-z0-9]+/g, "-");
+    assert.match(block(html, id), new RegExp(`aria-describedby="w6-term-${slug}"`), `${term} is a glossary term in #${id}`);
   }
 });
 

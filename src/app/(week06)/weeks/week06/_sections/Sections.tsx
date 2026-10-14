@@ -23,7 +23,6 @@ type Props = {
   num: string;
   title: ReactNode;
   lead: ReactNode;
-  essentials: string;
   did: ReactNode;
   formula?: ReactNode;
   compared: ReactNode;
@@ -32,14 +31,13 @@ type Props = {
   method: ReactNode;
 };
 
-function Essay({ id, num, title, lead, essentials, did, formula, compared, plot, note, method }: Props) {
+function Essay({ id, num, title, lead, did, formula, compared, plot, note, method }: Props) {
   return (
     <PostSection id={id} owner="Gyula">
       <SectionOpener num={num} title={title}>{lead}</SectionOpener>
       <div className="card w4-card w5-card">
         <div className="w4-two">
           <div id={`${id}-did`}>
-            <div className="w6e-uses">{`Uses: ${essentials}`}</div>
             <p className="sub">{did}</p>
             {formula ? <div className="w6e-formula">{formula}</div> : null}
           </div>
@@ -75,7 +73,6 @@ export function Weights() {
           works that out from the 303 pages themselves.
         </>
       }
-      essentials="term frequency (TF), document frequency (DF), inverse document frequency (IDF), TF-IDF"
       did={
         <>
           A word&apos;s
@@ -145,7 +142,6 @@ export function Cosine() {
       num="2"
       title="Weighting is what makes similarity mean anything"
       lead="Under raw counts every page looks like every other; under TF-IDF most pairs share almost nothing."
-      essentials="cosine similarity"
       did={
         <>
           <Term id="w6-term-cosine-similarity" word="Cosine">Cosine similarity: how alike two lists of numbers are by their direction alone, ignoring their size. 1 when they point the same way, 0 when they share nothing.</Term>
@@ -194,7 +190,6 @@ export function Contrast() {
           places every word by how common it is in two groups of pages; shuffling the groups shows how much of that is chance.
         </>
       }
-      essentials="Scattertext"
       did={
         <>
           Wikidata labels 52 pages as women and 145 as men, 197,637 and 397,709 words. Scattertext places each of the 3,188 words seen 20 times or more by its frequency rank in each group and gives it a
@@ -265,7 +260,6 @@ export function Topics() {
           finds recurring word groups, but which groups it finds depends on the number of topics and where it starts.
         </>
       }
-      essentials="topic model, LDA"
       did={
         <>
           A
@@ -314,7 +308,6 @@ export function Contexts() {
           is the most common context of 24 of our 26 words.
         </>
       }
-      essentials="distributional hypothesis, word-context matrix"
       did={
         <>
           In a
@@ -378,7 +371,6 @@ export function Pmi() {
           keeps only the yes.
         </>
       }
-      essentials="PMI, PPMI"
       did={
         <>
           PMI is the natural log of how often a word and a context word meet, over how often they would meet if independent. Above 0, the pair meets more often than independence predicts; below, less. PPMI sets the negatives to 0.
@@ -457,7 +449,6 @@ export function Vectors() {
           .
         </>
       }
-      essentials="static word embedding, skip-gram, CBOW, negative sampling"
       did={
         <>
           Skip-gram predicts the context from the word,
@@ -469,7 +460,7 @@ export function Vectors() {
           <Term id="w6-term-negative-sampling" word="negative sampling">A training shortcut: rather than scoring every word in the vocabulary, the model learns to tell a real neighbour from a few randomly drawn words.</Term>
           : each real pair is set against 5 random words, drawn more often the more common they are. Both are
           {" "}
-          <Term id="w6-term-static-embedding" word="static">A static word embedding gives each word one fixed list of numbers, learned from a corpus, whatever sentence the word appears in.</Term>
+          <Term id="w6-term-static-word-embedding" word="static">A static word embedding gives each word one fixed list of numbers, learned from a corpus, whatever sentence the word appears in.</Term>
           : one vector per word, whatever the sentence, so a word with two senses gets one vector for both; on these pages
           {" "}
           <em>storm</em>
@@ -515,7 +506,6 @@ export function Glove() {
           learns static vectors from six billion words of news and Wikipedia; the same words mean other things there.
         </>
       }
-      essentials="GloVe"
       did={
         <>
           GloVe fits vectors to a whole corpus&apos;s word co-occurrence counts at once, rather than predicting window by window. We used its 50-dimensional vectors trained on Wikipedia 2014 and Gigaword 5 and compared each word&apos;s ten nearest with skip-gram&apos;s on the 303 pages, both ranked over the 3,645 words the two models know.
