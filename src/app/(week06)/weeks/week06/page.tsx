@@ -1,6 +1,4 @@
 import type { ReactNode } from "react";
-import { Drawer } from "@/components/post/Drawer";
-import { Drawers } from "@/components/post/Drawers";
 import { PostSection } from "@/components/post/PostSection";
 import { SectionOpener } from "@/components/post/SectionOpener";
 import { TermLayer } from "@/components/post/TermLayer";
@@ -240,15 +238,6 @@ export default function Page() {
                   <li key={key}>{text}</li>
                 ))}
               </ol>
-              <Drawers variant="foot">
-                <Drawer label="Method">
-                  <p>
-                    Every number on this page comes from analysis/week06_essentials.py. An AI coding assistant (Claude)
-                    wrote the analysis and the page and drafted the text. A review read each claim against the data files,
-                    and tests/week06-essentials.test.mjs checks every quoted number against them.
-                  </p>
-                </Drawer>
-              </Drawers>
             </div>
           </PostSection>
         </div>
@@ -267,7 +256,9 @@ export default function Page() {
           . GloVe vectors by Pennington, Socher and Manning,
           {" "}
           <a href="https://opendatacommons.org/licenses/pddl/1-0/">PDDL 1.0</a>
-          .
+          . Every number comes from analysis/week06_essentials.py. An AI coding assistant (Claude) wrote the analysis
+          and the page and drafted the text, and tests/week06-essentials.test.mjs checks every quoted number against the
+          data files.
         </span>
         {" "}
         <span>

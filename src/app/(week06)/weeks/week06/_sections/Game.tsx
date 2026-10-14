@@ -22,7 +22,7 @@ export function Game() {
           <p className="w6e-game-lede">There are five levels, one per method. Each one is timed and scored, and the five scores add up to one total.</p>
           <div className="w6e-game-cta">
             <a className="w6e-play" href="../../play/cold-read/">Play Cold Read →</a>
-            <a className="w6e-practice" href="../../play/cold-read/practice/">or practise one level</a>
+            <a className="w6e-practice" href="../../play/cold-read/practice/">Practise one level</a>
           </div>
         </div>
         <ol className="w6e-levels">
