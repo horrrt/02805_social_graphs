@@ -23,17 +23,15 @@ test("Home, Posts and About link to the root, its post list and its about sectio
   assert.ok(document.getElementById("site-nav-menu"), "the chevron controls a menu that exists");
 });
 
-test("the menu lists every post, the alternative under Week 6, and marks this page current", () => {
-  render(<SiteNav root="../../../" current="weeks/week06/alternative/" />);
+test("the menu lists every post and marks this page current, and not the alternative Week 6 post", () => {
+  render(<SiteNav root="../../../" current="weeks/week06/" />);
   const menu = within(document.getElementById("site-nav-menu")!);
   const labels = ["Week 1 · Hero Packs", "Week 2 · Transit Authority", "Week 3 · Corridor Control", "Week 4 · Who Hires", "Week 5 · Marvel in Words", "Week 6 · Storm, Not Weather"];
   assert.deepEqual(POSTS.map((p) => p.label), labels);
   for (const [i, label] of labels.entries()) assert.equal(menu.getByRole("link", { name: label }).getAttribute("href"), `../../../weeks/week0${i + 1}/`);
-  const alternative = menu.getByRole("link", { name: "Week 6 alternative" });
-  assert.equal(alternative.getAttribute("href"), "../../../weeks/week06/alternative/");
-  assert.ok(menu.getByRole("link", { name: labels[5] }).closest("li")!.contains(alternative), "the alternative sits under Week 6");
+  assert.equal(menu.queryByRole("link", { name: /alternative/i }), null, "the alternative post is not in the menu");
   const current = screen.getAllByRole("link").filter((a) => a.getAttribute("aria-current") === "page");
-  assert.deepEqual(current, [alternative]);
+  assert.deepEqual(current, [menu.getByRole("link", { name: labels[5] })]);
 });
 
 test("on the home page Home is current", () => {
@@ -100,7 +98,9 @@ test("from the keyboard: focus opens it, Tab reaches every post, Escape closes i
   await user.keyboard("{Enter}");
   assert.equal(isOpen(), false, "and Enter again closes it");
   await user.keyboard("{Enter}");
-  for (let i = 0; i < POSTS.length + 2; i++) await user.tab();
+  // Every entry in the menu, its parts included, then one more tab reaches About.
+  const entries = POSTS.flatMap((p) => [p, ...(p.parts ?? [])]).length;
+  for (let i = 0; i < entries + 1; i++) await user.tab();
   assert.equal(document.activeElement?.textContent, "About");
   assert.equal(isOpen(), false, "tabbing out of the menu closes it");
 });

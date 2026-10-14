@@ -182,11 +182,19 @@
   padding-right: 4px;
 }
 
+/* Posts and its chevron are one control: the pill lights up as a whole. */
 .topbar .site-nav > a:hover,
-.topbar .site-nav-posts > a:hover,
-.topbar .site-nav-toggle:hover,
-.topbar .site-nav-posts[data-open="true"] > .site-nav-toggle {
+.topbar .site-nav-posts:hover,
+.topbar .site-nav-posts:not([data-open]):focus-within,
+.topbar .site-nav-posts[data-open="true"] {
   background: var(--bar-hover);
+}
+
+.topbar .site-nav > a:hover,
+.topbar .site-nav-posts:hover > a,
+.topbar .site-nav-posts:hover > .site-nav-toggle,
+.topbar .site-nav-posts[data-open="true"] > a,
+.topbar .site-nav-posts[data-open="true"] > .site-nav-toggle {
   color: var(--bar-text);
 }
 
@@ -203,6 +211,7 @@
 
 .topbar .site-nav-posts {
   align-items: center;
+  border-radius: 999px;
   display: flex;
   position: relative;
 }
@@ -215,10 +224,20 @@
   display: flex;
   filter: none;
   font-family: inherit;
-  font-size: var(--fs-small);
   line-height: 1;
   min-height: 0;
-  padding: 8px 9px;
+  padding: 8px 13px 8px 2px;
+}
+
+.topbar .site-nav-toggle svg {
+  display: block;
+  height: 10px;
+  transition: transform 0.15s ease;
+  width: 10px;
+}
+
+.topbar .site-nav-posts[data-open="true"] .site-nav-toggle svg {
+  transform: rotate(180deg);
 }
 
 /* The nav sits at the right edge, so the menu opens leftwards from Posts. */

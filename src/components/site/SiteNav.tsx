@@ -90,7 +90,9 @@ function Nav({ root, current, live }: Props & { live?: Live }) {
           type="button"
           onClick={toggle}
         >
-          <span aria-hidden="true">▾</span>
+          <svg aria-hidden="true" viewBox="0 0 10 10">
+            <path d="M2 3.5 5 6.5 8 3.5" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.6" />
+          </svg>
         </button>
         <ul className="site-nav-menu" id="site-nav-menu">
           {POSTS.map((post) => (
