@@ -1,5 +1,6 @@
 import { Drawer } from "@/components/post/Drawer";
 import { Drawers } from "@/components/post/Drawers";
+import { Gloss } from "@/components/post/Gloss";
 import { Notice } from "@/components/post/Notice";
 import { Plot } from "@/components/post/Plot";
 import { PostSection } from "@/components/post/PostSection";
@@ -7,7 +8,8 @@ import { QuestionCard } from "@/components/post/QuestionCard";
 import { SectionOpener } from "@/components/post/SectionOpener";
 import { TermProse } from "@/components/post/TermProse";
 import { Part } from "@/features/week06/Parts";
-import { DATA, TERMS } from "@/scripts/week06-lookalikes.js";
+import { DATA } from "@/scripts/week06-lookalikes.js";
+import { TERMS } from "./terms";
 
 // Section 2: linked pages among the ten nearest, with and without names, against a matched removal.
 export function Names() {
@@ -35,7 +37,14 @@ export function Names() {
         figure={
           <Plot
             title="Linked pages among each page's ten nearest"
-            note="Mean over the 303 pages. Dot: the real pages. Band: 20 runs removing as many other words, matched on how many pages use each, mean and one standard deviation. Dashed line: ten pages picked at random. The first three rows are the course's figures, reproduced. Linked means either page links to the other. The control's band is ±0.01, narrower than its dot."
+            note={
+              <>
+                Mean over the 303 pages. Dot: the real pages. Band: 20 runs removing as many other words, matched on how many pages use each, mean and one
+                {" "}
+                <Gloss id="w6a-term-standard-deviation" />
+                . Dashed line: ten pages picked at random. The first three rows are the course&apos;s figures, reproduced. Linked means either page links to the other. The control&apos;s band is ±0.01, narrower than its dot.
+              </>
+            }
           >
             <Part part="ladder" />
           </Plot>
@@ -44,7 +53,11 @@ export function Names() {
         <Drawers variant="foot">
           <Drawer label="Method">
             <p>
-              Two pages count as linked when either links to the other. The random line is ten times the share of all pairs that are linked. The stopword row uses NLTK's English list, which reproduces the course's 26,859 remaining words.
+              Two pages count as linked when either links to the other. The random line is ten times the share of all pairs that are linked. The
+              {" "}
+              <Gloss id="w6a-term-stopword" />
+              {" "}
+              row uses NLTK&apos;s English list, which reproduces the course's 26,859 remaining words.
             </p>
             <p>
               The control pairs each name with an unused non-name on the same number of pages, or the nearest number with one left, drawn with seeds 6 to 25. It keeps how rare the removed words are; it cannot keep their weight. We checked our ten nearest pages against the course's own file: all 303 lists match.

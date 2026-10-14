@@ -1,12 +1,15 @@
 import { Drawer } from "@/components/post/Drawer";
 import { Drawers } from "@/components/post/Drawers";
+import { Gloss } from "@/components/post/Gloss";
 import { Notice } from "@/components/post/Notice";
 import { PostSection } from "@/components/post/PostSection";
 import { QuestionCard } from "@/components/post/QuestionCard";
 import { SectionOpener } from "@/components/post/SectionOpener";
 import { TermProse } from "@/components/post/TermProse";
 import { Part } from "@/features/week06/Parts";
-import { DATA, TERMS } from "@/scripts/week06-lookalikes.js";
+import { DATA } from "@/scripts/week06-lookalikes.js";
+import { TfIdfWeight } from "./Formulas";
+import { TERMS } from "./terms";
 
 // Section 1: the explorer. Pick a character and compare its ten nearest pages with names kept and removed.
 export function Explore() {
@@ -36,10 +39,17 @@ export function Explore() {
         <Drawers variant="foot">
           <Drawer label="Method">
             <p>
-              Words are runs of letters in any alphabet with one inner apostrophe kept, lowercased: the course's rule, recovered by matching every page length in its lookalikes data. A word's weight on a page is its count over the page's length, times ln(303 / the number of pages that use it). The words behind a match are the three with the largest product of their weights on the two pages.
+              Words are runs of letters in any alphabet with one inner apostrophe kept, lowercased: the course's rule, recovered by matching every page length in its lookalikes data. A word&apos;s weight on a page is its count over the page&apos;s length, times the natural log of 303 over the number of pages that use it:
+              {" "}
+              <TfIdfWeight />
+              . The words behind a match are the three with the largest product of their weights on the two pages.
             </p>
             <p id="explore-limit">
-              TF-IDF reads each word on its own, so it cannot tell Storm the codename from Storm the surname. A static word vector, from the brief's second half, gives storm one vector too; telling the two apart needs the sentence around the word.
+              TF-IDF reads each word on its own, so it cannot tell Storm the codename from Storm the surname. A
+              {" "}
+              <Gloss id="w6a-term-static-word-embedding" word="static" />
+              {" "}
+              word vector, from the brief&apos;s second half, gives storm one vector too; telling the two apart needs the sentence around the word.
             </p>
           </Drawer>
           <Drawer label="More numbers">

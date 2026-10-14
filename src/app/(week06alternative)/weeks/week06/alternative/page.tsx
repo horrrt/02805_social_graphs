@@ -1,4 +1,5 @@
 import { SectionRail } from "@/components/post/SectionRail";
+import { TermLayer } from "@/components/post/TermLayer";
 import { PostTopbar } from "@/components/site/PostTopbar";
 import { SkipLink } from "@/components/site/SkipLink";
 import { Closing } from "./_sections/Closing";
@@ -25,6 +26,7 @@ export default function Page() {
   return (
     <>
       <SkipLink />
+      <TermLayer />
       <PostTopbar root="../../../" current="weeks/week06/alternative/" />
       <main id="main">
         <Hero />

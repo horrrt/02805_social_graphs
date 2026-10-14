@@ -68,6 +68,13 @@ const POSTS = {
       "w5-term-isolate", "w5-term-residual", "w5-term-pagerank", "w5-term-z-score",
     ],
   },
+  // The alternative's TF-IDF, cosine and shuffle wait for its data (TermProse), as Week 5's do.
+  week06alternative: {
+    page: "weeks/week06/alternative/",
+    src: "src/app/(week06alternative)/weeks/week06/alternative/page.tsx",
+    formulas: 6,
+    terms: ["w6a-term-static-word-embedding", "w6a-term-standard-deviation", "w6a-term-stopword", "w6a-term-idf"],
+  },
 };
 
 const formulas = (html) => [...html.matchAll(/<(span|div) class="tex[^"]*"[^>]*>([^<]*)<\/\1>/g)].map((m) => m[2]);

@@ -1,5 +1,6 @@
 import { Drawer } from "@/components/post/Drawer";
 import { Drawers } from "@/components/post/Drawers";
+import { Gloss } from "@/components/post/Gloss";
 import { Notice } from "@/components/post/Notice";
 import { Plot } from "@/components/post/Plot";
 import { PostSection } from "@/components/post/PostSection";
@@ -7,7 +8,9 @@ import { QuestionCard } from "@/components/post/QuestionCard";
 import { SectionOpener } from "@/components/post/SectionOpener";
 import { TermProse } from "@/components/post/TermProse";
 import { Part } from "@/features/week06/Parts";
-import { DATA, TERMS } from "@/scripts/week06-lookalikes.js";
+import { DATA } from "@/scripts/week06-lookalikes.js";
+import { PTest, R2, Z } from "./Formulas";
+import { TERMS } from "./terms";
 
 // Section 3: with names removed, most lists lean toward women's pages. Women's and men's nearest pages
 // against shuffled labels, and the gap between them.
@@ -37,7 +40,13 @@ export function Gender() {
           <div className="w5-two">
             <Plot
               title="Pages about women in everyone's ten nearest"
-              note="Share of all 3,030 ten-nearest slots that go to the 52 pages about women. Dashed line: their share of the 303 pages. Women's pages are longer and long pages sit in more lists, but at equal length a woman's page still sits in 12.6 more lists (p = 0.01)."
+              note={
+                <>
+                  Share of all 3,030 ten-nearest slots that go to the 52 pages about women. Dashed line: their share of the 303 pages. Women&apos;s pages are longer and long pages sit in more lists, but at equal length a woman&apos;s page still sits in 12.6 more lists
+                  {" "}
+                  (<PTest v="0.01" />).
+                </>
+              }
             >
               <Part part="lean" />
             </Plot>
@@ -61,10 +70,22 @@ export function Gender() {
           </Drawer>
           <Drawer label="More numbers">
             <p>
-              With names kept, women's lists are 49% women and men's 28%, a gap of 21 points (z 7.5). Without names the gap is 51 points (z 23.9); without pronouns too, 13 points (z 5.8).
+              With names kept, women&apos;s lists are 49% women and men&apos;s 28%, a gap of 21 points
+              {" "}
+              (<Z v="7.5" />). Without names the gap is 51 points
+              {" "}
+              (<Z v="23.9" />); without pronouns too, 13 points
+              {" "}
+              (<Z v="5.8" />).
             </p>
             <p>
-              Why the lean? Not reception sections: deleting every reception and relationship section leaves it at 46.4%, against 45.4% ± 0.4 pts when the same number of words is cut from other sections (20 runs). A page twice as long sits in 8.5 more lists, and women's pages are longer (median 2,068 words against 1,700); the length model explains under half of the variation (R² 0.45). 231 of 303 lists gain women once names go, 39 stay level and 33 lose; 110 of 145 men's lists gain. He is on 291 pages and his on 300, so their IDF is 0.04 and 0.01, against 0.46 for she and 0.38 for her.
+              Why the lean? Not reception sections: deleting every reception and relationship section leaves it at 46.4%, against 45.4% ± 0.4 pts when the same number of words is cut from other sections (20 runs). A page twice as long sits in 8.5 more lists, and women's pages are longer (median 2,068 words against 1,700); the length model explains under half of the variation
+              {" "}
+              (<R2 v="0.45" />). 231 of 303 lists gain women once names go, 39 stay level and 33 lose; 110 of 145 men's lists gain. He is on 291 pages and his on 300, so their
+              {" "}
+              <Gloss id="w6a-term-idf" />
+              {" "}
+              is 0.04 and 0.01, against 0.46 for she and 0.38 for her.
             </p>
             <p>
               Without names, Jean Grey sits in 182 pages' ten nearest, Spider-Woman (Jessica Drew) in 142 and Emma Frost in 116. With the labels shuffled, women's lists are 26% women, the share of women among the 197 labelled pages.
