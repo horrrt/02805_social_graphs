@@ -23,6 +23,17 @@ const POSTS = {
       "w1-term-pearson", "w1-term-force-layout", "w1-term-scc", "w1-term-coupon-collector", "w1-term-exponential-race",
     ],
   },
+  week02: {
+    page: "weeks/week02/",
+    src: "src/app/(week02)/weeks/week02/page.tsx",
+    formulas: 33,
+    terms: [
+      "w2-term-degree-preserving-shuffle", "w2-term-erdos-renyi", "w2-term-friendship-paradox", "w2-term-clustering",
+      "w2-term-path-length", "w2-term-watts-strogatz", "w2-term-barabasi-albert", "w2-term-degree-tail", "w2-term-p-value",
+      "w2-term-one-sided", "w2-term-unadjusted", "w2-term-assortativity", "w2-term-giant", "w2-term-degree-biased",
+      "w2-term-poisson", "w2-term-local-maxima", "w2-term-path-decomposition",
+    ],
+  },
 };
 
 const formulas = (html) => [...html.matchAll(/<(span|div) class="tex[^"]*"[^>]*>([^<]*)<\/\1>/g)].map((m) => m[2]);
