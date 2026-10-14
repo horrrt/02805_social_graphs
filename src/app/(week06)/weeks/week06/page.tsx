@@ -1,4 +1,6 @@
-import { Fragment, type ReactNode } from "react";
+import type { ReactNode } from "react";
+import { Drawer } from "@/components/post/Drawer";
+import { Drawers } from "@/components/post/Drawers";
 import { PostSection } from "@/components/post/PostSection";
 import { SectionOpener } from "@/components/post/SectionOpener";
 import { TermLayer } from "@/components/post/TermLayer";
@@ -13,16 +15,9 @@ import { Contexts, Contrast, Cosine, Glove, Pmi, Topics, Vectors, Weights } from
 // represented by their contexts, as the brief splits the week. The earlier
 // post, Marvel Lookalikes, is the alternative at alternative/.
 
-const SECTIONS = [
-  ["weights", "1", "Weights"], ["cosine", "2", "Cosine"], ["contrast", "3", "Scattertext"], ["topics", "4", "Topics"],
-  ["contexts", "5", "Contexts"], ["pmi", "6", "PMI"], ["vectors", "7", "Word2Vec"], ["glove", "8", "GloVe"],
-] as const;
-
-const TITLE = Object.fromEntries(SECTIONS.map(([id, num, label]) => [id, `${num} · ${label}`]));
-
-// The takeaways, each with the sections it comes from.
-const TAKEAWAYS: [string, string[], ReactNode][] = [
-  ["weights", ["weights"], (
+// The takeaways, one per finding, in the order of the sections.
+const TAKEAWAYS: [string, ReactNode][] = [
+  ["weights", (
     <>
       <b>IDF zeroes the words on every page</b>
       , Marvel&apos;s own included (
@@ -42,7 +37,7 @@ const TAKEAWAYS: [string, string[], ReactNode][] = [
       keep weight.
     </>
   )],
-  ["cosine", ["cosine"], (
+  ["cosine", (
     <>
       <b>Similarity needs weighting:</b>
       {" "}
@@ -57,12 +52,10 @@ const TAKEAWAYS: [string, string[], ReactNode][] = [
       the 0.0096 median.
     </>
   )],
-  ["contrast", ["contrast"], (
+  ["contrast", (
     <>
-      Between women&apos;s and men&apos;s pages,
-      {" "}
       <b>
-        only
+        Only
         {" "}
         <em>her</em>
         ,
@@ -77,10 +70,10 @@ const TAKEAWAYS: [string, string[], ReactNode][] = [
         <em>he</em>
       </b>
       {" "}
-      lean further than the strongest word in any shuffle of the labels.
+      lean further between women&apos;s and men&apos;s pages than any word in a shuffled split.
     </>
   )],
-  ["topics", ["topics"], (
+  ["topics", (
     <>
       At five topics
       {" "}
@@ -91,7 +84,7 @@ const TAKEAWAYS: [string, string[], ReactNode][] = [
       <b>a topic&apos;s label is a reading, not a finding.</b>
     </>
   )],
-  ["pmi", ["contexts", "pmi"], (
+  ["pmi", (
     <>
       <b>Counting finds grammar, association finds the telling neighbours:</b>
       {" "}
@@ -104,7 +97,7 @@ const TAKEAWAYS: [string, string[], ReactNode][] = [
       words, with a PMI of at most 0.70.
     </>
   )],
-  ["vectors", ["vectors"], (
+  ["vectors", (
     <>
       <b>303 pages give stable Marvel neighbours:</b>
       {" "}
@@ -131,7 +124,7 @@ const TAKEAWAYS: [string, string[], ReactNode][] = [
       .
     </>
   )],
-  ["glove", ["glove"], (
+  ["glove", (
     <>
       <b>A static vector holds its corpus&apos;s sense:</b>
       {" "}
@@ -229,30 +222,21 @@ export default function Page() {
               Weighting and association do the work; counting alone finds grammar, and a corpus decides what its words mean.
             </SectionOpener>
             <div className="card w4-card w6e-closing">
-              {/* One list per part, so neither runs past the subsection word budget. */}
-              {([["Takeaways · Part A, documents", 0, 4], ["Takeaways · Part B, words", 4, TAKEAWAYS.length]] as const).map(([title, from, to]) => (
-                <Fragment key={title}>
-                  <h3>{title}</h3>
-                  <ol className="w6e-takeaways" start={from + 1}>
-                    {TAKEAWAYS.slice(from, to).map(([key, ids, text]) => (
-                      <li key={key}>
-                        {text}
-                        {ids.map((id, i) => (
-                          <Fragment key={id}>
-                            {i ? " · " : " "}
-                            <a href={`#${id}`}>{TITLE[id]}</a>
-                          </Fragment>
-                        ))}
-                      </li>
-                    ))}
-                  </ol>
-                </Fragment>
-              ))}
-              <p className="sub">
-                Methods: analysis/week06_essentials.py writes every number on this page. An AI coding assistant (Claude) wrote
-                the analysis and the page and drafted the text; a review read each claim against the data files, and
-                tests/week06-essentials.test.mjs checks every quoted number against them.
-              </p>
+              <h3>Takeaways</h3>
+              <ol className="w6e-takeaways">
+                {TAKEAWAYS.map(([key, text]) => (
+                  <li key={key}>{text}</li>
+                ))}
+              </ol>
+              <Drawers variant="foot">
+                <Drawer label="Method">
+                  <p>
+                    analysis/week06_essentials.py writes every number on this page. An AI coding assistant (Claude) wrote
+                    the analysis and the page and drafted the text; a review read each claim against the data files, and
+                    tests/week06-essentials.test.mjs checks every quoted number against them.
+                  </p>
+                </Drawer>
+              </Drawers>
             </div>
           </PostSection>
         </div>
