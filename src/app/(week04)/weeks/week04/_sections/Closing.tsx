@@ -1,6 +1,7 @@
 import { Drawer } from "@/components/post/Drawer";
 import { Drawers } from "@/components/post/Drawers";
 import { StripPart } from "@/features/week04/strips/Strips";
+import { Alpha } from "./Formulas";
 
 // Closing.
 export function Closing() {
@@ -36,7 +37,11 @@ export function Closing() {
               <StripPart id="closing-switches" />
             </div>
             <div className="w4-surprise">
-              <p className="w4-surprise-before">And the backbone that seemed to snap between α = 0.1 and 0.05</p>
+              <p className="w4-surprise-before">And the backbone that seemed to snap between
+              {" "}
+              <Alpha v="0.1" />
+              {" "}
+              and 0.05</p>
               <p className="w4-surprise-after">never snaps: no single link cuts off more than two metros.</p>
               <StripPart id="closing-backbone" />
             </div>

@@ -3,6 +3,7 @@ import { Drawers } from "@/components/post/Drawers";
 import { QuestionPart } from "@/features/week04/questions/Questions";
 import { EgoFigure } from "@/features/week04/strips/Ego";
 import { StripPart } from "@/features/week04/strips/Strips";
+import { Z } from "./Formulas";
 import { GlossTerm } from "./GlossTerm";
 
 // Section 3: who staffs whom.
@@ -188,7 +189,9 @@ export function Who() {
                   One switch in four stays inside the client's group. Much of that is familiarity: 62% of new main vendors already placed someone at the client the year before.
                 </p>
                 <p>
-                  A stricter baseline that draws only among the firms already at the client narrows the gap to 26.8% against 20.8% ± 0.7% (z = 9), a lift of 1.29 rather than 8.3.
+                  A stricter baseline that draws only among the firms already at the client narrows the gap to 26.8% against 20.8% ± 0.7%
+                  {" "}
+                  (<Z v="9" />), a lift of 1.29 rather than 8.3.
                 </p>
               </Drawer>
             </Drawers>
@@ -283,7 +286,9 @@ export function Who() {
               <span>
                 <b>What to notice</b>
                 {" "}
-                The rewired networks give 2,154 ± 20 split clients (z = −16): real clients draw on fewer groups than chance.
+                The rewired networks give 2,154 ± 20 split clients
+                {" "}
+                (<Z v="−16" />): real clients draw on fewer groups than chance.
               </span>
             </div>
             <Drawers variant="foot">

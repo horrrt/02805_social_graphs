@@ -3,6 +3,7 @@ import { Drawers } from "@/components/post/Drawers";
 import { PlaceOpenerStrip } from "@/features/week04/frame/Findings";
 import { PlacePart } from "@/features/week04/place/Place";
 import { QuestionPart } from "@/features/week04/questions/Questions";
+import { Alpha, P, Z } from "./Formulas";
 import { GlossTerm } from "./GlossTerm";
 
 // Section 1: where the hiring is, the metro network and its backbone.
@@ -164,7 +165,9 @@ export function Place() {
             </p>
             <PlacePart part="nullStats" />
             <p className="sub">
-              One group holds New York, Dallas, San Jose, San Francisco, Seattle, Atlanta, Chicago, Austin, Boston, Washington, Los Angeles and San Diego. The other 28 metros form the second. Modularity is 0.057 against 0.013 for rewired networks that keep each company's number of metros (z = 36).
+              One group holds New York, Dallas, San Jose, San Francisco, Seattle, Atlanta, Chicago, Austin, Boston, Washington, Los Angeles and San Diego. The other 28 metros form the second. Modularity is 0.057 against 0.013 for rewired networks that keep each company's number of metros (
+              <Z v="36" />
+              ).
             </p>
             <p className="sub">
               Louvain finds the split shown in 35 of 100 runs; the other 65 find one other split, into three groups, which cuts the hubs into New York–Dallas and San Jose–San Francisco at a lower modularity, 0.049. The page shows the higher one; the maps below show both, and more. 2024 gives the split shown in all 100 runs; across the two years the runs agree at
@@ -176,7 +179,11 @@ export function Place() {
               0.64, against 1.00 between two 2025 runs.
             </p>
             <p className="sub">
-              NMI with Census regions is 0.04 and with divisions 0.11. Infomap, which follows a random walk between metros instead of counting links, finds no split at all: one module holds all 40.
+              NMI with Census regions is 0.04
+              {" "}
+              and with divisions 0.11. <GlossTerm id="w4-term-place-infomap" word="Infomap">A method that finds groups by following a random walk: a group is an area the walker tends to stay inside for a while.</GlossTerm>, which follows
+              {" "}
+              a random walk between metros instead of counting links, finds no split at all: one module holds all 40.
             </p>
           </Drawer>
           <Drawer label="Method">
@@ -245,14 +252,18 @@ export function Place() {
               <span>
                 <b>What to notice</b>
                 {" "}
-                The IT-services share matches the groups at AMI 0.17 (p = 0.002)
+                The IT-services share matches the groups at AMI 0.17 (
+                <P v="0.002" />
+                )
                 and the
                 {" "}
                 <GlossTerm id="w4-term-place-who-placed" word="placed share">
                   The share of a metro’s filings that put the worker at a client company instead of the employer’s own site.
                 </GlossTerm>
                 {" "}
-                at 0.12 (p = 0.012); Census regions and divisions do no better than chance.
+                at 0.12 (
+                <P v="0.012" />
+                ); Census regions and divisions do no better than chance.
               </span>
             </div>
             <Drawers variant="foot">
@@ -270,7 +281,11 @@ export function Place() {
                   Seven of the eight tech-hub metros sit in the lowest third by placed share: there, companies mostly hire for themselves. In the New York–Dallas group the median metro places 27% of its filings at a client and files 60% through IT-services firms.
                 </p>
                 <p>
-                  Census regions reach 0.06 (p = 0.11) and divisions 0.06 (p = 0.08), no better than chance.
+                  Census regions reach 0.06 (
+                  <P v="0.11" />
+                  ) and divisions 0.06 (
+                  <P v="0.08" />
+                  ), no better than chance.
                 </p>
               </Drawer>
             </Drawers>
@@ -328,7 +343,7 @@ export function Place() {
                   The links the disparity filter keeps because they carry more weight than chance would give.
                 </GlossTerm>
                 {" "}
-                (38%, p = 0.37).
+                (38%, <P v="0.37" />).
               </span>
             </div>
             <Drawers variant="foot">
@@ -339,10 +354,17 @@ export function Place() {
               </Drawer>
               <Drawer label="Method">
                 <p>
-                  The disparity filter keeps a link when it carries an unusually large share of either metro's total weight; α is the test's threshold, and a smaller α keeps fewer links.
+                  The disparity filter keeps a link when it carries an unusually large share of either metro's total weight
+                  ; <Alpha /> is the test's threshold, and a smaller <Alpha /> keeps
+                  {" "}
+                  fewer links.
                 </p>
                 <p>
-                  Each step is one or more links removed. The shaded band is the range from α = 0.1 to 0.05 where the five-value sweep saw the drop.
+                  Each step is one or more links removed. The shaded band is the range
+                  {" "}
+                  from <Alpha v="0.1" /> to
+                  {" "}
+                  0.05 where the five-value sweep saw the drop.
                 </p>
               </Drawer>
               <Drawer label="More numbers">
@@ -353,13 +375,29 @@ export function Place() {
                   The other eleven are led by Amazon (three), Intel, Deloitte, Capital One, JPMorgan Chase, Citigroup, FedEx, Fidelity Investments and the University of Maryland.
                 </p>
                 <p>
-                  The first metro falls off at α = 0.136. Tried at five values, the largest piece of the map fell from 32 metros at α = 0.1 to 18 at α = 0.05, which looks like one snap. The fall from 32 to 18 is 14 separate links, each peeling one metro away.
+                  The first metro falls off
+                  {" "}
+                  at <Alpha v="0.136" />.
+                  {" "}
+                  Tried at five values, the largest piece of the map fell from 32
+                  {" "}
+                  metros at <Alpha v="0.1" /> to 18 at <Alpha v="0.05" />,
+                  {" "}
+                  which looks like one snap. The fall from 32 to 18 is 14 separate links, each peeling one metro away.
                 </p>
                 <p>
-                  The five placing firms lead 69 of the 180 links in the whole backbone at α = 0.2 (38%), so their 5 of the 16 links that cut a metro loose is no more than their share (p = 0.37).
+                  The five placing firms lead 69 of the 180 links in the whole
+                  {" "}
+                  backbone at <Alpha v="0.2" /> (38%), so their 5 of the 16 links that cut a metro loose is no more than their
+                  {" "}
+                  share (<P v="0.37" />).
                 </p>
                 <p>
-                  No single removal cuts off more than two metros: Dallas–Durham at α = 0.041 takes Durham and Raleigh with it, and New York–Seattle at 0.023 splits the last five metros three and two.
+                  No single removal cuts off more than two metros: Dallas–Durham
+                  {" "}
+                  at <Alpha v="0.041" />
+                  {" "}
+                  takes Durham and Raleigh with it, and New York–Seattle at 0.023 splits the last five metros three and two.
                 </p>
               </Drawer>
               <Drawer label="Table: 14 links that peel metros off">
@@ -370,7 +408,7 @@ export function Place() {
           <div className="plot">
             <h3>Metros in the largest piece as the filter tightens</h3>
             <p className="axis-note">
-              Read right to left: as α
+              Read right to left: as <Alpha />
               falls, links go and metros drop out of the largest connected
               piece.
             </p>

@@ -3,6 +3,7 @@ import { Drawers } from "@/components/post/Drawers";
 import { JobsNum, JobsPart } from "@/features/week04/jobs/Jobs";
 import { QuestionPart } from "@/features/week04/questions/Questions";
 import { StripPart } from "@/features/week04/strips/Strips";
+import { Z } from "./Formulas";
 import { GlossTerm } from "./GlossTerm";
 
 // Section 2: which jobs go together.
@@ -116,7 +117,9 @@ export function Jobs() {
                 <b>What to notice</b>
                 {" "}
                 The two clusterings agree at NMI 0.43. Random groups
-                matched on size agree at 0.57 ± 0.04 (z = −3.3).
+                matched on size agree at 0.57 ± 0.04 (
+                <Z v="−3.3" />
+                ).
               </span>
             </div>
           </div>
@@ -126,7 +129,7 @@ export function Jobs() {
             <h3>Do outsourcers cluster jobs like random firms would?</h3>
             <p className="axis-note">
               Bars show how alike the two groups' job clusters are. Whiskers
-              span one standard deviation.
+              span one <GlossTerm id="w4-term-jobs-sd" word="standard deviation">How far values typically sit from their average.</GlossTerm>.
             </p>
             <QuestionPart part="splitNmi" />
           </div>

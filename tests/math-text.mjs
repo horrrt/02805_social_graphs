@@ -4,15 +4,30 @@
 // a glossary term (src/components/post/Term.tsx) as its word followed by a
 // pop-up that is not part of the sentence.
 
-/** LaTeX as the sentence reads it: the \htmlClass{x-…}{…} tags that drive the
- * hover explanations unwrapped, \text{…} unwrapped, and {,} (a thousands comma
- * that KaTeX would otherwise space as punctuation) read as a comma. */
-export function untag(tex) {
+/** LaTeX with the \htmlClass{x-…}{…} tags that drive the hover explanations unwrapped. */
+export function unclass(tex) {
   let s = tex;
   for (let prev; prev !== s; ) {
     prev = s;
     s = s.replace(/\\htmlClass\{x-[\w-]+\}\{((?:[^{}]|\{(?:[^{}]|\{[^{}]*\})*\})*)\}/g, "$1");
   }
+  return s;
+}
+
+const GREEK = { alpha: "α", rho: "ρ", mu: "μ", sigma: "σ" };
+
+/** LaTeX with the hover tags unwrapped and a Greek letter written as itself,
+ * \alpha as α: the symbols a sentence quotes. */
+export function symbols(tex) {
+  return unclass(tex).replace(/\\(alpha|rho|mu|sigma)(?![a-zA-Z])/g, (_, name) => GREEK[name]);
+}
+
+/** LaTeX as the sentence reads it: the \htmlClass{x-…}{…} tags that drive the
+ * hover explanations unwrapped, Greek letters as themselves, \text{…}
+ * unwrapped, and {,} (a thousands comma that KaTeX would otherwise space as
+ * punctuation) read as a comma. */
+export function untag(tex) {
+  let s = symbols(tex);
   for (let prev; prev !== s; ) {
     prev = s;
     s = s.replace(/\\text\{([^{}]*)\}/g, "$1");

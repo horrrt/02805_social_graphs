@@ -49,6 +49,13 @@ const POSTS = {
       "w3-term-fisher", "w3-term-resamples",
     ],
   },
+  // Week 4 marked its terms before this file (GlossTerm); these fill its gaps.
+  week04: {
+    page: "weeks/week04/",
+    src: "src/app/(week04)/weeks/week04/page.tsx",
+    formulas: 37,
+    terms: ["w4-term-jobs-sd", "w4-term-place-infomap", "w4-term-beyond-bootstrap"],
+  },
 };
 
 const formulas = (html) => [...html.matchAll(/<(span|div) class="tex[^"]*"[^>]*>([^<]*)<\/\1>/g)].map((m) => m[2]);
