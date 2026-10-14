@@ -196,7 +196,7 @@ test("the closing takeaways quote the same numbers", () => {
   says("closing", `skip-gram keeps ${pct(words.seed_overlap.skipgram)} of each top ten, and symbiote's nearest words are ${and(json("vectors").near.symbiote.skipgram.slice(0, 4).map(([x]) => x))}`);
   says("closing", `vision sits beside ${and(g.marvel.slice(0, 3).map(([x]) => x))} on these pages and beside ${and(g.glove.slice(0, 3).map(([x]) => x))} in GloVe`);
   says("closing", `${Object.values(words.glove_shared).filter((n) => n === 0).length} of ${Object.keys(words.glove_shared).length} words share no neighbour even among words both models know`);
-  assert.match(block(html, "closing"), /<a href="#contexts">5 · Contexts<\/a> · <a href="#pmi">6 · PMI<\/a>/);
+  assert.doesNotMatch(block(html, "closing"), /<ol class="w6e-takeaways">[\s\S]*?<a href="#/, "the takeaways carry no section links");
 });
 
 test("/weeks/week06/ is the essentials post; the hero links the alternative", () => {
