@@ -1,10 +1,13 @@
+import { Term } from "@/components/post/Term";
 import { DegreeChart, DegreeScale, DegreeTable, Sketch } from "@/features/week01/chart/Distribution";
 import { PacksGuess } from "@/features/week01/packs/Guess";
 import { CardIndex } from "@/features/week01/packs/Index";
+import { DegreePlusOne, LowestOdds, PBelow } from "./Formulas";
 
 // "Curious? Go deeper.": the figures, the evidence and the methods. The degree
 // chart, its table, the sketch, the packs prediction and the card index are
-// islands (src/features/week01/).
+// islands (src/features/week01/). Formulas are KaTeX (./Formulas); the first
+// use of each new term is a glossary term (Term).
 export function Evidence() {
   return (
     <section className="section evidence" id="evidence">
@@ -19,12 +22,18 @@ export function Evidence() {
           <figure>
             <img alt="Four scatter plots of degree frequency P(k) against k + 1: in-degree on linear and log–log axes, out-degree on linear and log–log axes. In-degree has a long tail reaching 106; out-degree stops at 28." height="1336" src="figures/degree_distributions.png" width="1954" />
             <figcaption>
-              All 303 articles. The horizontal quantity is degree + 1 so
+              All 303 articles. The horizontal quantity is
+              {" "}
+              <DegreePlusOne />
+              {" "}
+              so
               zero-degree articles stay visible on log axes. On linear axes,
               the long in-degree tail flattens against zero; log–log axes
               spread it over about two decades, so the few hubs are
-              visible. Visual straightness alone does not establish a power
-              law.
+              visible. Visual straightness alone does not establish a
+              {" "}
+              <Term id="w1-term-power-law" word="power law">A pattern where the share of items with a count k falls off as a fixed power of k, so most items have small counts and a few have huge ones. It draws a straight line on log–log axes, but other patterns can look nearly straight too.</Term>
+              .
             </figcaption>
           </figure>
         </details>
@@ -41,7 +50,10 @@ export function Evidence() {
                 <img alt="Scatter plot of in-degree against out-degree for all 303 articles with an in = out reference line. Spider-Man, Hulk, Wolverine, Doctor Strange, She-Hulk, Deadpool and Quasar sit above the line; Betsy Braddock, Cloak and Dagger, Adam Warlock, U.S. Agent and Noh-Varr sit far to the right, below it." height="1316" loading="lazy" src="figures/in_vs_out.png" width="1953" />
                 <figcaption>
                   In- and out-degree are positively correlated across all 303
-                  articles (Spearman 0.70), but the leaders differ: the most
+                  articles (
+                  <Term id="w1-term-spearman" word="Spearman">A correlation computed on ranks: 1 when ordering the articles by one count gives the same order as ordering them by the other, 0 when the two orders are unrelated.</Term>
+                  {" "}
+                  0.70), but the leaders differ: the most
                   linked-to articles are not the ones that link out most.
                 </figcaption>
               </figure>
@@ -60,7 +72,14 @@ export function Evidence() {
               place in outgoing links; counting all of them, Deadpool, Doctor
               Strange, She-Hulk and Wolverine appear in both top-ten lists.
               Across all 303 articles, in- and out-degree correlate (Spearman
-              0.70, Pearson 0.50, both p &lt; 0.001), despite the different
+              0.70,
+              {" "}
+              <Term id="w1-term-pearson" word="Pearson">A correlation computed on the counts themselves: 1 when the points lie on a rising straight line, 0 when there is no straight-line relation.</Term>
+              {" "}
+              0.50, both
+              {" "}
+              <PBelow />
+              ), despite the different
               leaders.
             </p>
             <details>
@@ -163,7 +182,10 @@ export function Evidence() {
               <img alt="Force-directed drawing of the 303 articles. A single dense blue hairball fills the left two-thirds, with Spider-Man, Hulk, Wolverine, Doctor Strange, Deadpool and She-Hulk labelled as its darkest, largest nodes. To the right, separated, sit an orange nine-node island labelled Strikeforce: Morituri and a grid of 17 green dots labelled the 17 isolates." height="1198" src="figures/map.png" width="1961" />
               <figcaption>
                 Node size follows total links; shade follows incoming links;
-                position comes from a force-directed layout, so distance on the page is a drawing
+                position comes from a
+                {" "}
+                <Term id="w1-term-force-layout" word="force-directed layout">A drawing method that pulls linked articles together and pushes every pair apart, then lets the picture settle.</Term>
+                , so distance on the page is a drawing
                 artefact and not a measured quantity. The two groups on the
                 right are drawn apart because they genuinely are apart: no
                 link joins them to the giant component.
@@ -204,7 +226,10 @@ export function Evidence() {
             <p className="fine">
               Components are computed on the undirected graph, so “island”
               means unreachable in either direction. Following arrows only,
-              the roster splits further: 66 strongly connected components, the
+              the roster splits further: 66
+              {" "}
+              <Term id="w1-term-scc" word="strongly connected components">Groups in which every article can reach every other by following links only in the direction they point.</Term>
+              , the
               largest holding 229 articles.
             </p>
           </section>
@@ -239,7 +264,10 @@ export function Evidence() {
             <p className="fine">
               Both series use percentages, but they answer different
               questions: how common is a degree among articles, versus how
-              often did your weighted draws find it? Log view uses degree + 1
+              often did your weighted draws find it? Log view uses
+              {" "}
+              <DegreePlusOne />
+              {" "}
               so the 58 zero-incoming articles remain visible. Empty bins are
               omitted.
             </p>
@@ -263,7 +291,11 @@ export function Evidence() {
           <div>
             <p style={{"marginTop":"24px"}}>
               The expected wait is about 9,721 individual draws. Each
-              minimum-rate card has a 1 / 2,087 chance per draw. Isolates
+              minimum-rate card has a
+              {" "}
+              <LowestOdds />
+              {" "}
+              chance per draw. Isolates
               matter, but they are not the whole bottleneck: 41 other articles
               share their drop rate.
             </p>
@@ -315,9 +347,16 @@ export function Evidence() {
           <p>
             The directed roster gives in-degree and out-degree. Five
             independent draws per pack allow duplicates. The unequal
-            coupon-collector expectation is calculated by integrating the
+            {" "}
+            <Term id="w1-term-coupon-collector" word="coupon-collector">The coupon collector&apos;s problem: how many random draws, repeats allowed, it takes on average to collect every item of a set.</Term>
+            {" "}
+            expectation is calculated by integrating the
             probability that at least one card is still missing, checked
-            against 20,000 independent exponential-race simulations. Expected
+            against 20,000 independent
+            {" "}
+            <Term id="w1-term-exponential-race" word="exponential-race">A way to simulate collecting: each card gets a random waiting time until it first appears, shorter for likelier cards, and the set is complete when the last card has appeared.</Term>
+            {" "}
+            simulations. Expected
             whole packs lie between 1,944.19 and 1,944.99; approximately 1,945
             is a rounded presentation, not an exact value. See
             analysis/week01_packs.py and the downloadable

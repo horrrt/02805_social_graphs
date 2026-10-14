@@ -12,12 +12,14 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { expectedDistinct } from "../src/scripts/collection-model.mjs";
 import { builtPage } from "./built-page.mjs";
+import { unmath } from "./math-text.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const read = (name) => readFileSync(join(ROOT, name), "utf8");
 const json = (name) => JSON.parse(read(name));
 
-const raw = builtPage("out/weeks/week01/index.html");
+// Formulas read as their LaTeX and glossary terms as their word (math-text.mjs).
+const raw = unmath(builtPage("out/weeks/week01/index.html"));
 const svg = read("public/assets/images/hero-packs.svg");
 const plain = raw
   .replace(/<[^>]+>/g, " ")
