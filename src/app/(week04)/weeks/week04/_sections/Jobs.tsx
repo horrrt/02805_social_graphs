@@ -1,3 +1,4 @@
+import { Gloss } from "@/components/post/Gloss";
 import { Drawer } from "@/components/post/Drawer";
 import { Drawers } from "@/components/post/Drawers";
 import { JobsNum, JobsPart } from "@/features/week04/jobs/Jobs";
@@ -129,7 +130,7 @@ export function Jobs() {
             <h3>Do outsourcers cluster jobs like random firms would?</h3>
             <p className="axis-note">
               Bars show how alike the two groups' job clusters are. Whiskers
-              span one <GlossTerm id="w4-term-jobs-sd" word="standard deviation">How far values typically sit from their average.</GlossTerm>.
+              span one <Gloss id="w4-term-standard-deviation" word="standard deviation" />.
             </p>
             <QuestionPart part="splitNmi" />
           </div>

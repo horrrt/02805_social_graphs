@@ -1,3 +1,4 @@
+import { Gloss } from "@/components/post/Gloss";
 import { Drawer } from "@/components/post/Drawer";
 import { Drawers } from "@/components/post/Drawers";
 import { QuestionPart } from "@/features/week04/questions/Questions";
@@ -176,7 +177,7 @@ export function Beyond() {
                 </p>
                 <p>Pooled over the companies in each bar,
                 {" "}
-                with a 95% <GlossTerm id="w4-term-beyond-bootstrap" word="bootstrap interval">A range for a result found by recomputing it on many resamples of the companies, drawn at random with repeats; 95% of the resampled results fall inside it.</GlossTerm> for
+                with a 95% <Gloss id="w4-term-bootstrap-interval" word="bootstrap interval" /> for
                 {" "}
                 the first two.</p>
               </Drawer>

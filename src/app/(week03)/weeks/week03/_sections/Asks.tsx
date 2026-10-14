@@ -1,4 +1,4 @@
-import { Term } from "@/components/post/Term";
+import { Gloss } from "@/components/post/Gloss";
 import { AreaModes, AreaNote, GraphControls, OriginPicker, VAnswer, VChart, ViewsStatus } from "@/features/week03/views/Views";
 import { QAnswer, QChart, RingControls, RingScope } from "@/features/week03/questions/Questions";
 import { R2, ZDef, ZIs } from "@/features/week03/Formulas";
@@ -93,7 +93,7 @@ export function Asks() {
           <p className="sub">
             The fit is not the finding. The
             {" "}
-            <Term id="w3-term-residual" word="residual">What is left of a corridor once the model&apos;s prediction is taken out: here, how many times more people it carries than the model expects.</Term>
+            <Gloss id="w3-term-residual" word="residual" />
             {" "}
             is. These carry the
             most people relative to what size and distance predict, among
@@ -236,7 +236,7 @@ export function Asks() {
                 away. Two charts is not a model, so neither one holds the other
                 fixed.
                 {" "}
-                <Term id="w3-term-gravity" word="Gravity">The gravity model: people on a corridor rise with the size of both ends and fall with the distance between them, as gravity does with mass and distance.</Term>
+                <Gloss id="w3-term-gravity" word="Gravity" />
                 {" "}
                 does. It is the standard baseline in the
                 migration literature and it is almost embarrassingly good:
@@ -246,7 +246,7 @@ export function Asks() {
               <p className="sub">
                 Fitted here by
                 {" "}
-                <Term id="w3-term-ppml" word="Poisson pseudo-maximum-likelihood">A way to fit a model to counts that keeps the zeros and does not take logs, so corridors carrying nobody still count.</Term>
+                <Gloss id="w3-term-ppml" word="Poisson pseudo-maximum-likelihood" />
                 {" "}
                 on all
                 8,487 corridors with population and
@@ -263,14 +263,14 @@ export function Asks() {
                 nobody and biases the rest. Each distance and population
                 coefficient is an
                 {" "}
-                <Term id="w3-term-elasticity" word="elasticity">The per cent change in one quantity for a one per cent change in another.</Term>
+                <Gloss id="w3-term-elasticity" word="elasticity" />
                 : a one per cent rise in the term
                 moves the corridor by that many per cent. The under-1,000 km
                 term is a yes/no shift, not an elasticity: it moves the
                 corridor by a fixed share when the two centres are that close.
                 Intervals are the
                 {" "}
-                <Term id="w3-term-sandwich" word="heteroskedasticity-robust sandwich">An interval that stays honest when the scatter around the model is larger for some corridors than for others.</Term>
+                <Gloss id="w3-term-sandwich-interval" word="heteroskedasticity-robust sandwich" />
                 {" "}
                 the method calls for, which statsmodels fits directly
                 and scikit-learn could not report at all.
@@ -381,7 +381,7 @@ export function Asks() {
             Shuffle the network keeping every country's partner
             count and Louvain still returns almost the same
             {" "}
-            <Term id="w3-term-modularity" word="modularity">A score for a split into groups: how many more links fall inside the groups than a random network with the same link counts would put there.</Term>
+            <Gloss id="w3-term-modularity" word="modularity" />
             , so
             the amount of grouping says nothing on its own. Which countries
             land together does, and even that is a matter of degree: run
@@ -501,7 +501,7 @@ export function Asks() {
                   more seeds give nine groups 56 times out of 100 and this exact
                   partition 0 times, with a mean
                   {" "}
-                  <Term id="w3-term-nmi" word="NMI">Normalised mutual information: how much two splits into groups agree, from 0 (unrelated) to 1 (identical).</Term>
+                  <Gloss id="w3-term-nmi" word="NMI" />
                   {" "}
                   of 0.92 against it (as low
                   as 0.79 on the least similar run). The partition above is
@@ -574,23 +574,23 @@ export function Asks() {
                 </tbody>
               </table>
               <p className="sub">
-                <Term id="w3-term-clustering" word="Clustering">How often two partners of a country are also partners of each other, closing a triangle.</Term>
+                <Gloss id="w3-term-clustering" word="Clustering" />
                 ,
                 {" "}
-                <Term id="w3-term-assortativity" word="assortativity">Whether countries with many partners tend to link to others with many partners (above 0) or to ones with few (below 0).</Term>
+                <Gloss id="w3-term-assortativity" word="assortativity" />
                 , average distance,
                 {" "}
-                <Term id="w3-term-diameter" word="diameter">The longest shortest path: the most steps needed to get between any two countries.</Term>
+                <Gloss id="w3-term-diameter" word="diameter" />
                 {" "}
                 and the
                 largest
                 {" "}
-                <Term id="w3-term-clique" word="clique">A group in which every pair shares a link.</Term>
+                <Gloss id="w3-term-clique" word="clique" />
                 {" "}
                 are all computed on the undirected, unweighted
                 core: whether two countries share any corridor, not how many
                 people or how many corridors. The null is 100 degree-preserving
-                <Term id="w3-term-double-edge-swap" word="double-edge-swap">A shuffle step: take links A–B and C–D and rewire them to A–D and C–B, so every country keeps its number of partners.</Term>
+                <Gloss id="w3-term-double-edge-swap" word="double-edge-swap" />
                 {" "}
                 shuffles of that same core, from
                 {" "}
@@ -604,7 +604,7 @@ export function Asks() {
                 <ZDef />
                 .
                 {" "}
-                <Term id="w3-term-reciprocity" word="Reciprocity">The share of one-way links whose reverse also exists.</Term>
+                <Gloss id="w3-term-reciprocity" word="Reciprocity" />
                 {" "}
                 needs the
                 direction, so it uses the directed network and 100 directed
@@ -628,7 +628,7 @@ export function Asks() {
                   Comparing 0.41 against 0.11 the way the table does is unfair
                   to the smaller network, because reciprocity rises with
                   {" "}
-                  <Term id="w3-term-density" word="density">The share of all possible links that actually exist.</Term>
+                  <Gloss id="w3-term-density" word="density" />
                   {" "}
                   on its own: in a directed graph wired at random, the
                   share of arcs whose reverse also exists is just the density.

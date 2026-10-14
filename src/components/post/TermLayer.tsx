@@ -4,7 +4,7 @@
 // term and closes the others, any other click closes them all, and Escape
 // closes them all and moves focus off a term button, since
 // .w4-term:focus-within keeps its pop-up open. Renders nothing; mount one per
-// page, on Weeks 4 and 6 only.
+// page that has glossary terms.
 import { useDocumentEvent } from "@/lib/useEvents";
 import { termStore } from "./Term";
 

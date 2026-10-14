@@ -3,7 +3,8 @@
 // on hover and focus (span.w4-term > button + span.w4-pop[role=tooltip]), the
 // markup Week 4's JSX writes and termify() builds. The is-open class, which
 // keeps the pop-up open after a click, comes from termStore; only TermLayer
-// (Weeks 4 and 6) changes it, so a term stays inert on pages that do not mount one.
+// changes it, so a term stays inert on pages that do not mount one. Gloss.tsx
+// places a term with its definition from the shared glossary (src/lib/glossary.ts).
 import type { ReactNode } from "react";
 import { createStore } from "@/scripts/runtime/store.js";
 import { useOwnedRef } from "@/lib/useOwnedRef";

@@ -1,6 +1,8 @@
+import { Gloss } from "@/components/post/Gloss";
 import { type RailItem, SectionRail } from "@/components/post/SectionRail";
 import { PostTopbar } from "@/components/site/PostTopbar";
 import { StyleMenu } from "@/features/styleguide/StyleMenu";
+import { RoleP, TailAlpha } from "@/features/week03/Formulas";
 
 // The section rail, drawn here too so the guide shows it under every skin.
 const RAIL: RailItem[] = [
@@ -278,6 +280,36 @@ export default function Page() {
               </p>
               <div className="grid2">
                 <div className="sg-stack">
+                  <div>
+                    <p className="sg-label">
+                      <code>.w4-term</code>
+                      {" "}
+                      ·
+                      {" "}
+                      <code>.w4-pop</code>
+                      {" "}
+                      ·
+                      {" "}
+                      <code>.w3-formula</code>
+                      {" "}
+                      ·
+                      {" "}
+                      <code>.tex</code>
+                    </p>
+                    <p className="sub">
+                      A
+                      {" "}
+                      <Gloss id="sg-term-power-law" />
+                      {" "}
+                      tail has an exponent
+                      {" "}
+                      <TailAlpha />
+                      .
+                    </p>
+                    <div className="w3-formula">
+                      <RoleP />
+                    </div>
+                  </div>
                   <div>
                     <p className="sg-label">
                       <code>.step-head</code>

@@ -1,4 +1,4 @@
-import { Term } from "@/components/post/Term";
+import { Gloss } from "@/components/post/Gloss";
 import { FitP, Step, Xmin } from "@/features/week03/Formulas";
 // Methods, and what this cannot tell you.
 export function Methods() {
@@ -93,7 +93,7 @@ export function Methods() {
                     people both ways, corridors under 10,000 people dropped.
                     Two coordinates per country, both computed on
                     {" "}
-                    <Term id="w3-term-strength" word="strength">A country&apos;s total people across its corridors, rather than its number of corridors.</Term>
+                    <Gloss id="w3-term-strength" word="strength" />
                     {" "}
                     rather than on a count of partners, because a corridor
                     here runs from a dozen people to four million. Louvain is
@@ -334,11 +334,11 @@ export function Methods() {
                     {" "}
                     Every interval on this page is
                     computed rather than assumed. Correlations carry a
-                    <Term id="w3-term-fisher" word="Fisher interval">A confidence interval for a correlation, computed after a change of scale that makes its spread close to a bell curve.</Term>
+                    <Gloss id="w3-term-fisher-interval" word="Fisher interval" />
                     ; the weighted median of distance
                     carries a percentile interval over 400
                     {" "}
-                    <Term id="w3-term-resamples" word="resamples">Copies of the data made by drawing corridors at random, with repeats allowed; how a result varies across them shows its uncertainty.</Term>
+                    <Gloss id="w3-term-resamples" word="resamples" />
                     {" "}
                     of the
                     corridors, resampled by corridor because a corridor is

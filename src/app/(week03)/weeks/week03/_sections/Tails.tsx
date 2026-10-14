@@ -1,4 +1,4 @@
-import { Term } from "@/components/post/Term";
+import { Gloss } from "@/components/post/Gloss";
 import { Chart } from "@/features/week03/frame/Chart";
 import { Slot } from "@/features/week03/frame/Slot";
 import { AxisModes } from "@/features/week03/tails/AxisModes";
@@ -19,18 +19,18 @@ export function Tails() {
             <b>
               Three of the four tails on this page fail the test for a
               {" "}
-              <Term id="w3-term-power-law" word="power law">A pattern where the share of countries with at least k partners falls off as a fixed power of k, so most have few and a handful have very many. It draws a straight line on log–log axes.</Term>
+              <Gloss id="w3-term-power-law" word="power law" />
               .
             </b>
             {" "}
             The fourth, flight partners, is not ruled out on
             its own terms, but the
             {" "}
-            <Term id="w3-term-lognormal" word="lognormal">A spread whose logarithm follows the bell curve. Its tail is long, but it bends down on log–log axes where a power law runs straight.</Term>
+            <Gloss id="w3-term-lognormal" word="lognormal" />
             {" "}
             and
             {" "}
-            <Term id="w3-term-exponential" word="exponential">A spread whose share falls by the same factor for each step up, so its tail dies off fast.</Term>
+            <Gloss id="w3-term-exponential" word="exponential" />
             {" "}
             still describe
             it better wherever the three can be told apart. The charts
@@ -77,7 +77,7 @@ export function Tails() {
                   {" "}
                   These numbers are for 2020, the
                   {" "}
-                  <Term id="w3-term-null-model" word="null-model">A null model: the network shuffled at random while some of its features stay fixed, to show what chance alone would give.</Term>
+                  <Gloss id="w3-term-null-model" word="null-model" />
                   {" "}
                   year; the chart
                   itself follows the year slider. The distribution is
@@ -125,7 +125,7 @@ export function Tails() {
                   {" "}
                   The
                   {" "}
-                  <Term id="w3-term-ccdf" word="CCDF">Complementary cumulative distribution function: for each value, the share of countries at or above it.</Term>
+                  <Gloss id="w3-term-ccdf" word="CCDF" />
                   {" "}
                   shows the long tail more clearly than the raw
                   histogram, and the flight network's tail is the longest.
@@ -141,23 +141,23 @@ export function Tails() {
                     power law, and with 232 countries the axis only spans
                     about two
                     {" "}
-                    <Term id="w3-term-decades" word="decades">Factors of ten: two decades run from about 2 to about 200.</Term>
+                    <Gloss id="w3-term-decades" word="decades" />
                     . So we fitted the tails:
                     {" "}
-                    <Term id="w3-term-maximum-likelihood" word="maximum likelihood">Choosing the model&apos;s numbers that make the data actually seen as likely as possible.</Term>
+                    <Gloss id="w3-term-maximum-likelihood" word="maximum likelihood" />
                     {" "}
                     for the exponent, the lower bound
                     chosen by minimising the
                     {" "}
-                    <Term id="w3-term-ks" word="Kolmogorov–Smirnov distance">The largest gap between the share of real values below a point and the share the model predicts, over every point.</Term>
+                    <Gloss id="w3-term-ks-distance" word="Kolmogorov–Smirnov distance" />
                     , a
                     {" "}
-                    <Term id="w3-term-goodness-of-fit" word="goodness-of-fit test">A test of whether data could plausibly have come from a model, by comparing it with fake datasets drawn from that model.</Term>
+                    <Gloss id="w3-term-goodness-of-fit" word="goodness-of-fit test" />
                     {" "}
                     against 500 synthetic datasets
                     drawn from the fitted model, and a
                     {" "}
-                    <Term id="w3-term-likelihood-ratio" word="likelihood-ratio test">A test of which of two models makes the data more likely, and whether the difference is larger than chance.</Term>
+                    <Gloss id="w3-term-likelihood-ratio" word="likelihood-ratio test" />
                     {" "}
                     against the two distributions that also look straight
                     here. The method is Clauset, Shalizi and Newman (2009);
@@ -239,9 +239,9 @@ export function Tails() {
                     <span>
                       <b>
                         So the word on this page is "
-                        <Term id="w3-term-heavy-tailed" word="heavy-tailed">Having many more very large values than a bell curve would, whatever the exact shape of the tail.</Term>
+                        <Gloss id="w3-term-heavy-tailed" word="heavy-tailed" />
                         ", not "
-                        <Term id="w3-term-scale-free" word="scale-free">Having a power-law tail, so no typical size sets the scale.</Term>
+                        <Gloss id="w3-term-scale-free" word="scale-free" />
                         ".
                       </b>
                       {" "}

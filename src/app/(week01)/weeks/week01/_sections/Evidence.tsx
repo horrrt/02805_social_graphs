@@ -1,4 +1,4 @@
-import { Term } from "@/components/post/Term";
+import { Gloss } from "@/components/post/Gloss";
 import { DegreeChart, DegreeScale, DegreeTable, Sketch } from "@/features/week01/chart/Distribution";
 import { PacksGuess } from "@/features/week01/packs/Guess";
 import { CardIndex } from "@/features/week01/packs/Index";
@@ -32,7 +32,7 @@ export function Evidence() {
               spread it over about two decades, so the few hubs are
               visible. Visual straightness alone does not establish a
               {" "}
-              <Term id="w1-term-power-law" word="power law">A pattern where the share of items with a count k falls off as a fixed power of k, so most items have small counts and a few have huge ones. It draws a straight line on log–log axes, but other patterns can look nearly straight too.</Term>
+              <Gloss id="w1-term-power-law" word="power law" />
               .
             </figcaption>
           </figure>
@@ -51,7 +51,7 @@ export function Evidence() {
                 <figcaption>
                   In- and out-degree are positively correlated across all 303
                   articles (
-                  <Term id="w1-term-spearman" word="Spearman">A correlation computed on ranks: 1 when ordering the articles by one count gives the same order as ordering them by the other, 0 when the two orders are unrelated.</Term>
+                  <Gloss id="w1-term-spearman" word="Spearman" />
                   {" "}
                   0.70), but the leaders differ: the most
                   linked-to articles are not the ones that link out most.
@@ -74,7 +74,7 @@ export function Evidence() {
               Across all 303 articles, in- and out-degree correlate (Spearman
               0.70,
               {" "}
-              <Term id="w1-term-pearson" word="Pearson">A correlation computed on the counts themselves: 1 when the points lie on a rising straight line, 0 when there is no straight-line relation.</Term>
+              <Gloss id="w1-term-pearson" word="Pearson" />
               {" "}
               0.50, both
               {" "}
@@ -184,7 +184,7 @@ export function Evidence() {
                 Node size follows total links; shade follows incoming links;
                 position comes from a
                 {" "}
-                <Term id="w1-term-force-layout" word="force-directed layout">A drawing method that pulls linked articles together and pushes every pair apart, then lets the picture settle.</Term>
+                <Gloss id="w1-term-force-layout" word="force-directed layout" />
                 , so distance on the page is a drawing
                 artefact and not a measured quantity. The two groups on the
                 right are drawn apart because they genuinely are apart: no
@@ -228,7 +228,7 @@ export function Evidence() {
               means unreachable in either direction. Following arrows only,
               the roster splits further: 66
               {" "}
-              <Term id="w1-term-scc" word="strongly connected components">Groups in which every article can reach every other by following links only in the direction they point.</Term>
+              <Gloss id="w1-term-scc" word="strongly connected components" />
               , the
               largest holding 229 articles.
             </p>
@@ -348,13 +348,13 @@ export function Evidence() {
             The directed roster gives in-degree and out-degree. Five
             independent draws per pack allow duplicates. The unequal
             {" "}
-            <Term id="w1-term-coupon-collector" word="coupon-collector">The coupon collector&apos;s problem: how many random draws, repeats allowed, it takes on average to collect every item of a set.</Term>
+            <Gloss id="w1-term-coupon-collector" word="coupon-collector" />
             {" "}
             expectation is calculated by integrating the
             probability that at least one card is still missing, checked
             against 20,000 independent
             {" "}
-            <Term id="w1-term-exponential-race" word="exponential-race">A way to simulate collecting: each card gets a random waiting time until it first appears, shorter for likelier cards, and the set is complete when the last card has appeared.</Term>
+            <Gloss id="w1-term-exponential-race" word="exponential-race" />
             {" "}
             simulations. Expected
             whole packs lie between 1,944.19 and 1,944.99; approximately 1,945

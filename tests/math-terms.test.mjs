@@ -30,7 +30,7 @@ const POSTS = {
     terms: [
       "w2-term-degree-preserving-shuffle", "w2-term-erdos-renyi", "w2-term-friendship-paradox", "w2-term-clustering",
       "w2-term-path-length", "w2-term-watts-strogatz", "w2-term-barabasi-albert", "w2-term-degree-tail", "w2-term-p-value",
-      "w2-term-one-sided", "w2-term-unadjusted", "w2-term-assortativity", "w2-term-giant", "w2-term-degree-biased",
+      "w2-term-one-sided", "w2-term-unadjusted", "w2-term-assortativity", "w2-term-giant-component", "w2-term-degree-biased",
       "w2-term-poisson", "w2-term-local-maxima", "w2-term-path-decomposition",
     ],
   },
@@ -40,13 +40,13 @@ const POSTS = {
     formulas: 24,
     terms: [
       "w3-term-power-law", "w3-term-lognormal", "w3-term-exponential", "w3-term-null-model", "w3-term-ccdf", "w3-term-decades",
-      "w3-term-maximum-likelihood", "w3-term-ks", "w3-term-goodness-of-fit", "w3-term-likelihood-ratio", "w3-term-heavy-tailed", "w3-term-scale-free",
-      "w3-term-directed", "w3-term-weighted", "w3-term-betweenness", "w3-term-pagerank", "w3-term-damping-factor", "w3-term-z",
-      "w3-term-degree", "w3-term-spearman", "w3-term-interval", "w3-term-peripheral", "w3-term-provincial-hub", "w3-term-community",
+      "w3-term-maximum-likelihood", "w3-term-ks-distance", "w3-term-goodness-of-fit", "w3-term-likelihood-ratio", "w3-term-heavy-tailed", "w3-term-scale-free",
+      "w3-term-directed", "w3-term-weighted", "w3-term-betweenness", "w3-term-pagerank", "w3-term-damping-factor", "w3-term-z-score",
+      "w3-term-in-out-degree", "w3-term-spearman", "w3-term-confidence-interval", "w3-term-peripheral", "w3-term-provincial-hub", "w3-term-community",
       "w3-term-ultra-peripheral", "w3-term-louvain", "w3-term-standard-deviation", "w3-term-residual", "w3-term-gravity", "w3-term-ppml",
-      "w3-term-elasticity", "w3-term-sandwich", "w3-term-modularity", "w3-term-nmi", "w3-term-clustering", "w3-term-assortativity",
+      "w3-term-elasticity", "w3-term-sandwich-interval", "w3-term-modularity", "w3-term-nmi", "w3-term-clustering", "w3-term-assortativity",
       "w3-term-diameter", "w3-term-clique", "w3-term-double-edge-swap", "w3-term-reciprocity", "w3-term-density", "w3-term-strength",
-      "w3-term-fisher", "w3-term-resamples",
+      "w3-term-fisher-interval", "w3-term-resamples",
     ],
   },
   // Week 4 marked its terms before this file (GlossTerm); these fill its gaps.
@@ -54,7 +54,7 @@ const POSTS = {
     page: "weeks/week04/",
     src: "src/app/(week04)/weeks/week04/page.tsx",
     formulas: 37,
-    terms: ["w4-term-jobs-sd", "w4-term-place-infomap", "w4-term-beyond-bootstrap"],
+    terms: ["w4-term-standard-deviation", "w4-term-infomap", "w4-term-bootstrap-interval"],
   },
 };
 

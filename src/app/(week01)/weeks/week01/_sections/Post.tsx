@@ -1,4 +1,4 @@
-import { Term } from "@/components/post/Term";
+import { Gloss } from "@/components/post/Gloss";
 import { Comparison } from "@/features/week01/odds/Comparison";
 import { EqualOdds, OurOdds, SeenFormula } from "./Formulas";
 
@@ -87,11 +87,11 @@ export function Post() {
             so the 17 isolates survive. Then we plotted in-degree and
             out-degree on linear and
             {" "}
-            <Term id="w1-term-log-log" word="log–log axes">A chart where both axes are logarithmic: each step along an axis multiplies the value by the same factor, so counts from 1 to over 100 fit on one chart.</Term>
+            <Gloss id="w1-term-log-log" word="log–log axes" />
             , drew the whole roster
             to find what sits outside the
             {" "}
-            <Term id="w1-term-giant-component" word="giant component">The largest component: the biggest group of articles that can all reach each other through links.</Term>
+            <Gloss id="w1-term-giant-component" word="giant component" />
             , and built a
             five-card pack rule where each draw picks an article with
             weight
@@ -119,7 +119,7 @@ export function Post() {
           <p>
             Under our rule the
             {" "}
-            <Term id="w1-term-hub" word="hubs">Articles with far more links than most of the others.</Term>
+            <Gloss id="w1-term-hub" word="hubs" />
             {" "}
             are the easy cards by construction: a
             card's odds grow with its incoming links, so those same 106

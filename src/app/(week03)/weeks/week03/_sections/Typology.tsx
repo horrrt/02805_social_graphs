@@ -1,4 +1,4 @@
-import { Term } from "@/components/post/Term";
+import { Gloss } from "@/components/post/Gloss";
 import { Chart } from "@/features/week03/frame/Chart";
 import { Slot } from "@/features/week03/frame/Slot";
 import { TypeCards, TypeDrawer } from "@/features/week03/typology/Typology";
@@ -23,19 +23,19 @@ export function Typology() {
             {" "}
             Venezuela moved from
             {" "}
-            <Term id="w3-term-peripheral" word="peripheral">A role: not a hub, with most of its corridors inside its own community.</Term>
+            <Gloss id="w3-term-peripheral" word="peripheral" />
             {" "}
             to
             {" "}
-            <Term id="w3-term-provincial-hub" word="provincial hub">A role: a hub, large inside its own community, with most of its corridors staying inside it.</Term>
+            <Gloss id="w3-term-provincial-hub" word="provincial hub" />
             :
             large inside one
             {" "}
-            <Term id="w3-term-community" word="community">A group of countries joined by more and heavier corridors among themselves than to the rest of the world.</Term>
+            <Gloss id="w3-term-community" word="community" />
             , barely present in the others.
             Colombia moved from
             {" "}
-            <Term id="w3-term-ultra-peripheral" word="ultra-peripheral">A role: not a hub, with nearly all of its corridors inside its own community.</Term>
+            <Gloss id="w3-term-ultra-peripheral" word="ultra-peripheral" />
             {" "}
             to peripheral, keeping
             most of its corridors inside one community but gaining a few
@@ -108,7 +108,7 @@ export function Typology() {
                 {" "}
                 <span>
                   <b>
-                    <Term id="w3-term-louvain" word="Louvain">A method that finds communities by moving nodes between groups until links inside the groups are as dense as it can make them. It starts at random, so two runs can differ.</Term>
+                    <Gloss id="w3-term-louvain" word="Louvain" />
                     {" "}
                     is random, and one run would have animated its own
                     seed.
@@ -125,7 +125,7 @@ export function Typology() {
                   {" "}
                   5.20 with a
                   {" "}
-                  <Term id="w3-term-standard-deviation" word="standard deviation">How far values typically sit from their average.</Term>
+                  <Gloss id="w3-term-standard-deviation" word="standard deviation" />
                   {" "}
                   of 0.08 across the 100 runs, and the wobble is
                   concentrated where a country sits on a threshold. Those are

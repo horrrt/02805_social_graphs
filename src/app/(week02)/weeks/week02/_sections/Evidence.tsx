@@ -1,8 +1,8 @@
-import { Term } from "@/components/post/Term";
+import { Gloss } from "@/components/post/Gloss";
 import { ServiceState } from "@/features/week02/transit/Closure";
 import { RoutePlanner } from "@/features/week02/transit/Planner";
 import { TransitMap } from "@/features/week02/transit/TransitMap";
-import { EdgeMean, Gnm, GnmPart, HubShare, PIs, Tail, ZIs } from "./Formulas";
+import { EdgeMean, Gnm, GnmM, GnmN, HubShare, PIs, Tail, ZIs } from "./Formulas";
 
 // "Curious? Go deeper.": the clustering baseline, the shuffle tests, the
 // friendship paradox and the methods. The service board's state, the
@@ -21,32 +21,32 @@ export function Evidence() {
         <p>
           This post covers the
           {" "}
-          <Term id="w2-term-degree-preserving-shuffle" word="degree-preserving shuffle">A null model that rewires the links at random while every article keeps its exact number of links.</Term>
+          <Gloss id="w2-term-degree-preserving-shuffle" word="degree-preserving shuffle" />
           , the
           {" "}
-          <Term id="w2-term-erdos-renyi" word="Erdős–Rényi random graph">A network in which every link joins a pair of nodes picked uniformly at random. G(n, m) is the version with a fixed number of links.</Term>
+          <Gloss id="w2-term-erdos-renyi" word="Erdős–Rényi random graph" />
           , the
           {" "}
-          <Term id="w2-term-friendship-paradox" word="friendship paradox">On average your friends have more friends than you do, because people with many friends appear in many friend lists.</Term>
+          <Gloss id="w2-term-friendship-paradox" word="friendship paradox" />
           {" "}
           and
           {" "}
-          <Term id="w2-term-clustering" word="clustering">How often two neighbours of an article are also linked to each other, closing a triangle.</Term>
+          <Gloss id="w2-term-clustering" word="clustering" />
           , and compares
           {" "}
-          <Term id="w2-term-path-length" word="path length">The number of links on the shortest route between two articles.</Term>
+          <Gloss id="w2-term-path-length" word="path length" />
           {" "}
           against both
           nulls. Screen Test adds two more candidates,
           {" "}
-          <Term id="w2-term-watts-strogatz" word="Watts–Strogatz">A model that starts from a ring where each node links to its nearest neighbours and rewires a few links at random, giving many triangles and short paths.</Term>
+          <Gloss id="w2-term-watts-strogatz" word="Watts–Strogatz" />
           {" "}
           and
           {" "}
-          <Term id="w2-term-barabasi-albert" word="Barabási–Albert">A model that grows a network one node at a time, each newcomer linking preferentially to nodes that already have many links, which makes hubs.</Term>
+          <Gloss id="w2-term-barabasi-albert" word="Barabási–Albert" />
           , and the
           {" "}
-          <Term id="w2-term-degree-tail" word="degree tail">The high end of the spread of link counts: how many articles have very many links.</Term>
+          <Gloss id="w2-term-degree-tail" word="degree tail" />
           : three
           mechanisms audition against the Marvel network, and only one
           measurement says which properties survive.
@@ -141,16 +141,16 @@ export function Evidence() {
           <p>
             Black Widow was chosen after scanning all 277 removals, so her
             {" "}
-            <Term id="w2-term-p-value" word="p-value">The chance of a result at least this extreme if only the null model&apos;s randomness were at work.</Term>
+            <Gloss id="w2-term-p-value" word="p-value" />
             {" "}
             describes her rank rather than testing a prior guess.
             The four p-values are
             {" "}
-            <Term id="w2-term-one-sided" word="one-sided">Counting only null results as extreme as the real one in the same direction.</Term>
+            <Gloss id="w2-term-one-sided" word="one-sided" />
             {" "}
             and
             {" "}
-            <Term id="w2-term-unadjusted" word="unadjusted">Not corrected for testing several results at once, so one small p among many can still be luck.</Term>
+            <Gloss id="w2-term-unadjusted" word="unadjusted" />
             .
           </p>
           <p className="fine">
@@ -204,11 +204,11 @@ export function Evidence() {
                 <p className="fine">
                   Keeps:
                   {" "}
-                  <GnmPart part="n" />
+                  <GnmN />
                   {" "}
                   and
                   {" "}
-                  <GnmPart part="m" />
+                  <GnmM />
                   . Destroys: the degree sequence too.
                 </p>
               </div>
@@ -393,7 +393,7 @@ export function Evidence() {
             <h3>What changes under the shuffle</h3>
             <p>
               Some quantities change little under degree-preserving rewiring.
-              <Term id="w2-term-assortativity" word="Degree assortativity">Whether well-linked articles tend to link to other well-linked articles (above 0) or to sparsely linked ones (below 0, called disassortative).</Term>
+              <Gloss id="w2-term-assortativity" word="Degree assortativity" />
               {" "}
               is −0.098 in the data versus a null mean of
               −0.120 (
@@ -420,7 +420,7 @@ export function Evidence() {
             <p>
               Part of that gap is the shuffle merging islands into the
               {" "}
-              <Term id="w2-term-giant" word="giant">The giant component: the largest group of articles that can all reach each other through links.</Term>
+              <Gloss id="w2-term-giant-component" word="giant" />
               . Swaps cannot link the 17 isolates, since a degree-zero
               article stays degree zero, which leaves 286 linked articles
               (303 minus 17). In all 1,000 draws those 286 land in a single
@@ -514,7 +514,7 @@ export function Evidence() {
               at least as linked as the character you started from. Nobody is
               lying; picking a friend is
               {" "}
-              <Term id="w2-term-degree-biased" word="degree-biased sampling">Picking in a way that favours articles with more links: following a link lands on a hub far more often than picking an article at random does.</Term>
+              <Gloss id="w2-term-degree-biased" word="degree-biased sampling" />
               , because a hub
               is a friend to many and therefore keeps getting picked.
             </p>
@@ -554,7 +554,7 @@ export function Evidence() {
               weakens but refuses to die: 10.44 for a random friend against
               9.47 for a random character. A
               {" "}
-              <Term id="w2-term-poisson" word="Poisson distribution">The spread of link counts a fully random network gives: most articles near the average, few far from it.</Term>
+              <Gloss id="w2-term-poisson" word="Poisson distribution" />
               {" "}
               still has a
               variance, and a variance is all the paradox asks for.
@@ -580,7 +580,7 @@ export function Evidence() {
               links on the nine-character Morituri island, where no neighbour
               has more. Both are
               {" "}
-              <Term id="w2-term-local-maxima" word="local degree maxima">Articles with at least as many links as every one of their neighbours.</Term>
+              <Gloss id="w2-term-local-maxima" word="local degree maxima" />
               , despite their very
               different degrees.
             </p>
@@ -690,7 +690,7 @@ export function Evidence() {
             article; each accepts 20 swaps per edge, with a separate
             50-swaps-per-edge sensitivity run. The 16-hub drawing uses an
             {" "}
-            <Term id="w2-term-path-decomposition" word="edge-disjoint greedy path decomposition">A way to split the links into lines: take a long route, remove its links, and repeat, so each link belongs to one line.</Term>
+            <Gloss id="w2-term-path-decomposition" word="edge-disjoint greedy path decomposition" />
             . Route finding includes
             all 303 nodes and explicitly selects directed or undirected
             travel.

@@ -1,4 +1,4 @@
-import { Term } from "@/components/post/Term";
+import { Gloss } from "@/components/post/Gloss";
 import { Chart } from "@/features/week03/frame/Chart";
 import { Slot } from "@/features/week03/frame/Slot";
 import { Damping, Step } from "@/features/week03/Formulas";
@@ -20,11 +20,11 @@ export function Bridge() {
               <p className="axis-note">
                 One point per country. Migration graph is
                 {" "}
-                <Term id="w3-term-directed" word="directed">Each link points one way: from the country people were born in to the country they live in.</Term>
+                <Gloss id="w3-term-directed" word="directed" />
                 {" "}
                 and
                 {" "}
-                <Term id="w3-term-weighted" word="weighted">Each link carries a number, here the people on the corridor, not just whether it exists.</Term>
+                <Gloss id="w3-term-weighted" word="weighted" />
                 ; distance along a corridor is
                 {" "}
                 <Step per="people" />
@@ -36,7 +36,7 @@ export function Bridge() {
                 A "path" here is a chain of migrant-stock corridors, A to B
                 to C, not a route anyone travels.
                 {" "}
-                <Term id="w3-term-betweenness" word="Betweenness">How often a node lies on the shortest paths between other pairs of nodes.</Term>
+                <Gloss id="w3-term-betweenness" word="Betweenness" />
                 {" "}
                 counts how
                 often a country sits on the strongest such chains linking
@@ -88,11 +88,11 @@ export function Bridge() {
             <div className="plot">
               <h3>Big ≠ prestigious: rank by people, rank by PageRank</h3>
               <p className="axis-note">
-                <Term id="w3-term-pagerank" word="PageRank">A score that a node earns from the nodes linking to it, each passing on a share of its own score, so a link from a high-scoring node counts for more.</Term>
+                <Gloss id="w3-term-pagerank" word="PageRank" />
                 {" "}
                 on the weighted migration graph,
                 {" "}
-                <Term id="w3-term-damping-factor" word="damping factor">The chance that PageRank follows a link at each step rather than jumping to a random node.</Term>
+                <Gloss id="w3-term-damping-factor" word="damping factor" />
                 {" "}
                 <Damping />
                 : a country's score is mostly what its senders hand

@@ -1,3 +1,4 @@
+import { Gloss } from "@/components/post/Gloss";
 import { Drawer } from "@/components/post/Drawer";
 import { Drawers } from "@/components/post/Drawers";
 import { PlaceOpenerStrip } from "@/features/week04/frame/Findings";
@@ -181,7 +182,7 @@ export function Place() {
             <p className="sub">
               NMI with Census regions is 0.04
               {" "}
-              and with divisions 0.11. <GlossTerm id="w4-term-place-infomap" word="Infomap">A method that finds groups by following a random walk: a group is an area the walker tends to stay inside for a while.</GlossTerm>, which follows
+              and with divisions 0.11. <Gloss id="w4-term-infomap" word="Infomap" />, which follows
               {" "}
               a random walk between metros instead of counting links, finds no split at all: one module holds all 40.
             </p>

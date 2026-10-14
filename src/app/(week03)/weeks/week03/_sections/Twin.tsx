@@ -1,4 +1,4 @@
-import { Term } from "@/components/post/Term";
+import { Gloss } from "@/components/post/Gloss";
 import { Chart } from "@/features/week03/frame/Chart";
 import { Slot } from "@/features/week03/frame/Slot";
 import { MapStage } from "@/features/week03/twin/MapStage";
@@ -26,7 +26,7 @@ export function Twin() {
             {" "}
             That takes both a
             {" "}
-            <Term id="w3-term-z" word="z">The z-score: how many standard deviations of the shuffled networks a country&apos;s betweenness sits above their average.</Term>
+            <Gloss id="w3-term-z-score" word="z" />
             {" "}
             of 2 or more against the null
             and excess betweenness above a twentieth of the leader's (the
@@ -57,7 +57,7 @@ export function Twin() {
                 <p className="axis-note" id="null-note">
                   The null keeps every country&apos;s
                   {" "}
-                  <Term id="w3-term-degree" word="in- and out-degree">A country&apos;s number of origins (in-degree) and of destinations (out-degree).</Term>
+                  <Gloss id="w3-term-in-out-degree" word="in- and out-degree" />
                   {" "}
                   and deals
                   the observed corridor weights back out at random. Click any
@@ -130,11 +130,11 @@ export function Twin() {
                 this same route table for 2019 gives 87
                 countries to compare. Route count ranks them well
                 (
-                <Term id="w3-term-spearman" word="Spearman">A correlation computed on ranks: 1 when two orderings agree exactly, 0 when they are unrelated.</Term>
+                <Gloss id="w3-term-spearman" word="Spearman" />
                 {" "}
                 0.87,
                 {" "}
-                <Term id="w3-term-interval" word="95%">A 95% confidence interval: the range that would hold the true value in 95 of 100 repeats of the study.</Term>
+                <Gloss id="w3-term-confidence-interval" word="95%" />
                 {" "}
                 0.81 to 0.92) and is poor at size:
                 among the 58 countries with five routes
