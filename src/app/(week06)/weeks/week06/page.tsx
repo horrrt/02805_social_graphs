@@ -179,7 +179,7 @@ export default function Page() {
       <main id="main">
         <section className="hero w4-hero w6e-hero" id="top">
           <div className="shell">
-            <p className="eyebrow">Week 6 · The language half</p>
+            <p className="eyebrow">Week 6 · NLP II</p>
             <h1>Here, storm means Ororo, not the weather</h1>
             <p className="w6e-lede">
               Count the words on Storm&apos;s page and
