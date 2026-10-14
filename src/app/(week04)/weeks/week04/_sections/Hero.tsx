@@ -7,7 +7,7 @@ export function Hero() {
   return (
     <section className="hero w4-hero" id="top">
       <div className="shell">
-        <p className="eyebrow">Week 4 · Communities &amp; backbones · Go nuts</p>
+        <p className="eyebrow">Week 4 · Communities &amp; backbones</p>
         <h1>Who hires America's foreign workers?</h1>
         <div className="w4-hero-grid">
           <div className="w4-hero-text">

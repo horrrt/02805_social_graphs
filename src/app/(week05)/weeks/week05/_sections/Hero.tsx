@@ -10,7 +10,7 @@ export function Hero() {
   return (
     <PostHero
       id="top"
-      eyebrow="Week 5 · NLP I · Go nuts"
+      eyebrow="Week 5 · NLP I"
       title="The Marvel network gets language"
       gridClass="w4-hero-grid w5-hero-grid"
       body={

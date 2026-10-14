@@ -8,7 +8,7 @@ export function Hero() {
       <section className="hero" id="globe">
         <div className="shell">
           <div>
-            <p className="eyebrow">Week 3 · Who matters, and why · Go nuts</p>
+            <p className="eyebrow">Week 3 · Who matters, and why</p>
             <h1>
               Corridor
               <br />
