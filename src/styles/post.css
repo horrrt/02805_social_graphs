@@ -2871,7 +2871,6 @@
 .corridor .w6e-lede a { color: #fff; }
 .corridor .w6e-part { border-top: 1px solid var(--line); color: var(--ink-soft); font-size: var(--fs-small); font-weight: 700; letter-spacing: 0.04em; margin: 48px 0 0; padding-top: 16px; }
 /* A label, not a paragraph: "What we did" keeps one <p>; it reads like the paragraph under it. */
-.corridor .w6e-uses { color: var(--ink-soft); font-size: var(--fs-body); line-height: 1.62; margin: 0; max-width: 68ch; }
 /* A display formula between two paragraphs of what we did, typeset by KaTeX (src/lib/Tex.tsx). */
 .corridor .w6e-formula { color: var(--ink); overflow: auto hidden; padding: 3px 0; }
 .corridor .w6e-formula .katex-display { margin: 0; }
