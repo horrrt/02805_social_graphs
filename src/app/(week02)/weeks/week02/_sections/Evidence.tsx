@@ -474,7 +474,7 @@ export function Evidence() {
               component in every one of the 1,000 draws: the largest
               component averages 285.9 nodes versus the observed 277
               (
-              <ZIs v="-23.3" />
+              <ZIs v="−23.3" />
               ). The draws that reach 19 components (38 of 1,000)
               do so because a different, unrelated pair of articles splits
               off elsewhere, not because the shuffle keeps the Morituri
@@ -541,7 +541,7 @@ export function Evidence() {
               linked articles whose random friend is at least as linked as
               they are is 75.3% in the real network against a shuffle mean
               of 76.3% (
-              <ZIs v="-3.5" />
+              <ZIs v="−3.5" />
               ) — below every one of the 1,000 draws.
               By this measure Marvel is slightly less paradoxical than
               degree-preserving rewiring predicts.

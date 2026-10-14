@@ -1,6 +1,8 @@
+import { Term } from "@/components/post/Term";
 import { Chart } from "@/features/week03/frame/Chart";
 import { Slot } from "@/features/week03/frame/Slot";
 import { MapStage } from "@/features/week03/twin/MapStage";
+import { ZIs } from "@/features/week03/Formulas";
 // 4-5: the migration map against its flight twin.
 export function Twin() {
   return (
@@ -22,10 +24,18 @@ export function Twin() {
               random.
             </b>
             {" "}
-            That takes both a z of 2 or more against the null
+            That takes both a
+            {" "}
+            <Term id="w3-term-z" word="z">The z-score: how many standard deviations of the shuffled networks a country&apos;s betweenness sits above their average.</Term>
+            {" "}
+            of 2 or more against the null
             and excess betweenness above a twentieth of the leader's (the
             United States). Either test alone is looser: 12 countries
-            clear z = 2 on its own, but two of them, Guam and Réunion, do
+            clear
+            {" "}
+            <ZIs v="2" of="bridge" />
+            {" "}
+            on its own, but two of them, Guam and Réunion, do
             it on an excess so small it is noise around a near-zero base,
             which is what the second test catches. The rest sit inside
             what a shuffled network produces, which is why the scatter
@@ -45,7 +55,11 @@ export function Twin() {
               <div className="plot">
                 <h3>Betweenness z-score vs origins (in-degree), log x</h3>
                 <p className="axis-note" id="null-note">
-                  The null keeps every country's in- and out-degree and deals
+                  The null keeps every country&apos;s
+                  {" "}
+                  <Term id="w3-term-degree" word="in- and out-degree">A country&apos;s number of origins (in-degree) and of destinations (out-degree).</Term>
+                  {" "}
+                  and deals
                   the observed corridor weights back out at random. Click any
                   point to select that country.
                 </p>
@@ -115,7 +129,14 @@ export function Twin() {
                 with an American airport at one end, and joining it to
                 this same route table for 2019 gives 87
                 countries to compare. Route count ranks them well
-                (Spearman 0.87, 95% 0.81 to 0.92) and is poor at size:
+                (
+                <Term id="w3-term-spearman" word="Spearman">A correlation computed on ranks: 1 when two orderings agree exactly, 0 when they are unrelated.</Term>
+                {" "}
+                0.87,
+                {" "}
+                <Term id="w3-term-interval" word="95%">A 95% confidence interval: the range that would hold the true value in 95 of 100 repeats of the study.</Term>
+                {" "}
+                0.81 to 0.92) and is poor at size:
                 among the 58 countries with five routes
                 or more, excluding Venezuela, one route carries anywhere from
                 25,014 people a year (Nigeria) to

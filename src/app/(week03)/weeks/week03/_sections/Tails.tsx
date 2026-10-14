@@ -1,6 +1,8 @@
+import { Term } from "@/components/post/Term";
 import { Chart } from "@/features/week03/frame/Chart";
 import { Slot } from "@/features/week03/frame/Slot";
 import { AxisModes } from "@/features/week03/tails/AxisModes";
+import { Ccdf, FitP, TailAlpha, Xmin } from "@/features/week03/Formulas";
 // 2: heavy tails in migration.
 export function Tails() {
   return (
@@ -16,11 +18,21 @@ export function Tails() {
           <p className="sub">
             <b>
               Three of the four tails on this page fail the test for a
-              power law.
+              {" "}
+              <Term id="w3-term-power-law" word="power law">A pattern where the share of countries with at least k partners falls off as a fixed power of k, so most have few and a handful have very many. It draws a straight line on log–log axes.</Term>
+              .
             </b>
             {" "}
             The fourth, flight partners, is not ruled out on
-            its own terms, but the lognormal and exponential still describe
+            its own terms, but the
+            {" "}
+            <Term id="w3-term-lognormal" word="lognormal">A spread whose logarithm follows the bell curve. Its tail is long, but it bends down on log–log axes where a power law runs straight.</Term>
+            {" "}
+            and
+            {" "}
+            <Term id="w3-term-exponential" word="exponential">A spread whose share falls by the same factor for each step up, so its tail dies off fast.</Term>
+            {" "}
+            still describe
             it better wherever the three can be told apart. The charts
             below show none of that, which is the reason for fitting rather
             than looking.
@@ -63,7 +75,11 @@ export function Tails() {
                 <span>
                   <b>What to notice, in 2020</b>
                   {" "}
-                  These numbers are for 2020, the null-model year; the chart
+                  These numbers are for 2020, the
+                  {" "}
+                  <Term id="w3-term-null-model" word="null-model">A null model: the network shuffled at random while some of its features stay fixed, to show what chance alone would give.</Term>
+                  {" "}
+                  year; the chart
                   itself follows the year slider. The distribution is
                   skewed rather than lopsided at the bottom: the median
                   country has 21 origins and the busiest has 203, so seven
@@ -76,7 +92,8 @@ export function Tails() {
             <div className="plot">
               <h3>B. CCDF of partners</h3>
               <p className="axis-note">
-                P(K ≥ k), the share of countries with at least k partners.
+                <Ccdf />
+                , the share of countries with at least k partners.
                 Click a point to select it.
               </p>
               <div className="legend">
@@ -106,7 +123,11 @@ export function Tails() {
                 <span>
                   <b>What to notice</b>
                   {" "}
-                  The CCDF shows the long tail more clearly than the raw
+                  The
+                  {" "}
+                  <Term id="w3-term-ccdf" word="CCDF">Complementary cumulative distribution function: for each value, the share of countries at or above it.</Term>
+                  {" "}
+                  shows the long tail more clearly than the raw
                   histogram, and the flight network's tail is the longest.
                 </span>
               </div>
@@ -118,11 +139,26 @@ export function Tails() {
                   <p className="sub">
                     A straight-ish line on log–log axes is not evidence of a
                     power law, and with 232 countries the axis only spans
-                    about two decades. So we fitted the tails:
-                    maximum likelihood for the exponent, the lower bound
-                    chosen by minimising the Kolmogorov–Smirnov distance, a
-                    goodness-of-fit test against 500 synthetic datasets
-                    drawn from the fitted model, and a likelihood-ratio test
+                    about two
+                    {" "}
+                    <Term id="w3-term-decades" word="decades">Factors of ten: two decades run from about 2 to about 200.</Term>
+                    . So we fitted the tails:
+                    {" "}
+                    <Term id="w3-term-maximum-likelihood" word="maximum likelihood">Choosing the model&apos;s numbers that make the data actually seen as likely as possible.</Term>
+                    {" "}
+                    for the exponent, the lower bound
+                    chosen by minimising the
+                    {" "}
+                    <Term id="w3-term-ks" word="Kolmogorov–Smirnov distance">The largest gap between the share of real values below a point and the share the model predicts, over every point.</Term>
+                    , a
+                    {" "}
+                    <Term id="w3-term-goodness-of-fit" word="goodness-of-fit test">A test of whether data could plausibly have come from a model, by comparing it with fake datasets drawn from that model.</Term>
+                    {" "}
+                    against 500 synthetic datasets
+                    drawn from the fitted model, and a
+                    {" "}
+                    <Term id="w3-term-likelihood-ratio" word="likelihood-ratio test">A test of which of two models makes the data more likely, and whether the difference is larger than chance.</Term>
+                    {" "}
                     against the two distributions that also look straight
                     here. The method is Clauset, Shalizi and Newman (2009);
                     the code is
@@ -137,10 +173,11 @@ export function Tails() {
                     <tr>
                       <th>Tail</th>
                       <th style={{"textAlign":"right"}}>
-                        x
-                        <sub>min</sub>
+                        <Xmin />
                       </th>
-                      <th style={{"textAlign":"right"}}>α</th>
+                      <th style={{"textAlign":"right"}}>
+                        <TailAlpha />
+                      </th>
                       <th style={{"textAlign":"right"}}>In tail</th>
                       <th style={{"textAlign":"right"}}>Fit p</th>
                       <th>Against the rivals</th>
@@ -201,14 +238,22 @@ export function Tails() {
                     {" "}
                     <span>
                       <b>
-                        So the word on this page is "heavy-tailed", not
-                        "scale-free".
+                        So the word on this page is "
+                        <Term id="w3-term-heavy-tailed" word="heavy-tailed">Having many more very large values than a bell curve would, whatever the exact shape of the tail.</Term>
+                        ", not "
+                        <Term id="w3-term-scale-free" word="scale-free">Having a power-law tail, so no typical size sets the scale.</Term>
+                        ".
                       </b>
                       {" "}
-                      Origins per destination fits α = 2.32, well inside
+                      Origins per destination fits
+                      {" "}
+                      <TailAlpha v="2.32" />
+                      , well inside
                       the range every scale-free network in a lecture slide
                       has, and it is still ruled out at
-                      p = 0.00. That is the trap the log–log toggle above
+                      {" "}
+                      <FitP v="0.00" />
+                      . That is the trap the log–log toggle above
                       sets: a line can look right and be wrong, and the only
                       way to find out is to fit it.
                     </span>

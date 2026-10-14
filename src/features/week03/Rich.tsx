@@ -1,8 +1,10 @@
 // The HTML strings corridor.js, questions.js and echarts-views.js build from
 // the page's own data (<b>, <span style>, <li>, the inspector's <div><dt>…),
 // rendered as React elements instead of written with innerHTML. Only the tags
-// and attributes those builders write are understood.
+// and attributes those builders write are understood. A <tex name v> tag is
+// one of Week 3's formulas (./Formulas), typeset by KaTeX.
 import { createElement, Fragment, type ReactNode } from "react";
+import { FORMULAS } from "./Formulas";
 
 const VOID = new Set(["br", "hr", "img", "input"]);
 const ATTRS: Record<string, string> = { class: "className", for: "htmlFor", colspan: "colSpan", rowspan: "rowSpan", tabindex: "tabIndex" };
@@ -67,11 +69,15 @@ function parse(html: string): (Node | string)[] {
 }
 
 function build(nodes: (Node | string)[]): ReactNode[] {
-  return nodes.map((node, i) =>
-    typeof node === "string"
-      ? node
-      : createElement(node.tag, props(node.attrs, i), ...(VOID.has(node.tag) ? [] : build(node.children))),
-  );
+  return nodes.map((node, i) => {
+    if (typeof node === "string") return node;
+    if (node.tag === "tex") {
+      const { name, v } = props(node.attrs, i) as { name?: string; v?: string };
+      const Formula = name ? FORMULAS[name] : undefined;
+      return Formula ? createElement(Formula, { key: i, v: v ?? "" }) : null;
+    }
+    return createElement(node.tag, props(node.attrs, i), ...(VOID.has(node.tag) ? [] : build(node.children)));
+  });
 }
 
 /** The elements an HTML string from the page's builders describes. */

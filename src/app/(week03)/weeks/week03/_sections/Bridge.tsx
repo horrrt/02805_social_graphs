@@ -1,5 +1,7 @@
+import { Term } from "@/components/post/Term";
 import { Chart } from "@/features/week03/frame/Chart";
 import { Slot } from "@/features/week03/frame/Slot";
+import { Damping, Step } from "@/features/week03/Formulas";
 // 3: popular is not bridge, big is not prestigious.
 export function Bridge() {
   return (
@@ -16,14 +18,27 @@ export function Bridge() {
             <div className="plot">
               <h3>Betweenness vs origins (in-degree), log–log</h3>
               <p className="axis-note">
-                One point per country. Migration graph is directed and
-                weighted; distance along a corridor is 1 / people, so a heavy
+                One point per country. Migration graph is
+                {" "}
+                <Term id="w3-term-directed" word="directed">Each link points one way: from the country people were born in to the country they live in.</Term>
+                {" "}
+                and
+                {" "}
+                <Term id="w3-term-weighted" word="weighted">Each link carries a number, here the people on the corridor, not just whether it exists.</Term>
+                ; distance along a corridor is
+                {" "}
+                <Step per="people" />
+                , so a heavy
                 corridor is a short step. Click any point to select that
                 country; every chart and panel on the page follows.
               </p>
               <p className="axis-note">
                 A "path" here is a chain of migrant-stock corridors, A to B
-                to C, not a route anyone travels. Betweenness counts how
+                to C, not a route anyone travels.
+                {" "}
+                <Term id="w3-term-betweenness" word="Betweenness">How often a node lies on the shortest paths between other pairs of nodes.</Term>
+                {" "}
+                counts how
                 often a country sits on the strongest such chains linking
                 other countries: a structural position in the stock
                 network, not a measure of people passing through.
@@ -73,8 +88,14 @@ export function Bridge() {
             <div className="plot">
               <h3>Big ≠ prestigious: rank by people, rank by PageRank</h3>
               <p className="axis-note">
-                PageRank on the weighted migration graph, damping factor
-                α = 0.85: a country's score is mostly what its senders hand
+                <Term id="w3-term-pagerank" word="PageRank">A score that a node earns from the nodes linking to it, each passing on a share of its own score, so a link from a high-scoring node counts for more.</Term>
+                {" "}
+                on the weighted migration graph,
+                {" "}
+                <Term id="w3-term-damping-factor" word="damping factor">The chance that PageRank follows a link at each step rather than jumping to a random node.</Term>
+                {" "}
+                <Damping />
+                : a country's score is mostly what its senders hand
                 it, and only a small constant share comes from anywhere at
                 random.
               </p>

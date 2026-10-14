@@ -1,6 +1,8 @@
+import { Term } from "@/components/post/Term";
 import { Chart } from "@/features/week03/frame/Chart";
 import { Slot } from "@/features/week03/frame/Slot";
 import { TypeCards, TypeDrawer } from "@/features/week03/typology/Typology";
+import { PartP, RoleP, RoleZ, ZIs } from "@/features/week03/Formulas";
 // 6: roles inside the communities.
 export function Typology() {
   return (
@@ -19,9 +21,23 @@ export function Typology() {
               2024.
             </b>
             {" "}
-            Venezuela moved from peripheral to provincial hub:
-            large inside one community, barely present in the others.
-            Colombia moved from ultra-peripheral to peripheral, keeping
+            Venezuela moved from
+            {" "}
+            <Term id="w3-term-peripheral" word="peripheral">A role: not a hub, with most of its corridors inside its own community.</Term>
+            {" "}
+            to
+            {" "}
+            <Term id="w3-term-provincial-hub" word="provincial hub">A role: a hub, large inside its own community, with most of its corridors staying inside it.</Term>
+            :
+            large inside one
+            {" "}
+            <Term id="w3-term-community" word="community">A group of countries joined by more and heavier corridors among themselves than to the rest of the world.</Term>
+            , barely present in the others.
+            Colombia moved from
+            {" "}
+            <Term id="w3-term-ultra-peripheral" word="ultra-peripheral">A role: not a hub, with nearly all of its corridors inside its own community.</Term>
+            {" "}
+            to peripheral, keeping
             most of its corridors inside one community but gaining a few
             outside it. The chart below gives every country two
             coordinates, and the year slider moves them.
@@ -29,25 +45,41 @@ export function Typology() {
           <p className="sub">
             Section 8 splits the world into communities once, with a single
             seed. Roles are steadier than that one partition: each year is
-            repartitioned 100 times and a country's z and P are averaged
+            repartitioned 100 times and a country&apos;s
+            {" "}
+            <ZIs of="role" />
+            {" "}
+            and
+            {" "}
+            <PartP />
+            {" "}
+            are averaged
             over the runs that agreed on its role, from Guimerà and Amaral
             (
             <i>Nature</i>
             {" "}
             433, 2005):
             {" "}
-            <b>z</b>
+            <ZIs of="role" />
             , how
             large a country is among the other members of its own community,
             and
             {" "}
-            <b>P</b>
+            <PartP />
             , how evenly its corridors are spread across all of
-            them. A country with P near zero keeps everyone inside one
+            them. A country with
+            {" "}
+            <PartP />
+            {" "}
+            near zero keeps everyone inside one
             community; near one, it is split evenly between them. The seven
             names and the cut-offs between them are theirs, drawn on the
             chart rather than applied out of sight.
           </p>
+          <div className="w3-formula">
+            <RoleZ />
+            <RoleP />
+          </div>
           <Chart id="cartography" width="1100" height="620" label="Chart: roles of countries inside their communities" />
           <Slot view="typology-strip" as="div" id="typology-strip" className="type-strip" label="How many countries carry each role" />
           <TypeCards />
@@ -76,7 +108,9 @@ export function Typology() {
                 {" "}
                 <span>
                   <b>
-                    Louvain is random, and one run would have animated its own
+                    <Term id="w3-term-louvain" word="Louvain">A method that finds communities by moving nodes between groups until links inside the groups are as dense as it can make them. It starts at random, so two runs can differ.</Term>
+                    {" "}
+                    is random, and one run would have animated its own
                     seed.
                   </b>
                   {" "}
@@ -85,8 +119,15 @@ export function Typology() {
                   next. So every year is partitioned 100 times, each run votes,
                   and a country carries the role most runs gave it together with
                   the share that agreed. The coordinates are far steadier than
-                  the names: the United States sits at z 5.20 with a standard
-                  deviation of 0.08 across the 100 runs, and the wobble is
+                  the names: the United States sits at
+                  {" "}
+                  <ZIs of="role" />
+                  {" "}
+                  5.20 with a
+                  {" "}
+                  <Term id="w3-term-standard-deviation" word="standard deviation">How far values typically sit from their average.</Term>
+                  {" "}
+                  of 0.08 across the 100 runs, and the wobble is
                   concentrated where a country sits on a threshold. Those are
                   drawn as hollow rings, and they are the ones not to quote.
                 </span>

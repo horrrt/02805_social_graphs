@@ -1,4 +1,5 @@
 import { type RailItem, SectionRail } from "@/components/post/SectionRail";
+import { TermLayer } from "@/components/post/TermLayer";
 import { Boot, Status } from "@/features/week03/frame/Boot";
 import { QuestionsWatch } from "@/features/week03/questions/Questions";
 import { ViewsWatch } from "@/features/week03/views/Views";
@@ -61,6 +62,7 @@ export default function Page() {
       <Boot />
       <QuestionsWatch />
       <ViewsWatch />
+      <TermLayer />
     </>
   );
 }

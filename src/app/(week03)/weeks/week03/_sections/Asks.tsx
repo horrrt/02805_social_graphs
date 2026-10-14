@@ -1,5 +1,7 @@
+import { Term } from "@/components/post/Term";
 import { AreaModes, AreaNote, GraphControls, OriginPicker, VAnswer, VChart, ViewsStatus } from "@/features/week03/views/Views";
 import { QAnswer, QChart, RingControls, RingScope } from "@/features/week03/questions/Questions";
+import { R2, ZDef, ZIs } from "@/features/week03/Formulas";
 // 9: everything that goes deeper than the main path.
 export function Asks() {
   return (
@@ -89,7 +91,11 @@ export function Asks() {
           </p>
           <h3>The corridors gravity cannot explain</h3>
           <p className="sub">
-            The fit is not the finding. The residual is. These carry the
+            The fit is not the finding. The
+            {" "}
+            <Term id="w3-term-residual" word="residual">What is left of a corridor once the model&apos;s prediction is taken out: here, how many times more people it carries than the model expects.</Term>
+            {" "}
+            is. These carry the
             most people relative to what size and distance predict, among
             corridors of at least 50,000 people.
           </p>
@@ -228,13 +234,21 @@ export function Asks() {
                 Question 4 showed two things separately: rich countries hold more
                 foreign-born people, and the people in them came from further
                 away. Two charts is not a model, so neither one holds the other
-                fixed. Gravity does. It is the standard baseline in the
+                fixed.
+                {" "}
+                <Term id="w3-term-gravity" word="Gravity">The gravity model: people on a corridor rise with the size of both ends and fall with the distance between them, as gravity does with mass and distance.</Term>
+                {" "}
+                does. It is the standard baseline in the
                 migration literature and it is almost embarrassingly good:
                 people on a corridor rise with the size of both ends and fall
                 with the distance between them.
               </p>
               <p className="sub">
-                Fitted here by Poisson pseudo-maximum-likelihood on all
+                Fitted here by
+                {" "}
+                <Term id="w3-term-ppml" word="Poisson pseudo-maximum-likelihood">A way to fit a model to counts that keeps the zeros and does not take logs, so corridors carrying nobody still count.</Term>
+                {" "}
+                on all
                 8,487 corridors with population and
                 income at both ends, in
                 {" "}
@@ -247,12 +261,18 @@ export function Asks() {
                 those zeros deliberately (see below). Counts rather than
                 log counts, because logging drops every corridor carrying
                 nobody and biases the rest. Each distance and population
-                coefficient is an elasticity: a one per cent rise in the term
+                coefficient is an
+                {" "}
+                <Term id="w3-term-elasticity" word="elasticity">The per cent change in one quantity for a one per cent change in another.</Term>
+                : a one per cent rise in the term
                 moves the corridor by that many per cent. The under-1,000 km
                 term is a yes/no shift, not an elasticity: it moves the
                 corridor by a fixed share when the two centres are that close.
-                Intervals are the heteroskedasticity-robust
-                sandwich the method calls for, which statsmodels fits directly
+                Intervals are the
+                {" "}
+                <Term id="w3-term-sandwich" word="heteroskedasticity-robust sandwich">An interval that stays honest when the scatter around the model is larger for some corridors than for others.</Term>
+                {" "}
+                the method calls for, which statsmodels fits directly
                 and scikit-learn could not report at all.
               </p>
               <table className="ego">
@@ -333,7 +353,11 @@ export function Asks() {
                 Every term is measured in the same year as the outcome, so
                 nothing here identifies a cause: a corridor thirty times over
                 its prediction is a corridor worth explaining, not an
-                explanation. The fit reaches R² 0.45 across the range of the
+                explanation. The fit reaches
+                {" "}
+                <R2 />
+                {" "}
+                0.45 across the range of the
                 data and 0.17 on the raw counts, where a handful of enormous
                 corridors dominate.
               </p>
@@ -355,7 +379,10 @@ export function Asks() {
             </b>
             {" "}
             Shuffle the network keeping every country's partner
-            count and Louvain still returns almost the same modularity, so
+            count and Louvain still returns almost the same
+            {" "}
+            <Term id="w3-term-modularity" word="modularity">A score for a split into groups: how many more links fall inside the groups than a random network with the same link counts would put there.</Term>
+            , so
             the amount of grouping says nothing on its own. Which countries
             land together does, and even that is a matter of degree: run
             Louvain from 100 more starting points and it agrees with the
@@ -465,11 +492,18 @@ export function Asks() {
                   and Louvain still returns 0.521 on average.
                   12 of the
                   100 shuffles score at or above the real
-                  network, which is z = +1.1: no evidence either way. Louvain finds communities in noise, so
+                  network, which is
+                  {" "}
+                  <ZIs v="+1.1" of="modularity" />
+                  : no evidence either way. Louvain finds communities in noise, so
                   the number on its own was never going to say much. This one
                   seeded run is one draw from Louvain's own randomness too: 100
                   more seeds give nine groups 56 times out of 100 and this exact
-                  partition 0 times, with a mean NMI of 0.92 against it (as low
+                  partition 0 times, with a mean
+                  {" "}
+                  <Term id="w3-term-nmi" word="NMI">Normalised mutual information: how much two splits into groups agree, from 0 (unrelated) to 1 (identical).</Term>
+                  {" "}
+                  of 0.92 against it (as low
                   as 0.79 on the least similar run). The partition above is
                   published as the seeded run, not the most common one, because
                   no single partition dominates the 100 seeds either.
@@ -540,15 +574,39 @@ export function Asks() {
                 </tbody>
               </table>
               <p className="sub">
-                Clustering, assortativity, average distance, diameter and the
-                largest clique are all computed on the undirected, unweighted
+                <Term id="w3-term-clustering" word="Clustering">How often two partners of a country are also partners of each other, closing a triangle.</Term>
+                ,
+                {" "}
+                <Term id="w3-term-assortativity" word="assortativity">Whether countries with many partners tend to link to others with many partners (above 0) or to ones with few (below 0).</Term>
+                , average distance,
+                {" "}
+                <Term id="w3-term-diameter" word="diameter">The longest shortest path: the most steps needed to get between any two countries.</Term>
+                {" "}
+                and the
+                largest
+                {" "}
+                <Term id="w3-term-clique" word="clique">A group in which every pair shares a link.</Term>
+                {" "}
+                are all computed on the undirected, unweighted
                 core: whether two countries share any corridor, not how many
                 people or how many corridors. The null is 100 degree-preserving
-                double-edge-swap shuffles of that same core, from
+                <Term id="w3-term-double-edge-swap" word="double-edge-swap">A shuffle step: take links A–B and C–D and rewire them to A–D and C–B, so every country keeps its number of partners.</Term>
+                {" "}
+                shuffles of that same core, from
                 {" "}
                 <code>analysis/week03_country_networks.py</code>
-                ; z is (real −
-                null mean) / null standard deviation. Reciprocity needs the
+                ;
+                {" "}
+                <ZIs of="table" />
+                {" "}
+                is
+                {" "}
+                <ZDef />
+                .
+                {" "}
+                <Term id="w3-term-reciprocity" word="Reciprocity">The share of one-way links whose reverse also exists.</Term>
+                {" "}
+                needs the
                 direction, so it uses the directed network and 100 directed
                 shuffles that keep every country's number of origins and of
                 destinations, from
@@ -569,7 +627,10 @@ export function Asks() {
                   {" "}
                   Comparing 0.41 against 0.11 the way the table does is unfair
                   to the smaller network, because reciprocity rises with
-                  density on its own: in a directed graph wired at random, the
+                  {" "}
+                  <Term id="w3-term-density" word="density">The share of all possible links that actually exist.</Term>
+                  {" "}
+                  on its own: in a directed graph wired at random, the
                   share of arcs whose reverse also exists is just the density.
                   Against that baseline migration is reciprocal
                   {" "}

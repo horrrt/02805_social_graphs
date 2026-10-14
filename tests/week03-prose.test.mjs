@@ -10,13 +10,15 @@ import { readFileSync, readdirSync } from "node:fs";
 import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 import { builtPage, codeFiles } from "./built-page.mjs";
+import { unmath } from "./math-text.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const readText = (path) => readFileSync(join(ROOT, path), "utf8");
 const loadData = (name) => JSON.parse(readText(join("public/assets/data", name)));
 const loadAnalysis = (name) => JSON.parse(readText(join("analysis", name)));
 
-const html = builtPage("out/weeks/week03/index.html");
+// Formulas read as their LaTeX and glossary terms as their word (math-text.mjs).
+const html = unmath(builtPage("out/weeks/week03/index.html"));
 const corridor = readText("src/scripts/corridor.js");
 
 const glob = (dir) => readdirSync(join(ROOT, dir))

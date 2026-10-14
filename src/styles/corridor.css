@@ -1919,3 +1919,122 @@ body > .chart-tip[hidden] {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+/* ------------------------------------------ glossary terms and formulas */
+/* A term (src/components/post/Term.tsx) and a formula (src/lib/Tex.tsx), for
+   Week 3, which loads no post.css; post.css draws both again for every later
+   post, with its own tokens. :where() keeps these below every rule there. */
+
+.corridor :where(.w4-term) {
+  display: inline;
+  position: relative;
+}
+
+.corridor :where(.w4-term > button) {
+  background: none;
+  border: 0;
+  border-bottom: 1px dotted var(--ink-soft);
+  color: inherit;
+  cursor: help;
+  font: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+.corridor :where(.w4-term > button:focus-visible) {
+  outline: 2px solid var(--access);
+  outline-offset: 2px;
+}
+
+.corridor :where(.w4-term > .w4-pop) {
+  background: rgba(11, 31, 58, 0.97);
+  border-radius: 9px;
+  box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 18px 44px rgba(15, 35, 64, 0.16);
+  color: #cfe0f2;
+  display: none;
+  font-size: var(--fs-small);
+  font-style: normal;
+  font-weight: 400;
+  left: 0;
+  letter-spacing: 0;
+  line-height: 1.55;
+  padding: 12px 14px;
+  position: absolute;
+  text-align: left;
+  text-transform: none;
+  top: calc(100% + 6px);
+  white-space: normal;
+  width: 330px;
+  z-index: 40;
+}
+
+.corridor :where(.w4-term:hover > .w4-pop),
+.corridor :where(.w4-term:focus-within > .w4-pop),
+.corridor :where(.w4-term.is-open > .w4-pop) {
+  display: block;
+}
+
+/* Display formulas under the paragraph that defines them. */
+.corridor :where(.w3-formula) {
+  color: var(--ink);
+  overflow: auto hidden;
+  padding: 3px 0 12px;
+}
+
+.corridor :where(.w3-formula .katex-display) {
+  margin: 0;
+}
+
+.corridor :where(.w3-formula .tex + .tex) {
+  margin-top: 8px;
+}
+
+/* Hover a part of a formula to explain it; the explanation (.tex-tip) renders into <body>. */
+.corridor :where(.tex-explain) {
+  position: relative;
+}
+
+.corridor :where(.tex-explain [class*="x-"]) {
+  cursor: help;
+}
+
+.corridor :where(.tex-mark) {
+  background: color-mix(in srgb, var(--access) 18%, transparent);
+  border-radius: 4px;
+  pointer-events: none;
+  position: absolute;
+}
+
+/* KaTeX's fraction layout layers sit over the parts; let the pointer through to them. */
+.corridor :where(.tex-explain :is(.vlist, .vlist-r, .vlist-t)) {
+  pointer-events: none;
+}
+
+.corridor :where(.tex-explain .vlist [class*="x-"]) {
+  pointer-events: auto;
+}
+
+.corridor :where(.tex-tip) {
+  background: rgba(11, 31, 58, 0.97);
+  border-radius: 9px;
+  box-shadow: 0 12px 32px rgba(15, 35, 64, 0.18);
+  color: #cfe0f2;
+  font-family: var(--font-sans);
+  font-size: var(--fs-small);
+  font-weight: 400;
+  line-height: 1.55;
+  max-width: 300px;
+  padding: 10px 12px;
+  pointer-events: none;
+  position: fixed;
+  text-align: left;
+  white-space: normal;
+  width: max-content;
+  z-index: 60;
+}
+
+/* Until KaTeX has loaded, the LaTeX shows as code. */
+.corridor :where(.tex-pending) {
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+}

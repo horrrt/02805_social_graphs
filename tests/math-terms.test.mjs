@@ -34,6 +34,21 @@ const POSTS = {
       "w2-term-poisson", "w2-term-local-maxima", "w2-term-path-decomposition",
     ],
   },
+  week03: {
+    page: "weeks/week03/",
+    src: "src/app/(week03)/weeks/week03/page.tsx",
+    formulas: 24,
+    terms: [
+      "w3-term-power-law", "w3-term-lognormal", "w3-term-exponential", "w3-term-null-model", "w3-term-ccdf", "w3-term-decades",
+      "w3-term-maximum-likelihood", "w3-term-ks", "w3-term-goodness-of-fit", "w3-term-likelihood-ratio", "w3-term-heavy-tailed", "w3-term-scale-free",
+      "w3-term-directed", "w3-term-weighted", "w3-term-betweenness", "w3-term-pagerank", "w3-term-damping-factor", "w3-term-z",
+      "w3-term-degree", "w3-term-spearman", "w3-term-interval", "w3-term-peripheral", "w3-term-provincial-hub", "w3-term-community",
+      "w3-term-ultra-peripheral", "w3-term-louvain", "w3-term-standard-deviation", "w3-term-residual", "w3-term-gravity", "w3-term-ppml",
+      "w3-term-elasticity", "w3-term-sandwich", "w3-term-modularity", "w3-term-nmi", "w3-term-clustering", "w3-term-assortativity",
+      "w3-term-diameter", "w3-term-clique", "w3-term-double-edge-swap", "w3-term-reciprocity", "w3-term-density", "w3-term-strength",
+      "w3-term-fisher", "w3-term-resamples",
+    ],
+  },
 };
 
 const formulas = (html) => [...html.matchAll(/<(span|div) class="tex[^"]*"[^>]*>([^<]*)<\/\1>/g)].map((m) => m[2]);
