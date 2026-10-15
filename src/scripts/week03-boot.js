@@ -159,23 +159,3 @@ export function readStyle(search = window.location.search) {
   }
   return chosen;
 }
-
-export function styleURL(chosen) {
-  const next = new URL(window.location.href);
-  for (const dimension of DIMENSIONS) {
-    const value = chosen[dimension.key];
-    if (value === dimension.fallback) next.searchParams.delete(dimension.key);
-    else next.searchParams.set(dimension.key, value);
-  }
-  return next;
-}
-
-// The size each library renderer downloads, on its option in the menu.
-export function kb(bytes) {
-  return bytes ? `${Math.round(bytes / 1024)} KB` : "no library";
-}
-
-// The menu opens from the top bar, so the controls stay out of the reading
-// flow until somebody wants them. Renderer and basemap are chips; the rest
-// sit under "More options" so the common choices are one tap away.
-export const CHIP_KEYS = new Set(["variant", "basemap"]);
