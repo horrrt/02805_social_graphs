@@ -6,24 +6,29 @@ import { RideTicket } from "@/features/week02/transit/Ride";
 // (src/features/week02/transit/) sharing the closure state.
 export function TryIt() {
   return (
-    <section className="section interaction-panel" id="try-it">
-      <div className="section-head">
-        <h2>Will your journey survive?</h2>
+    <div className="w12-step" id="try-it">
+      <header className="w12-opener w12-opener-pick">
+        <span aria-hidden="true" className="w12-opener-num">1</span>
+        <div>
+          <h2>Will your journey survive?</h2>
+        </div>
         <label>
           Close a station
           <ClosureSelect />
         </label>
-      </div>
-      <p className="try-help">
-        Of the 303 articles, 277 form one connected group: each can reach
-        every other through links. We test removals inside this group,
-        following links in either direction. “Cut off” means losing the route
-        to the largest group left after a removal. Pick a journey below, then
-        close a station to see what changes.
-      </p>
-      <RideTicket />
-      <ClosureGuess />
-      <ClosureResults />
-    </section>
+      </header>
+      <section aria-label="Will your journey survive?" className="section interaction-panel">
+        <p className="try-help">
+          Of the 303 articles, 277 form one connected group: each can reach
+          every other through links. We test removals inside this group,
+          following links in either direction. “Cut off” means losing the route
+          to the largest group left after a removal. Pick a journey below, then
+          close a station to see what changes.
+        </p>
+        <RideTicket />
+        <ClosureGuess />
+        <ClosureResults />
+      </section>
+    </div>
   );
 }

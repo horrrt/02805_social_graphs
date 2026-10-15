@@ -3543,3 +3543,5 @@
 .corridor .w3-stack { display: flex; flex-direction: column; gap: 14px; }
 /* Seven role cards: four and three, never one left alone in its row. */
 .corridor #typology-cards { grid-template-columns: repeat(4, 1fr); }
+/* The style guide's hero has the text and the inspector, and no globe between them. */
+.corridor .sg-hero-grid { grid-template-columns: minmax(0, 1fr) 300px; }

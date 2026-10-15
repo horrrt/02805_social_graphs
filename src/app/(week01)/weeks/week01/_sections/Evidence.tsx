@@ -12,10 +12,15 @@ import { DegreePlusOne, LowestOdds, PBelow } from "./Formulas";
 export function Evidence() {
   return (
     <section className="section evidence" id="evidence">
-      <h2 id="closing-title">Curious? Go deeper.</h2>
-      <p className="fine">
-        Charts, data and methods for anyone who wants to check the details.
-      </p>
+      <header className="w12-opener">
+        <span aria-hidden="true" className="w12-opener-num">4</span>
+        <div>
+          <h2 id="closing-title">Curious? Go deeper.</h2>
+          <p className="w12-scope">
+            Charts, data and methods for anyone who wants to check the details.
+          </p>
+        </div>
+      </header>
       <details className="evidence-menu">
         <summary>Explore the explanations &amp; evidence</summary>
         <details className="evidence-item">
@@ -397,15 +402,17 @@ export function Evidence() {
           </p>
         </details>
       </details>
-      <h3>AI use and authorship</h3>
-      <p>
-        Built with AI assistance for interface design, programming,
-        explanation drafts and test construction. Metrics come from the
-        provided snapshot and reproducible analysis; the games and
-        metaphors are authored presentation choices. Tests check the
-        browser's collection model against exact enumeration and the
-        page's numbers against the analysis output.
-      </p>
+      <div className="w12-ai">
+        <h3>AI use and authorship</h3>
+        <p>
+          Built with AI assistance for interface design, programming,
+          explanation drafts and test construction. Metrics come from the
+          provided snapshot and reproducible analysis; the games and
+          metaphors are authored presentation choices. Tests check the
+          browser's collection model against exact enumeration and the
+          page's numbers against the analysis output.
+        </p>
+      </div>
     </section>
   );
 }

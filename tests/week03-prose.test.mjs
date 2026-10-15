@@ -321,7 +321,7 @@ test("the raw-count R2 in the gravity paragraph matches gravity.json", () => {
 test("the role-change count and named movers match cartography.json", () => {
   const moved = cart.moved;
   assert.ok(
-    hasPhrase(`<b>${moved.length} countries changed the part they play`),
+    hasPhrase(`<p>${moved.length} countries changed the part they play`),
     `page does not quote ${moved.length} moved countries from cartography.json`,
   );
   const venezuela = moved.find((row) => row.iso3 === "VEN");

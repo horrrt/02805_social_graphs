@@ -861,3 +861,191 @@
   font-family: var(--font-mono);
   font-size: var(--fs-small);
 }
+
+/* ==== Weeks 1 and 2 in Week 4's frame ====
+   The same parts as post.css draws them on the later posts, scoped to the two
+   arcade pages so their islands keep these sheets: the hero with a panel
+   beside its text, a numbered opener per section, cards with the text beside
+   its figure, and drawers as a row of pills at a card's foot. */
+.visual-design.guided-post .story-hero {
+  grid-template-columns: minmax(0, 1fr) 340px;
+  align-items: start;
+  gap: 40px;
+}
+.visual-design .story-hero .w12-panel {
+  --muted: #4a6584;
+  --line: #dbe4ef;
+  align-self: center;
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 18px 44px rgba(4, 14, 30, 0.35);
+  color: #0b1f3a;
+  font-size: var(--fs-small);
+  margin: 0;
+  max-width: none;
+  padding: 16px 18px;
+}
+.visual-design .w12-panel h2 {
+  color: var(--muted);
+  font-family: var(--font-sans);
+  font-size: var(--fs-caption);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  margin: 0 0 8px;
+  text-transform: uppercase;
+}
+.visual-design .w12-panel p,
+.visual-design .w12-panel dd {
+  font-size: var(--fs-small);
+  line-height: 1.5;
+}
+.visual-design .w12-panel dt {
+  margin-top: 10px;
+}
+.visual-design .w12-panel dd {
+  margin: 2px 0 0;
+}
+.visual-design .w12-panel a {
+  color: #14618f;
+  display: inline-block;
+  font-weight: 600;
+  margin-top: 10px;
+}
+.visual-design .w12-opener {
+  align-items: flex-start;
+  display: flex;
+  gap: 22px;
+  margin: 44px 0 18px;
+}
+.visual-design .w12-opener-num {
+  color: #14618f;
+  flex: none;
+  font-size: var(--fs-numeral);
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.86;
+  width: 58px;
+}
+.visual-design .w12-opener h2 {
+  font-family: var(--font-sans);
+  font-size: var(--fs-h2);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin: 0;
+  max-width: none;
+}
+.visual-design .w12-opener .eyebrow {
+  margin: 0 0 6px;
+}
+.visual-design .w12-scope {
+  color: var(--muted);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  margin: 6px 0 0;
+}
+.visual-design .w12-opener-pick > div {
+  flex: 1 1 auto;
+}
+.visual-design .w12-opener-pick > label {
+  font-size: var(--fs-small);
+  font-weight: 600;
+  min-width: 220px;
+}
+.visual-design .w12-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 24px 28px 26px;
+}
+.visual-design .w12-card + .w12-card {
+  margin-top: 18px;
+}
+.visual-design .w12-card p {
+  font-size: var(--fs-body);
+  line-height: 1.6;
+}
+.visual-design .w12-two {
+  align-items: start;
+  display: grid;
+  gap: 40px;
+  grid-template-columns: minmax(0, 500px) minmax(0, 1fr);
+}
+.visual-design .w12-two > * {
+  min-width: 0;
+}
+.visual-design .w12-two > div > :first-child,
+.visual-design .w12-two > div > p:first-child {
+  margin-top: 0;
+}
+.visual-design .w12-two .learning-comparison,
+.visual-design .w12-two figure {
+  margin: 0;
+}
+.visual-design .w12-two figure img {
+  display: block;
+  height: auto;
+  width: 100%;
+}
+.visual-design .w12-drawers {
+  align-items: flex-start;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+}
+.visual-design .w12-drawers > details {
+  margin: 0;
+}
+.visual-design .w12-drawers > details[open] {
+  flex-basis: 100%;
+}
+.visual-design .w12-drawers > details > summary {
+  background: #f4f8fc;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  color: #14618f;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: var(--fs-small);
+  font-weight: 700;
+  list-style: none;
+  padding: 6px 12px;
+}
+.visual-design .w12-drawers > details[open] > summary {
+  border-color: #14618f;
+  margin-bottom: 12px;
+}
+.visual-design.guided-post #results {
+  background: transparent;
+  border: 0;
+  padding: 0;
+}
+.visual-design.guided-post #results .metrics {
+  margin-top: 0;
+}
+.visual-design .w12-step > .interaction-panel,
+.visual-design .w12-opener + .interaction-panel {
+  margin-top: 0;
+}
+.visual-design .w12-ai {
+  margin-top: 36px;
+}
+.visual-design.guided-post :is(#post, #results) .w12-opener h2 {
+  max-width: none;
+}
+.visual-design .w12-drawers > details {
+  border: 0;
+  padding: 0;
+}
+.visual-design.guided-post #results .metrics {
+  border-top: 0;
+  padding-top: 0;
+}
+.visual-design.guided-post #evidence {
+  padding-top: 0;
+}
+.visual-design.guided-post #ai-disclosure {
+  margin-top: 28px;
+}

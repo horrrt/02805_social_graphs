@@ -12,7 +12,7 @@ import { TryIt } from "./_sections/TryIt";
 
 // The section rail down the left margin, as on Weeks 4 and 5.
 const RAIL: RailItem[] = [
-  { target: "pack-machine", label: "Open a pack" },
+  { target: "try-it", label: "Open a pack" },
   { target: "post", label: "58 articles receive no incoming links" },
   { target: "results", label: "The last few cards take the longest" },
   { target: "evidence", label: "Go deeper" },

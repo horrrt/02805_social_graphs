@@ -1,4 +1,5 @@
-// The opening: the question, the story nav and the dataset primer.
+// The opening: the question and the story nav, with the dataset primer as a
+// panel beside them where Week 4's hero keeps its inspector.
 export function Hero() {
   return (
     <section className="hero story-hero">
@@ -21,43 +22,43 @@ export function Hero() {
           removes an article and its links from our model; it does not change
           Wikipedia.
         </p>
-        <details className="post-primer">
-          <summary>The dataset and a few useful terms</summary>
-          <p>
-            The course snapshot, frozen on 26 August 2026, contains 303
-            articles in Wikipedia’s Marvel Comics superheroes category. Links
-            record references between these pages, not friendships between
-            characters.
-          </p>
-          <dl>
-            <dt>Network</dt>
-            <dd>
-              The articles and the links between them. We treat links as
-              two-way routes in the closure experiment, even though Wikipedia
-              links have a direction.
-            </dd>
-            <dt>Core and component</dt>
-            <dd>
-              A component is a group connected by paths. The core is the
-              largest one: 277 articles. A separate nine-article group and 17
-              articles with no links are outside this experiment.
-            </dd>
-            <dt>Neighbour and degree</dt>
-            <dd>
-              A neighbour is an article connected by a direct link. Degree is
-              the number of these neighbours; it does not count everyone
-              reachable through a longer route.
-            </dd>
-            <dt>Null model</dt>
-            <dd>
-              A comparison network made under stated rules. Ours keeps each
-              article’s neighbour count but rearranges the links, so we can
-              ask what the particular wiring changes.
-            </dd>
-          </dl>
-          <a href="https://sunelehmann.com/socialgraphs2026-web/data/">Course dataset and loading instructions ↗</a>
-        </details>
       </div>
+      <aside className="w12-panel post-primer">
+        <h2>The dataset and a few useful terms</h2>
+        <p>
+          The course snapshot, frozen on 26 August 2026, contains 303
+          articles in Wikipedia’s Marvel Comics superheroes category. Links
+          record references between these pages, not friendships between
+          characters.
+        </p>
+        <dl>
+          <dt>Network</dt>
+          <dd>
+            The articles and the links between them. We treat links as
+            two-way routes in the closure experiment, even though Wikipedia
+            links have a direction.
+          </dd>
+          <dt>Core and component</dt>
+          <dd>
+            A component is a group connected by paths. The core is the
+            largest one: 277 articles. A separate nine-article group and 17
+            articles with no links are outside this experiment.
+          </dd>
+          <dt>Neighbour and degree</dt>
+          <dd>
+            A neighbour is an article connected by a direct link. Degree is
+            the number of these neighbours; it does not count everyone
+            reachable through a longer route.
+          </dd>
+          <dt>Null model</dt>
+          <dd>
+            A comparison network made under stated rules. Ours keeps each
+            article’s neighbour count but rearranges the links, so we can
+            ask what the particular wiring changes.
+          </dd>
+        </dl>
+        <a href="https://sunelehmann.com/socialgraphs2026-web/data/">Course dataset and loading instructions ↗</a>
+      </aside>
     </section>
   );
 }

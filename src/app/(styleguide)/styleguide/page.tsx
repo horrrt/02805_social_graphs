@@ -22,125 +22,123 @@ export default function Page() {
         <StyleMenu />
       </PostTopbar>
       <main id="main">
-        <section className="hero sg-hero" id="hero">
+        <section className="hero w4-hero w3-hero sg-hero" id="hero">
           <div className="shell">
-            <div>
-              <p className="eyebrow">Corridor Control · Style guide</p>
-              <h1>
-                Every part,
-                <br />
-                drawn once
-              </h1>
-              <p className="lede">What the post is made of</p>
-              <p className="body">
-                This page loads
-                {" "}
-                <code>corridor.css</code>
-                , the same file the
-                post loads, and shows each component under each skin, palette
-                and table style. Nothing here is a copy of a style: if the guide
-                and the post ever disagree, the stylesheet changed and one of
-                them did not.
-              </p>
-              <p className="caution">Orange is always people. Blue is always access.</p>
-              <div className="keys">
-                <span className="key people">
-                  <i></i>
+            <p className="eyebrow">Corridor Control · Style guide</p>
+            <h1>Every part, drawn once</h1>
+            <div className="w4-hero-grid w3-hero-grid sg-hero-grid">
+              <div className="w4-hero-text">
+                <p className="lede">What the post is made of</p>
+                <p className="body">
+                  This page loads
                   {" "}
-                  Migration (people)
-                </span>
-                {" "}
-                <span className="key access">
-                  <i></i>
+                  <code>corridor.css</code>
+                  , the same file the
+                  post loads, and shows each component under each skin, palette
+                  and table style. Nothing here is a copy of a style: if the guide
+                  and the post ever disagree, the stylesheet changed and one of
+                  them did not.
+                </p>
+                <p className="caution">Orange is always people. Blue is always access.</p>
+                <div className="keys">
+                  <span className="key people">
+                    <i></i>
+                    {" "}
+                    Migration (people)
+                  </span>
                   {" "}
-                  Flights (access)
-                </span>
-              </div>
-              <div className="yearline">
-                <input defaultValue="6" aria-label="A range control, as the year slider" max="7" min="0" step="1" type="range" />
-                <div className="ends">
-                  <span>1990</span>
-                  <span>2024</span>
+                  <span className="key access">
+                    <i></i>
+                    {" "}
+                    Flights (access)
+                  </span>
                 </div>
-                <label>
-                  Year (map animation) · showing
-                  {" "}
-                  <b>2020</b>
-                </label>
+                <div className="yearline">
+                  <input defaultValue="6" aria-label="A range control, as the year slider" max="7" min="0" step="1" type="range" />
+                  <div className="ends">
+                    <span>1990</span>
+                    <span>2024</span>
+                  </div>
+                  <label>
+                    Year (map animation) · showing
+                    {" "}
+                    <b>2020</b>
+                  </label>
+                </div>
               </div>
+              <aside className="panel">
+                <h2>Selected country</h2>
+                <div className="who">
+                  <span className="flag">🇩🇰</span>
+                  {" "}
+                  <span>
+                    <strong>Denmark</strong>
+                    <br />
+                    {" "}
+                    <span className="codes">DNK · 2020</span>
+                  </span>
+                </div>
+                <dl className="stats">
+                  <div>
+                    <dt className="explains" data-explain="People living here who were born somewhere else.">Incoming migrants (stock)</dt>
+                    <dd>695,816</dd>
+                  </div>
+                  <div>
+                    <dt>Origins represented</dt>
+                    <dd>
+                      190
+                      {" "}
+                      <span className="codes">(#3)</span>
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Betweenness</dt>
+                    <dd>
+                      0.01963
+                      {" "}
+                      <span className="codes">(#32)</span>
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Role</dt>
+                    <dd>
+                      <span className="chip">Connector hub</span>
+                    </dd>
+                  </div>
+                </dl>
+                <div className="corridor-list">
+                  <h3>→ Top inbound links (corridors)</h3>
+                  <ol>
+                    <li>
+                      <span>1. Poland → Denmark</span>
+                      <b>42k</b>
+                    </li>
+                    <li>
+                      <span>2. Germany → Denmark</span>
+                      <b>37.2k</b>
+                    </li>
+                  </ol>
+                </div>
+                <p className="fineprint">
+                  The inspector panel:
+                  {" "}
+                  <code>.panel</code>
+                  ,
+                  {" "}
+                  <code>.who</code>
+                  ,
+                  {" "}
+                  <code>dl.stats</code>
+                  ,
+                  {" "}
+                  <code>.corridor-list</code>
+                  ,
+                  {" "}
+                  <code>.fineprint</code>
+                  .
+                </p>
+              </aside>
             </div>
-            <aside className="panel">
-              <h2>Selected country</h2>
-              <div className="who">
-                <span className="flag">🇩🇰</span>
-                {" "}
-                <span>
-                  <strong>Denmark</strong>
-                  <br />
-                  {" "}
-                  <span className="codes">DNK · 2020</span>
-                </span>
-              </div>
-              <dl className="stats">
-                <div>
-                  <dt className="explains" data-explain="People living here who were born somewhere else.">Incoming migrants (stock)</dt>
-                  <dd>695,816</dd>
-                </div>
-                <div>
-                  <dt>Origins represented</dt>
-                  <dd>
-                    190
-                    {" "}
-                    <span className="codes">(#3)</span>
-                  </dd>
-                </div>
-                <div>
-                  <dt>Betweenness</dt>
-                  <dd>
-                    0.01963
-                    {" "}
-                    <span className="codes">(#32)</span>
-                  </dd>
-                </div>
-                <div>
-                  <dt>Role</dt>
-                  <dd>
-                    <span className="chip">Connector hub</span>
-                  </dd>
-                </div>
-              </dl>
-              <div className="corridor-list">
-                <h3>→ Top inbound links (corridors)</h3>
-                <ol>
-                  <li>
-                    <span>1. Poland → Denmark</span>
-                    <b>42k</b>
-                  </li>
-                  <li>
-                    <span>2. Germany → Denmark</span>
-                    <b>37.2k</b>
-                  </li>
-                </ol>
-              </div>
-              <p className="fineprint">
-                The inspector panel:
-                {" "}
-                <code>.panel</code>
-                ,
-                {" "}
-                <code>.who</code>
-                ,
-                {" "}
-                <code>dl.stats</code>
-                ,
-                {" "}
-                <code>.corridor-list</code>
-                ,
-                {" "}
-                <code>.fineprint</code>
-                .
-              </p>
-            </aside>
           </div>
         </section>
         <div className="shell">
@@ -327,6 +325,66 @@ export default function Page() {
                       <span className="num">3</span>
                       <h2>Popular ≠ bridge</h2>
                       <span className="year-tag">(analysis year: 2020)</span>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="sg-label">
+                      <code>.w4-opener</code>
+                      {" "}
+                      ·
+                      {" "}
+                      <code>.w4-opener-num</code>
+                      {" "}
+                      ·
+                      {" "}
+                      <code>.w3-scope</code>
+                      {" "}
+                      ·
+                      {" "}
+                      <code>.w3-opener-pick</code>
+                    </p>
+                    <header className="w4-opener w3-opener-pick">
+                      <span aria-hidden="true" className="w4-opener-num">3</span>
+                      <div>
+                        <h2>Popular ≠ bridge</h2>
+                        <p>The finding, in one line under the title.</p>
+                        <p className="w3-scope">(analysis year: 2020)</p>
+                      </div>
+                    </header>
+                  </div>
+                  <div>
+                    <p className="sg-label">
+                      <code>.card.w4-card</code>
+                      {" "}
+                      ·
+                      {" "}
+                      <code>.w3-stack</code>
+                      {" "}
+                      ·
+                      {" "}
+                      <code>.rx-drawers.rx-foot</code>
+                      {" "}
+                      ·
+                      {" "}
+                      <code>.rx-drawer</code>
+                      {" "}
+                      ·
+                      {" "}
+                      <code>.rx-drawer-body</code>
+                    </p>
+                    <div className="card w4-card">
+                      <div className="w3-stack">
+                        <p className="sub">A card under its opener, with blocks stacked one above the other.</p>
+                        <p className="sub">The drawers sit in a row at its foot.</p>
+                      </div>
+                      <div className="rx-drawers rx-foot">
+                        <details className="rx-drawer">
+                          <summary>Method</summary>
+                          <div className="rx-drawer-body">
+                            <p className="sub">What a drawer holds, shown when it opens.</p>
+                          </div>
+                        </details>
+                      </div>
                     </div>
                   </div>
                   <div>

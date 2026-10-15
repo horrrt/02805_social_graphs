@@ -3,83 +3,97 @@ import { Gloss } from "@/components/post/Gloss";
 import { Comparison } from "@/features/week01/odds/Comparison";
 import { EqualOdds, OurOdds, SeenFormula } from "./Formulas";
 
-// "What we found": the finding, the equal-odds comparison (an island) and the
-// exact odds, then what we asked, did and found surprising. The first use of
+// "What we found": the finding beside the equal-odds comparison (an island),
+// the calculation and the exact odds in drawers under them, then what we
+// asked, did and found surprising in a second card. The first use of
 // each new term is a glossary term (Term), opened by the page's TermLayer.
 export function Post() {
   return (
     <section aria-labelledby="post-title" className="section post" id="post">
-      <p className="eyebrow">What we found</p>
-      <h2 id="post-title">58 articles receive no incoming links.</h2>
-      <p>
-        Within our set of 303 Wikipedia articles, Spider-Man receives
-        references from 106 pages, while 58—including Baymax—receive none. We
-        give each card one chance per incoming link, plus one extra so every
-        card can appear. Spider-Man therefore gets 107 chances for every one
-        Baymax gets. That is why collecting the last few cards takes so long.
-      </p>
-      <p>
-        Being mentioned and mentioning others are different things.
-        Spider-Man’s page points to nine other articles. Betsy Braddock’s
-        points to 28, but only seven point back to her. The direction of a
-        link matters.
-      </p>
-      <section className="learning-comparison" aria-labelledby="odds-title">
-        <h3 id="odds-title">What if every card had the same chance?</h3>
-        <p>
-          Keep the same 303 cards and five draws per pack. Change only the
-          odds.
-        </p>
-        <Comparison />
-        <p className="fine">
-          Calculated averages across repeated collections, not a prediction
-          for your next pack. This comparison starts from an empty collection
-          and does not change your saved cards.
-        </p>
-        <details>
-          <summary>How are these averages calculated?</summary>
-          <p>
-            For a card with draw probability p, the chance of seeing it at
-            least once in d independent draws is
-            {" "}
-            <SeenFormula />
-            . Add
-            that chance over all 303 cards. Equal odds use
-            {" "}
-            <EqualOdds />
-            ; our rule
-            uses
-            {" "}
-            <OurOdds p />
-            .
-          </p>
-        </details>
-      </section>
-      <details className="exact-odds">
-        <summary>Spider-Man and Baymax: the exact odds</summary>
-        <figure className="beginner-comparison">
-          <figcaption>How often can each card appear?</figcaption>
+      <header className="w12-opener">
+        <span aria-hidden="true" className="w12-opener-num">2</span>
+        <div>
+          <p className="eyebrow">What we found</p>
+          <h2 id="post-title">58 articles receive no incoming links.</h2>
+        </div>
+      </header>
+      <div className="w12-card">
+        <div className="w12-two">
           <div>
-            <strong className="kit-named">
-              <Portrait page="Spider-Man" size="m" />
-              Spider-Man
-            </strong>
-            <span>107 chances out of 2,087 on each draw</span>
+            <p>
+              Within our set of 303 Wikipedia articles, Spider-Man receives
+              references from 106 pages, while 58—including Baymax—receive none. We
+              give each card one chance per incoming link, plus one extra so every
+              card can appear. Spider-Man therefore gets 107 chances for every one
+              Baymax gets. That is why collecting the last few cards takes so long.
+            </p>
+            <p>
+              Being mentioned and mentioning others are different things.
+              Spider-Man’s page points to nine other articles. Betsy Braddock’s
+              points to 28, but only seven point back to her. The direction of a
+              link matters.
+            </p>
           </div>
-          <div>
-            <strong className="kit-named">
-              <Portrait page="Baymax" size="m" />
-              Baymax
-            </strong>
-            <span>1 chance out of 2,087 on each draw</span>
-          </div>
-          <p className="fine">
-            These are probabilities per draw, not a promise about the next
-            pack.
-          </p>
-        </figure>
-      </details>
-      <div className="two-col">
+          <section className="learning-comparison" aria-labelledby="odds-title">
+            <h3 id="odds-title">What if every card had the same chance?</h3>
+            <p>
+              Keep the same 303 cards and five draws per pack. Change only the
+              odds.
+            </p>
+            <Comparison />
+            <p className="fine">
+              Calculated averages across repeated collections, not a prediction
+              for your next pack. This comparison starts from an empty collection
+              and does not change your saved cards.
+            </p>
+          </section>
+        </div>
+        <div className="w12-drawers">
+          <details>
+            <summary>How are these averages calculated?</summary>
+            <p>
+              For a card with draw probability p, the chance of seeing it at
+              least once in d independent draws is
+              {" "}
+              <SeenFormula />
+              . Add
+              that chance over all 303 cards. Equal odds use
+              {" "}
+              <EqualOdds />
+              ; our rule
+              uses
+              {" "}
+              <OurOdds p />
+              .
+            </p>
+          </details>
+          <details className="exact-odds">
+            <summary>Spider-Man and Baymax: the exact odds</summary>
+            <figure className="beginner-comparison">
+              <figcaption>How often can each card appear?</figcaption>
+              <div>
+                <strong className="kit-named">
+                  <Portrait page="Spider-Man" size="m" />
+                  Spider-Man
+                </strong>
+                <span>107 chances out of 2,087 on each draw</span>
+              </div>
+              <div>
+                <strong className="kit-named">
+                  <Portrait page="Baymax" size="m" />
+                  Baymax
+                </strong>
+                <span>1 chance out of 2,087 on each draw</span>
+              </div>
+              <p className="fine">
+                These are probabilities per draw, not a promise about the next
+                pack.
+              </p>
+            </figure>
+          </details>
+        </div>
+      </div>
+      <div className="w12-card w12-two w12-notes">
         <div>
           <h3>What we asked</h3>
           <p>
