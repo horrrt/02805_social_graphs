@@ -6,7 +6,7 @@
 //   ?variant=  which library draws it   canvas · d3 · echarts · globe · atlas · deck
 //   ?palette=  which two colours        signal · ember · iris · okabe · slate
 //   ?arcs=     how a corridor is drawn  curve · straight · flow · taper
-//   ?basemap=  what the world looks like night · outline · photo · none
+//   ?basemap=  what the world looks like outline · night · photo · none
 //   ?earth=    how much panel it fills  small · medium · large · huge
 //   ?skin=     type and surface         clean · editorial · terminal · poster
 //   ?tables=   how the panels read      rules · zebra · cards · compact
@@ -105,8 +105,8 @@ export const DOTS = {
 };
 
 export const BASEMAP = {
-  night: { label: "Night satellite" },
   outline: { label: "Country outlines" },
+  night: { label: "Night satellite" },
   photo: { label: "Photographic Earth" },
   none: { label: "No basemap" },
 };
@@ -141,7 +141,7 @@ export const DIMENSIONS = [
   { key: "links", label: "Link encoding", options: LINKS, fallback: "width" },
   { key: "thickness", label: "Link thickness", options: THICKNESS, fallback: "normal" },
   { key: "focus", label: "On selection", options: FOCUS, fallback: "dim" },
-  { key: "basemap", label: "The world", options: BASEMAP, fallback: "night" },
+  { key: "basemap", label: "The world", options: BASEMAP, fallback: "outline" },
   { key: "earth", label: "Earth size", options: EARTH, fallback: "large" },
   { key: "dots", label: "Country dots", options: DOTS, fallback: "off" },
   { key: "skin", label: "Skin", options: SKINS, fallback: "clean" },
