@@ -133,7 +133,7 @@ export const DIMENSIONS = [
   { key: "links", label: "Link encoding", options: LINKS, fallback: "width" },
   { key: "thickness", label: "Link thickness", options: THICKNESS, fallback: "normal" },
   { key: "focus", label: "On selection", options: FOCUS, fallback: "dim" },
-  { key: "basemap", label: "The world", options: BASEMAP, fallback: "photo" },
+  { key: "basemap", label: "The world", options: BASEMAP, fallback: "outline" },
   { key: "earth", label: "Earth size", options: EARTH, fallback: "large" },
   { key: "dots", label: "Country dots", options: DOTS, fallback: "off" },
   { key: "skin", label: "Skin", options: SKINS, fallback: "clean" },
