@@ -14,6 +14,7 @@ export type CorridorState = {
   yearIndex: number | null;
   year: number | null;
   selected: string | null;
+  picked: boolean;
   hover: string | null;
   layer: string;
   axisMode: { hist: string; ccdf: string };
