@@ -222,8 +222,10 @@ const state = {
   thickness: "normal",
   focus: "all",
   dots: "on",
-  basemap: "outline",
+  basemap: "night",
   earth: "large",
+  // The hero shows the world as a globe or as a flat map.
+  view: "globe",
   hover: null,
   axisMode: { hist: "loglog", ccdf: "loglog" },
   dash: 0,
@@ -612,6 +614,13 @@ export function resetGlobe() {
   state.picked = false;
   R.resetView?.();
   store.setState((s) => ({ picked: false, paint: s.paint + 1 }));
+}
+
+// The hero's globe/map switch. The view follows the renderer that draws it,
+// so it repaints like any other style change.
+export function setView(view) {
+  state.view = view === "flat" ? "flat" : "globe";
+  store.setState((s) => ({ view: state.view, paint: s.paint + 1 }));
 }
 
 /* ------------------------------------------------------------- picking

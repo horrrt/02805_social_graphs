@@ -968,12 +968,29 @@ export default function Page() {
                     ·
                     {" "}
                     <code>.stage-reset</code>
+                    {" "}
+                    ·
+                    {" "}
+                    <code>.stage-view</code>
+                    {" "}
+                    ·
+                    {" "}
+                    <code>.is-flat</code>
                   </h3>
                   <p className="axis-note">The globe's frame, empty</p>
                   <div className="stage-wrap">
                     <canvas className="stage" height="200" width="300"></canvas>
+                    <div aria-label="Globe or flat map" className="stage-view" role="group">
+                      <button aria-pressed="true" type="button">Globe</button>
+                      <button aria-pressed="false" type="button">Map</button>
+                    </div>
                     <button className="stage-reset" type="button">Reset view</button>
                     <p className="stage-hint">Drag to spin. Click a country.</p>
+                  </div>
+                  <p className="axis-note">The flat map's frame, 16:9</p>
+                  <div className="stage-wrap is-flat">
+                    <canvas className="stage" height="200" width="300"></canvas>
+                    <p className="stage-hint">Drag to pan. Click a country.</p>
                   </div>
                 </div>
               </div>

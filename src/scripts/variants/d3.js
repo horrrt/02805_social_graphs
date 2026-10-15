@@ -420,16 +420,95 @@ export function install(api, d3) {
     }
   }
 
-  // A d3-geo orthographic globe, dragged with d3.drag and rendered as SVG
-  // paths. Great-circle arcs come from d3.geoInterpolate, so a corridor bends
-  // the way a flight path does rather than the way a quadratic curve does.
-  // One canvas behind the globe SVG, used only when the photograph is chosen.
+  // The hero's world, as a d3-geo orthographic globe or an equirectangular
+  // flat map, dragged with d3.drag and rendered as SVG paths over a canvas
+  // underlay that carries the photograph. On the outline globe a corridor is
+  // a great circle; on the flat map, and on the night globe, it is a bow in
+  // screen space, which reads as a route where a great circle would read as a
+  // kink or a straight spoke.
+
+  // ---- the photograph, in two strengths ------------------------------------
+  // The day image as it is, and the same image darkened for the night look:
+  // oceans go nearly black and land keeps its colour at half strength, so the
+  // corridors carry the light. Each is decoded once into pixels the globe
+  // samples and a canvas the flat map draws.
+  const textures = {};
+  function texture(kind) {
+    if (textures[kind]) return textures[kind];
+    const image = api.earthTexture(() => globe());
+    if (!image) return null;
+    const canvas = document.createElement("canvas");
+    canvas.width = image.width;
+    canvas.height = image.height;
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    ctx.drawImage(image, 0, 0);
+    const data = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    if (kind === "night") {
+      const px = data.data;
+      for (let i = 0; i < px.length; i += 4) {
+        const grey = 0.3 * px[i] + 0.59 * px[i + 1] + 0.11 * px[i + 2];
+        for (let k = 0; k < 3; k += 1) {
+          // A quarter of the colour goes grey, then a gamma above one pushes
+          // the dark blue of the sea toward black faster than the land.
+          const v = (px[i + k] * 0.78 + grey * 0.22) / 255;
+          px[i + k] = Math.round(255 * 0.66 * v ** 1.4);
+        }
+      }
+      ctx.putImageData(data, 0, 0);
+    }
+    textures[kind] = { canvas, pixels: data.data, width: canvas.width, height: canvas.height };
+    return textures[kind];
+  }
+
+  // The globe's photograph, sampled through the projection itself, so land and
+  // corridors turn together at any tilt. Sampled coarser while dragging, then
+  // redrawn sharp when the drag ends.
+  const sphere = { key: "", canvas: null };
+  function photoSphere(tex) {
+    const radius = projection.scale();
+    const [cx, cy] = projection.translate();
+    const step = dragging ? 2.4 : 1.25;
+    const size = Math.ceil((radius * 2) / step);
+    const key = `${tex.width}:${size}:${projection.rotate().map((v) => v.toFixed(2)).join(",")}:${cx}:${cy}`;
+    if (sphere.key === key) return sphere.canvas;
+    const off = sphere.canvas ?? document.createElement("canvas");
+    off.width = size;
+    off.height = size;
+    const octx = off.getContext("2d");
+    const out = octx.createImageData(size, size);
+    const { pixels, width: tw, height: th } = tex;
+    for (let y = 0; y < size; y += 1) {
+      const py = cy - radius + (y + 0.5) * step;
+      const dy = (py - cy) / radius;
+      for (let x = 0; x < size; x += 1) {
+        const px = cx - radius + (x + 0.5) * step;
+        const dx = (px - cx) / radius;
+        if (dx * dx + dy * dy > 1) continue;
+        const at = projection.invert([px, py]);
+        if (!at || Number.isNaN(at[0])) continue;
+        const sx = Math.min(tw - 1, Math.floor((((at[0] + 180) % 360 + 360) % 360) / 360 * tw));
+        const sy = Math.min(th - 1, Math.max(0, Math.floor(((90 - at[1]) / 180) * th)));
+        const from = (sy * tw + sx) * 4;
+        const to = (y * size + x) * 4;
+        out.data[to] = pixels[from];
+        out.data[to + 1] = pixels[from + 1];
+        out.data[to + 2] = pixels[from + 2];
+        out.data[to + 3] = 255;
+      }
+    }
+    octx.putImageData(out, 0, 0);
+    sphere.canvas = off;
+    sphere.key = key;
+    return off;
+  }
+
+  // One canvas behind the SVG, used only when a photograph is chosen.
   let underlay = null;
-  function photoUnderlay(width, height, radius) {
+  function paintUnderlay(width, height, flat) {
     const svg = $("globe-canvas-d3");
     if (!svg) return;
     // The hero island renders the underlay before the globe's SVG.
-    if (!underlay) {
+    if (!underlay || !underlay.isConnected) {
       underlay = $("globe-canvas-d3-photo");
       if (!underlay) return;
       underlay.style.position = "absolute";
@@ -438,8 +517,9 @@ export function install(api, d3) {
       svg.parentElement.style.position = "relative";
       svg.style.position = "relative";
     }
-    underlay.hidden = state.basemap !== "photo";
-    if (underlay.hidden) return;
+    const kind = state.basemap === "night" ? "night" : state.basemap === "photo" ? "photo" : null;
+    underlay.hidden = !kind;
+    if (!kind) return;
     const ratio = Math.min(window.devicePixelRatio || 1, 2);
     underlay.style.width = `${width}px`;
     underlay.style.height = `${height}px`;
@@ -448,63 +528,235 @@ export function install(api, d3) {
     const ctx = underlay.getContext("2d");
     ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
     ctx.clearRect(0, 0, width, height);
-    api.paintPhotoGlobe(ctx, radius, width / 2, height / 2);
+    const sea = kind === "night" ? "#02060c" : "#0d2b4c";
+    ctx.fillStyle = sea;
+    if (flat) ctx.fillRect(0, 0, width, height);
+    else {
+      ctx.beginPath();
+      ctx.arc(projection.translate()[0], projection.translate()[1], projection.scale(), 0, Math.PI * 2);
+      ctx.fill();
+    }
+    const tex = texture(kind);
+    if (!tex) return;
+    ctx.imageSmoothingQuality = "high";
+    if (flat) {
+      // An equirectangular image under an equirectangular projection is a
+      // plain draw, shifted by the rotation and repeated across the seam.
+      const scale = projection.scale();
+      const lon0 = -projection.rotate()[0];
+      const [cx] = projection([lon0, 0]);
+      const top = projection([lon0, 90])[1];
+      const bottom = projection([lon0, -90])[1];
+      const span = 2 * Math.PI * scale;
+      // The image's left edge is longitude -180, wherever the map is turned.
+      let left = cx + scale * ((-180 - lon0) * Math.PI) / 180;
+      while (left > 0) left -= span;
+      for (let k = 0; left + k * span < width; k += 1) {
+        ctx.drawImage(tex.canvas, left + k * span, top, span, bottom - top);
+      }
+      return;
+    }
+    const radius = projection.scale();
+    const [cx, cy] = projection.translate();
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+    ctx.clip();
+    ctx.drawImage(photoSphere(tex), cx - radius, cy - radius, radius * 2, radius * 2);
+    // The limb darkens as a lit sphere does, so the globe reads as round.
+    const limb = ctx.createRadialGradient(cx, cy, radius * 0.55, cx, cy, radius);
+    limb.addColorStop(0, "rgba(0,0,0,0)");
+    limb.addColorStop(1, kind === "night" ? "rgba(0,0,0,0.55)" : "rgba(0,0,0,0.3)");
+    ctx.fillStyle = limb;
+    ctx.fillRect(cx - radius, cy - radius, radius * 2, radius * 2);
+    ctx.restore();
   }
 
+  // ---- the two projections -------------------------------------------------
   let projection = null;
+  let orthographic = null;
+  let equirect = null;
+  let dragging = false;
   const START_ROTATE = [-12, -18];
+  // The flat map opens on Europe, Africa and Asia, the middle of the network,
+  // with the Americas at its left edge.
+  const START_FLAT = { lon: 30, lat: 12 };
+  const flatView = { ...START_FLAT };
+  let centred = null;
+  let faced = null;
+  // The flat map shows 125 degrees of latitude in a 16:9 frame.
+  const FLAT_ASPECT = 9 / 16;
+  const FLAT_SPAN = (125 * Math.PI) / 180;
+  const flatScale = (height) => (height / FLAT_SPAN) * (earthScale() / 1.12);
+  const clampLat = (lat, height) => {
+    const half = ((height / 2) / flatScale(height)) * (180 / Math.PI);
+    const room = Math.max(0, 90 - half);
+    return Math.max(-room, Math.min(room, lat));
+  };
+
+  function onDrag(event) {
+    if (state.view === "flat") {
+      const scale = equirect.scale();
+      flatView.lon -= (event.dx / scale) * (180 / Math.PI);
+      flatView.lat += (event.dy / scale) * (180 / Math.PI);
+    } else {
+      const [lon, lat] = orthographic.rotate();
+      orthographic.rotate([lon + event.dx * 0.35, lat - event.dy * 0.25]);
+    }
+    globe();
+  }
+
+  // ---- the night look ------------------------------------------------------
+  // One hue that glows: a dim green for a small corridor, a bright mint for a
+  // large one, as in the satellite maps this look is drawn after.
+  const NIGHT_LOW = [62, 160, 98];
+  const NIGHT_HIGH = [150, 255, 172];
+  const nightTint = (rank) =>
+    NIGHT_LOW.map((c, i) => Math.round(c + (NIGHT_HIGH[i] - c) * rank)).join(",");
+
+  // A corridor as a bow toward the pole. On the flat map the long way round
+  // the seam is never taken, so a corridor across the Pacific crosses the
+  // Pacific; the globe passes a span of 0 and has no seam.
+  function bow(a, b, span) {
+    const [x1, y1] = a;
+    let [x2, y2] = b;
+    if (span && x2 - x1 > span / 2) x2 -= span;
+    else if (span && x1 - x2 > span / 2) x2 += span;
+    const dx = x2 - x1;
+    const dy = y2 - y1;
+    const length = Math.hypot(dx, dy) || 1;
+    let nx = -dy / length;
+    let ny = dx / length;
+    if (ny > 0) {
+      nx = -nx;
+      ny = -ny;
+    }
+    const lift = length * 0.2;
+    const mx = (x1 + x2) / 2 + nx * lift;
+    const my = (y1 + y2) / 2 + ny * lift;
+    return { d: `M${x1},${y1}Q${mx},${my} ${x2},${y2}`, end: [x2, y2] };
+  }
+
   function globe() {
     const canvas = $("globe-canvas");
     const host = $("globe-canvas-d3");
     if (!canvas || !host) return;
+    const flat = state.view === "flat";
+    const nightLook = state.basemap === "night";
     // Measured on the stage, not the canvas: once the SVG has taken over, the
     // hidden canvas measures zero and a redraw (a drag) would shrink the globe.
-    // The stage is square, so its width is the size; its height would include
-    // the SVG's own and grow on every redraw.
+    // The globe's stage is square, so its width is the size; its height would
+    // include the SVG's own and grow on every redraw. The flat map is 16:9.
     const stage = host.parentElement;
     const width = stage?.clientWidth || canvas.clientWidth || 720;
-    const height = width;
+    const height = flat ? Math.round(width * FLAT_ASPECT) : width;
     takeOver(canvas, host);
     const svg = d3.select(host).attr("viewBox", `0 0 ${width} ${height}`).attr("height", height).style("display", "block");
     svg.selectAll("*").remove();
 
-    if (!projection) {
-      projection = d3.geoOrthographic().rotate(START_ROTATE);
+    if (!orthographic) {
+      orthographic = d3.geoOrthographic().rotate(START_ROTATE);
+      equirect = d3.geoEquirectangular();
       svg.call(
-        d3.drag().on("drag", (event) => {
-          const [lon, lat] = projection.rotate();
-          projection.rotate([lon + event.dx * 0.35, lat - event.dy * 0.25]);
-          globe();
-        }),
+        d3
+          .drag()
+          .on("start", () => {
+            dragging = true;
+          })
+          .on("drag", onDrag)
+          .on("end", () => {
+            dragging = false;
+            globe();
+          }),
       );
     }
-    projection
-      .translate([width / 2, height / 2])
-      .scale(Math.min(Math.min(width, height) * 0.48, Math.min(width, height) * 0.42 * earthScale()));
+
+    if (flat) {
+      // A reader's pick moves to the middle of the map once, so its corridors
+      // reach both ways; a drag after that is the reader's.
+      const pickedCoord = state.picked && state.selected ? node(state.selected)?.coord : null;
+      if (pickedCoord && centred !== state.selected) {
+        flatView.lon = pickedCoord[1];
+        flatView.lat = pickedCoord[0];
+      }
+      centred = state.picked ? state.selected : null;
+      flatView.lat = clampLat(flatView.lat, height);
+      flatView.lon = ((flatView.lon + 540) % 360) - 180;
+      projection = equirect
+        .rotate([-flatView.lon, 0])
+        .center([0, flatView.lat])
+        .scale(flatScale(height))
+        .translate([width / 2, height / 2]);
+    } else {
+      // The globe turns to a reader's pick once, the same way.
+      const pickedCoord = state.picked && state.selected ? node(state.selected)?.coord : null;
+      if (pickedCoord && faced !== state.selected) orthographic.rotate([-pickedCoord[1], -pickedCoord[0] * 0.8]);
+      faced = state.picked ? state.selected : null;
+      projection = orthographic
+        .translate([width / 2, height / 2])
+        .scale(Math.min(width * 0.48, width * 0.42 * earthScale()));
+    }
     const path = d3.geoPath(projection);
+    const span = flat ? 2 * Math.PI * projection.scale() : 0;
 
-    svg
-      .append("circle")
-      .attr("cx", width / 2)
-      .attr("cy", height / 2)
-      .attr("r", projection.scale())
-      .attr("fill", "#0d2b4c");
+    const defs = svg.append("defs");
+    const glow = defs
+      .append("filter")
+      .attr("id", "globe-glow")
+      .attr("x", "-50%")
+      .attr("y", "-50%")
+      .attr("width", "200%")
+      .attr("height", "200%");
+    glow.append("feGaussianBlur").attr("stdDeviation", flat ? 2.6 : 3);
 
-    // SVG cannot resample a photograph through an orthographic projection, so
-    // a canvas underlay paints it and the vectors sit on top. Same picture as
-    // every other renderer, same code doing the sampling.
-    photoUnderlay(width, height, projection.scale());
+    // The ground under everything: the sea, or space round the globe.
+    // Under a photograph the SVG stays clear: the underlay behind it paints
+    // its own ground, and an SVG fill here would cover it.
+    const photo = state.basemap === "night" || state.basemap === "photo";
+    const ground = photo ? "none" : "#0d2b4c";
+    if (flat) {
+      svg.append("rect").attr("width", width).attr("height", height).attr("fill", ground);
+    } else {
+      if (nightLook) {
+        // A thin atmosphere round the limb.
+        svg
+          .append("circle")
+          .attr("cx", width / 2)
+          .attr("cy", height / 2)
+          .attr("r", projection.scale() + 2)
+          .attr("fill", "none")
+          .attr("stroke", "rgba(120,190,255,0.35)")
+          .attr("stroke-width", 6)
+          .attr("filter", "url(#globe-glow)");
+      }
+      svg
+        .append("circle")
+        .attr("cx", width / 2)
+        .attr("cy", height / 2)
+        .attr("r", projection.scale())
+        .attr("fill", ground);
+    }
+
+    // SVG cannot resample a photograph through a projection, so a canvas
+    // underlay paints it and the vectors sit on top.
+    paintUnderlay(width, height, flat);
+
     // Countries as the canvas globe draws them: the selection filled and
-    // outlined in white, and a click on any country selects it.
-    if (state.basemap === "outline" && state.world) {
+    // outlined in white, and a click on any country selects it. Under the
+    // night look they are only faint borders and click targets.
+    if ((state.basemap === "outline" || nightLook) && state.world) {
       svg
         .append("g")
         .selectAll("path")
         .data(state.world.features)
         .join("path")
         .attr("d", path)
-        .attr("fill", (f) => api.landFill(f.properties.iso3, "#245f92"))
-        .attr("stroke", (f) => (f.properties.iso3 === state.selected ? "#ffffff" : "rgba(178,215,248,0.55)"))
+        .attr("fill", (f) => (nightLook ? "transparent" : api.landFill(f.properties.iso3, "#245f92")))
+        .attr("stroke", (f) => {
+          const chosen = f.properties.iso3 === state.selected;
+          if (nightLook) return chosen && state.picked ? "rgba(255,255,255,0.6)" : "rgba(255,255,255,0.07)";
+          return chosen ? "#ffffff" : "rgba(178,215,248,0.55)";
+        })
         .attr("stroke-width", 0.6)
         .attr("cursor", (f) => (metrics(f.properties.iso3) ? "pointer" : null))
         .on("click", (event, f) => {
@@ -514,27 +766,34 @@ export function install(api, d3) {
         .text((f) => f.properties.name);
     }
 
-    svg
-      .append("path")
-      .datum(d3.geoGraticule10())
-      .attr("d", path)
-      .attr("fill", "none")
-      .attr("stroke", "rgba(165,198,230,0.24)");
+    if (!nightLook) {
+      svg
+        .append("path")
+        .datum(d3.geoGraticule10())
+        .attr("d", path)
+        .attr("fill", "none")
+        .attr("stroke", "rgba(165,198,230,0.24)");
+    }
 
-    // Migration arcs as on the canvas globe: the same 500 corridors, thin and
-    // yellow for a small one, thick and green for a large one, faded or hidden
-    // outside the selection, and every link-style choice honoured.
+    // Migration arcs: the same 500 corridors, sized by a log rank, faded or
+    // hidden outside the selection, and every link-style choice honoured.
     const centre = [-projection.rotate()[0], -projection.rotate()[1]];
-    const facing = (coord) => d3.geoDistance([coord[1], coord[0]], centre) <= Math.PI / 2;
+    const facing = (coord) => flat || d3.geoDistance([coord[1], coord[0]], centre) <= Math.PI / 2;
+    const place = (coord) => projection([coord[1], coord[0]]);
     const edges = api.topEdges(500);
     const heaviest = edges[0]?.weight ?? 1;
     const lightest = api.scaleFloor(edges, 500);
     const link = api.linkSpec();
     const scale = api.THICKNESS[state.thickness] ?? 1;
+    const muted = svg.append("g").attr("fill", "none").attr("pointer-events", "none");
+    const halo = svg.append("g").attr("fill", "none").attr("pointer-events", "none").attr("filter", "url(#globe-glow)");
     const arcs = svg.append("g").attr("fill", "none").attr("pointer-events", "none");
+    const ends = [];
     for (const edge of edges) {
-      const from = node(state.edges.countries[edge.oi])?.coord;
-      const to = node(state.edges.countries[edge.di])?.coord;
+      const fromIso = state.edges.countries[edge.oi];
+      const toIso = state.edges.countries[edge.di];
+      const from = node(fromIso)?.coord;
+      const to = node(toIso)?.coord;
       // Both ends on the near side, as on the canvas globe: an arc to the far
       // side would only crowd the rim.
       if (!from || !to || !facing(from) || !facing(to)) continue;
@@ -542,23 +801,70 @@ export function install(api, d3) {
       if (alpha === 0) continue;
       const share = Math.sqrt(edge.weight / heaviest);
       const rank = api.logShare(edge.weight, lightest, heaviest);
-      const line = arcs
-        .append("path")
-        .attr("d", path({ type: "LineString", coordinates: [[from[1], from[0]], [to[1], to[0]]] }))
-        .attr("stroke-linecap", "round");
+      let d;
+      let end = null;
+      if (flat || nightLook) {
+        // Drawn from the selection outward, so its end stays put at the seam.
+        // On the globe a great circle through the middle is a straight
+        // spoke, so the night look bows it the same way, lifted off the earth.
+        const outward = toIso === state.selected;
+        const curve = bow(place(outward ? to : from), place(outward ? from : to), span);
+        d = curve.d;
+        end = curve.end;
+      } else {
+        d = path({ type: "LineString", coordinates: [[from[1], from[0]], [to[1], to[0]]] });
+        end = place(fromIso === state.selected ? to : from);
+      }
+      if (!d) continue;
       // A picked country keeps its corridors in colour; the rest go grey.
+      // Under the night look the rest of the world goes dark instead.
       if (!api.globeFocused(edge)) {
-        line
+        if (nightLook) continue;
+        muted
+          .append("path")
+          .attr("d", d)
           .attr("stroke", `rgb(${api.GLOBE_MUTED.rgb})`)
           .attr("stroke-opacity", api.GLOBE_MUTED.alpha)
           .attr("stroke-width", api.GLOBE_MUTED.width * scale);
         continue;
       }
+      if (nightLook) {
+        const tint = link.ramp ? api.rampColour(share) : nightTint(rank);
+        const wide = (link.width ? 0.8 + rank * rank * 4.6 : 1.8) * scale;
+        const strength = Math.min(1, (0.45 + rank * 0.55) * alpha);
+        halo
+          .append("path")
+          .attr("d", d)
+          .attr("stroke", `rgb(${tint})`)
+          .attr("stroke-opacity", strength * 0.7)
+          .attr("stroke-width", wide * 2.6 + 1)
+          .attr("stroke-linecap", "round");
+        arcs
+          .append("path")
+          .attr("d", d)
+          .attr("stroke", `rgb(${tint})`)
+          .attr("stroke-opacity", strength)
+          .attr("stroke-width", wide)
+          .attr("stroke-linecap", "round");
+        if (state.picked && end) ends.push({ end, tint, rank });
+        continue;
+      }
       const tint = link.ramp ? api.rampColour(share) : api.peopleColour(rank);
-      line
+      arcs
+        .append("path")
+        .attr("d", d)
+        .attr("stroke-linecap", "round")
         .attr("stroke", `rgb(${tint})`)
         .attr("stroke-opacity", (0.3 + rank * 0.6) * alpha)
         .attr("stroke-width", (link.width ? 0.7 + rank * rank * 7 : 2.2) * scale);
+    }
+
+    // Under the night look a picked country's partners light up where its
+    // corridors land, larger for a larger corridor.
+    for (const { end, tint, rank } of ends) {
+      const r = (1.2 + rank * 2.4) * Math.sqrt(scale);
+      halo.append("circle").attr("cx", end[0]).attr("cy", end[1]).attr("r", r * 2).attr("fill", `rgb(${tint})`).attr("fill-opacity", 0.6);
+      arcs.append("circle").attr("cx", end[0]).attr("cy", end[1]).attr("r", r).attr("fill", `rgb(${tint})`);
     }
 
     // Country dots only when the style asks for them, as on the canvas.
@@ -568,7 +874,7 @@ export function install(api, d3) {
         const coord = node(iso3)?.coord;
         const m = metrics(iso3);
         if (!coord || !m || !facing(coord)) continue;
-        const point = projection([coord[1], coord[0]]);
+        const point = place(coord);
         dots
           .append("circle")
           .attr("cx", point[0])
@@ -582,38 +888,67 @@ export function install(api, d3) {
       }
     }
 
-    // The selection: a white ring and its name on a white label, as on the canvas.
     const chosen = state.selected && node(state.selected)?.coord;
-    if (chosen && facing(chosen)) {
-      const [x, y] = projection([chosen[1], chosen[0]]);
-      const mark = svg.append("g").attr("pointer-events", "none");
-      mark.append("circle").attr("cx", x).attr("cy", y).attr("r", 6).attr("fill", "none").attr("stroke", "#ffffff").attr("stroke-width", 1.5);
+    if (!chosen || !facing(chosen)) return;
+    const [x, y] = place(chosen);
+    const mark = svg.append("g").attr("pointer-events", "none");
+    if (nightLook) {
+      // The selection as a lit point with its name beside it, white on the
+      // dark ground with a shadow to lift it off the arcs.
+      mark.append("circle").attr("cx", x).attr("cy", y).attr("r", 10).attr("fill", "#ffffff").attr("fill-opacity", 0.5).attr("filter", "url(#globe-glow)");
+      mark.append("circle").attr("cx", x).attr("cy", y).attr("r", 4.5).attr("fill", "#ffffff");
       const label = mark
         .append("text")
-        .attr("x", x)
-        .attr("y", y - 20)
-        .attr("text-anchor", "middle")
+        .attr("x", x + 12)
+        .attr("y", y)
         .attr("dominant-baseline", "middle")
-        .attr("fill", colours.INK)
+        .attr("fill", "#ffffff")
+        .attr("stroke", "rgba(0,0,0,0.6)")
+        .attr("stroke-width", 3)
+        .attr("paint-order", "stroke")
         .attr("font-family", FONT())
-        .attr("font-size", fs("small"))
+        .attr("font-size", fs("body"))
         .attr("font-weight", 600)
         .text(node(state.selected).name);
-      const box = label.node().getBBox();
-      mark
-        .insert("rect", "text")
-        .attr("x", box.x - 8)
-        .attr("y", y - 30)
-        .attr("width", box.width + 16)
-        .attr("height", 20)
-        .attr("fill", "rgba(255,255,255,0.94)");
+      // A selection near the right edge takes its name on the left.
+      if (x + 12 + label.node().getComputedTextLength() > width - 8) {
+        label.attr("x", x - 12).attr("text-anchor", "end");
+      }
+      return;
     }
+    // The selection: a white ring and its name on a white label, as on the canvas.
+    mark.append("circle").attr("cx", x).attr("cy", y).attr("r", 6).attr("fill", "none").attr("stroke", "#ffffff").attr("stroke-width", 1.5);
+    const label = mark
+      .append("text")
+      .attr("x", x)
+      .attr("y", y - 20)
+      .attr("text-anchor", "middle")
+      .attr("dominant-baseline", "middle")
+      .attr("fill", colours.INK)
+      .attr("font-family", FONT())
+      .attr("font-size", fs("small"))
+      .attr("font-weight", 600)
+      .text(node(state.selected).name);
+    const box = label.node().getBBox();
+    mark
+      .insert("rect", "text")
+      .attr("x", box.x - 8)
+      .attr("y", y - 30)
+      .attr("width", box.width + 16)
+      .attr("height", 20)
+      .attr("fill", "rgba(255,255,255,0.94)");
   }
 
   return {
     globe,
-    // The globe's reset button turns it back to where it opened.
-    resetView: () => projection?.rotate(START_ROTATE),
+    // The reset button turns the globe back to where it opened and the flat
+    // map back to its opening frame.
+    resetView: () => {
+      orthographic?.rotate(START_ROTATE);
+      Object.assign(flatView, START_FLAT);
+      centred = null;
+      faced = null;
+    },
     hint: "Drag to spin. Click a country. (SVG)",
     hist,
     ccdf: ccdfChart,
