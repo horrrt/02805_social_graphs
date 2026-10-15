@@ -8,7 +8,7 @@ import "@/styles/home.css";
 const PAGE = {
   path: "",
   title: "Log-Log Legends · DTU 02805 Social Graphs",
-  description: "Log-Log Legends: one interactive post per week of DTU 02805 Social Graphs and Interactions, by Àngela, Gyula and Niklas. Marvel articles, migration corridors and H-1B hiring so far; the language half follows.",
+  description: "Log-Log Legends: one interactive post per week of DTU 02805 Social Graphs and Interactions, by Àngela, Gyula and Niklas. Marvel networks, migration corridors, H-1B hiring, and what the words on Marvel's Wikipedia pages give away.",
 };
 
 export const metadata: Metadata = pageMeta(PAGE);
