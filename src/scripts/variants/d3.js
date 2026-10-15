@@ -422,9 +422,9 @@ export function install(api, d3) {
 
   // The hero's globe, a d3-geo orthographic projection dragged with d3.drag
   // and rendered as SVG paths over a canvas underlay that carries the
-  // photograph when one is chosen. A corridor is a glowing bow in screen
-  // space, which reads as a route where a great circle through the middle of
-  // the globe would read as a straight spoke.
+  // photograph when one is chosen. A corridor is a glowing great circle
+  // lifted off the sphere, so it reads as a route rather than a straight
+  // spoke, and is cut where it passes over the edge of the globe.
 
   // ---- the photograph, in two strengths ------------------------------------
   // The day image as it is, and the same image darkened for the night look:
@@ -594,23 +594,45 @@ export function install(api, d3) {
   const glowTint = (rank) =>
     GLOW_LOW.map((c, i) => Math.round(c + (GLOW_HIGH[i] - c) * rank)).join(",");
 
-  // A corridor as a bow toward the pole.
-  function bow(a, b) {
-    const [x1, y1] = a;
-    const [x2, y2] = b;
-    const dx = x2 - x1;
-    const dy = y2 - y1;
-    const length = Math.hypot(dx, dy) || 1;
-    let nx = -dy / length;
-    let ny = dx / length;
-    if (ny > 0) {
-      nx = -nx;
-      ny = -ny;
+  // A corridor as a great circle lifted off the sphere, highest in the
+  // middle and higher for a longer corridor, projected in 3D. The part that
+  // swings round the back of the globe is dropped; the clip on the arcs'
+  // groups cuts the rest at the globe's edge, so a corridor to the far side
+  // runs to the rim instead of vanishing.
+  const RAD = Math.PI / 180;
+  function lifted(a, b) {
+    const rotate = d3.geoRotation(projection.rotate());
+    const along = d3.geoInterpolate(a, b);
+    const reach = d3.geoDistance(a, b);
+    const height = Math.min(0.32, reach * 0.14);
+    const radius = projection.scale();
+    const [cx, cy] = projection.translate();
+    // Coarser while dragging: 500 corridors are resampled on every frame.
+    const steps = Math.max(6, Math.ceil(reach * (dragging ? 8 : 18)));
+    const screen = (p) => `${(cx + radius * p.x).toFixed(1)},${(cy - radius * p.y).toFixed(1)}`;
+    const cut = (p, q) => {
+      const f = p.z / (p.z - q.z);
+      return { x: p.x + (q.x - p.x) * f, y: p.y + (q.y - p.y) * f, z: 0 };
+    };
+    let d = "";
+    let prev = null;
+    for (let i = 0; i <= steps; i += 1) {
+      const t = i / steps;
+      const [lon, lat] = rotate(along(t));
+      const k = 1 + height * Math.sin(Math.PI * t);
+      const p = {
+        x: k * Math.cos(lat * RAD) * Math.sin(lon * RAD),
+        y: k * Math.sin(lat * RAD),
+        z: k * Math.cos(lat * RAD) * Math.cos(lon * RAD),
+      };
+      const shown = p.z >= 0;
+      const was = prev && prev.z >= 0;
+      if (shown && !was) d += `M${screen(prev ? cut(prev, p) : p)}L${screen(p)}`;
+      else if (shown) d += `L${screen(p)}`;
+      else if (was) d += `L${screen(cut(prev, p))}`;
+      prev = p;
     }
-    const lift = length * 0.2;
-    const mx = (x1 + x2) / 2 + nx * lift;
-    const my = (y1 + y2) / 2 + ny * lift;
-    return { d: `M${x1},${y1}Q${mx},${my} ${x2},${y2}`, end: [x2, y2] };
+    return d;
   }
 
   function globe() {
@@ -727,27 +749,40 @@ export function install(api, d3) {
     const lightest = api.scaleFloor(edges, 500);
     const link = api.linkSpec();
     const scale = api.THICKNESS[state.thickness] ?? 1;
-    const halo = svg.append("g").attr("fill", "none").attr("pointer-events", "none").attr("filter", "url(#globe-glow)");
-    const arcs = svg.append("g").attr("fill", "none").attr("pointer-events", "none");
+    defs
+      .append("clipPath")
+      .attr("id", "globe-disc")
+      .append("circle")
+      .attr("cx", width / 2)
+      .attr("cy", height / 2)
+      .attr("r", projection.scale());
+    const halo = svg
+      .append("g")
+      .attr("clip-path", "url(#globe-disc)")
+      .append("g")
+      .attr("fill", "none")
+      .attr("pointer-events", "none")
+      .attr("filter", "url(#globe-glow)");
+    const arcs = svg.append("g").attr("fill", "none").attr("pointer-events", "none").attr("clip-path", "url(#globe-disc)");
     const ends = [];
     for (const edge of edges) {
       const fromIso = state.edges.countries[edge.oi];
       const toIso = state.edges.countries[edge.di];
       const from = node(fromIso)?.coord;
       const to = node(toIso)?.coord;
-      // Both ends on the near side, as on the canvas globe: an arc to the far
-      // side would only crowd the rim.
-      if (!from || !to || !facing(from) || !facing(to)) continue;
+      if (!from || !to) continue;
       const alpha = api.linkAlpha(edge);
       if (alpha === 0) continue;
       const share = Math.sqrt(edge.weight / heaviest);
       const rank = api.logShare(edge.weight, lightest, heaviest);
-      // Drawn from the selection outward, so its far end is where the lit
-      // partner dot goes.
-      const outward = toIso === state.selected;
-      const { d, end } = bow(place(outward ? to : from), place(outward ? from : to));
       // A picked country keeps its corridors lit; the rest are not drawn.
       if (!api.globeFocused(edge)) continue;
+      const d = lifted([from[1], from[0]], [to[1], to[0]]);
+      if (!d) continue;
+      // The lit partner dot goes at the end away from the selection, when
+      // that end is on the near side.
+      const far = toIso === state.selected ? from : to;
+      const end = facing(far) ? place(far) : null;
       // A picked country's own corridors draw brighter and wider than the
       // unpicked network.
       const lit = state.picked ? 0.35 : 0;
@@ -768,7 +803,7 @@ export function install(api, d3) {
         .attr("stroke-opacity", strength)
         .attr("stroke-width", wide)
         .attr("stroke-linecap", "round");
-      if (state.picked) ends.push({ end, tint, rank });
+      if (state.picked && end) ends.push({ end, tint, rank });
     }
 
     // A picked country's partners light up where its corridors land, larger
