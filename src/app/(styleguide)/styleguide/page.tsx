@@ -371,6 +371,10 @@ export default function Page() {
                       ·
                       {" "}
                       <code>.rx-drawer-body</code>
+                      {" "}
+                      ·
+                      {" "}
+                      <code>.rx-wide</code>
                     </p>
                     <div className="card w4-card">
                       <div className="w3-stack">
@@ -382,6 +386,12 @@ export default function Page() {
                           <summary>Method</summary>
                           <div className="rx-drawer-body">
                             <p className="sub">What a drawer holds, shown when it opens.</p>
+                          </div>
+                        </details>
+                        <details className="rx-drawer">
+                          <summary>Table</summary>
+                          <div className="rx-drawer-body rx-wide">
+                            <p className="sub">A drawer holding a chart or a table takes the card&apos;s full width.</p>
                           </div>
                         </details>
                       </div>

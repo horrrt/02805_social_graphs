@@ -18,7 +18,7 @@ export function Asks() {
           <h2 id="questions-head">Six questions, answered from the same two files</h2>
           <details className="rx-drawer" id="questions">
             <summary>The six questions</summary>
-            <div className="rx-drawer-body">
+            <div className="rx-drawer-body rx-wide">
               <article className="qa-item">
                 <h3>1 · Which corridors actually carry the world?</h3>
                 <RingControls />
@@ -227,7 +227,7 @@ export function Asks() {
           </div>
           <details className="rx-drawer" id="gravity-method">
             <summary>How the model is fitted, and the full table</summary>
-            <div className="rx-drawer-body">
+            <div className="rx-drawer-body rx-wide">
               <p className="sub">
                 Question 4 showed two things separately: rich countries hold more
                 foreign-born people, and the people in them came from further
@@ -464,7 +464,7 @@ export function Asks() {
           </div>
           <details className="rx-drawer" id="communities-method">
             <summary>How the groups were found, and refugees against migrants</summary>
-            <div className="rx-drawer-body">
+            <div className="rx-drawer-body rx-wide">
               <p className="sub">
                 A course on social graphs asks this in week three and this post
                 had not. Louvain on the undirected network, weighted by people
@@ -849,7 +849,7 @@ export function Asks() {
           </h2>
           <details className="rx-drawer" id="views">
             <summary>The four extra views</summary>
-            <div className="rx-drawer-body">
+            <div className="rx-drawer-body rx-wide">
               <ViewsStatus />
               <article className="qa-item">
                 <h3>1 · The network with the geography taken away</h3>
