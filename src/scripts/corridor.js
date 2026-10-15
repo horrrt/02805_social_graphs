@@ -101,6 +101,14 @@ export function logShare(weight, lightest, heaviest) {
   return Math.max(0, Math.min(1, Math.log(weight / lightest) / Math.log(heaviest / lightest)));
 }
 
+// The lightest of the corridors a view draws by rank. topEdges() appends the
+// selection's own corridors after them, and those can be far lighter: counting
+// them would stretch the scale and turn every other line thick and green.
+export function scaleFloor(edges, limit) {
+  const ranked = edges.slice(0, limit);
+  return ranked.length ? ranked.at(-1).weight : 1;
+}
+
 export function peopleColour(share) {
   const stops = [
     [0.0, [244, 208, 63]],
@@ -1396,7 +1404,7 @@ function drawGlobe() {
 
   const edges = topEdges(500);
   const heaviest = edges[0]?.weight ?? 1;
-  const lightest = edges.length ? Math.min(...edges.map((e) => e.weight)) : 1;
+  const lightest = scaleFloor(edges, 500);
   const link = linkSpec();
   const scale = THICKNESS[state.thickness] ?? 1;
   ctx.lineCap = "round";
@@ -1541,7 +1549,7 @@ function drawMap() {
   if (state.layer !== "flights") {
     const edges = topEdges(420);
     const heaviest = edges[0]?.weight ?? 1;
-    const lightest = edges.length ? Math.min(...edges.map((e) => e.weight)) : 1;
+    const lightest = scaleFloor(edges, 420);
     for (const edge of edges) {
       const a = points.get(edge.oi);
       const b = points.get(edge.di);
@@ -3288,6 +3296,7 @@ export const api = {
   refreshPalette, arcSpec, syncFlow, rgb, countryAt, unprojectMap,
   showTip, hideTip, axisMode, modeFlags, ticksFor,
   linkSpec, rampColour, linkAlpha, THICKNESS, earthTexture, textureURL,
+  peopleColour, logShare, scaleFloor, landFill,
   paintPhotoGlobe,
   // Chart furniture, so the questions section draws on the same axes as the
   // rest of the post instead of inventing its own.

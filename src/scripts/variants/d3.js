@@ -456,10 +456,15 @@ export function install(api, d3) {
     const canvas = $("globe-canvas");
     const host = $("globe-canvas-d3");
     if (!canvas || !host) return;
-    const width = canvas.clientWidth || 720;
-    const height = canvas.clientHeight || width;
+    // Measured on the stage, not the canvas: once the SVG has taken over, the
+    // hidden canvas measures zero and a redraw (a drag) would shrink the globe.
+    // The stage is square, so its width is the size; its height would include
+    // the SVG's own and grow on every redraw.
+    const stage = host.parentElement;
+    const width = stage?.clientWidth || canvas.clientWidth || 720;
+    const height = width;
     takeOver(canvas, host);
-    const svg = d3.select(host).attr("viewBox", `0 0 ${width} ${height}`).attr("height", height);
+    const svg = d3.select(host).attr("viewBox", `0 0 ${width} ${height}`).attr("height", height).style("display", "block");
     svg.selectAll("*").remove();
 
     if (!projection) {
@@ -488,6 +493,8 @@ export function install(api, d3) {
     // a canvas underlay paints it and the vectors sit on top. Same picture as
     // every other renderer, same code doing the sampling.
     photoUnderlay(width, height, projection.scale());
+    // Countries as the canvas globe draws them: the selection filled and
+    // outlined in white, and a click on any country selects it.
     if (state.basemap === "outline" && state.world) {
       svg
         .append("g")
@@ -495,9 +502,13 @@ export function install(api, d3) {
         .data(state.world.features)
         .join("path")
         .attr("d", path)
-        .attr("fill", "#245f92")
-        .attr("stroke", "rgba(178,215,248,0.6)")
+        .attr("fill", (f) => api.landFill(f.properties.iso3, "#245f92"))
+        .attr("stroke", (f) => (f.properties.iso3 === state.selected ? "#ffffff" : "rgba(178,215,248,0.55)"))
         .attr("stroke-width", 0.6)
+        .attr("cursor", (f) => (metrics(f.properties.iso3) ? "pointer" : null))
+        .on("click", (event, f) => {
+          if (metrics(f.properties.iso3)) select(f.properties.iso3);
+        })
         .append("title")
         .text((f) => f.properties.name);
     }
@@ -508,57 +519,84 @@ export function install(api, d3) {
       .attr("d", path)
       .attr("fill", "none")
       .attr("stroke", "rgba(165,198,230,0.24)");
-    const arcColour = colours.PEOPLE;
 
-    const edges = api.topEdges(260);
+    // Migration arcs as on the canvas globe: the same 500 corridors, thin and
+    // yellow for a small one, thick and green for a large one, faded or hidden
+    // outside the selection, and every link-style choice honoured.
+    const centre = [-projection.rotate()[0], -projection.rotate()[1]];
+    const facing = (coord) => d3.geoDistance([coord[1], coord[0]], centre) <= Math.PI / 2;
+    const edges = api.topEdges(500);
     const heaviest = edges[0]?.weight ?? 1;
-    const arcs = svg.append("g").attr("fill", "none");
+    const lightest = api.scaleFloor(edges, 500);
+    const link = api.linkSpec();
+    const scale = api.THICKNESS[state.thickness] ?? 1;
+    const arcs = svg.append("g").attr("fill", "none").attr("pointer-events", "none");
     for (const edge of edges) {
       const from = node(state.edges.countries[edge.oi])?.coord;
       const to = node(state.edges.countries[edge.di])?.coord;
-      if (!from || !to) continue;
+      // Both ends on the near side, as on the canvas globe: an arc to the far
+      // side would only crowd the rim.
+      if (!from || !to || !facing(from) || !facing(to)) continue;
+      const alpha = api.linkAlpha(edge);
+      if (alpha === 0) continue;
       const share = Math.sqrt(edge.weight / heaviest);
+      const rank = api.logShare(edge.weight, lightest, heaviest);
+      const tint = link.ramp ? api.rampColour(share) : api.peopleColour(rank);
       arcs
         .append("path")
         .attr("d", path({ type: "LineString", coordinates: [[from[1], from[0]], [to[1], to[0]]] }))
-        .attr("stroke", arcColour)
-        .attr("stroke-opacity", 0.2 + share * 0.6)
-        .attr("stroke-width", 0.5 + share * 3)
+        .attr("stroke", `rgb(${tint})`)
+        .attr("stroke-opacity", (0.3 + rank * 0.6) * alpha)
+        .attr("stroke-width", (link.width ? 0.7 + rank * rank * 7 : 2.2) * scale)
         .attr("stroke-linecap", "round");
     }
 
+    // Country dots only when the style asks for them, as on the canvas.
     const dots = svg.append("g");
-    for (const iso3 of state.data.countries) {
-      const coord = node(iso3)?.coord;
-      const m = metrics(iso3);
-      if (!coord || !m) continue;
-      const point = projection([coord[1], coord[0]]);
-      if (!point || d3.geoDistance([coord[1], coord[0]], [-projection.rotate()[0], -projection.rotate()[1]]) > Math.PI / 2)
-        continue;
-      const chosen = iso3 === state.selected;
-      dots
-        .append("circle")
-        .attr("cx", point[0])
-        .attr("cy", point[1])
-        .attr("r", chosen ? 5 : 0.7 + Math.sqrt(m.in_degree) * 0.16)
-        .attr("fill", chosen ? "#ffffff" : "rgba(200,226,250,0.7)")
-        .attr("stroke", chosen ? colours.INK : "none")
-        .attr("cursor", "pointer")
-        .on("click", () => select(iso3))
-        .append("title")
-        .text(`${node(iso3).name} · in-degree ${m.in_degree}`);
-      if (chosen) {
+    if (state.dots !== "off") {
+      for (const iso3 of state.data.countries) {
+        const coord = node(iso3)?.coord;
+        const m = metrics(iso3);
+        if (!coord || !m || !facing(coord)) continue;
+        const point = projection([coord[1], coord[0]]);
         dots
-          .append("text")
-          .attr("x", point[0])
-          .attr("y", point[1] - 12)
-          .attr("text-anchor", "middle")
-          .attr("fill", "#eaf2fb")
-          .attr("font-family", FONT())
-          .attr("font-size", fs("small"))
-          .attr("font-weight", 600)
-          .text(node(iso3).name);
+          .append("circle")
+          .attr("cx", point[0])
+          .attr("cy", point[1])
+          .attr("r", 0.6 + Math.sqrt(m.in_degree) * 0.14)
+          .attr("fill", "rgba(196,222,248,0.62)")
+          .attr("cursor", "pointer")
+          .on("click", () => select(iso3))
+          .append("title")
+          .text(`${node(iso3).name} · in-degree ${m.in_degree}`);
       }
+    }
+
+    // The selection: a white ring and its name on a white label, as on the canvas.
+    const chosen = state.selected && node(state.selected)?.coord;
+    if (chosen && facing(chosen)) {
+      const [x, y] = projection([chosen[1], chosen[0]]);
+      const mark = svg.append("g").attr("pointer-events", "none");
+      mark.append("circle").attr("cx", x).attr("cy", y).attr("r", 6).attr("fill", "none").attr("stroke", "#ffffff").attr("stroke-width", 1.5);
+      const label = mark
+        .append("text")
+        .attr("x", x)
+        .attr("y", y - 20)
+        .attr("text-anchor", "middle")
+        .attr("dominant-baseline", "middle")
+        .attr("fill", colours.INK)
+        .attr("font-family", FONT())
+        .attr("font-size", fs("small"))
+        .attr("font-weight", 600)
+        .text(node(state.selected).name);
+      const box = label.node().getBBox();
+      mark
+        .insert("rect", "text")
+        .attr("x", box.x - 8)
+        .attr("y", y - 30)
+        .attr("width", box.width + 16)
+        .attr("height", 20)
+        .attr("fill", "rgba(255,255,255,0.94)");
     }
   }
 
