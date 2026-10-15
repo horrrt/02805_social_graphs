@@ -452,6 +452,7 @@ export function install(api, d3) {
   }
 
   let projection = null;
+  const START_ROTATE = [-12, -18];
   function globe() {
     const canvas = $("globe-canvas");
     const host = $("globe-canvas-d3");
@@ -468,7 +469,7 @@ export function install(api, d3) {
     svg.selectAll("*").remove();
 
     if (!projection) {
-      projection = d3.geoOrthographic().rotate([-12, -18]);
+      projection = d3.geoOrthographic().rotate(START_ROTATE);
       svg.call(
         d3.drag().on("drag", (event) => {
           const [lon, lat] = projection.rotate();
@@ -541,14 +542,23 @@ export function install(api, d3) {
       if (alpha === 0) continue;
       const share = Math.sqrt(edge.weight / heaviest);
       const rank = api.logShare(edge.weight, lightest, heaviest);
-      const tint = link.ramp ? api.rampColour(share) : api.peopleColour(rank);
-      arcs
+      const line = arcs
         .append("path")
         .attr("d", path({ type: "LineString", coordinates: [[from[1], from[0]], [to[1], to[0]]] }))
+        .attr("stroke-linecap", "round");
+      // A picked country keeps its corridors in colour; the rest go grey.
+      if (!api.globeFocused(edge)) {
+        line
+          .attr("stroke", `rgb(${api.GLOBE_MUTED.rgb})`)
+          .attr("stroke-opacity", api.GLOBE_MUTED.alpha)
+          .attr("stroke-width", api.GLOBE_MUTED.width * scale);
+        continue;
+      }
+      const tint = link.ramp ? api.rampColour(share) : api.peopleColour(rank);
+      line
         .attr("stroke", `rgb(${tint})`)
         .attr("stroke-opacity", (0.3 + rank * 0.6) * alpha)
-        .attr("stroke-width", (link.width ? 0.7 + rank * rank * 7 : 2.2) * scale)
-        .attr("stroke-linecap", "round");
+        .attr("stroke-width", (link.width ? 0.7 + rank * rank * 7 : 2.2) * scale);
     }
 
     // Country dots only when the style asks for them, as on the canvas.
@@ -602,6 +612,8 @@ export function install(api, d3) {
 
   return {
     globe,
+    // The globe's reset button turns it back to where it opened.
+    resetView: () => projection?.rotate(START_ROTATE),
     hint: "Drag to spin. Click a country. (SVG)",
     hist,
     ccdf: ccdfChart,

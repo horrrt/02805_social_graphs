@@ -228,6 +228,7 @@ const state = {
   axisMode: { hist: "loglog", ccdf: "loglog" },
   dash: 0,
   rotation: -10,
+  picked: false,
   dragging: false,
 };
 
@@ -587,10 +588,30 @@ export function bridgeView() {
 // One selection for the whole page: the store carries it to every island,
 // and every chart carries a marker for it, so all of them redraw together and
 // the selection reads the same everywhere. Selecting never scrolls.
-export function select(iso3) {
+// A reader's pick also focuses the globe (picked); the page's opening
+// selection does not, so the globe opens on the whole world.
+export function select(iso3, { picked = true } = {}) {
   if (!iso3 || !node(iso3)) return;
   state.selected = iso3;
-  store.setState({ selected: iso3 });
+  state.picked = picked;
+  store.setState({ selected: iso3, picked });
+}
+
+// Once a country is picked, the globe keeps that country's corridors in colour
+// and turns the rest grey and nearly transparent.
+export function globeFocused(edge) {
+  if (!state.picked || !state.selected) return true;
+  return state.edges.countries[edge.oi] === state.selected || state.edges.countries[edge.di] === state.selected;
+}
+export const GLOBE_MUTED = { rgb: "150,163,180", alpha: 0.06, width: 0.7 };
+
+// The globe's reset: the opening view, turned back, and no country in focus.
+const START_ROTATION = -10;
+export function resetGlobe() {
+  state.rotation = START_ROTATION;
+  state.picked = false;
+  R.resetView?.();
+  store.setState((s) => ({ picked: false, paint: s.paint + 1 }));
 }
 
 /* ------------------------------------------------------------- picking
@@ -1416,6 +1437,12 @@ function drawGlobe() {
     if (alpha === 0) continue;
     const share = Math.sqrt(edge.weight / heaviest);
     const rank = logShare(edge.weight, lightest, heaviest);
+    if (!globeFocused(edge)) {
+      ctx.strokeStyle = `rgba(${GLOBE_MUTED.rgb},${GLOBE_MUTED.alpha})`;
+      ctx.lineWidth = GLOBE_MUTED.width * scale;
+      arc(ctx, a, b, 0.16);
+      continue;
+    }
     const tint = link.ramp ? rampColour(share) : peopleColour(rank);
     ctx.strokeStyle = `rgba(${tint},${(0.3 + rank * 0.6) * alpha})`;
     ctx.lineWidth = (link.width ? 0.7 + rank * rank * 7 : 2.2) * scale;
@@ -3296,7 +3323,7 @@ export const api = {
   refreshPalette, arcSpec, syncFlow, rgb, countryAt, unprojectMap,
   showTip, hideTip, axisMode, modeFlags, ticksFor,
   linkSpec, rampColour, linkAlpha, THICKNESS, earthTexture, textureURL,
-  peopleColour, logShare, scaleFloor, landFill,
+  peopleColour, logShare, scaleFloor, landFill, globeFocused, GLOBE_MUTED,
   paintPhotoGlobe,
   // Chart furniture, so the questions section draws on the same axes as the
   // rest of the post instead of inventing its own.
@@ -3347,7 +3374,7 @@ export function start({ corridors, edges, flights, cart, world }) {
   syncFlow();
   // The page opens on the country section 8 is built around, so the default
   // selection and the default analysis are the same country.
-  select(corridors.focus.iso3);
+  select(corridors.focus.iso3, { picked: false });
   setYear(corridors.years.indexOf(corridors.null_year));
   store.setState({ status: "ready", message: statusLine() });
 }

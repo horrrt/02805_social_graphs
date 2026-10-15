@@ -964,10 +964,15 @@ export default function Page() {
                     ·
                     {" "}
                     <code>.stage-hint</code>
+                    {" "}
+                    ·
+                    {" "}
+                    <code>.stage-reset</code>
                   </h3>
                   <p className="axis-note">The globe's frame, empty</p>
                   <div className="stage-wrap">
                     <canvas className="stage" height="200" width="300"></canvas>
+                    <button className="stage-reset" type="button">Reset view</button>
                     <p className="stage-hint">Drag to spin. Click a country.</p>
                   </div>
                 </div>

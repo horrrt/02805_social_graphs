@@ -5,7 +5,7 @@
 // a WebGL host for globe.gl, the atlas and deck.gl), plus the hint under it.
 import { type PointerEvent } from "react";
 import { island } from "@/lib/island";
-import { R, globePointer, registerHost, setYear, yearsOf } from "@/scripts/corridor.js";
+import { R, globePointer, registerHost, resetGlobe, setYear, yearsOf } from "@/scripts/corridor.js";
 import { useCorridor, usePaint, useReady } from "../frame/shared";
 import { CLIENT_IDS } from "./ids";
 
@@ -113,6 +113,11 @@ function StageView() {
         {...live}
       ></canvas>
       {ready ? <GlobeHost renderer={renderer} /> : null}
+      {ready ? (
+        <button className="stage-reset" onClick={resetGlobe} type="button">
+          Reset view
+        </button>
+      ) : null}
       <p className="stage-hint">{(ready && (R.hint as string | undefined)) || HINT}</p>
     </div>
   );

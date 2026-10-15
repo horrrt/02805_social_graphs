@@ -230,6 +230,32 @@
   transform: translateX(-50%);
 }
 
+/* The globe's reset: the opening view, and no country in focus. */
+.corridor .stage-reset {
+  background: rgba(8, 22, 42, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  color: #eaf2fb;
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--fs-caption);
+  font-weight: 700;
+  padding: 5px 12px;
+  position: absolute;
+  right: 6px;
+  top: 6px;
+  z-index: 2;
+}
+
+.corridor .stage-reset:hover {
+  background: rgba(23, 63, 109, 0.9);
+}
+
+.corridor .stage-reset:focus-visible {
+  outline: 2px solid #ffb768;
+  outline-offset: 2px;
+}
+
 /* -------------------------------------------------------------- side panel */
 
 .corridor .panel {

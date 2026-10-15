@@ -25,7 +25,7 @@ export const RENDERERS = {
     script: "d3-7.9.0.min.js",
     global: "d3",
     module: () => import("./variants/d3.js"),
-    only: ["globe", "hint"],
+    only: ["globe", "hint", "resetView"],
     globe: "d3",
   },
   d3: {
