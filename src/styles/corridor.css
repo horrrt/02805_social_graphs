@@ -160,8 +160,11 @@
   width: 26px;
 }
 
+/* The globe and map draw migration from yellow (a small corridor) to green (a
+   large one), as peopleColour() in corridor.js does. */
 .corridor .key.people i {
-  background: var(--people);
+  background: linear-gradient(90deg, rgb(244, 208, 63), rgb(168, 204, 64), rgb(38, 170, 94));
+  height: 4px;
 }
 
 .corridor .key.access i {

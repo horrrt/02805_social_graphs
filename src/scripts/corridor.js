@@ -91,6 +91,28 @@ export const LINK_ENCODINGS = {
 
 export const THICKNESS = { thin: 0.55, normal: 1, thick: 1.9 };
 
+// Migration corridors on the globe and the map: yellow for a small corridor,
+// green for a large one. The share is logShare(): a few huge corridors would
+// otherwise leave every other line at the yellow end.
+export function logShare(weight, lightest, heaviest) {
+  if (!(heaviest > lightest)) return 1;
+  return Math.max(0, Math.min(1, Math.log(weight / lightest) / Math.log(heaviest / lightest)));
+}
+
+export function peopleColour(share) {
+  const stops = [
+    [0.0, [244, 208, 63]],
+    [0.5, [168, 204, 64]],
+    [1.0, [38, 170, 94]],
+  ];
+  const t = Math.max(0, Math.min(1, share));
+  const i = t <= stops[1][0] ? 0 : 1;
+  const [a, ca] = stops[i];
+  const [b, cb] = stops[i + 1];
+  const f = (t - a) / (b - a);
+  return ca.map((c, k) => Math.round(c + (cb[k] - c) * f)).join(",");
+}
+
 // How much of its panel the globe fills. A number, not a pixel count, so a
 // 2D canvas, an SVG orthographic and two WebGL cameras can each express the
 // same choice in their own units.
@@ -190,7 +212,7 @@ const state = {
   thickness: "normal",
   focus: "all",
   dots: "on",
-  basemap: "photo",
+  basemap: "outline",
   earth: "large",
   hover: null,
   axisMode: { hist: "loglog", ccdf: "loglog" },
@@ -1372,9 +1394,9 @@ function drawGlobe() {
 
   const edges = topEdges(500);
   const heaviest = edges[0]?.weight ?? 1;
+  const lightest = edges.length ? Math.min(...edges.map((e) => e.weight)) : 1;
   const link = linkSpec();
   const scale = THICKNESS[state.thickness] ?? 1;
-  const base = rgb(PEOPLE);
   ctx.lineCap = "round";
   for (const edge of edges) {
     const a = points.get(edge.oi);
@@ -1383,9 +1405,10 @@ function drawGlobe() {
     const alpha = linkAlpha(edge);
     if (alpha === 0) continue;
     const share = Math.sqrt(edge.weight / heaviest);
-    const tint = link.ramp ? rampColour(share) : base;
-    ctx.strokeStyle = `rgba(${tint},${(0.24 + share * 0.66) * alpha})`;
-    ctx.lineWidth = (link.width ? 0.6 + share * 3.4 : 1.5) * scale;
+    const rank = logShare(edge.weight, lightest, heaviest);
+    const tint = link.ramp ? rampColour(share) : peopleColour(rank);
+    ctx.strokeStyle = `rgba(${tint},${(0.3 + rank * 0.6) * alpha})`;
+    ctx.lineWidth = (link.width ? 1.4 + share * 5 : 2.2) * scale;
     arc(ctx, a, b, 0.16);
   }
 
@@ -1516,7 +1539,7 @@ function drawMap() {
   if (state.layer !== "flights") {
     const edges = topEdges(420);
     const heaviest = edges[0]?.weight ?? 1;
-    const base = rgb(PEOPLE);
+    const lightest = edges.length ? Math.min(...edges.map((e) => e.weight)) : 1;
     for (const edge of edges) {
       const a = points.get(edge.oi);
       const b = points.get(edge.di);
@@ -1524,9 +1547,10 @@ function drawMap() {
       const alpha = linkAlpha(edge);
       if (alpha === 0) continue;
       const share = Math.sqrt(edge.weight / heaviest);
-      const tint = link.ramp ? rampColour(share) : base;
-      ctx.strokeStyle = `rgba(${tint},${(0.1 + share * 0.5) * alpha})`;
-      ctx.lineWidth = (link.width ? 0.3 + share * 2.4 : 1.2) * scale;
+      const rank = logShare(edge.weight, lightest, heaviest);
+      const tint = link.ramp ? rampColour(share) : peopleColour(rank);
+      ctx.strokeStyle = `rgba(${tint},${(0.2 + rank * 0.6) * alpha})`;
+      ctx.lineWidth = (link.width ? 1 + share * 4.2 : 1.8) * scale;
       wrappedArc(ctx, a, b, 0.13, width);
     }
   }
