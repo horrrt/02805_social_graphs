@@ -53,15 +53,9 @@
 }
 
 .tb button,
-.tb select,
 .tb input[type="search"] {
   font: inherit;
   font-size: var(--fs-small);
-}
-
-.toolbox .tb select {
-  background: var(--card);
-  padding: 5px 10px;
 }
 
 /* Concept toggles, "Clear concepts" and "Show more": the chip a pressed

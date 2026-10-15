@@ -627,7 +627,6 @@
 }
 .visual-design .ride-ticket select {
   max-width: 310px;
-  font-size: var(--fs-small);
 }
 .visual-design .ride-route {
   padding: 18px 0;
