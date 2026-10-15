@@ -91,9 +91,11 @@ export const LINK_ENCODINGS = {
 
 export const THICKNESS = { thin: 0.55, normal: 1, thick: 1.9 };
 
-// Migration corridors on the globe and the map: yellow for a small corridor,
-// green for a large one. The share is logShare(): a few huge corridors would
-// otherwise leave every other line at the yellow end.
+// Migration corridors on the globe and the map: thin and yellow for a small
+// corridor, thick and green for a large one. Both follow logShare(): on a
+// linear or square-root share a few huge corridors would leave every other
+// line at the thin, yellow end. Width uses the square of that share, so the
+// largest corridors stand out from the many middling ones.
 export function logShare(weight, lightest, heaviest) {
   if (!(heaviest > lightest)) return 1;
   return Math.max(0, Math.min(1, Math.log(weight / lightest) / Math.log(heaviest / lightest)));
@@ -1408,7 +1410,7 @@ function drawGlobe() {
     const rank = logShare(edge.weight, lightest, heaviest);
     const tint = link.ramp ? rampColour(share) : peopleColour(rank);
     ctx.strokeStyle = `rgba(${tint},${(0.3 + rank * 0.6) * alpha})`;
-    ctx.lineWidth = (link.width ? 1.4 + share * 5 : 2.2) * scale;
+    ctx.lineWidth = (link.width ? 0.7 + rank * rank * 7 : 2.2) * scale;
     arc(ctx, a, b, 0.16);
   }
 
@@ -1550,7 +1552,7 @@ function drawMap() {
       const rank = logShare(edge.weight, lightest, heaviest);
       const tint = link.ramp ? rampColour(share) : peopleColour(rank);
       ctx.strokeStyle = `rgba(${tint},${(0.2 + rank * 0.6) * alpha})`;
-      ctx.lineWidth = (link.width ? 1 + share * 4.2 : 1.8) * scale;
+      ctx.lineWidth = (link.width ? 0.5 + rank * rank * 5 : 1.8) * scale;
       wrappedArc(ctx, a, b, 0.13, width);
     }
   }
