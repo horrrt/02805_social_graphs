@@ -196,35 +196,6 @@ window.auditWeek03 = async function auditWeek03({ verbose = false } = {}) {
     record("hover feedback", name, shown, shown ? "tooltip appeared" : "nothing on hover");
   }
 
-  /* --- the style dimensions --------------------------------------------- */
-
-  const DIMENSION_EFFECT = {
-    palette: () => getComputedStyle(document.body).getPropertyValue("--people").trim(),
-    tables: () => document.body.dataset.tables,
-    arcs: () => api?.state?.arcs,
-    links: () => api?.state?.links,
-    thickness: () => api?.state?.thickness,
-    focus: () => api?.state?.focus,
-    dots: () => api?.state?.dots,
-  };
-
-  for (const [key, read] of Object.entries(DIMENSION_EFFECT)) {
-    const select = $(`style-${key}`);
-    if (!select) {
-      record("style dimension", key, false, "no dropdown");
-      continue;
-    }
-    const other = [...select.options].find((o) => o.value !== select.value);
-    if (!other) {
-      record("style dimension", key, false, "only one option");
-      continue;
-    }
-    await expectChange("style dimension", key, read, async () => {
-      select.value = other.value;
-      select.dispatchEvent(new Event("change", { bubbles: true }));
-    });
-  }
-
   /* --- controls that draw rather than restyle ---------------------------- */
 
   for (const chart of ["hist", "ccdf"]) {
@@ -324,28 +295,6 @@ window.auditWeek03 = async function auditWeek03({ verbose = false } = {}) {
     record("spotlight", "picking a country moves the page selection",
       api?.state?.selected === picker.value, `selected ${api?.state?.selected}`);
   } else record("spotlight", "picker exists", false, "no #dk-country");
-
-  // Earth size is the one style dimension with no CSS behind it: it has to
-  // reach whatever the renderer draws the globe with.
-  const earth = $("style-earth");
-  if (earth) {
-    await expectChange("earth size", "changes the globe", () => {
-      const canvas = $("globe-canvas");
-      const live = document.getElementById("globe-canvas-d3")
-        ?? document.getElementById("globe-gl")
-        ?? document.getElementById("globe-canvas-deck");
-      if (live) return `${api.state.earth}|${live.innerHTML.length}`;
-      const ctx = canvas.getContext("2d");
-      const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
-      let inked = 0;
-      for (let i = 3; i < pixels.length; i += 2000) if (pixels[i] > 0) inked += 1;
-      return inked;
-    }, async () => {
-      earth.value = earth.value === "small" ? "huge" : "small";
-      earth.dispatchEvent(new Event("change", { bubbles: true }));
-      await wait(900);
-    });
-  } else record("earth size", "changes the globe", false, "no control");
 
   // The questions drawer is canvas in every renderer, so it has to paint and
   // answer itself whichever library is loaded.

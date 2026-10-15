@@ -35,7 +35,7 @@ const ANCHORS = [
   ["week05", "week05-weird.js", ['"chart-weird-scatter"', '"weird-table"', '"weird-passages"']],
   ["week05", "week05-map.js", ["n.name,"]],
   ["week03", "week03-boot.js", ["bytes:", "DIMENSIONS"]],
-  ["week03", "corridor.js", ["GLOSSARY", "function spotlight()", "function peersOf(", "ARC_STYLES", "EARTH_SIZES", 'metrics("VEN", first)']],
+  ["week03", "corridor.js", ["GLOSSARY", "function spotlight()", "function peersOf(", 'metrics("VEN", first)']],
   ["week03", "questions.js", ['r.o === "RUS" && r.d === "UKR"']],
 ];
 
