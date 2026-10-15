@@ -222,7 +222,7 @@ const state = {
   thickness: "normal",
   focus: "all",
   dots: "on",
-  basemap: "night",
+  basemap: "outline",
   earth: "large",
   // The hero shows the world as a globe or as a flat map.
   view: "globe",

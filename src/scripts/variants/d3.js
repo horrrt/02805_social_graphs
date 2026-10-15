@@ -422,10 +422,9 @@ export function install(api, d3) {
 
   // The hero's world, as a d3-geo orthographic globe or an equirectangular
   // flat map, dragged with d3.drag and rendered as SVG paths over a canvas
-  // underlay that carries the photograph. On the outline globe a corridor is
-  // a great circle; on the flat map, and on the night globe, it is a bow in
-  // screen space, which reads as a route where a great circle would read as a
-  // kink or a straight spoke.
+  // underlay that carries the photograph when one is chosen. A corridor is a
+  // glowing bow in screen space, which reads as a route where a great circle
+  // would read as a kink on the map or a straight spoke on the globe.
 
   // ---- the photograph, in two strengths ------------------------------------
   // The day image as it is, and the same image darkened for the night look:
@@ -606,13 +605,13 @@ export function install(api, d3) {
     globe();
   }
 
-  // ---- the night look ------------------------------------------------------
+  // ---- the corridors ------------------------------------------------------
   // One hue that glows: a dim green for a small corridor, a bright mint for a
   // large one, as in the satellite maps this look is drawn after.
-  const NIGHT_LOW = [62, 160, 98];
-  const NIGHT_HIGH = [150, 255, 172];
-  const nightTint = (rank) =>
-    NIGHT_LOW.map((c, i) => Math.round(c + (NIGHT_HIGH[i] - c) * rank)).join(",");
+  const GLOW_LOW = [62, 160, 98];
+  const GLOW_HIGH = [150, 255, 172];
+  const glowTint = (rank) =>
+    GLOW_LOW.map((c, i) => Math.round(c + (GLOW_HIGH[i] - c) * rank)).join(",");
 
   // A corridor as a bow toward the pole. On the flat map the long way round
   // the seam is never taken, so a corridor across the Pacific crosses the
@@ -785,7 +784,6 @@ export function install(api, d3) {
     const lightest = api.scaleFloor(edges, 500);
     const link = api.linkSpec();
     const scale = api.THICKNESS[state.thickness] ?? 1;
-    const muted = svg.append("g").attr("fill", "none").attr("pointer-events", "none");
     const halo = svg.append("g").attr("fill", "none").attr("pointer-events", "none").attr("filter", "url(#globe-glow)");
     const arcs = svg.append("g").attr("fill", "none").attr("pointer-events", "none");
     const ends = [];
@@ -801,66 +799,35 @@ export function install(api, d3) {
       if (alpha === 0) continue;
       const share = Math.sqrt(edge.weight / heaviest);
       const rank = api.logShare(edge.weight, lightest, heaviest);
-      let d;
-      let end = null;
-      if (flat || nightLook) {
-        // Drawn from the selection outward, so its end stays put at the seam.
-        // On the globe a great circle through the middle is a straight
-        // spoke, so the night look bows it the same way, lifted off the earth.
-        const outward = toIso === state.selected;
-        const curve = bow(place(outward ? to : from), place(outward ? from : to), span);
-        d = curve.d;
-        end = curve.end;
-      } else {
-        d = path({ type: "LineString", coordinates: [[from[1], from[0]], [to[1], to[0]]] });
-        end = place(fromIso === state.selected ? to : from);
-      }
-      if (!d) continue;
-      // A picked country keeps its corridors in colour; the rest go grey.
-      // Under the night look the rest of the world goes dark instead.
-      if (!api.globeFocused(edge)) {
-        if (nightLook) continue;
-        muted
-          .append("path")
-          .attr("d", d)
-          .attr("stroke", `rgb(${api.GLOBE_MUTED.rgb})`)
-          .attr("stroke-opacity", api.GLOBE_MUTED.alpha)
-          .attr("stroke-width", api.GLOBE_MUTED.width * scale);
-        continue;
-      }
-      if (nightLook) {
-        const tint = link.ramp ? api.rampColour(share) : nightTint(rank);
-        const wide = (link.width ? 0.8 + rank * rank * 4.6 : 1.8) * scale;
-        const strength = Math.min(1, (0.45 + rank * 0.55) * alpha);
-        halo
-          .append("path")
-          .attr("d", d)
-          .attr("stroke", `rgb(${tint})`)
-          .attr("stroke-opacity", strength * 0.7)
-          .attr("stroke-width", wide * 2.6 + 1)
-          .attr("stroke-linecap", "round");
-        arcs
-          .append("path")
-          .attr("d", d)
-          .attr("stroke", `rgb(${tint})`)
-          .attr("stroke-opacity", strength)
-          .attr("stroke-width", wide)
-          .attr("stroke-linecap", "round");
-        if (state.picked && end) ends.push({ end, tint, rank });
-        continue;
-      }
-      const tint = link.ramp ? api.rampColour(share) : api.peopleColour(rank);
+      // A picked country keeps its corridors lit; the rest go dark.
+      if (!api.globeFocused(edge)) continue;
+      // Drawn from the selection outward, so its end stays put at the seam.
+      // On the globe a great circle through the middle is a straight spoke,
+      // so the globe bows it the same way, lifted off the earth.
+      const outward = toIso === state.selected;
+      const { d, end } = bow(place(outward ? to : from), place(outward ? from : to), span);
+      const tint = link.ramp ? api.rampColour(share) : glowTint(rank);
+      const wide = (link.width ? 0.8 + rank * rank * 4.6 : 1.8) * scale;
+      const strength = Math.min(1, (0.45 + rank * 0.55) * alpha);
+      halo
+        .append("path")
+        .attr("d", d)
+        .attr("stroke", `rgb(${tint})`)
+        .attr("stroke-opacity", strength * 0.7)
+        .attr("stroke-width", wide * 2.6 + 1)
+        .attr("stroke-linecap", "round");
       arcs
         .append("path")
         .attr("d", d)
-        .attr("stroke-linecap", "round")
         .attr("stroke", `rgb(${tint})`)
-        .attr("stroke-opacity", (0.3 + rank * 0.6) * alpha)
-        .attr("stroke-width", (link.width ? 0.7 + rank * rank * 7 : 2.2) * scale);
+        .attr("stroke-opacity", strength)
+        .attr("stroke-width", wide)
+        .attr("stroke-linecap", "round");
+      if (state.picked) ends.push({ end, tint, rank });
     }
 
-    // Under the night look a picked country's partners light up where its
-    // corridors land, larger for a larger corridor.
+    // A picked country's partners light up where its corridors land, larger
+    // for a larger corridor.
     for (const { end, tint, rank } of ends) {
       const r = (1.2 + rank * 2.4) * Math.sqrt(scale);
       halo.append("circle").attr("cx", end[0]).attr("cy", end[1]).attr("r", r * 2).attr("fill", `rgb(${tint})`).attr("fill-opacity", 0.6);
