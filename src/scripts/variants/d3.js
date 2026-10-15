@@ -1,7 +1,7 @@
 // ?variant=d3 — everything in SVG, drawn with D3 v7.
 //
 // Swaps the most: all six data charts become SVG with real axes, and the hero
-// globe becomes a d3-geo orthographic projection with great-circle arcs. The
+// globe becomes a d3-geo orthographic projection with glowing arcs. The
 // twin map stays on canvas, because 400 arcs as SVG paths is where the frame
 // rate goes. What you gain over canvas is selectable text, crisp type at any
 // zoom, and axes that D3 maintains instead of the hand-rolled tick code.
@@ -579,10 +579,11 @@ export function install(api, d3) {
     if (Math.hypot(x - cx, y - cy) > projection.scale()) return;
     const at = projection.invert([x, y]);
     if (!at) return;
-    const hit = state.world.features.find(
-      (f) => metrics(f.properties.iso3) && d3.geoContains(f, at),
-    );
-    if (hit) select(hit.properties.iso3);
+    // The twin map's planar test, not d3.geoContains: some outlines are wound
+    // the wrong way for the sphere (Russia's among them), and geoContains then
+    // reads them as the whole world except that country.
+    const hit = api.countryAt(at[0], at[1]);
+    if (hit) select(hit);
   }
 
   // ---- the corridors ------------------------------------------------------
@@ -715,14 +716,6 @@ export function install(api, d3) {
         .text((f) => f.properties.name);
     }
 
-    if (!nightLook) {
-      svg
-        .append("path")
-        .datum(d3.geoGraticule10())
-        .attr("d", path)
-        .attr("fill", "none")
-        .attr("stroke", "rgba(165,198,230,0.24)");
-    }
 
     // Migration arcs: the same 500 corridors, sized by a log rank, faded or
     // hidden outside the selection, and every link-style choice honoured.
@@ -734,7 +727,6 @@ export function install(api, d3) {
     const lightest = api.scaleFloor(edges, 500);
     const link = api.linkSpec();
     const scale = api.THICKNESS[state.thickness] ?? 1;
-    const muted = svg.append("g").attr("fill", "none").attr("pointer-events", "none");
     const halo = svg.append("g").attr("fill", "none").attr("pointer-events", "none").attr("filter", "url(#globe-glow)");
     const arcs = svg.append("g").attr("fill", "none").attr("pointer-events", "none");
     const ends = [];
@@ -754,19 +746,10 @@ export function install(api, d3) {
       // partner dot goes.
       const outward = toIso === state.selected;
       const { d, end } = bow(place(outward ? to : from), place(outward ? from : to));
-      // A picked country keeps its corridors lit; the rest go grey, thin and
-      // unlit, so the shape of the network stays as context.
-      if (!api.globeFocused(edge)) {
-        muted
-          .append("path")
-          .attr("d", d)
-          .attr("stroke", `rgb(${api.GLOBE_MUTED.rgb})`)
-          .attr("stroke-opacity", api.GLOBE_MUTED.alpha)
-          .attr("stroke-width", api.GLOBE_MUTED.width * scale);
-        continue;
-      }
+      // A picked country keeps its corridors lit; the rest are not drawn.
+      if (!api.globeFocused(edge)) continue;
       // A picked country's own corridors draw brighter and wider than the
-      // unpicked network, so they stand clear of the grey.
+      // unpicked network.
       const lit = state.picked ? 0.35 : 0;
       const tint = link.ramp ? api.rampColour(share) : glowTint(Math.min(1, rank + lit));
       const wide = (link.width ? 0.8 + rank * rank * 4.6 : 1.8) * scale * (1 + lit * 1.6);
