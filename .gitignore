@@ -27,9 +27,10 @@ next-env.d.ts
 scripts/parity/reports/
 parity-report*.json
 
-# design-sync (Claude Design): staged converter, build output, machine state
+# design-sync: staged converter, build output, kit staging, machine state
 .ds-sync/
 ds-bundle/
+ds-stage/
 .design-sync/.cache/
 .design-sync/learnings/
 .design-sync/node_modules

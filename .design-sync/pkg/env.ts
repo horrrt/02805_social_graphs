@@ -14,3 +14,24 @@ if (typeof document !== "undefined") {
   if (document.body) mark();
   else document.addEventListener("DOMContentLoaded", mark, { once: true });
 }
+
+// portrait() returns a root-relative path ("/02805_social_graphs/play/…"), which on
+// the design kit's origin points nowhere. Point those images at the live site.
+if (typeof document !== "undefined" && typeof MutationObserver !== "undefined") {
+  const live = new URL(g.process!.env.NEXT_PUBLIC_BASE_PATH!);
+  const prefix = live.pathname.replace(/\/$/, "") + "/";
+  const fix = (img: HTMLImageElement) => {
+    const src = img.getAttribute("src");
+    if (src?.startsWith(prefix)) img.src = live.origin + src;
+  };
+  const scan = (node: Node) => {
+    if (node instanceof HTMLImageElement) fix(node);
+    else if (node instanceof Element) node.querySelectorAll("img").forEach(fix);
+  };
+  new MutationObserver((records) => {
+    for (const r of records) {
+      if (r.type === "attributes") scan(r.target);
+      else r.addedNodes.forEach(scan);
+    }
+  }).observe(document.documentElement, { subtree: true, childList: true, attributes: true, attributeFilter: ["src"] });
+}

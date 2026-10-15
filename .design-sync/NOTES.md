@@ -1,8 +1,9 @@
 # design-sync notes: Log-Log Legends kit
 
-Target: Claude Design project "Log-Log Legends Kit" (projectId in config.json). The design system
-artifact at claude.ai/artifact/2DfxHtPMWbJSRnDk19Hxf8 is a separate, tokens-only Artifact; DesignSync
-can't write to it.
+Target: the design-system artifact https://claude.ai/artifact/JRrSbSw7WMvvxRr57oBmWD ("Log-Log Legends
+Kit"). Refresh it with `refresh-kit.sh` and an Artifact publish (see "Refreshing the kit" at the end).
+The Claude Design project in config.json is retired. The artifact at
+claude.ai/artifact/2DfxHtPMWbJSRnDk19Hxf8 is a separate, tokens-only system.
 
 ## How the build works
 
@@ -167,5 +168,42 @@ migration skips empty ones and ones built from a starter theme.
 
 **Retired (15 Oct 2026).** Do not use claude.ai/design, `/design-sync` or "Migrate again" any more. The kit
 artifact is now edited directly: Claude publishes changed files to it with the Artifact tool (guidelines under
-`project/guidelines/gen/guidelines/`, copied from the repo files `pkg/build.sh` lists). Rebuilding the component
-bundle without the converter's upload step has no path yet. The rest of this file records how the kit was built.
+`project/guidelines/gen/guidelines/`, copied from the repo files `pkg/build.sh` lists). The component bundle and
+previews are rebuilt locally and published the same way; see the next section.
+
+## Refreshing the kit (since 15 Oct 2026)
+
+`.design-sync/refresh-kit.sh` runs the converter's build stage only (no upload) and stages what changed:
+
+1. Run `.design-sync/refresh-kit.sh BrandMark,PostTopbar` (the list is optional: those components are
+   photographed to `ds-bundle/_screenshots/review/` so you can look before publishing). It restores the converter
+   into `.ds-sync/` from `~/.cache/log-log-ds-sync` when missing, clones `node_modules` from another worktree with
+   `cp -cR` when missing, runs `pkg/build.sh` and `package-build.mjs` into `ds-bundle/`, then `stage-kit.mjs`.
+2. `stage-kit.mjs` maps `ds-bundle/` onto the kit's layout, compares each file's sha256 with
+   `kit-published.json` (what was last published), and copies only changed or new files to `ds-stage/project/`.
+3. Read the kit's `project/design-system.json` again, copy it to `ds-stage/project/`, set only `lastChange`
+   (`by` Gyula, `via` Claude Code, `at` now, a note) and keep every other key, `editing` and `source` included.
+4. Publish in one Artifact call: `url` the kit, `root` = absolute path of `ds-stage`, `file_path` = the index,
+   `files` = every staged path mapped to itself. `.d.ts`, `.jsx` and `.html` files need
+   `{"from": path, "contentType": "text/plain"}` (the artifact serves no `.ts`/`.jsx`, and the kit stores its
+   cards as text). At most 255 paths a call; if more, send the index in the last call only.
+5. After the publish succeeds, run `node .design-sync/stage-kit.mjs --record` and commit `kit-published.json`.
+
+The kit's layout, as the 12 Oct migration left it: the 39 components the old Claude Design manifest listed sit
+whole in `project/components/<group>/<Name>/`; the 53 added later keep their `.jsx` there and their `.d.ts`,
+`.html` and `.prompt.md` in `project/docs/components/<group>/<Name>/`, where a card's `../../../` links miss the
+bundle. Components new to the kit (Portrait, PortraitStack, Face on 15 Oct) go whole under `project/components/`.
+`README.md` is not staged: the kit's copy carries the page's card index; edit it there. The kit page reads none
+of these cards yet (`editing: "off"`, migration map marks them `unread`); they open as files, and Design and
+Slides artifacts read the bundle, docs and README. Moving them to the type's `components/<Name>/preview.html`
+layout is the page's "Finish the migration" clean-up, which waits for Gyula.
+
+The converter (`.ds-sync/`: package-build.mjs, package-capture.mjs, lib/, its own node_modules with esbuild,
+ts-morph and playwright 1.62.1) is not in the repo and Claude Design no longer hands it out. The copy in
+`~/.cache/log-log-ds-sync` came from the `design-sync-6139d9` worktree on 15 Oct; keep it. `kit-published.json`
+was seeded on 15 Oct from file sizes against the kit (the 26 files that differed were the ones whose sources
+changed since the 12 Oct migration), then rewritten from the published build.
+
+`env.ts` also points root-relative portrait images (`/02805_social_graphs/play/cold-read/portraits/...`, as
+`portrait()` returns them) at the live site, so Portrait cards and the portraits in the Week 6 cards draw outside
+the site. Whether the kit's page lets those images load from horrrt.github.io is untested; local captures load them.
