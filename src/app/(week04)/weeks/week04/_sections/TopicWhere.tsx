@@ -219,22 +219,6 @@ export function TopicWhere() {
                   Nationally there are 4.5 filings per 1,000 jobs; San Jose files 42.9, nearly ten times that, while New York, the largest filer, sits at 6.9.
                 </span>
               </div>
-              <Drawers variant="foot">
-                <Drawer label="Method">
-                  <p>
-                    Divide each metro's 2025 filings by its jobs in the Bureau of Labor Statistics' May 2025 employment survey (OEWS) and the map shifts: nationally it is 4.5 filings per 1,000 jobs.
-                  </p>
-                  <p>A filing is a request, not a hire, so a rate can run high.</p>
-                </Drawer>
-                <Drawer label="More numbers">
-                  <p>
-                    Among the 203 metros with 100,000 jobs or more, count and density rank alike (
-                    <GlossTerm id="w4-term-deeper-density-spearman" word="Spearman">A rank correlation: how closely two orderings agree. Higher means closer.</GlossTerm>
-                    {" "}
-                    0.90), yet only 5 of the 10 largest by count stay in the top 10 by density: Dallas, San Jose, San Francisco, Seattle and Austin. For software developers alone the national rate is 139 filings per 1,000 jobs, and Fayetteville, Arkansas, the metro around Bentonville, reaches 896, 6.4 times the national share. New York files the most, 65,935; Trenton files 17.2 and Seattle 16.8 per 1,000 jobs.
-                  </p>
-                </Drawer>
-              </Drawers>
             </div>
             <figure className="w4-figure">
               <figcaption>
@@ -246,6 +230,22 @@ export function TopicWhere() {
               <StripPart id="more:density" />
             </figure>
           </div>
+          <Drawers variant="foot">
+            <Drawer label="Method">
+              <p>
+                Divide each metro's 2025 filings by its jobs in the Bureau of Labor Statistics' May 2025 employment survey (OEWS) and the map shifts: nationally it is 4.5 filings per 1,000 jobs.
+              </p>
+              <p>A filing is a request, not a hire, so a rate can run high.</p>
+            </Drawer>
+            <Drawer label="More numbers">
+              <p>
+                Among the 203 metros with 100,000 jobs or more, count and density rank alike (
+                <GlossTerm id="w4-term-deeper-density-spearman" word="Spearman">A rank correlation: how closely two orderings agree. Higher means closer.</GlossTerm>
+                {" "}
+                0.90), yet only 5 of the 10 largest by count stay in the top 10 by density: Dallas, San Jose, San Francisco, Seattle and Austin. For software developers alone the national rate is 139 filings per 1,000 jobs, and Fayetteville, Arkansas, the metro around Bentonville, reaches 896, 6.4 times the national share. New York files the most, 65,935; Trenton files 17.2 and Seattle 16.8 per 1,000 jobs.
+              </p>
+            </Drawer>
+          </Drawers>
         </div>
       </details>
       <details className="qa cut rx-panel" data-box="cut-methods" id="cut-methods" name="w4-panel-where">

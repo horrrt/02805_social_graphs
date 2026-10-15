@@ -105,22 +105,6 @@ export function Beyond() {
                 would mislead here.
               </span>
             </div>
-            <Drawers variant="foot">
-              <Drawer label="Method">
-                <p>
-                  75.6% of certified filings name a law firm; after name cleaning there are 4,479. We linked each firm that places workers in section 3's network to its law firms, weighted by filings, ran Louvain, and compared the groups with the section 3 groups for the 4,576 firms in both. Most companies use one law firm: 64% of filings come from such companies, which makes the network a set of stars.
-                </p>
-              </Drawer>
-              <Drawer label="More numbers">
-                <p>
-                  The law-firm network scores 0.90, below the 0.93 of its rewired copies, because stars split into near-perfect groups whatever the wiring. Fragomen files the most (14,087 filings for 131 of these companies); EY Law files 10,274 for eight. The network of law firms themselves, across every employer, is in
-                  {" "}
-                  <a href="#staffing-lawyers">Who files the paperwork?</a>
-                  {" "}
-                  in the deep dive.
-                </p>
-              </Drawer>
-            </Drawers>
           </div>
           <div className="plot">
             <h3>Agreement with the section 3 groups</h3>
@@ -132,6 +116,22 @@ export function Beyond() {
             <QuestionPart part="beyondLaw" />
           </div>
         </div>
+        <Drawers variant="foot">
+          <Drawer label="Method">
+            <p>
+              75.6% of certified filings name a law firm; after name cleaning there are 4,479. We linked each firm that places workers in section 3's network to its law firms, weighted by filings, ran Louvain, and compared the groups with the section 3 groups for the 4,576 firms in both. Most companies use one law firm: 64% of filings come from such companies, which makes the network a set of stars.
+            </p>
+          </Drawer>
+          <Drawer label="More numbers">
+            <p>
+              The law-firm network scores 0.90, below the 0.93 of its rewired copies, because stars split into near-perfect groups whatever the wiring. Fragomen files the most (14,087 filings for 131 of these companies); EY Law files 10,274 for eight. The network of law firms themselves, across every employer, is in
+              {" "}
+              <a href="#staffing-lawyers">Who files the paperwork?</a>
+              {" "}
+              in the deep dive.
+            </p>
+          </Drawer>
+        </Drawers>
       </div>
       <div className="card w4-card" id="beyond-perm">
         <header className="w4-q">
@@ -159,48 +159,6 @@ export function Beyond() {
                 0.21).
               </span>
             </div>
-            <Drawers variant="foot">
-              <Drawer label="Background">
-                <p>
-                  A green card through work starts with a
-                  {" "}
-                  <GlossTerm id="w4-term-beyond-perm" word="PERM">
-                    The Department of Labor's permanent labor certification: the employer shows that no qualified US worker is available for the job. Most green cards through work start there.
-                  </GlossTerm>
-                  {" "}
-                  filing.
-                </p>
-              </Drawer>
-              <Drawer label="Method">
-                <p>
-                  For each company with 20 or more H-1B filings we divided its 2025 PERM filings by its H-1B filings, matching companies by name and tax number.
-                </p>
-                <p>Pooled over the companies in each bar,
-                {" "}
-                with a 95% <Gloss id="w4-term-bootstrap-interval" word="bootstrap interval" /> for
-                {" "}
-                the first two.</p>
-              </Drawer>
-              <Drawer label="More numbers">
-                <p>
-                  The gap shrinks to 0.13 against 0.17 when a firm counts as outsourcing only if most of its filings go to clients. Single companies swing these rates more than any group does: counting every case status, filings in the names of Amazon and Google fell from 3,638 and 1,618 in 2024 to 15 and 3 in 2025. Green cards per company and the strongest employer ties are in
-                  {" "}
-                  <a href="#deeper-perm">the deep dive</a>
-                  .
-                </p>
-                <p>
-                  Outsourcing firms file 0.11 green cards per H-1B filing (95% interval 0.08 to 0.15), direct employers 0.18 (0.14 to 0.21). Across the six largest staffing groups the rate runs from 0.03 in Cognizant's group, where Cognizant itself filed almost none, to 0.15, a spread that
-                  {" "}
-                  <GlossTerm id="w4-term-beyond-perm-shuffled" word="shuffled group labels">
-                    We dealt the companies out to the groups again at random, many times, to see how big a spread chance alone produces.
-                  </GlossTerm>
-                  {" "}
-                  match 28% of the time (
-                  <P v="0.28" />
-                  ).
-                </p>
-              </Drawer>
-            </Drawers>
           </div>
           <div className="plot">
             <h3>Green-card filings per H-1B filing</h3>
@@ -211,6 +169,48 @@ export function Beyond() {
             <QuestionPart part="beyondPerm" />
           </div>
         </div>
+        <Drawers variant="foot">
+          <Drawer label="Background">
+            <p>
+              A green card through work starts with a
+              {" "}
+              <GlossTerm id="w4-term-beyond-perm" word="PERM">
+                The Department of Labor's permanent labor certification: the employer shows that no qualified US worker is available for the job. Most green cards through work start there.
+              </GlossTerm>
+              {" "}
+              filing.
+            </p>
+          </Drawer>
+          <Drawer label="Method">
+            <p>
+              For each company with 20 or more H-1B filings we divided its 2025 PERM filings by its H-1B filings, matching companies by name and tax number.
+            </p>
+            <p>Pooled over the companies in each bar,
+            {" "}
+            with a 95% <Gloss id="w4-term-bootstrap-interval" word="bootstrap interval" /> for
+            {" "}
+            the first two.</p>
+          </Drawer>
+          <Drawer label="More numbers">
+            <p>
+              The gap shrinks to 0.13 against 0.17 when a firm counts as outsourcing only if most of its filings go to clients. Single companies swing these rates more than any group does: counting every case status, filings in the names of Amazon and Google fell from 3,638 and 1,618 in 2024 to 15 and 3 in 2025. Green cards per company and the strongest employer ties are in
+              {" "}
+              <a href="#deeper-perm">the deep dive</a>
+              .
+            </p>
+            <p>
+              Outsourcing firms file 0.11 green cards per H-1B filing (95% interval 0.08 to 0.15), direct employers 0.18 (0.14 to 0.21). Across the six largest staffing groups the rate runs from 0.03 in Cognizant's group, where Cognizant itself filed almost none, to 0.15, a spread that
+              {" "}
+              <GlossTerm id="w4-term-beyond-perm-shuffled" word="shuffled group labels">
+                We dealt the companies out to the groups again at random, many times, to see how big a spread chance alone produces.
+              </GlossTerm>
+              {" "}
+              match 28% of the time (
+              <P v="0.28" />
+              ).
+            </p>
+          </Drawer>
+        </Drawers>
       </div>
       <div className="card w4-card" id="beyond-wage">
         <header className="w4-q">
@@ -248,33 +248,6 @@ export function Beyond() {
                 is 3.59, and 69 of the 83 point the same way.
               </span>
             </div>
-            <Drawers variant="foot">
-              <Drawer label="Background">
-                <p>92% of filings give one.</p>
-                <p>
-                  A level describes the job as filed, not the worker, so this shows cheaper job descriptions, not lower pay for the same person.
-                </p>
-              </Drawer>
-              <Drawer label="Method">
-                <p>
-                  We compared placed and direct filings within each occupation, so software developers are compared with software developers.
-                </p>
-              </Drawer>
-              <Drawer label="More numbers">
-                <p>
-                  Overall, 79% of
-                  {" "}
-                  <GlossTerm id="w4-term-beyond-wage-placed" word="placed">
-                    A placed filing sends the worker to a client company's site; a direct filing is for the employer's own site.
-                  </GlossTerm>
-                  {" "}
-                  filings sit at level I or II against 58% of direct ones.
-                </p>
-                <p>
-                  A few large firms file most placements, so the interval comes from resampling whole employers: 2.87 to 5.04. It is not one firm's doing: without the 5, 10 or 20 largest placing firms the ratio rises to 3.85, 4.28 and 4.94. Software developers: 87% against 52%. Offered wages follow: placed filings offer a median 1.00 times the prevailing wage in the five largest occupations, direct ones 1.00 to 1.08 times.
-                </p>
-              </Drawer>
-            </Drawers>
           </div>
           <div className="plot">
             <h3>Share of filings at level I or II</h3>
@@ -284,6 +257,33 @@ export function Beyond() {
             <QuestionPart part="beyondWage" />
           </div>
         </div>
+        <Drawers variant="foot">
+          <Drawer label="Background">
+            <p>92% of filings give one.</p>
+            <p>
+              A level describes the job as filed, not the worker, so this shows cheaper job descriptions, not lower pay for the same person.
+            </p>
+          </Drawer>
+          <Drawer label="Method">
+            <p>
+              We compared placed and direct filings within each occupation, so software developers are compared with software developers.
+            </p>
+          </Drawer>
+          <Drawer label="More numbers">
+            <p>
+              Overall, 79% of
+              {" "}
+              <GlossTerm id="w4-term-beyond-wage-placed" word="placed">
+                A placed filing sends the worker to a client company's site; a direct filing is for the employer's own site.
+              </GlossTerm>
+              {" "}
+              filings sit at level I or II against 58% of direct ones.
+            </p>
+            <p>
+              A few large firms file most placements, so the interval comes from resampling whole employers: 2.87 to 5.04. It is not one firm's doing: without the 5, 10 or 20 largest placing firms the ratio rises to 3.85, 4.28 and 4.94. Software developers: 87% against 52%. Offered wages follow: placed filings offer a median 1.00 times the prevailing wage in the five largest occupations, direct ones 1.00 to 1.08 times.
+            </p>
+          </Drawer>
+        </Drawers>
       </div>
     </section>
   );

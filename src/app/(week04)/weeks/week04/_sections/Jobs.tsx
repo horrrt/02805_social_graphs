@@ -46,13 +46,6 @@ export function Jobs() {
               </GlossTerm>
               .
             </p>
-            <Drawers variant="foot">
-              <Drawer label="Background">
-                <p>
-                  Software developers sit in almost every company's mix, so most links run through them. The two questions below test the clusters from two sides: do outsourcing firms and direct employers bundle jobs the same way, and does any job belong to two bundles at once?
-                </p>
-              </Drawer>
-            </Drawers>
           </div>
           <figure className="w4-figure">
             <figcaption>
@@ -64,6 +57,13 @@ export function Jobs() {
             <StripPart id="jobs-modularity" />
           </figure>
         </div>
+        <Drawers variant="foot">
+          <Drawer label="Background">
+            <p>
+              Software developers sit in almost every company's mix, so most links run through them. The two questions below test the clusters from two sides: do outsourcing firms and direct employers bundle jobs the same way, and does any job belong to two bundles at once?
+            </p>
+          </Drawer>
+        </Drawers>
       </div>
       <JobsPart part="status" />
       <div className="card jobs-card w4-card" id="jobs-together">

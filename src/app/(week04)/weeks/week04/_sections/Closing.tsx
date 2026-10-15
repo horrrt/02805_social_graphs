@@ -56,6 +56,12 @@ export function Closing() {
             A shared employer link means the same companies file for both occupations or in both places. It does not show that the jobs are done together, that one caused the other, or that the network stands for workers who were hired.
           </span>
         </div>
+        <p className="fineprint">
+          Sources and the full analysis choices are recorded in
+          {" "}
+          <a href="#evidence">Data and methods</a>
+          .
+        </p>
         <details className="qa" id="closing-ai">
           <summary>
             <span className="qa-cue">AI use and how we checked it</span>
@@ -72,12 +78,6 @@ export function Closing() {
             </p>
           </div>
         </details>
-        <p className="fineprint">
-          Sources and the full analysis choices are recorded in
-          {" "}
-          <a href="#evidence">Data and methods</a>
-          .
-        </p>
         <Drawers variant="foot">
           <Drawer label="Background">
             <p>

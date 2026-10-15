@@ -50,16 +50,6 @@ export function Opening() {
               H-1B
               filings in 2025. One filing is a request, not a guaranteed job.
             </p>
-            <Drawers variant="foot">
-              <Drawer label="Background">
-                <p>
-                  A job title tells us what work is requested; a company tells us which jobs, places, and clients are connected by the same hiring system. The links mean shared filings. They say nothing about friendships between workers or companies.
-                </p>
-                <p>
-                  The filings leave out workers without H-1B sponsorship, employers that never file, rejected or withdrawn applications, and the wider conditions that shape who gets hired.
-                </p>
-              </Drawer>
-            </Drawers>
           </div>
           <div>
             <div className="w4-anatomy">
@@ -137,6 +127,16 @@ export function Opening() {
             </div>
           </div>
         </div>
+        <Drawers variant="foot">
+          <Drawer label="Background">
+            <p>
+              A job title tells us what work is requested; a company tells us which jobs, places, and clients are connected by the same hiring system. The links mean shared filings. They say nothing about friendships between workers or companies.
+            </p>
+            <p>
+              The filings leave out workers without H-1B sponsorship, employers that never file, rejected or withdrawn applications, and the wider conditions that shape who gets hired.
+            </p>
+          </Drawer>
+        </Drawers>
       </div>
     </section>
   );

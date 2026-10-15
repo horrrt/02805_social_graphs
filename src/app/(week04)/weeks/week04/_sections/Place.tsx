@@ -68,18 +68,6 @@ export function Place() {
               An example, not data. A company that files in both metros adds the smaller of its two filing counts to their link.
             </p>
           </div>
-          <Drawers variant="foot">
-            <Drawer label="Background">
-              <p>
-                Louvain splits the 40 metros into twelve large hubs led by New York and Dallas, and the other 28 from Houston and Philadelphia down. The rewired networks keep each company's number of metros. The two questions below ask what the groups follow and where the network comes apart.
-              </p>
-            </Drawer>
-            <Drawer label="Method">
-              <p>
-                Two metros are linked when the same company files in both; the link weighs, summed over those companies, the smaller of the company's two filing counts.
-              </p>
-            </Drawer>
-          </Drawers>
         </div>
         <figure className="w4-figure">
           <figcaption>
@@ -89,6 +77,18 @@ export function Place() {
           <PlaceOpenerStrip />
         </figure>
       </div>
+      <Drawers variant="foot">
+        <Drawer label="Background">
+          <p>
+            Louvain splits the 40 metros into twelve large hubs led by New York and Dallas, and the other 28 from Houston and Philadelphia down. The rewired networks keep each company's number of metros. The two questions below ask what the groups follow and where the network comes apart.
+          </p>
+        </Drawer>
+        <Drawer label="Method">
+          <p>
+            Two metros are linked when the same company files in both; the link weighs, summed over those companies, the smaller of the company's two filing counts.
+          </p>
+        </Drawer>
+      </Drawers>
       <div className="draft-banner" id="place-draft-banner" hidden>
         <b>Scaffold.</b>
         {" "}
@@ -267,29 +267,6 @@ export function Place() {
                 ); Census regions and divisions do no better than chance.
               </span>
             </div>
-            <Drawers variant="foot">
-              <Drawer label="Method">
-                <p>
-                  We gave each metro four labels: its Census region, its Census division, the third it falls in by the share of its filings that place a worker at a client, and the third it falls in by the share filed by professional and technical services firms (NAICS 54, the sector of IT consultancies). Thirds, because 35 of the 40 metros have that sector as their largest, so "largest sector" says almost nothing. AMI corrects for the number of labels, so four regions and three thirds compare fairly.
-                </p>
-                <p>
-                  AMI for each labelling of the 40 metros; the p-value is the share of 1,000 shuffles of that labelling that match at least as well.
-                </p>
-              </Drawer>
-              <Drawer label="More numbers">
-                <p>The match is modest: most of what makes two metros alike stays unexplained.</p>
-                <p>
-                  Seven of the eight tech-hub metros sit in the lowest third by placed share: there, companies mostly hire for themselves. In the New York–Dallas group the median metro places 27% of its filings at a client and files 60% through IT-services firms.
-                </p>
-                <p>
-                  Census regions reach 0.06 (
-                  <P v="0.11" />
-                  ) and divisions 0.06 (
-                  <P v="0.08" />
-                  ), no better than chance.
-                </p>
-              </Drawer>
-            </Drawers>
           </div>
           <div className="plot">
             <h3>How well each labelling matches Louvain's three groups</h3>
@@ -307,6 +284,29 @@ export function Place() {
             <QuestionPart part="whereWho" />
           </div>
         </div>
+        <Drawers variant="foot">
+          <Drawer label="Method">
+            <p>
+              We gave each metro four labels: its Census region, its Census division, the third it falls in by the share of its filings that place a worker at a client, and the third it falls in by the share filed by professional and technical services firms (NAICS 54, the sector of IT consultancies). Thirds, because 35 of the 40 metros have that sector as their largest, so "largest sector" says almost nothing. AMI corrects for the number of labels, so four regions and three thirds compare fairly.
+            </p>
+            <p>
+              AMI for each labelling of the 40 metros; the p-value is the share of 1,000 shuffles of that labelling that match at least as well.
+            </p>
+          </Drawer>
+          <Drawer label="More numbers">
+            <p>The match is modest: most of what makes two metros alike stays unexplained.</p>
+            <p>
+              Seven of the eight tech-hub metros sit in the lowest third by placed share: there, companies mostly hire for themselves. In the New York–Dallas group the median metro places 27% of its filings at a client and files 60% through IT-services firms.
+            </p>
+            <p>
+              Census regions reach 0.06 (
+              <P v="0.11" />
+              ) and divisions 0.06 (
+              <P v="0.08" />
+              ), no better than chance.
+            </p>
+          </Drawer>
+        </Drawers>
       </div>
       {/* B · Where the backbone breaks ------------------------------- */}
       <div className="card w4-card" id="place-break">
@@ -347,64 +347,6 @@ export function Place() {
                 (38%, <P v="0.37" />).
               </span>
             </div>
-            <Drawers variant="foot">
-              <Drawer label="Background">
-                <p>
-                  Every pair of the 40 metros shares some employer, so the full network is one hairball of 780 links.
-                </p>
-              </Drawer>
-              <Drawer label="Method">
-                <p>
-                  The disparity filter keeps a link when it carries an unusually large share of either metro's total weight
-                  ; <Alpha /> is the test's threshold, and a smaller <Alpha /> keeps
-                  {" "}
-                  fewer links.
-                </p>
-                <p>
-                  Each step is one or more links removed. The shaded band is the range
-                  {" "}
-                  from <Alpha v="0.1" /> to
-                  {" "}
-                  0.05 where the five-value sweep saw the drop.
-                </p>
-              </Drawer>
-              <Drawer label="More numbers">
-                <p>
-                  The big outsourcing firms hold no more of the links that cut metros loose than of any others.
-                </p>
-                <p>
-                  The other eleven are led by Amazon (three), Intel, Deloitte, Capital One, JPMorgan Chase, Citigroup, FedEx, Fidelity Investments and the University of Maryland.
-                </p>
-                <p>
-                  The first metro falls off
-                  {" "}
-                  at <Alpha v="0.136" />.
-                  {" "}
-                  Tried at five values, the largest piece of the map fell from 32
-                  {" "}
-                  metros at <Alpha v="0.1" /> to 18 at <Alpha v="0.05" />,
-                  {" "}
-                  which looks like one snap. The fall from 32 to 18 is 14 separate links, each peeling one metro away.
-                </p>
-                <p>
-                  The five placing firms lead 69 of the 180 links in the whole
-                  {" "}
-                  backbone at <Alpha v="0.2" /> (38%), so their 5 of the 16 links that cut a metro loose is no more than their
-                  {" "}
-                  share (<P v="0.37" />).
-                </p>
-                <p>
-                  No single removal cuts off more than two metros: Dallas–Durham
-                  {" "}
-                  at <Alpha v="0.041" />
-                  {" "}
-                  takes Durham and Raleigh with it, and New York–Seattle at 0.023 splits the last five metros three and two.
-                </p>
-              </Drawer>
-              <Drawer label="Table: 14 links that peel metros off">
-                <QuestionPart part="whereBreakLinks" />
-              </Drawer>
-            </Drawers>
           </div>
           <div className="plot">
             <h3>Metros in the largest piece as the filter tightens</h3>
@@ -416,6 +358,64 @@ export function Place() {
             <QuestionPart part="whereBreak" />
           </div>
         </div>
+        <Drawers variant="foot">
+          <Drawer label="Background">
+            <p>
+              Every pair of the 40 metros shares some employer, so the full network is one hairball of 780 links.
+            </p>
+          </Drawer>
+          <Drawer label="Method">
+            <p>
+              The disparity filter keeps a link when it carries an unusually large share of either metro's total weight
+              ; <Alpha /> is the test's threshold, and a smaller <Alpha /> keeps
+              {" "}
+              fewer links.
+            </p>
+            <p>
+              Each step is one or more links removed. The shaded band is the range
+              {" "}
+              from <Alpha v="0.1" /> to
+              {" "}
+              0.05 where the five-value sweep saw the drop.
+            </p>
+          </Drawer>
+          <Drawer label="More numbers">
+            <p>
+              The big outsourcing firms hold no more of the links that cut metros loose than of any others.
+            </p>
+            <p>
+              The other eleven are led by Amazon (three), Intel, Deloitte, Capital One, JPMorgan Chase, Citigroup, FedEx, Fidelity Investments and the University of Maryland.
+            </p>
+            <p>
+              The first metro falls off
+              {" "}
+              at <Alpha v="0.136" />.
+              {" "}
+              Tried at five values, the largest piece of the map fell from 32
+              {" "}
+              metros at <Alpha v="0.1" /> to 18 at <Alpha v="0.05" />,
+              {" "}
+              which looks like one snap. The fall from 32 to 18 is 14 separate links, each peeling one metro away.
+            </p>
+            <p>
+              The five placing firms lead 69 of the 180 links in the whole
+              {" "}
+              backbone at <Alpha v="0.2" /> (38%), so their 5 of the 16 links that cut a metro loose is no more than their
+              {" "}
+              share (<P v="0.37" />).
+            </p>
+            <p>
+              No single removal cuts off more than two metros: Dallas–Durham
+              {" "}
+              at <Alpha v="0.041" />
+              {" "}
+              takes Durham and Raleigh with it, and New York–Seattle at 0.023 splits the last five metros three and two.
+            </p>
+          </Drawer>
+          <Drawer label="Table: 14 links that peel metros off">
+            <QuestionPart part="whereBreakLinks" />
+          </Drawer>
+        </Drawers>
       </div>
     </section>
   );
