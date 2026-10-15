@@ -31,8 +31,6 @@ export const corridor = createStore({
   // The library that drew the hero globe: the renderer's, unless the renderer
   // borrows another library's globe (canvas draws its globe with d3).
   globe: "canvas",
-  // The hero's world as a "globe" or a "flat" map; only the d3 globe has both.
-  view: "globe",
   // Bumped whenever every visual has to repaint: a resize, a restyle.
   paint: 0,
   // Bumped by a restyle alone, for the views that resize rather than redraw

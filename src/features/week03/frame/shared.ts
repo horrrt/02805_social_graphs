@@ -21,7 +21,6 @@ export type CorridorState = {
   style: Style | null;
   renderer: string;
   globe: string;
-  view: string;
   paint: number;
   restyles: number;
   tables: Record<string, TableSpec>;
