@@ -105,15 +105,6 @@
   font-weight: 600;
 }
 
-.corridor .select-row select {
-  background: #fff;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  color: var(--ink);
-  font: inherit;
-  font-size: var(--fs-small);
-  padding: 6px 10px;
-}
 
 .corridor #place .grid-side {
   margin-top: 8px;
@@ -2535,12 +2526,6 @@
 }
 
 .corridor .w5-guess select {
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  color: var(--ink);
-  font: inherit;
-  padding: 10px 12px;
   width: 100%;
 }
 
@@ -2830,7 +2815,7 @@
 /* Week 6's explorer: a character picker, then two ranked columns of its nearest pages. */
 .corridor .w6-pick { align-items: center; display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
 .corridor .w6-pick label { color: var(--ink-soft); font-size: var(--fs-small); font-weight: 600; }
-.corridor .w6-pick select { background: var(--card); border: 1px solid var(--line); border-radius: 6px; color: var(--ink); font: inherit; font-size: var(--fs-small); max-width: 16rem; padding: 4px 8px; }
+.corridor .w6-pick select { max-width: 16rem; }
 .corridor .w6-cols { display: grid; gap: 20px; grid-template-columns: 1fr 1fr; }
 .corridor .w6-col h3 { font-size: var(--fs-body); margin: 0 0 2px; }
 .corridor .w6-count { color: var(--ink-soft); font-size: var(--fs-small); margin: 0 0 8px; }
@@ -2895,7 +2880,7 @@
 .corridor .w6e-controls { align-items: center; display: flex; flex-wrap: wrap; gap: 10px 16px; margin: 0 0 14px; }
 .corridor .w6e-picker { align-items: center; display: inline-flex; gap: 8px; }
 .corridor .w6e-picker label, .corridor .w6e-label { color: var(--ink-soft); font-size: var(--fs-small); font-weight: 600; }
-.corridor .w6e-picker select, .corridor .w6e-picker input { border: 1px solid var(--line); border-radius: 6px; color: var(--ink); font-size: var(--fs-small); padding: 4px 8px; }
+.corridor .w6e-picker input { border: 1px solid var(--line); border-radius: 6px; color: var(--ink); font-size: var(--fs-small); padding: 4px 8px; }
 .corridor .w6e-picker select:focus-visible, .corridor .w6e-picker input:focus-visible { outline: 2px solid var(--w4-accent); outline-offset: 2px; }
 .corridor .w6e-note { color: var(--ink-soft); font-size: var(--fs-small); margin: 0 0 10px; }
 /* Lists side by side share three row tracks (heading, note, rows), so their rows start level. */
@@ -3084,7 +3069,6 @@
 .corridor .kit-player .kit-controls button[aria-pressed="true"], .corridor .kit-net-demo .kit-controls button[aria-pressed="true"] { background: var(--w4-accent); border-color: var(--w4-accent); color: var(--card); }
 .corridor .kit-player .kit-controls button:disabled { cursor: not-allowed; opacity: 0.5; }
 .corridor .kit-player .kit-controls .kit-note { margin: 0; }
-.corridor .kit-net-demo .kit-controls select { border: 1px solid var(--line); border-radius: 6px; color: var(--ink); font-size: var(--fs-small); padding: 3px 6px; }
 .corridor .kit-net-demo :is(button, input, select):focus-visible { outline: 2px solid var(--w4-accent); outline-offset: 2px; }
 .corridor .kit-readouts dd.kit-readout-sub { color: var(--ink-mute-text); font-size: var(--fs-caption); font-weight: 400; }
 

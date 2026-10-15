@@ -71,12 +71,6 @@
   gap: 8px;
 }
 
-.corridor .w4-entities-colour select {
-  font: inherit;
-  font-size: var(--fs-small);
-  padding: 4px 8px;
-}
-
 .corridor .w4-entities-stage {
   background: var(--w4-inset);
   border: 1px solid var(--line);
@@ -262,10 +256,7 @@
 }
 
 .corridor .w4-entities-net select {
-  font: inherit;
-  font-size: var(--fs-small);
   margin-left: 6px;
-  padding: 4px 8px;
 }
 
 .corridor .w4-entities-stat {
