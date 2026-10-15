@@ -603,7 +603,7 @@ export function globeFocused(edge) {
   if (!state.picked || !state.selected) return true;
   return state.edges.countries[edge.oi] === state.selected || state.edges.countries[edge.di] === state.selected;
 }
-export const GLOBE_MUTED = { rgb: "190,198,210", alpha: 0.28, width: 0.8 };
+export const GLOBE_MUTED = { rgb: "150,163,180", alpha: 0.06, width: 0.7 };
 
 // The globe's reset: the opening view, turned back, and no country in focus.
 const START_ROTATION = -10;
