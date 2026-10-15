@@ -93,32 +93,6 @@ function Box6({ data, T }: { data: any; T: T }) {
             <span>deg #n = that occupation's rank by plain unweighted degree</span>
           </p>
           <Notice>{text.notice}</Notice>
-          <Drawers variant="foot">
-            <Drawer label="Background">
-              <div>
-                <p>
-                  <TermText
-                    text="Each step, a PageRank walker follows a tie with probability d, the damping factor, or jumps to a random occupation. At d = 0 the ties do not matter; near 1 they decide the order."
-                    phrase="PageRank"
-                    definition="A score from a random walk along the ties: occupations the walk visits often, because well-linked occupations tie to them, score high."
-                    id="w4-term-cut-pagerank-explore-pagerank"
-                  />
-                </p>
-                <p>In the chart, a short bar with a small badge number is well connected but not well placed.</p>
-              </div>
-            </Drawer>
-            <Drawer label="Method">
-              <p>
-                <span>{text.method}</span>
-              </p>
-            </Drawer>
-            <Drawer label="More numbers">
-              <div>
-                <p>{text.movers}</p>
-                <p>{text.overlap}</p>
-              </div>
-            </Drawer>
-          </Drawers>
         </div>
         <div className="plot">
           <h3>{`Top ${TOP_SHOWN} occupations by PageRank`}</h3>
@@ -135,6 +109,32 @@ function Box6({ data, T }: { data: any; T: T }) {
           </div>
         </div>
       </div>
+      <Drawers variant="foot">
+        <Drawer label="Background">
+          <div>
+            <p>
+              <TermText
+                text="Each step, a PageRank walker follows a tie with probability d, the damping factor, or jumps to a random occupation. At d = 0 the ties do not matter; near 1 they decide the order."
+                phrase="PageRank"
+                definition="A score from a random walk along the ties: occupations the walk visits often, because well-linked occupations tie to them, score high."
+                id="w4-term-cut-pagerank-explore-pagerank"
+              />
+            </p>
+            <p>In the chart, a short bar with a small badge number is well connected but not well placed.</p>
+          </div>
+        </Drawer>
+        <Drawer label="Method">
+          <p>
+            <span>{text.method}</span>
+          </p>
+        </Drawer>
+        <Drawer label="More numbers">
+          <div>
+            <p>{text.movers}</p>
+            <p>{text.overlap}</p>
+          </div>
+        </Drawer>
+      </Drawers>
     </div>
   );
 }
@@ -245,23 +245,6 @@ function Box7({ data, T }: { data: any; T: T }) {
             />
           </p>
           <Notice>{text.notice}</Notice>
-          <Drawers variant="foot">
-            <Drawer label="Method">
-              <div>
-                <p>
-                  <span>{text.check}</span>
-                </p>
-                <p>
-                  <span>{text.step}</span>
-                </p>
-              </div>
-            </Drawer>
-            <Drawer label="More numbers">
-              <p>
-                <span>{text.more}</span>
-              </p>
-            </Drawer>
-          </Drawers>
         </div>
         <div className="plot">
           <h3>{text.heading}</h3>
@@ -271,6 +254,23 @@ function Box7({ data, T }: { data: any; T: T }) {
           </div>
         </div>
       </div>
+      <Drawers variant="foot">
+        <Drawer label="Method">
+          <div>
+            <p>
+              <span>{text.check}</span>
+            </p>
+            <p>
+              <span>{text.step}</span>
+            </p>
+          </div>
+        </Drawer>
+        <Drawer label="More numbers">
+          <p>
+            <span>{text.more}</span>
+          </p>
+        </Drawer>
+      </Drawers>
       <W4Table
         className="ego"
         caption={`The ${data.movers.length} occupations whose rank changes most between d = 0.5 and d = 0.99`}

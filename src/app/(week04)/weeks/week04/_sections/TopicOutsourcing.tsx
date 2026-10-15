@@ -224,75 +224,6 @@ export function TopicOutsourcing() {
                 ).
               </p>
               <StaffingStatsTable />
-              <Drawers variant="foot">
-                <Drawer label="Method">
-                  <p>
-                    We ran
-                    {" "}
-                    <GlossTerm id="w4-term-staffing-community-stats-louvain" word="Louvain">
-                      A method that finds groups in a network by moving nodes between groups until the links inside groups are as dense as they can get. It starts from a random order, so two runs can differ.
-                    </GlossTerm>
-                    {" "}
-                    on the 2025 firm–client network 100 times each way: with links weighted by filings, and with every link counting one.
-                  </p>
-                  <p>
-                    The
-                    {" "}
-                    <GlossTerm id="w4-term-staffing-community-stats-null" word="null model">
-                      A random version of the network that keeps some of its features, here each node's number of partners, to show what chance alone would give.
-                    </GlossTerm>
-                    {" "}
-                    rewires the network so every firm and client keeps its number of partners.
-                  </p>
-                  <p>
-                    Infomap agrees with Louvain at NMI
-                    {" "}
-                    <StaffingStat k="im-louvain" />
-                    . Finer partitions raise every NMI; AMI corrects for that, so it is the number to compare across methods.
-                  </p>
-                </Drawer>
-                <Drawer label="More numbers">
-                  <p>
-                    Infomap, which follows a random walk instead of counting links, splits the same network into
-                    {" "}
-                    <StaffingStat k="im-modules" />
-                    {" "}
-                    small modules, most of them a firm with its clients. Like weighted Louvain, it follows the vendor far more than the industry (AMI
-                    {" "}
-                    <StaffingStat k="im-vendor" />
-                    {" "}
-                    against
-                    {" "}
-                    <StaffingStat k="im-industry" />
-                    ).
-                  </p>
-                  <p>
-                    The null also deals the filing counts back out at random. Rewiring breaks the network into a median of
-                    {" "}
-                    <StaffingStat k="pieces" />
-                    {" "}
-                    pieces, each a free community, so we score each rewired network on its largest piece, as we do the real one. The real network also loses when only the filing counts are shuffled on the real links (
-                    <StaffingStat k="null-weights" />
-                    ). The real counts leave
-                    {" "}
-                    <StaffingStat k="cross-share" />
-                    {" "}
-                    of filings on links between groups, against
-                    {" "}
-                    <StaffingStat k="cross-share-null" />
-                    {" "}
-                    with shuffled counts: clients that use several firms hold
-                    {" "}
-                    <StaffingStat k="multi-links" />
-                    {" "}
-                    of the links but
-                    {" "}
-                    <StaffingStat k="multi-filings" />
-                    {" "}
-                    of the filings, and only their links can cross, since a client with one firm sits in that firm's group.
-                  </p>
-                </Drawer>
-              </Drawers>
             </div>
             <div>
               <figure className="w4-figure">
@@ -306,6 +237,75 @@ export function TopicOutsourcing() {
               </figure>
             </div>
           </div>
+          <Drawers variant="foot">
+            <Drawer label="Method">
+              <p>
+                We ran
+                {" "}
+                <GlossTerm id="w4-term-staffing-community-stats-louvain" word="Louvain">
+                  A method that finds groups in a network by moving nodes between groups until the links inside groups are as dense as they can get. It starts from a random order, so two runs can differ.
+                </GlossTerm>
+                {" "}
+                on the 2025 firm–client network 100 times each way: with links weighted by filings, and with every link counting one.
+              </p>
+              <p>
+                The
+                {" "}
+                <GlossTerm id="w4-term-staffing-community-stats-null" word="null model">
+                  A random version of the network that keeps some of its features, here each node's number of partners, to show what chance alone would give.
+                </GlossTerm>
+                {" "}
+                rewires the network so every firm and client keeps its number of partners.
+              </p>
+              <p>
+                Infomap agrees with Louvain at NMI
+                {" "}
+                <StaffingStat k="im-louvain" />
+                . Finer partitions raise every NMI; AMI corrects for that, so it is the number to compare across methods.
+              </p>
+            </Drawer>
+            <Drawer label="More numbers">
+              <p>
+                Infomap, which follows a random walk instead of counting links, splits the same network into
+                {" "}
+                <StaffingStat k="im-modules" />
+                {" "}
+                small modules, most of them a firm with its clients. Like weighted Louvain, it follows the vendor far more than the industry (AMI
+                {" "}
+                <StaffingStat k="im-vendor" />
+                {" "}
+                against
+                {" "}
+                <StaffingStat k="im-industry" />
+                ).
+              </p>
+              <p>
+                The null also deals the filing counts back out at random. Rewiring breaks the network into a median of
+                {" "}
+                <StaffingStat k="pieces" />
+                {" "}
+                pieces, each a free community, so we score each rewired network on its largest piece, as we do the real one. The real network also loses when only the filing counts are shuffled on the real links (
+                <StaffingStat k="null-weights" />
+                ). The real counts leave
+                {" "}
+                <StaffingStat k="cross-share" />
+                {" "}
+                of filings on links between groups, against
+                {" "}
+                <StaffingStat k="cross-share-null" />
+                {" "}
+                with shuffled counts: clients that use several firms hold
+                {" "}
+                <StaffingStat k="multi-links" />
+                {" "}
+                of the links but
+                {" "}
+                <StaffingStat k="multi-filings" />
+                {" "}
+                of the filings, and only their links can cross, since a client with one firm sits in that firm's group.
+              </p>
+            </Drawer>
+          </Drawers>
         </div>
       </details>
       <details className="rx-panel" name="w4-panel-outsourcing" data-box="staffing-ties">
@@ -398,14 +398,6 @@ export function TopicOutsourcing() {
                   Degree and strength rank firms almost alike (Spearman 0.91) but clients less so (0.75): the heaviest single ties go to therapy and rehab clinics, led by Ultimate Therapy with 133 filings from one firm.
                 </span>
               </div>
-              <Drawers variant="foot">
-                <Drawer label="Background" />
-                <Drawer label="More numbers">
-                  <p>
-                    In the 2025 firm–client network the two rank firms almost alike (Spearman 0.91) and clients less so (0.75). The clients with the most filings from a single firm are Ultimate Therapy, 133 filings from one firm; Sigma Rehab, 95; Post Rehab Services, 61; and Grady Memorial Hospital, 58.
-                  </p>
-                </Drawer>
-              </Drawers>
             </div>
             <figure className="w4-figure">
               <figcaption>
@@ -415,6 +407,14 @@ export function TopicOutsourcing() {
               <StripPart id="more:strength" />
             </figure>
           </div>
+          <Drawers variant="foot">
+            <Drawer label="Background" />
+            <Drawer label="More numbers">
+              <p>
+                In the 2025 firm–client network the two rank firms almost alike (Spearman 0.91) and clients less so (0.75). The clients with the most filings from a single firm are Ultimate Therapy, 133 filings from one firm; Sigma Rehab, 95; Post Rehab Services, 61; and Grady Memorial Hospital, 58.
+              </p>
+            </Drawer>
+          </Drawers>
         </div>
       </details>
       <details className="rx-panel" name="w4-panel-outsourcing" data-box="entity-communities">

@@ -172,29 +172,6 @@ export function Who() {
                 = 47).
               </span>
             </div>
-            <Drawers variant="foot">
-              <Drawer label="Background">
-                <p>A switch is a year in which that firm changes.</p>
-              </Drawer>
-              <Drawer label="Method">
-                <p>
-                  We followed the clients with five or more filings in two consecutive years and found 1,261 switches of main vendor between 2022 and 2025. For each, we asked whether the new vendor sat in the client's Louvain group of the earlier year.
-                </p>
-                <p>
-                  The baseline draws a new vendor at random, a large firm as often as its filings make it likely. The chart's grey bars are the baseline's mean over 1,000 draws.
-                </p>
-              </Drawer>
-              <Drawer label="More numbers">
-                <p>
-                  One switch in four stays inside the client's group. Much of that is familiarity: 62% of new main vendors already placed someone at the client the year before.
-                </p>
-                <p>
-                  A stricter baseline that draws only among the firms already at the client narrows the gap to 26.8% against 20.8% ± 0.7%
-                  {" "}
-                  (<Z v="9" />), a lift of 1.29 rather than 8.3.
-                </p>
-              </Drawer>
-            </Drawers>
           </div>
           <div className="plot">
             <h3>Switches that stay inside the client's group</h3>
@@ -204,6 +181,29 @@ export function Who() {
             <QuestionPart part="whoSwitch" />
           </div>
         </div>
+        <Drawers variant="foot">
+          <Drawer label="Background">
+            <p>A switch is a year in which that firm changes.</p>
+          </Drawer>
+          <Drawer label="Method">
+            <p>
+              We followed the clients with five or more filings in two consecutive years and found 1,261 switches of main vendor between 2022 and 2025. For each, we asked whether the new vendor sat in the client's Louvain group of the earlier year.
+            </p>
+            <p>
+              The baseline draws a new vendor at random, a large firm as often as its filings make it likely. The chart's grey bars are the baseline's mean over 1,000 draws.
+            </p>
+          </Drawer>
+          <Drawer label="More numbers">
+            <p>
+              One switch in four stays inside the client's group. Much of that is familiarity: 62% of new main vendors already placed someone at the client the year before.
+            </p>
+            <p>
+              A stricter baseline that draws only among the firms already at the client narrows the gap to 26.8% against 20.8% ± 0.7%
+              {" "}
+              (<Z v="9" />), a lift of 1.29 rather than 8.3.
+            </p>
+          </Drawer>
+        </Drawers>
       </div>
       {/* B · Movers when weights are ignored ---------------------- */}
       <div className="card w4-card" id="who-movers">
@@ -231,29 +231,6 @@ export function Who() {
                 . Two runs of the same kind move fewer: a median 33.3% between two weighted seeds and 53.1% between two unweighted ones.
               </span>
             </div>
-            <Drawers variant="foot">
-              <Drawer label="Method">
-                <p>
-                  Two runs of the same kind with different
-                  {" "}
-                  <GlossTerm id="w4-term-who-movers-seeds" word="seeds">The random starting point of a Louvain run. Different seeds can give different groups.</GlossTerm>
-                  {" "}
-                  set the noise floor.
-                </p>
-                <p>
-                  We matched each weighted group to the unweighted group it overlaps most, and called a client a mover when its matched group changed. All three bars use the same matching of groups.
-                </p>
-              </Drawer>
-              <Drawer label="More numbers">
-                <p>
-                  The medians come from ten pairs of seeds each (ranges 26.8% to 39.3% and 49.4% to 55.9%). We expected the movers to be clients with several vendors, since only their filing counts can pull them one way or another. They are, but barely: 31.8% of movers have two or more vendors, against 26.8% of all clients. The largest movers are the largest clients: Citigroup sits with Tata Consultancy Services when filings count and with EY when they do not; Bank of America moves from Infosys' group to IBM's.
-                </p>
-              </Drawer>
-              <Drawer label="Table: 15 largest movers">
-                <QuestionPart part="whoMoversTable" />
-                <p className="fineprint">A group is named after its largest firm.</p>
-              </Drawer>
-            </Drawers>
           </div>
           <div className="plot">
             <h3>Share of clients that change group</h3>
@@ -263,6 +240,29 @@ export function Who() {
             <QuestionPart part="whoMovers" />
           </div>
         </div>
+        <Drawers variant="foot">
+          <Drawer label="Method">
+            <p>
+              Two runs of the same kind with different
+              {" "}
+              <GlossTerm id="w4-term-who-movers-seeds" word="seeds">The random starting point of a Louvain run. Different seeds can give different groups.</GlossTerm>
+              {" "}
+              set the noise floor.
+            </p>
+            <p>
+              We matched each weighted group to the unweighted group it overlaps most, and called a client a mover when its matched group changed. All three bars use the same matching of groups.
+            </p>
+          </Drawer>
+          <Drawer label="More numbers">
+            <p>
+              The medians come from ten pairs of seeds each (ranges 26.8% to 39.3% and 49.4% to 55.9%). We expected the movers to be clients with several vendors, since only their filing counts can pull them one way or another. They are, but barely: 31.8% of movers have two or more vendors, against 26.8% of all clients. The largest movers are the largest clients: Citigroup sits with Tata Consultancy Services when filings count and with EY when they do not; Bank of America moves from Infosys' group to IBM's.
+            </p>
+          </Drawer>
+          <Drawer label="Table: 15 largest movers">
+            <QuestionPart part="whoMoversTable" />
+            <p className="fineprint">A group is named after its largest firm.</p>
+          </Drawer>
+        </Drawers>
       </div>
       {/* C · Split loyalties ------------------------------------- */}
       <div className="card w4-card" id="who-overlap">
@@ -291,22 +291,6 @@ export function Who() {
                 (<Z v="−16" />): real clients draw on fewer groups than chance.
               </span>
             </div>
-            <Drawers variant="foot">
-              <Drawer label="Background" />
-              <Drawer label="Method">
-                <p>
-                  We counted clients whose second group supplies at least 20% of their filings, and did the same on 100 rewired networks in which every firm keeps its number of clients and every client keeps its filing counts, only attached to different firms. Louvain builds the groups from these filing counts, so it already tends to put a client with its heaviest vendors; and rewired networks split into different groups from the real one. Read the count as the groups following clients' main suppliers, not as a separate measure of loyalty.
-                </p>
-              </Drawer>
-              <Drawer label="More numbers">
-                <p>
-                  The largest split clients are banks, insurers and manufacturers. USAA gets 44% of its filings from HCL's group and 26% from Tata Consultancy Services'; Stellantis 46% from L&amp;T Technology Services' group and 34% from Tata Consultancy Services'.
-                </p>
-              </Drawer>
-              <Drawer label="Table: 15 largest split clients">
-                <QuestionPart part="whoOverlapTable" />
-              </Drawer>
-            </Drawers>
           </div>
           <div className="plot">
             <h3>Clients split between two groups</h3>
@@ -316,6 +300,22 @@ export function Who() {
             <QuestionPart part="whoOverlap" />
           </div>
         </div>
+        <Drawers variant="foot">
+          <Drawer label="Background" />
+          <Drawer label="Method">
+            <p>
+              We counted clients whose second group supplies at least 20% of their filings, and did the same on 100 rewired networks in which every firm keeps its number of clients and every client keeps its filing counts, only attached to different firms. Louvain builds the groups from these filing counts, so it already tends to put a client with its heaviest vendors; and rewired networks split into different groups from the real one. Read the count as the groups following clients' main suppliers, not as a separate measure of loyalty.
+            </p>
+          </Drawer>
+          <Drawer label="More numbers">
+            <p>
+              The largest split clients are banks, insurers and manufacturers. USAA gets 44% of its filings from HCL's group and 26% from Tata Consultancy Services'; Stellantis 46% from L&amp;T Technology Services' group and 34% from Tata Consultancy Services'.
+            </p>
+          </Drawer>
+          <Drawer label="Table: 15 largest split clients">
+            <QuestionPart part="whoOverlapTable" />
+          </Drawer>
+        </Drawers>
       </div>
     </section>
   );

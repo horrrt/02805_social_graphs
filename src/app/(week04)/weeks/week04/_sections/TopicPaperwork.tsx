@@ -291,22 +291,6 @@ export function TopicPaperwork() {
                   Among employers with 20 or more H-1B filings, the median files 13.2 green cards per 100 H-1B filings, yet Oracle files 95 while Amazon, with 22,509 H-1B filings, files almost none.
                 </span>
               </div>
-              <Drawers variant="foot">
-                <Drawer label="Method" />
-                <Drawer label="More numbers">
-                  <p>
-                    In 2025 the median employer with 20 or more H-1B filings filed 13.2 green cards per 100 of them, and the two counts rank employers only loosely alike (
-                    <GlossTerm id="w4-term-deeper-perm-spearman" word="Spearman">
-                      A rank correlation: 1 means two counts put employers in the same order, 0 means no relation.
-                    </GlossTerm>
-                    {" "}
-                    0.50). As with degree and strength in the course, the exceptions carry the story: Oracle filed 95 green cards per 100 H-1B filings, Uber 64 and Salesforce 45, while Amazon (22,509 H-1B filings), Cognizant (11,085) and Google (8,657) filed almost none. Whether outsourcing firms sponsor fewer is
-                    {" "}
-                    <a href="#beyond-perm">section 5B</a>
-                    . Clients sponsor their own staff too: Wells Fargo receives 1,547 H-1B filings from vendors, files 624 of its own and 167 green cards. Firms with more clients sponsor slightly more green cards, not fewer (Spearman 0.13).
-                  </p>
-                </Drawer>
-              </Drawers>
             </div>
             <figure className="w4-figure">
               <figcaption>
@@ -318,6 +302,22 @@ export function TopicPaperwork() {
               <StripPart id="more:perm" />
             </figure>
           </div>
+          <Drawers variant="foot">
+            <Drawer label="Method" />
+            <Drawer label="More numbers">
+              <p>
+                In 2025 the median employer with 20 or more H-1B filings filed 13.2 green cards per 100 of them, and the two counts rank employers only loosely alike (
+                <GlossTerm id="w4-term-deeper-perm-spearman" word="Spearman">
+                  A rank correlation: 1 means two counts put employers in the same order, 0 means no relation.
+                </GlossTerm>
+                {" "}
+                0.50). As with degree and strength in the course, the exceptions carry the story: Oracle filed 95 green cards per 100 H-1B filings, Uber 64 and Salesforce 45, while Amazon (22,509 H-1B filings), Cognizant (11,085) and Google (8,657) filed almost none. Whether outsourcing firms sponsor fewer is
+                {" "}
+                <a href="#beyond-perm">section 5B</a>
+                . Clients sponsor their own staff too: Wells Fargo receives 1,547 H-1B filings from vendors, files 624 of its own and 167 green cards. Firms with more clients sponsor slightly more green cards, not fewer (Spearman 0.13).
+              </p>
+            </Drawer>
+          </Drawers>
         </div>
       </details>
       <details className="rx-panel" name="w4-panel-paperwork" data-box="deeper-countries">

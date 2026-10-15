@@ -28,24 +28,6 @@ export function Opening() {
               no link at all, and 17 of those also link to no page. A link records an editor's choice
               to point there, not a friendship or a fight in the comics.
             </p>
-            <Drawers variant="foot">
-              <Drawer label="What counts as a word">
-                <p className="sub">
-                  <b>What a word is.</b>
-                  {" "}
-                  A tokenizer decides where one word ends and the next begins.
-                  Unless a section says otherwise, a word is a run of letters, lowercased, with an
-                  apostrophe or hyphen inside it kept and a possessive 's removed: "Spider-Man's first
-                  appearance in 1962" gives spider-man, first, appearance, in. The pages then hold
-                  713,617 tokens, word occurrences, of 27,754 types, different words.
-                </p>
-                <Notice icon="!" gap headline="Preprocessing changes the counts">
-                  Sections 2 and 3 keep digits and split words at hyphens, so the same sentence gives
-                  spider, man's, first, appearance, in, 1962, and the pages hold about 740,000 tokens,
-                  4% more. Each section states its rule.
-                </Notice>
-              </Drawer>
-            </Drawers>
           </div>
           <div>
             <Anatomy
@@ -67,6 +49,24 @@ export function Opening() {
             />
           </div>
         </div>
+        <Drawers variant="foot">
+          <Drawer label="What counts as a word">
+            <p className="sub">
+              <b>What a word is.</b>
+              {" "}
+              A tokenizer decides where one word ends and the next begins.
+              Unless a section says otherwise, a word is a run of letters, lowercased, with an
+              apostrophe or hyphen inside it kept and a possessive 's removed: "Spider-Man's first
+              appearance in 1962" gives spider-man, first, appearance, in. The pages then hold
+              713,617 tokens, word occurrences, of 27,754 types, different words.
+            </p>
+            <Notice icon="!" gap headline="Preprocessing changes the counts">
+              Sections 2 and 3 keep digits and split words at hyphens, so the same sentence gives
+              spider, man's, first, appearance, in, 1962, and the pages hold about 740,000 tokens,
+              4% more. Each section states its rule.
+            </Notice>
+          </Drawer>
+        </Drawers>
       </Card>
     </PostSection>
   );

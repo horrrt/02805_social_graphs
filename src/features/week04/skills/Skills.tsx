@@ -81,28 +81,6 @@ function Box3({ c, descriptors }: { c: any; descriptors: number }) {
           <Notice>
             <TermText text={m.notice} phrase="similarity" definition="The cosine of two occupations' O*NET ratings, from -1 to 1. Higher means more alike skills." id="w4-term-cut-skills-direct-similarity" />
           </Notice>
-          <Drawers variant="foot">
-            <Drawer label="Background">
-              <p>{m.background}</p>
-            </Drawer>
-            <Drawer label="Method">
-              <div>
-                {m.method.map((t: string, i: number) => (
-                  <p key={i}>
-                    <span>{t}</span>
-                  </p>
-                ))}
-              </div>
-            </Drawer>
-            <Drawer label="More numbers">
-              <div>
-                <p>{m.more[0]}</p>
-                <p>
-                  <span>{m.more[1]}</span>
-                </p>
-              </div>
-            </Drawer>
-          </Drawers>
         </div>
         <Plot
           title="Skill similarity by how often companies hire both"
@@ -110,6 +88,28 @@ function Box3({ c, descriptors }: { c: any; descriptors: number }) {
           strip={m.strip as Strip}
         />
       </div>
+      <Drawers variant="foot">
+        <Drawer label="Background">
+          <p>{m.background}</p>
+        </Drawer>
+        <Drawer label="Method">
+          <div>
+            {m.method.map((t: string, i: number) => (
+              <p key={i}>
+                <span>{t}</span>
+              </p>
+            ))}
+          </div>
+        </Drawer>
+        <Drawer label="More numbers">
+          <div>
+            <p>{m.more[0]}</p>
+            <p>
+              <span>{m.more[1]}</span>
+            </p>
+          </div>
+        </Drawer>
+      </Drawers>
     </div>
   );
 }
@@ -131,20 +131,6 @@ function Box4({ c }: { c: any }) {
             {`Section 2 groups the ${m.occupations} occupations into hiring clusters with Louvain. This box asks whether those clusters also share skills, leaving out the pairs section 2 draws as links.`}
           </p>
           <Notice>{m.notice}</Notice>
-          <Drawers variant="foot">
-            <Drawer label="Method">
-              <div>
-                {m.method.map((t: string, i: number) => (
-                  <p key={i}>
-                    <span>{t}</span>
-                  </p>
-                ))}
-              </div>
-            </Drawer>
-            <Drawer label="More numbers">
-              <p>{m.more}</p>
-            </Drawer>
-          </Drawers>
         </div>
         <Plot
           title="Skill similarity by cluster membership"
@@ -152,6 +138,20 @@ function Box4({ c }: { c: any }) {
           strip={m.strip as Strip}
         />
       </div>
+      <Drawers variant="foot">
+        <Drawer label="Method">
+          <div>
+            {m.method.map((t: string, i: number) => (
+              <p key={i}>
+                <span>{t}</span>
+              </p>
+            ))}
+          </div>
+        </Drawer>
+        <Drawer label="More numbers">
+          <p>{m.more}</p>
+        </Drawer>
+      </Drawers>
     </div>
   );
 }
@@ -268,15 +268,6 @@ function Radar({ data }: { data: any }) {
           <p className="sub">
             {`O*NET rates how much each of ${descriptors} skills, knowledge areas and work activities matters to an occupation, from 1 (not important) to 5 (extremely important). Each spoke is one of them: further out means it matters more.`}
           </p>
-          <Drawers variant="foot">
-            <Drawer label="Method">
-              <p>
-                {RADAR_METHOD.map((t: string, i: number) => (
-                  <span key={i}>{t}</span>
-                ))}
-              </p>
-            </Drawer>
-          </Drawers>
         </div>
         <div className="plot">
           <h3>Compare occupations' O*NET profiles</h3>
@@ -361,6 +352,15 @@ function Radar({ data }: { data: any }) {
           </p>
         </div>
       </div>
+      <Drawers variant="foot">
+        <Drawer label="Method">
+          <p>
+            {RADAR_METHOD.map((t: string, i: number) => (
+              <span key={i}>{t}</span>
+            ))}
+          </p>
+        </Drawer>
+      </Drawers>
       <div className="plot w4-radar-full">
         <div className="w4-figure-body w4-radar-host-wrap" ref={wrap}>
           <W4Chart className="w4-radar-host" option={option} onEvents={events} onChart={setChart} eager />
