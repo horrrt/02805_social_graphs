@@ -125,7 +125,7 @@ export function install(api, Globe) {
 
     // The basemap dropdown reaches WebGL: a photograph as the globe texture,
     // outlines as polygons, or neither.
-    const photo = state.basemap === "photo";
+    const photo = state.basemap === "photo" || state.basemap === "night";
     globe.globeImageUrl(photo ? textureURL() : null);
     const wanted = state.basemap === "outline" && state.world ? state.world.features : [];
     if (globe.polygonsData().length !== wanted.length) globe.polygonsData(wanted);

@@ -130,8 +130,9 @@ export function install(api, deck) {
   // behind the sphere, which is why the deck globe came up empty at first.
   // The photograph is a BitmapLayer stretched over the whole world, which lands
   // correctly because the texture is equirectangular.
+  // The night satellite look is the d3 globe's; here it is the photograph.
   const photoLayer = (id) =>
-    state.basemap === "photo"
+    state.basemap === "photo" || state.basemap === "night"
       ? [
           new deck.BitmapLayer({
             id,

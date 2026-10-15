@@ -209,6 +209,16 @@
   width: min(100%, calc(100dvh - 120px), 720px);
 }
 
+/* The flat map: the same stage at 16:9, wider than the globe's square. */
+.corridor .stage-wrap.is-flat {
+  aspect-ratio: 16 / 9;
+  width: min(100%, 960px);
+}
+
+.corridor #globe-canvas-d3 {
+  border-radius: 10px;
+}
+
 .corridor #globe-gl,
 .corridor [id$="-deck"] {
   border-radius: 10px;
@@ -252,6 +262,41 @@
 }
 
 .corridor .stage-reset:focus-visible {
+  outline: 2px solid #ffb768;
+  outline-offset: 2px;
+}
+
+/* The globe/map switch, opposite the reset. */
+.corridor .stage-view {
+  background: rgba(8, 22, 42, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  display: flex;
+  left: 6px;
+  padding: 2px;
+  position: absolute;
+  top: 6px;
+  z-index: 2;
+}
+
+.corridor .stage-view button {
+  background: none;
+  border: 0;
+  border-radius: 999px;
+  color: #b9cde4;
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--fs-caption);
+  font-weight: 700;
+  padding: 3px 11px;
+}
+
+.corridor .stage-view button[aria-pressed="true"] {
+  background: rgba(234, 242, 251, 0.92);
+  color: #0f2340;
+}
+
+.corridor .stage-view button:focus-visible {
   outline: 2px solid #ffb768;
   outline-offset: 2px;
 }
