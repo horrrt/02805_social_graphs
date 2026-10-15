@@ -90,7 +90,7 @@ function GlobeHost({ renderer }: { renderer: string }) {
 
 function StageView() {
   const ready = useReady();
-  const renderer = useCorridor((s) => s.renderer);
+  const renderer = useCorridor((s) => s.globe);
   const deps = useCorridor((s) => [s.year, s.selected, s.paint]);
   usePaint(ready, () => R.globe(), deps);
   const live = ready

@@ -232,7 +232,8 @@ test("every render variant names a vendored library that exists", () => {
     );
   }
   const modules = [...renderers.matchAll(/module: \(\) => import\("\.\/([^"]+)"\)/g)].map((m) => m[1]);
-  assert.equal(modules.length, 5, "every library renderer names its variant module");
+  // Six: the five library renderers, and canvas, which borrows d3's globe.
+  assert.equal(modules.length, 6, "every library renderer names its variant module");
   for (const module of modules) {
     assert.ok(existsSync(join(ROOT, "src/scripts", module)), `missing variant module: ${module}`);
   }

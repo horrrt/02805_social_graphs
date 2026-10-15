@@ -19,7 +19,17 @@ import { asset } from "@/scripts/site.js";
 import { RENDERERS, readStyle } from "@/scripts/week03-boot.js";
 import { corridor, useCorridor, type Style } from "./shared";
 
-type Renderer = { label: string; bytes: number; script?: string; global?: string; module?: () => Promise<{ install: (api: unknown, lib: unknown) => object }> };
+type Renderer = {
+  label: string;
+  bytes: number;
+  script?: string;
+  global?: string;
+  module?: () => Promise<{ install: (api: unknown, lib: unknown) => object }>;
+  // The parts of the module to install, when the renderer borrows only some.
+  only?: string[];
+  // The library that draws the globe, when it is not the renderer's own.
+  globe?: string;
+};
 const REGISTRY = RENDERERS as Record<string, Renderer>;
 
 const file = (name: string) => asset(`assets/data/${name}`);
@@ -62,6 +72,7 @@ function BootService() {
           "showing the canvas version instead.",
         style: { ...style, variant: "canvas" },
         renderer: "canvas",
+        globe: "canvas",
       });
       console.error(error);
       setInstalled(true);
@@ -76,8 +87,10 @@ function BootService() {
       ({ install }) => {
         if (!live) return;
         try {
-          installRenderer({ name: style.variant, ...install(api, vendor.lib) });
-          corridor.setState({ renderer: style.variant });
+          const parts = install(api, vendor.lib) as Record<string, unknown>;
+          const kept = renderer.only ? Object.fromEntries(renderer.only.filter((k) => k in parts).map((k) => [k, parts[k]])) : parts;
+          installRenderer({ name: style.variant, ...kept });
+          corridor.setState({ renderer: style.variant, globe: renderer.globe ?? style.variant });
           setInstalled(true);
         } catch (error) {
           fail(error as Error);

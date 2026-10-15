@@ -19,6 +19,7 @@ export type CorridorState = {
   axisMode: { hist: string; ccdf: string };
   style: Style | null;
   renderer: string;
+  globe: string;
   paint: number;
   restyles: number;
   tables: Record<string, TableSpec>;
