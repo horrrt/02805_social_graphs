@@ -3,8 +3,9 @@
   --visual-radius: 20px;
 }
 .visual-design .wrap {
-  width: min(1120px, calc(100% - 64px));
-  max-width: 1120px;
+  /* The same column as the corridor posts (weeks 3-6): 1180px less 24px padding a side. */
+  width: min(1132px, calc(100% - 48px));
+  max-width: none;
 }
 .visual-design .hero {
   border: 0;
@@ -378,8 +379,6 @@
 .visual-design.guided-post #post,
 .visual-design.guided-post #results,
 .visual-design.guided-post #evidence {
-  max-width: 760px;
-  margin-inline: auto;
   background: transparent;
   box-shadow: none;
 }

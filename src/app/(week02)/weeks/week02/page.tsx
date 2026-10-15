@@ -36,7 +36,7 @@ export default function Page() {
         <Evidence />
       </main>
       <ArcadeFooter />
-      <SectionRail column={1120} items={RAIL} />
+      <SectionRail items={RAIL} />
       <ArcadeUnlock />
       <TermLayer />
     </>
