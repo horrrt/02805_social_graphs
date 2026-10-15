@@ -735,9 +735,9 @@ function typologyNote(key) {
   return type ? `${type.title}: ${type.what} ${GLOSSARY.Role}` : GLOSSARY.Role;
 }
 
-// The inspector's Role row. A country below the floor has no role rather than
-// a default one, and an unstable role says so where it is read, not only in
-// the methods.
+// The inspector's Role row: the role and the share of runs that agreed on it.
+// A country below the floor has no role rather than a default one, and an
+// unstable role says so in its note, not only in the methods.
 function roleRow() {
   const r = cartRow(state.selected);
   if (!r) {
@@ -752,8 +752,7 @@ function roleRow() {
   return row(
     "Role",
     `<span class="chip">${label(r.role)}</span>` +
-      `<span style="color:#7a8fac"> z ${r.z.toFixed(2)} \u00b7 P ${r.p.toFixed(2)}</span>` +
-      (shaky ? `<span style="color:#7a8fac"> \u00b7 ${Math.round(r.stability * 100)}% agreed</span>` : ""),
+      `<span style="color:#7a8fac"> ${Math.round(r.stability * 100)}% agreed</span>`,
     (shaky
       ? `Only ${Math.round(r.stability * 100)}% of the Louvain runs gave this role, so it sits on a ` +
         `threshold and the name is not reliable. `
