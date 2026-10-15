@@ -173,6 +173,12 @@ export default function Page() {
                   </a>
                 </li>
               </ul>
+              <p className="home-caps">Course</p>
+              <p>
+                DTU 02805 Social Graphs and Interactions, autumn 2026.
+                {" "}
+                <a href="https://sunelehmann.com/socialgraphs2026-web/index.html">Course website ↗</a>
+              </p>
             </div>
           </section>
         </div>

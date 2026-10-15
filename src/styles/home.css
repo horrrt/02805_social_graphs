@@ -299,6 +299,10 @@ a.week-card:hover {
   padding: 0;
 }
 
+.home .home-about .members + .home-caps {
+  margin-top: 28px;
+}
+
 .home .members img {
   border: 3px solid var(--card);
   border-radius: 50%;
