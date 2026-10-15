@@ -77,18 +77,6 @@ export function Place() {
           <PlaceOpenerStrip />
         </figure>
       </div>
-      <Drawers variant="foot">
-        <Drawer label="Background">
-          <p>
-            Louvain splits the 40 metros into twelve large hubs led by New York and Dallas, and the other 28 from Houston and Philadelphia down. The rewired networks keep each company's number of metros. The two questions below ask what the groups follow and where the network comes apart.
-          </p>
-        </Drawer>
-        <Drawer label="Method">
-          <p>
-            Two metros are linked when the same company files in both; the link weighs, summed over those companies, the smaller of the company's two filing counts.
-          </p>
-        </Drawer>
-      </Drawers>
       <div className="draft-banner" id="place-draft-banner" hidden>
         <b>Scaffold.</b>
         {" "}
@@ -417,6 +405,18 @@ export function Place() {
           </Drawer>
         </Drawers>
       </div>
+      <Drawers variant="foot">
+        <Drawer label="Background">
+          <p>
+            Louvain splits the 40 metros into twelve large hubs led by New York and Dallas, and the other 28 from Houston and Philadelphia down. The rewired networks keep each company's number of metros. The two questions below ask what the groups follow and where the network comes apart.
+          </p>
+        </Drawer>
+        <Drawer label="Method">
+          <p>
+            Two metros are linked when the same company files in both; the link weighs, summed over those companies, the smaller of the company's two filing counts.
+          </p>
+        </Drawer>
+      </Drawers>
     </section>
   );
 }

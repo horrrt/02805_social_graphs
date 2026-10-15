@@ -69,46 +69,6 @@ export function Footprint() {
           <QuestionPart part="footprintRegion" />
         </div>
       </div>
-      <Drawers variant="foot">
-        <Drawer label="Background">
-          <p>
-            A company that files everywhere links every pair of metros and jobs, so its footprint could be all the structure there is.
-          </p>
-          <p>
-            The five largest placing firms are Tata Consultancy Services, Cognizant, Infosys, HCL and Compunnel. The ten largest filers are Amazon, Cognizant, Google, Microsoft, EY, Meta, Deloitte, Apple, Tata Consultancy Services and Infosys.
-          </p>
-        </Drawer>
-        <Drawer label="Method">
-          <p>
-            We removed each set, reran 100
-            {" "}
-            <GlossTerm id="w4-term-footprint-louvain" word="Louvain">
-              A method that finds groups in a network by moving nodes between groups until the links inside groups are as dense as they can get.
-            </GlossTerm>
-            {" "}
-            runs on the metro network and on the job network (weighted here by filings, since a count of companies barely moves when ten of 59,196 leave), and compared the groups with the full network's. Removing less data changes the groups too, so each removal sits beside 50 random cuts of companies that remove the same share of filings.
-          </p>
-        </Drawer>
-        <Drawer label="More numbers">
-          <p>
-            The job clusters hold (
-            <GlossTerm id="w4-term-footprint-nmi" word="NMI">
-              Normalised mutual information: how much two groupings of the same items agree, from 0 (unrelated) to 1 (identical).
-            </GlossTerm>
-            {" "}
-            0.90 and 0.81) but shift more than random cuts of the same volume do.
-          </p>
-          <p>
-            Removing the five placing firms changes little: the groups stay close to the full network's (NMI 0.92, random cuts 0.85 ± 0.14), and the regional match rises only to 0.09, inside the range of random cuts (0.04 ± 0.05). Without the ten largest filers the clusters also sharpen, modularity rising from 0.27 to 0.30. Every version still beats its own rewired networks by a wide margin
-            {" "}
-            (<Z v="25" /> or more). Without the ten largest filers the regional match
-            {" "}
-            (AMI 0.13, <P v="0.013" />)
-            {" "}
-            sits 4.6 standard deviations above random cuts (0.01 ± 0.03). Random cuts leave the job clusters closer to the full network's (0.96 and 0.88, 2.9 and 4.3 standard deviations away), so the biggest firms do shape which jobs cluster together.
-          </p>
-        </Drawer>
-      </Drawers>
       {/* A · Which firm hides the regions? --------------------- */}
       <div className="card w4-card" id="footprint-which">
         <header className="w4-q">
@@ -168,6 +128,46 @@ export function Footprint() {
           </Drawer>
         </Drawers>
       </div>
+      <Drawers variant="foot">
+        <Drawer label="Background">
+          <p>
+            A company that files everywhere links every pair of metros and jobs, so its footprint could be all the structure there is.
+          </p>
+          <p>
+            The five largest placing firms are Tata Consultancy Services, Cognizant, Infosys, HCL and Compunnel. The ten largest filers are Amazon, Cognizant, Google, Microsoft, EY, Meta, Deloitte, Apple, Tata Consultancy Services and Infosys.
+          </p>
+        </Drawer>
+        <Drawer label="Method">
+          <p>
+            We removed each set, reran 100
+            {" "}
+            <GlossTerm id="w4-term-footprint-louvain" word="Louvain">
+              A method that finds groups in a network by moving nodes between groups until the links inside groups are as dense as they can get.
+            </GlossTerm>
+            {" "}
+            runs on the metro network and on the job network (weighted here by filings, since a count of companies barely moves when ten of 59,196 leave), and compared the groups with the full network's. Removing less data changes the groups too, so each removal sits beside 50 random cuts of companies that remove the same share of filings.
+          </p>
+        </Drawer>
+        <Drawer label="More numbers">
+          <p>
+            The job clusters hold (
+            <GlossTerm id="w4-term-footprint-nmi" word="NMI">
+              Normalised mutual information: how much two groupings of the same items agree, from 0 (unrelated) to 1 (identical).
+            </GlossTerm>
+            {" "}
+            0.90 and 0.81) but shift more than random cuts of the same volume do.
+          </p>
+          <p>
+            Removing the five placing firms changes little: the groups stay close to the full network's (NMI 0.92, random cuts 0.85 ± 0.14), and the regional match rises only to 0.09, inside the range of random cuts (0.04 ± 0.05). Without the ten largest filers the clusters also sharpen, modularity rising from 0.27 to 0.30. Every version still beats its own rewired networks by a wide margin
+            {" "}
+            (<Z v="25" /> or more). Without the ten largest filers the regional match
+            {" "}
+            (AMI 0.13, <P v="0.013" />)
+            {" "}
+            sits 4.6 standard deviations above random cuts (0.01 ± 0.03). Random cuts leave the job clusters closer to the full network's (0.96 and 0.88, 2.9 and 4.3 standard deviations away), so the biggest firms do shape which jobs cluster together.
+          </p>
+        </Drawer>
+      </Drawers>
     </section>
   );
 }
