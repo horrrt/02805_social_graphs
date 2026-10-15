@@ -519,9 +519,7 @@ dialog::backdrop {
   font-size: var(--fs-numeral);
   line-height: 1;
   color: var(--accent);
-  display: flex;
-  justify-content: center;
-  padding: 12px 0;
+  padding: 0;
   letter-spacing: -0.04em;
   background: repeating-linear-gradient(
     135deg,
@@ -529,6 +527,14 @@ dialog::backdrop {
     #ffffff06 10px 11px
   );
   margin: 12px 0;
+}
+/* The portrait fills the card's width, so its edges line up with the
+   card number, the name and the stat rows. */
+.hero-card .card-monogram .kit-portrait {
+  display: grid;
+  width: 100%;
+  height: 132px;
+  border-radius: 10px;
 }
 .hero-card h3 {
   font-family: var(--font-sans);
