@@ -63,8 +63,8 @@ export const WEEKS = [
   },
   {
     n: 5,
-    courseTitle: "NLP I",
-    short: "NLP I",
+    courseTitle: "Counting words",
+    short: "COUNTING WORDS",
     date: "2026-09-30",
     status: "live",
     cabinet: {
@@ -76,8 +76,8 @@ export const WEEKS = [
   },
   {
     n: 6,
-    courseTitle: "NLP II",
-    short: "NLP II",
+    courseTitle: "What words mean",
+    short: "WORD MEANING",
     date: "2026-10-07",
     status: "live",
     cabinet: {

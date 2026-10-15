@@ -61,8 +61,8 @@ const COURSE = [
   [2, "Models & null models", "2026-09-09"],
   [3, "Who matters, and why", "2026-09-16"],
   [4, "Communities & backbones", "2026-09-23"],
-  [5, "NLP I", "2026-09-30"],
-  [6, "NLP II", "2026-10-07"],
+  [5, "Counting words", "2026-09-30"],
+  [6, "What words mean", "2026-10-07"],
   [7, "NLP III", "2026-10-21"],
   [8, "Networks × language", "2026-10-28"],
 ];
