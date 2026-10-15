@@ -29,8 +29,8 @@ import "@/styles/corridor.css";
 import "@/styles/post.css";
 
 export const metadata: Metadata = {
-  title: "Post template · Log–Log Legends",
-  description: "Template for a Log–Log Legends post: copy it to start a new week.",
+  title: "Post template · Log-Log Legends",
+  description: "Template for a Log-Log Legends post: copy it to start a new week.",
   robots: "noindex",
 };
 

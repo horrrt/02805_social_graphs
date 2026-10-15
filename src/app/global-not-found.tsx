@@ -9,7 +9,7 @@ import { PostTopbar } from "@/components/site/PostTopbar";
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 export const metadata: Metadata = {
-  title: "Page not found · Log–Log Legends",
+  title: "Page not found · Log-Log Legends",
   robots: "noindex",
 };
 

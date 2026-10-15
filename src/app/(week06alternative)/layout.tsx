@@ -9,8 +9,8 @@ import "@/styles/post.css";
 
 const PAGE = {
   path: "weeks/week06/alternative/",
-  title: "Why do two Marvel pages read alike? · Log–Log Legends",
-  description: "Why do two Marvel pages read alike: names, stories or Wikipedia's template? TF-IDF on the 303 Marvel pages, with and without names. Week 6, Log–Log Legends.",
+  title: "Why do two Marvel pages read alike? · Log-Log Legends",
+  description: "Why do two Marvel pages read alike: names, stories or Wikipedia's template? TF-IDF on the 303 Marvel pages, with and without names. Week 6, Log-Log Legends.",
 };
 
 export const metadata: Metadata = pageMeta(PAGE);

@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import "@/styles/type.css";
 
 export const metadata: Metadata = {
-  title: "Screen Test · Log–Log Legends",
+  title: "Screen Test · Log-Log Legends",
   description: "Three network models audition to explain the Marvel Wikipedia network, then a degree-preserving shuffle replaces casting with a statistical test. The Week 2 post's companion piece.",
 };
 

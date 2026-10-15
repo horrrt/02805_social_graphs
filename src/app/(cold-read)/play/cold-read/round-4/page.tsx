@@ -6,7 +6,7 @@ import { Tezguino } from "@/features/cold-read/Tezguino";
 // The rows come from analysis/week06_tezguino.py; the rules are in
 // src/features/cold-read/contexts.ts.
 export const metadata: Metadata = {
-  title: "Tezgüino · Cold Read · Log–Log Legends",
+  title: "Tezgüino · Cold Read · Log-Log Legends",
   description: "A word from the Marvel pages is hidden; you see only the words found near it. Buy wider windows, PPMI weights or a sentence peek, then name it. A game about context and PPMI, Week 6.",
   robots: "noindex",
 };

@@ -16,7 +16,7 @@ export function Footer() {
         {" "}
         <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0 license</a>
         .
-        Log–Log Legends has modified all or some of this information. USDOL/ETA has
+        Log-Log Legends has modified all or some of this information. USDOL/ETA has
         not approved, endorsed, or tested these modifications.
       </span>
       {" "}

@@ -3,7 +3,7 @@
 // To open a week: set status to "live", add its cabinet, and update the
 // "exactly weeks … are live" assertion in tests/site.test.mjs.
 export const GROUP = {
-  name: "Log–Log Legends",
+  name: "Log-Log Legends",
   members: ["Àngela Buxó", "Gyula Kürthy", "Niklas Johansen"],
   course: "02805 · Social graphs and interactions · Fall 2026",
 };

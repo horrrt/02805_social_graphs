@@ -6,7 +6,7 @@ import { LEVELS } from "@/features/cold-read/levels";
 // carries the Clue Shop's hard mode to its page as ?hard=1, so the menu needs
 // no script.
 export const metadata: Metadata = {
-  title: "Practice · Cold Read · Log–Log Legends",
+  title: "Practice · Cold Read · Log-Log Legends",
   description: "Play any of Cold Read's five rounds on its own: TF-IDF, comparing groups, topic models, context and PPMI, word vectors.",
   robots: "noindex",
 };

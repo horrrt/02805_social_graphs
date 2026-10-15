@@ -15,7 +15,7 @@ export default function Page() {
       <main id="main">
         <PostHero
           id="top"
-          eyebrow="Log–Log Legends"
+          eyebrow="Log-Log Legends"
           title="Toolbox"
           gridClass="tb-hero-grid"
           body={

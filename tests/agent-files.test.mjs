@@ -38,7 +38,7 @@ test("every live page has a Markdown copy with its text and footer credits", () 
 
 test("llms.txt follows llmstxt.org and lists every live post", () => {
   const llms = read("llms.txt");
-  assert.match(llms, /^# Log–Log Legends\n\n> .+\n/, "an H1, then a blockquote summary");
+  assert.match(llms, /^# Log-Log Legends\n\n> .+\n/, "an H1, then a blockquote summary");
   for (const section of ["## Posts", "## Data", "## Optional"]) assert.ok(llms.includes(section), section);
   for (const path of PAGES) assert.ok(llms.includes(`(${SITE_URL + path}index.md)`), `llms.txt lists ${path || "the lobby"}`);
   for (const [, url] of llms.matchAll(/\]\((https:[^)]+)\)/g)) {

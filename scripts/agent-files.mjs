@@ -117,9 +117,9 @@ for (const page of pages) writeFileSync(join(OUT, page.path, "index.md"), markdo
 
 const lobby = pages[0];
 const posts = pages.slice(1);
-const entry = (page) => `- [${page.label}: ${page.title.replace(/ · Log–Log Legends$/, "")}](${SITE_URL + page.path}index.md): ${page.description}`;
+const entry = (page) => `- [${page.label}: ${page.title.replace(/ · Log-Log Legends$/, "")}](${SITE_URL + page.path}index.md): ${page.description}`;
 const llms = [
-  "# Log–Log Legends",
+  "# Log-Log Legends",
   `> ${lobby.description}`,
   [
     `A course website for ${GROUP.course} at DTU, by ${GROUP.members.join(", ")}.`,
