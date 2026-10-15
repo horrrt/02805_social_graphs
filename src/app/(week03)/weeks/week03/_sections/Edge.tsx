@@ -5,12 +5,14 @@ export function Edge() {
     <>
       {/* 7 ----------------------------------------------------------- */}
       <section className="step" id="edge">
-        <div className="card">
-          <div className="step-head">
-            <span className="num">6</span>
+        <header className="w4-opener">
+          <span aria-hidden="true" className="w4-opener-num">6</span>
+          <div>
             <h2>Edge inspector</h2>
-            <span className="year-tag">(one link at a time)</span>
+            <p className="w3-scope">(one link at a time)</p>
           </div>
+        </header>
+        <div className="card w4-card">
           <EdgeInspector />
         </div>
       </section>

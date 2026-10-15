@@ -423,12 +423,6 @@
   grid-template-columns: 1fr 1fr;
 }
 
-/* Section 2: stack the two heavy-tail charts so each is wide enough to click. */
-.corridor #tails .grid2 {
-  grid-template-columns: 1fr;
-  gap: 28px;
-}
-
 .corridor .grid-side {
   display: grid;
   gap: 18px;
@@ -1468,7 +1462,7 @@ body > .chart-tip[hidden] {
 
 /* --- the country picker in section 8's heading ---------------------- */
 
-.corridor .step-head #dk-country {
+.corridor .w3-opener-pick #dk-country {
   border-radius: 8px;
   font-size: var(--fs-small);
   font-weight: 600;

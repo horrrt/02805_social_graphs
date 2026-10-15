@@ -9,18 +9,19 @@ export function Typology() {
     <>
       {/* 6 ----------------------------------------------------------- */}
       <section className="step" id="typology">
-        <div className="card">
-          <div className="step-head">
-            <span className="num">5</span>
+        <header className="w4-opener">
+          <span aria-hidden="true" className="w4-opener-num">5</span>
+          <div>
             <h2>Roles inside the communities</h2>
-            <Slot view="typology-tag" as="span" id="typology-tag" className="year-tag" />
-          </div>
-          <p className="sub">
-            <b>
+            <p>
               42 countries changed the part they play between 1990 and
               2024.
-            </b>
-            {" "}
+            </p>
+            <Slot view="typology-tag" as="p" id="typology-tag" className="w3-scope" />
+          </div>
+        </header>
+        <div className="card w4-card">
+          <p className="sub">
             Venezuela moved from
             {" "}
             <Gloss id="w3-term-peripheral" word="peripheral" />
@@ -89,11 +90,9 @@ export function Typology() {
             {" "}
             <Slot view="typology-note" as="span" id="typology-note" />
           </div>
-          <details className="qa" id="typology-method">
-            <summary>
-              <span className="qa-cue">How steady the roles are, and what they replaced</span>
-            </summary>
-            <div className="qa-body">
+          <details className="rx-drawer" id="typology-method">
+            <summary>How steady the roles are, and what they replaced</summary>
+            <div className="rx-drawer-body">
               <p className="sub">
                 This replaces six labels of our own that compared a 2020
                 migration ranking against a flight snapshot last refreshed around

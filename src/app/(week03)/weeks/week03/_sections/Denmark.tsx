@@ -7,18 +7,19 @@ export function Denmark() {
     <>
       {/* 8 ----------------------------------------------------------- */}
       <section className="step" id="denmark">
-        <div className="card">
-          <div className="step-head">
-            <span className="num">7</span>
+        <header className="w4-opener w3-opener-pick">
+          <span aria-hidden="true" className="w4-opener-num">7</span>
+          <div>
             <h2>
               Let's analyse
               {" "}
               <Slot view="dk-name" as="span" className="dk-name" initial="Denmark" />
             </h2>
-            <span className="year-tag">(2020 only · the null-model year)</span>
-            {" "}
-            <DkPicker />
+            <p className="w3-scope">(2020 only · the null-model year)</p>
           </div>
+          <DkPicker />
+        </header>
+        <div className="card w4-card">
           <p className="sub">
             Denmark is where this starts because it is where we are, but the
             dropdown takes any of the 238 countries and territories in the
@@ -36,7 +37,7 @@ export function Denmark() {
                 , in and out
               </h3>
               <p className="axis-note">Migrant stock, 2020</p>
-              <div className="grid2" style={{"gap":"10px"}}>
+              <div className="w3-stack">
                 <EgoTable id="dk-in" lead="Into" />
                 <EgoTable id="dk-out" lead="Out of" />
               </div>
@@ -66,7 +67,7 @@ export function Denmark() {
               <Chart id="dk-time" width="440" height="330" label="Chart: Denmark through time" />
             </div>
           </div>
-          <div className="grid2" style={{"marginTop":"18px"}}>
+          <div className="grid2">
             <div className="plot">
               <h3>C. Bridge rank, 1990–2024</h3>
               <p className="axis-note">

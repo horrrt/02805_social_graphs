@@ -8,12 +8,14 @@ export function Bridge() {
     <>
       {/* 3 ----------------------------------------------------------- */}
       <section className="step" id="bridge">
-        <div className="card">
-          <div className="step-head">
-            <span className="num">3</span>
+        <header className="w4-opener">
+          <span aria-hidden="true" className="w4-opener-num">3</span>
+          <div>
             <h2>Popular ≠ bridge. Big ≠ prestigious.</h2>
-            <span className="year-tag">(2020 only · the null-model year)</span>
+            <p className="w3-scope">(2020 only · the null-model year)</p>
           </div>
+        </header>
+        <div className="card w4-card">
           <div className="grid-side">
             <div className="plot">
               <h3>Betweenness vs origins (in-degree), log–log</h3>
@@ -84,7 +86,7 @@ export function Bridge() {
               </div>
             </aside>
           </div>
-          <div className="grid-side" style={{"marginTop":"22px"}}>
+          <div className="grid-side">
             <div className="plot">
               <h3>Big ≠ prestigious: rank by people, rank by PageRank</h3>
               <p className="axis-note">

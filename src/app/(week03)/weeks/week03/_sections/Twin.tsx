@@ -9,21 +9,24 @@ export function Twin() {
     <>
       {/* 4–5 --------------------------------------------------------- */}
       <section className="step" id="twin">
-        <div className="card">
-          <div className="step-head">
-            <span className="num">4</span>
+        <header className="w4-opener">
+          <span aria-hidden="true" className="w4-opener-num">4</span>
+          <div>
             <h2 id="null">Compared to what?</h2>
-            <Slot view="null-tag" as="span" id="null-tag" className="year-tag" initial="(null model)" />
-            {" "}
-            <Slot view="twin-tag" as="span" id="twin-tag" className="year-tag" initial="(analysis year: 2020)" />
-          </div>
-          <p className="sub">
-            <b>
+            <p>
               10 countries out of 232 broker more than their number of
               partners predicts when the corridor sizes are dealt out at
               random.
-            </b>
-            {" "}
+            </p>
+            <p className="w3-scope">
+              <Slot view="null-tag" as="span" id="null-tag" initial="(null model)" />
+              {" "}
+              <Slot view="twin-tag" as="span" id="twin-tag" initial="(analysis year: 2020)" />
+            </p>
+          </div>
+        </header>
+        <div className="card w4-card">
+          <p className="sub">
             That takes both a
             {" "}
             <Gloss id="w3-term-z-score" word="z" />
@@ -103,11 +106,9 @@ export function Twin() {
               </aside>
             </div>
           </div>
-          <details className="qa" id="twin-method">
-            <summary>
-              <span className="qa-cue">Reading the map, and flights as a proxy for people</span>
-            </summary>
-            <div className="qa-body">
+          <details className="rx-drawer" id="twin-method">
+            <summary>Reading the map, and flights as a proxy for people</summary>
+            <div className="rx-drawer-body">
               <p className="fineprint" style={{"border":"0","padding":"0"}}>
                 Migration shows where people live. Flights show where you can
                 go. Use the toggle to compare them, and click a country to

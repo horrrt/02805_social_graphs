@@ -3531,3 +3531,15 @@
 .corridor .w6e-lv-topic { color: var(--people-text); font-size: var(--fs-small); font-weight: 700; margin: 0 0 8px; }
 .corridor .w6e-lv-blurb { color: var(--ink-soft); font-size: var(--fs-small); line-height: 1.45; margin: 0 0 10px; }
 .corridor .w6e-game-rules { color: var(--ink-soft); font-size: var(--fs-small); margin: 0; }
+
+/* ==== Week 3 in Week 4's frame (the globe hero, section openers, drawers) ==== */
+/* The globe takes the hero's middle column; the inspector keeps Week 3's width. */
+.corridor .w3-hero-grid { align-items: start; grid-template-columns: 280px minmax(0, 1fr) 270px; }
+.corridor .w3-hero .lede { margin: 0; }
+.corridor .w3-hero .w4-hero-text .keys { margin: 0; }
+/* The scope a section's figures cover, under its title rather than beside it. */
+.corridor .w4-opener p.w3-scope { color: var(--ink-mute-text); font-size: var(--fs-small); font-weight: 600; margin-top: 6px; }
+.corridor .w3-opener-pick > div { flex: 1 1 auto; }
+.corridor .w3-stack { display: flex; flex-direction: column; gap: 14px; }
+/* Seven role cards: four and three, never one left alone in its row. */
+.corridor #typology-cards { grid-template-columns: repeat(4, 1fr); }
