@@ -179,30 +179,46 @@ previews are rebuilt locally and published the same way; see the next section.
    photographed to `ds-bundle/_screenshots/review/` so you can look before publishing). It restores the converter
    into `.ds-sync/` from `~/.cache/log-log-ds-sync` when missing, clones `node_modules` from another worktree with
    `cp -cR` when missing, runs `pkg/build.sh` and `package-build.mjs` into `ds-bundle/`, then `stage-kit.mjs`.
-2. `stage-kit.mjs` maps `ds-bundle/` onto the kit's layout, compares each file's sha256 with
-   `kit-published.json` (what was last published), and copies only changed or new files to `ds-stage/project/`.
+2. `stage-kit.mjs` turns `ds-bundle/` into the kit's files with `kit-layout.mjs`, compares each file's sha256
+   with `kit-published.json` (what was last published), and copies only changed or new files to
+   `ds-stage/project/`.
 3. Read the kit's `project/design-system.json` again, copy it to `ds-stage/project/`, set only `lastChange`
-   (`by` Gyula, `via` Claude Code, `at` now, a note) and keep every other key, `editing` and `source` included.
+   (`by` Gyula, `via` Claude Code, `at` now, a note) and keep every other key.
 4. Publish in one Artifact call: `url` the kit, `root` = absolute path of `ds-stage`, `file_path` = the index,
-   `files` = every staged path mapped to itself. `.d.ts`, `.jsx` and `.html` files need
-   `{"from": path, "contentType": "text/plain"}` (the artifact serves no `.ts`/`.jsx`, and the kit stores its
-   cards as text). At most 255 paths a call; if more, send the index in the last call only.
+   `files` = every staged path mapped to itself. `.d.ts` files need `{"from": path, "contentType": "text/plain"}`
+   (the artifact serves no `.ts`). At most 255 paths a call; if more, send the index in the last call only.
 5. After the publish succeeds, run `node .design-sync/stage-kit.mjs --record` and commit `kit-published.json`.
 
-The kit's layout, as the 12 Oct migration left it: the 39 components the old Claude Design manifest listed sit
-whole in `project/components/<group>/<Name>/`; the 53 added later keep their `.jsx` there and their `.d.ts`,
-`.html` and `.prompt.md` in `project/docs/components/<group>/<Name>/`, where a card's `../../../` links miss the
-bundle. Components new to the kit (Portrait, PortraitStack, Face on 15 Oct) go whole under `project/components/`.
-`README.md` is not staged: the kit's copy carries the page's card index; edit it there. The kit page reads none
-of these cards yet (`editing: "off"`, migration map marks them `unread`); they open as files, and Design and
-Slides artifacts read the bundle, docs and README. Moving them to the type's `components/<Name>/preview.html`
-layout is the page's "Finish the migration" clean-up, which waits for Gyula.
+The kit's layout since the 15 Oct "Finish the migration" clean-up is the Design System type's own
+(`kit-layout.mjs` header has the mapping):
+
+- `components/bundle.js` is `_ds_bundle.js` as built. `components/lib/react.js` and `react-dom.js` carry React
+  19.3.0 (react.js sets `ReactDOM` too; react-dom.js is a stub), named in the index's `libraries`.
+- `components/bundle.css` is KaTeX's `@font-face` rules from `fonts/fonts.css` plus `_ds_bundle.css`, minus what
+  `tokens.json` declares outside `.corridor`: the `--font-sans/display/mono` stacks and Cold Read's repeated
+  `:root` colours. `tokens.css` (loaded first) is their only source, so an edit on the kit page shows.
+- `components/<Name>/preview.html` inlines `_preview/<Name>.js` and the old card's mount script; the page
+  preloads tokens.css, bundle.css, the libraries and bundle.js. Line 1 is the `@dsCard` marker with the
+  converter's group; `single` cards take their viewport from `config.json` overrides.
+- `components/<Name>/README.md` is `<Name>.prompt.md`, `<Name>.d.ts` as built, and `components/index.d.ts`
+  joins every `.d.ts`.
+- Edited in the kit only, never staged: `README.md`, `tokens.json`, `tokens.css` (the page regenerates it on
+  save), `components/Cover/preview.html` and the guidelines.
+- `archived/` holds the migrated layout (old cards, `.jsx` stubs, `_preview/`, `_ds_bundle.css`, `styles.css`,
+  `fonts/fonts.css`, `_ds_manifest.json`); delete it only when Gyula asks.
+
+Colours in `tokens.json` are the corridor's, but components read them from `.corridor` on `<body>` (set by
+`CorridorRoot`), so a colour edited on the kit page does not reach the previews; type families do.
+
+Before publishing changed previews, render them as the page does: serve `ds-stage/project` (with `tokens.css`
+and `fonts/` copied in) and load each preview after `tokens.css`, `components/bundle.css`, the libraries and
+`components/bundle.js`. On 15 Oct all 96 (with the Cover) rendered with no console errors.
 
 The converter (`.ds-sync/`: package-build.mjs, package-capture.mjs, lib/, its own node_modules with esbuild,
 ts-morph and playwright 1.62.1) is not in the repo and Claude Design no longer hands it out. The copy in
 `~/.cache/log-log-ds-sync` came from the `design-sync-6139d9` worktree on 15 Oct; keep it. `kit-published.json`
-was seeded on 15 Oct from file sizes against the kit (the 26 files that differed were the ones whose sources
-changed since the 12 Oct migration), then rewritten from the published build.
+was rewritten after the clean-up from the 290 files `kit-layout.mjs` produced, each byte-identical to what was
+published.
 
 `env.ts` also points root-relative portrait images (`/02805_social_graphs/play/cold-read/portraits/...`, as
 `portrait()` returns them) at the live site, so Portrait cards and the portraits in the Week 6 cards draw outside
