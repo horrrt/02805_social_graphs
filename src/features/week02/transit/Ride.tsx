@@ -6,6 +6,7 @@
 // challenge() again. Each stop opens a line about its article. Paths come from
 // ride.mjs journey(), calculated on the frozen graph, not scripted.
 import { useMemo } from "react";
+import Portrait from "@/kit/Portrait";
 import { island, useIslandReady } from "@/lib/island";
 import { useStore } from "@/lib/useStore";
 import { JOURNEYS, journey } from "@/scripts/ride.mjs";
@@ -130,7 +131,10 @@ function Stops({ model, path, station, closed, broken = false }: { model: Model;
                 )
               }
             >
-              {label(id)}
+              <span className="kit-named">
+                <Portrait page={n.name} />
+                {label(id)}
+              </span>
             </button>
           </li>
         );

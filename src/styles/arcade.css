@@ -519,7 +519,9 @@ dialog::backdrop {
   font-size: var(--fs-numeral);
   line-height: 1;
   color: var(--accent);
-  padding: 22px 0;
+  display: flex;
+  justify-content: center;
+  padding: 12px 0;
   letter-spacing: -0.04em;
   background: repeating-linear-gradient(
     135deg,

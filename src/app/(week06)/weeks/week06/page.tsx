@@ -4,6 +4,7 @@ import { SectionOpener } from "@/components/post/SectionOpener";
 import { TermLayer } from "@/components/post/TermLayer";
 import { PostTopbar } from "@/components/site/PostTopbar";
 import { SiteFooter } from "@/components/site/SiteFooter";
+import { PortraitCredit } from "@/components/site/PortraitCredit";
 import { SkipLink } from "@/components/site/SkipLink";
 import { Game } from "./_sections/Game";
 import { Contexts, Contrast, Cosine, Glove, Pmi, Topics, Vectors, Weights } from "./_sections/Sections";
@@ -259,6 +260,7 @@ export default function Page() {
           . Every number comes from analysis/week06_essentials.py. An AI coding assistant (Claude) wrote the analysis
           and the page and drafted the text, and tests/week06-essentials.test.mjs checks every quoted number against the
           data files.
+          <PortraitCredit />
         </span>
       </SiteFooter>
       <TermLayer />

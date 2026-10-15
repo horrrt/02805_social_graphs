@@ -6,6 +6,7 @@
 // select alone plans nothing. Breadth-first search over the directed or
 // undirected roster, without the closed station.
 import { useEffect, useMemo, useState } from "react";
+import Portrait from "@/kit/Portrait";
 import { island, useIslandReady } from "@/lib/island";
 import { useStore } from "@/lib/useStore";
 import { bfs, graph } from "@/scripts/arcade-core.mjs";
@@ -144,7 +145,10 @@ function PlannerView() {
       <ol className="route-strip" id="route-strip">
         {path?.map((id, i) => (
           <li key={i}>
-            {model.name(id)}
+            <span className="kit-named">
+              <Portrait page={model.byId.get(id)!.name} />
+              {model.name(id)}
+            </span>
             <small>{i === 0 ? "Start" : i === path.length - 1 ? "Arrive" : "Hop " + i}</small>
           </li>
         ))}

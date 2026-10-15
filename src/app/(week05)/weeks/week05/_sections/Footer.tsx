@@ -1,4 +1,5 @@
 import { SiteFooter } from "@/components/site/SiteFooter";
+import { PortraitCredit } from "@/components/site/PortraitCredit";
 
 // Footer: the Wikipedia credit the pages' licence asks for.
 export function Footer() {
@@ -10,6 +11,7 @@ export function Footer() {
         <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>
         ,
         through the 02805 course snapshot of 26 August 2026.
+        <PortraitCredit />
       </span>
     </SiteFooter>
   );

@@ -1,8 +1,9 @@
 // One typographic hero card, as cards.js card() built it on main: the card
 // number and component (or ARTICLE in the pack tray), a NEW stamp for a first
-// copy, the monogram, the linked name and its link counts, and how many the
+// copy, the portrait (initials when no source has one), the linked name and its link counts, and how many the
 // reader holds when the index shows it.
 import type { Graph } from "@/features/arcade/data";
+import Portrait from "@/kit/Portrait";
 import { shortName } from "@/scripts/cabinet.js";
 
 type Node = Graph["nodes"][number];
@@ -12,17 +13,12 @@ const simpleLabels = { kin: "Mentioned by", kout: "Links to" } as const;
 
 export function Card({ node, index = 0, count, fresh = false, simple = false }: { node: Node; index?: number; count?: number; fresh?: boolean; simple?: boolean }) {
   const name = shortName(node) as string;
-  const initials = name
-    .split(/[\s-]+/)
-    .slice(0, 2)
-    .map((s) => s[0])
-    .join("");
   return (
     <article className={`hero-card${count === 0 ? " uncollected" : ""}`}>
       <div className="card-id">{`#${String(index + 1).padStart(3, "0")} / ${simple ? "ARTICLE" : node.component.toUpperCase()}`}</div>
       {fresh ? <span className="new-stamp">NEW</span> : null}
       <div className="card-monogram" aria-hidden="true">
-        {initials}
+        <Portrait page={node.name} size="l" shape="tile" />
       </div>
       <h3>
         <a href={node.url} target="_blank" rel="noopener">

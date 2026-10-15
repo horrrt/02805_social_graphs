@@ -147,6 +147,35 @@ returns the element.
 <td>{wikiLink("Storm_(Marvel_Comics)")}</td>
 ```
 
+### Portrait({ page, size, shape, optional })
+
+A Marvel character's round portrait, from the copies Cold Read downloads, or the initials of the name when
+no source has one. `page` is the full title or the page id; a name with its bracket stripped finds nothing.
+`size` is `xs` (20 px), `s` (28 px, the default), `m` (44 px) or `l` (96 px). `shape` is `round` (the default,
+for rows and lists) or `tile` (a rounded square, for a card). `optional` draws nothing
+instead of initials, for a caller whose pages may not be characters.
+
+```tsx
+<li className="kit-named"><Portrait page="Storm (Marvel Comics)" />Storm</li>
+```
+
+### PortraitStack({ pages, max, size })
+
+Up to `max` (5) faces overlapping, then `+n` for the rest, for a sentence that names several characters.
+
+```tsx
+<PortraitStack pages={stranded} />
+```
+
+### Face({ name })
+
+The bare portrait `<img>`, or the initials in a `<span>`, for a frame the caller styles itself, as Cold Read's
+`.cr-face` does.
+
+```tsx
+<span className="cr-face" data-size="m"><Face name="Hulk" /></span>
+```
+
 ### TermText({ text, phrase, definition, id })
 
 Script-built text with one glossary term, as `termify()` places it: the first `phrase` in `text` becomes a

@@ -4,7 +4,7 @@
 // have produced it. Rules live in topics.ts; this file renders them.
 import { useEffect, useRef, useState } from "react";
 import { BestBox, NextButton, ScoreBox, SkipLevel, Stat, useBest } from "./LevelParts";
-import { Face } from "./Face";
+import { Face } from "@/kit/Portrait";
 import { LIMIT, speed, Ticker, timed, useCountdown, Worth } from "./pace";
 import { mixDeskTour } from "./tours";
 import { StartButtons, useTour } from "./Tutorial";

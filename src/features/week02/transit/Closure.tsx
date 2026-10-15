@@ -8,6 +8,7 @@
 // reopens it but keeps the panel with a restored headline.
 import { useEffect, useMemo, useRef } from "react";
 import { Prediction } from "@/features/arcade/Prediction";
+import { PortraitStack } from "@/kit/Portrait";
 import { island, useIslandReady } from "@/lib/island";
 import { useStore } from "@/lib/useStore";
 import { outcome } from "@/scripts/arcade-core.mjs";
@@ -208,7 +209,8 @@ function panelFor(model: Model, entryId: string, actual: Outcome, restored: bool
     : `${actual.largest.length} / ${actual.remaining} remaining articles can still reach each other. ${entry.degree} links to neighbouring articles before removal. ${actual.groups.length - 1} separated ${actual.groups.length === 2 ? "group" : "groups"}.`;
   const stranded = restored ? null : observed ? (
     <p>
-      <b>Cut off from the largest group:</b> {`${actual.stranded.map((id) => name(id)).join(", ")}.`}
+      <b>Cut off from the largest group:</b> <PortraitStack pages={actual.stranded.map((id) => model.byId.get(id)!.name)} />{" "}
+      {`${actual.stranded.map((id) => name(id)).join(", ")}.`}
     </p>
   ) : (
     <p>Every remaining article still has a route to every other. The other links provide alternative routes.</p>

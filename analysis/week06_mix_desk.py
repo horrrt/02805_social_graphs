@@ -34,7 +34,7 @@ import week05_text as t  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 # The deck keeps to pages with a Wikipedia lead image, as it was first built; the game draws the
-# portrait itself (src/features/cold-read/portraits.ts).
+# portrait itself (src/kit/portraits.ts).
 IMAGES = Path(__file__).with_name("week06_cold_read_images.json")
 OUT = ROOT / "public/play/cold-read/data/mix_desk.json"
 K, SEED, TOP_WORDS, PAGE_WORDS = 8, 0, 10, 30

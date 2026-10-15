@@ -1,5 +1,5 @@
-// Character portraits, served from the site itself (public/play/cold-read/portraits/,
-// written by analysis/week06_portraits.py). PORTRAIT_ORDER is the toggle: the game
+// Marvel character portraits, served from the site itself (public/play/cold-read/portraits/,
+// written by analysis/week06_portraits.py). PORTRAIT_ORDER is the toggle: the site
 // shows the first source that has a page, and initials when none does.
 import { asset } from "@/scripts/site.js";
 import { PORTRAIT_SOURCES } from "./portraits.generated";
@@ -25,8 +25,12 @@ export function portraitSource(title: string, order: readonly PortraitSource[] =
   return order.find((source) => has[source].has(title)) ?? null;
 }
 
-/** The URL of a page's portrait, or null when it shows initials. */
+/** The root-relative URL of a page's portrait, or null when it shows initials. Root-relative, not
+ *  asset()'s absolute href: a server-rendered section has no page origin, and hydration keeps the
+ *  server's src. */
 export function portrait(title: string, order: readonly PortraitSource[] = PORTRAIT_ORDER): string | null {
   const source = portraitSource(title, order);
-  return source ? asset(`play/cold-read/portraits/${source}/${portraitSlug(title)}.webp`).href : null;
+  if (!source) return null;
+  const url = asset(`play/cold-read/portraits/${source}/${portraitSlug(title)}.webp`);
+  return url.pathname + url.search;
 }

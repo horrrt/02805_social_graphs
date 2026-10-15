@@ -1,4 +1,5 @@
 import { SiteFooter } from "@/components/site/SiteFooter";
+import { PortraitCredit } from "@/components/site/PortraitCredit";
 
 // Footer: the credits the pages' and Wikidata's licences ask for.
 export function Footer() {
@@ -16,6 +17,7 @@ export function Footer() {
         {" "}
         <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0</a>
         , fetched 6 October 2026.
+        <PortraitCredit />
       </span>
     </SiteFooter>
   );

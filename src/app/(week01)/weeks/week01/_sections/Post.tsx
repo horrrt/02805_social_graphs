@@ -1,3 +1,4 @@
+import Portrait from "@/kit/Portrait";
 import { Gloss } from "@/components/post/Gloss";
 import { Comparison } from "@/features/week01/odds/Comparison";
 import { EqualOdds, OurOdds, SeenFormula } from "./Formulas";
@@ -59,11 +60,17 @@ export function Post() {
         <figure className="beginner-comparison">
           <figcaption>How often can each card appear?</figcaption>
           <div>
-            <strong>Spider-Man</strong>
+            <strong className="kit-named">
+              <Portrait page="Spider-Man" size="m" />
+              Spider-Man
+            </strong>
             <span>107 chances out of 2,087 on each draw</span>
           </div>
           <div>
-            <strong>Baymax</strong>
+            <strong className="kit-named">
+              <Portrait page="Baymax" size="m" />
+              Baymax
+            </strong>
             <span>1 chance out of 2,087 on each draw</span>
           </div>
           <p className="fine">
