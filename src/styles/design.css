@@ -911,6 +911,59 @@
   font-weight: 600;
   margin-top: 10px;
 }
+/* Week 2's primer is wider and lays its four terms out two by two, so the
+   card no longer stands twice the height of the copy beside it. Each term
+   wears a station dot, the mark the transit map and section rail use. */
+.theme-transit.visual-design.guided-post .story-hero {
+  align-items: center;
+  grid-template-columns: minmax(0, 1fr) 500px;
+  gap: 56px;
+  padding: 56px 0 64px;
+}
+.theme-transit.visual-design .story-hero .w2-primer {
+  padding: 22px 24px 20px;
+}
+.theme-transit.visual-design .w2-primer > p {
+  color: #0b1f3a;
+  margin: 0;
+}
+.theme-transit.visual-design .w2-primer dl {
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 14px 24px;
+  grid-template-columns: 1fr 1fr;
+  margin: 14px 0 0;
+  padding-top: 14px;
+}
+.theme-transit.visual-design .w2-primer dt {
+  align-items: center;
+  color: #0b1f3a;
+  display: flex;
+  gap: 7px;
+  margin: 0;
+}
+.theme-transit.visual-design .w2-primer dt::before {
+  background: #ffffff;
+  border: 2.5px solid #14618f;
+  border-radius: 50%;
+  content: "";
+  flex: none;
+  height: 9px;
+  width: 9px;
+}
+.theme-transit.visual-design .w2-primer dd {
+  margin: 4px 0 0 16px;
+}
+.theme-transit.visual-design .w2-primer > a {
+  margin-top: 16px;
+}
+.theme-transit.visual-design.guided-post .story-hero .story-scope {
+  border-left: 2px solid var(--accent);
+  color: var(--muted);
+  margin-top: 26px;
+  max-width: 44ch;
+  padding-left: 12px;
+}
 .visual-design .w12-opener {
   align-items: flex-start;
   display: flex;
