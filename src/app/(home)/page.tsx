@@ -63,14 +63,14 @@ export default function Page() {
                 <li className="live">
                   <a href="weeks/week05/">
                     <span>W5</span>
-                    NLP I
+                    Counting words
                     <i aria-hidden="true">→</i>
                   </a>
                 </li>
                 <li className="live current">
                   <a href="weeks/week06/">
                     <span>W6</span>
-                    NLP II
+                    What words mean
                     <i aria-hidden="true">→</i>
                   </a>
                 </li>
@@ -127,7 +127,7 @@ export default function Page() {
                 </li>
                 <li>
                   <a data-week="5" className="week-card" href="weeks/week05/">
-                    <span className="week-tag">Week 5 · NLP I</span>
+                    <span className="week-tag">Week 5 · Counting words</span>
                     <h3>Marvel in Words</h3>
                     <p className="week-q">Does a character's place in the network show in the words of its page?</p>
                     <span className="week-go">Read the post →</span>
@@ -135,7 +135,7 @@ export default function Page() {
                 </li>
                 <li>
                   <a data-week="6" className="week-card current" href="weeks/week06/">
-                    <span className="week-tag">Week 6 · NLP II</span>
+                    <span className="week-tag">Week 6 · What words mean</span>
                     <h3>Storm, Not Weather</h3>
                     <p className="week-q">What do counts, weights and word vectors give away about 303 Marvel pages?</p>
                     <span className="week-go">Read the post →</span>
