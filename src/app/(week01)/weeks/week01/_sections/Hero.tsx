@@ -1,8 +1,11 @@
-// The opening: the question and the story nav, with the dataset primer as a
-// panel beside them where Week 4's hero keeps its inspector.
+import { TicketWall } from "./TicketWall";
+
+// The opening: the question and the story nav, the draw odds as a wall of
+// tickets, and the dataset primer as a panel where Week 4's hero keeps its
+// inspector.
 export function Hero() {
   return (
-    <section className="hero story-hero">
+    <section className="hero story-hero w1-hero">
       <div className="hero-copy">
         <div>
           <p className="eyebrow">Week 1 · Networks</p>
@@ -26,24 +29,27 @@ export function Hero() {
           counts; they do not rank the characters’ strength.
         </p>
       </div>
+      <TicketWall />
       <aside className="w12-panel post-primer">
         <h2>The dataset and a few useful terms</h2>
         <p>
-          We use the course’s frozen snapshot from 26 August 2026: 303
-          articles in Wikipedia’s Marvel Comics superheroes category, with
-          1,784 links between them. It is a selected set of pages, not every
-          Marvel character or every link on Wikipedia.
+          The course’s frozen snapshot from 26 August 2026: articles in
+          Wikipedia’s Marvel Comics superheroes category. It is a selected set
+          of pages, not every Marvel character or every link on Wikipedia.
         </p>
+        <ul className="w1-figures">
+          <li><b>303</b><span>articles</span></li>
+          <li><b>1,784</b><span>links, counting direction</span></li>
+          <li><b>1,434</b><span>linked pairs; 350 link both ways</span></li>
+          <li><b>5.89</b><span>average in-degree, and out-degree</span></li>
+        </ul>
         <dl>
           <dt>Incoming and outgoing links</dt>
           <dd>
             If Spider-Man’s page links to Hulk’s, that is one outgoing link
             for Spider-Man and one incoming link for Hulk. Hulk need not
-            link back. Counting direction, there are 1,784 links;
-            ignoring it, they join 1,434 distinct pairs of articles,
-            since 350 pairs link both ways. Every link has one sender and
-            one receiver, so the average in-degree and the average
-            out-degree are equal: 5.89 links per article.
+            link back. Every link has one sender and one receiver, so the two
+            averages are equal.
           </dd>
           <dt>Degree</dt>
           <dd>

@@ -80,9 +80,12 @@ for (const row of [...facts.top_in, ...facts.top_out, ...facts.most_inward, ...f
   byName.set(row.name, { kin: row.kin, kout: row.kout });
 
 test("hero and dataset-primer numbers (w1-a1-hero-section-untested)", () => {
-  has(`${facts.n_nodes} articles in Wikipedia’s Marvel Comics superheroes category, with ${count(facts.n_arcs)} links between them`);
-  has(`Counting direction, there are ${count(facts.n_arcs)} links; ignoring it, they join ${count(facts.n_undirected)} distinct pairs of articles, since ${facts.mutual_pairs} pairs link both ways`);
-  has(`the average in-degree and the average out-degree are equal: ${(facts.n_arcs / facts.n_nodes).toFixed(2)} links per article`);
+  has(`${facts.n_nodes} articles`);
+  has(`${count(facts.n_arcs)} links, counting direction`);
+  has(`${count(facts.n_undirected)} linked pairs; ${facts.mutual_pairs} link both ways`);
+  has(`${(facts.n_arcs / facts.n_nodes).toFixed(2)} average in-degree, and out-degree`);
+  has("Every link has one sender and one receiver, so the two averages are equal");
+  assert.equal(facts.n_arcs - facts.mutual_pairs, facts.n_undirected, "pairs = links less the mutual pairs");
   has(`There are ${facts.n_isolates}. The ${facts.zero_in} cards with no incoming links`);
 });
 
@@ -279,7 +282,8 @@ test("collector disclosure: the coupon-collector wait (w1-a1-collector-untested)
 test("the 2,087 total weight is quoted consistently everywhere it appears (w1-m1)", () => {
   const total = packs.totalWeight.toLocaleString("en-US");
   const mentions = plain.match(new RegExp(total.replace(",", "\\,"), "g")) || [];
-  assert.equal(mentions.length, 6, `expected six mentions of ${total}, found ${mentions.length}`);
+  // Six in the post, one in the hero's ticket-wall caption.
+  assert.equal(mentions.length, 7, `expected seven mentions of ${total}, found ${mentions.length}`);
   const spiderCard = packs.cards.find((c) => c.id === "Spider-Man");
   const baymaxCard = packs.cards.find((c) => c.id === "Baymax");
   has(`${spiderCard.weight} chances out of ${total} on each draw`);
