@@ -205,6 +205,11 @@ test("the lobby names the group and its members", () => {
   for (const member of GROUP.members) assert(html.includes(member), member);
 });
 
+test("the group name takes a plain hyphen, never an en dash", () => {
+  const offenders = sitePages().filter((path) => /Log–Log Legends|LOG–LOG/.test(readAny(path))).map(label);
+  assert.deepEqual(offenders, []);
+});
+
 test("the logbook counts live weeks only and files the rest under free play", () => {
   const p = summarise(
     [
