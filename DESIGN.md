@@ -8,6 +8,17 @@ Code rules for charts, controls and accessibility are in
 [.github/instructions/site.instructions.md](.github/instructions/site.instructions.md). Layout and writing
 rules for posts are in [project/POST_GUIDE.md](project/POST_GUIDE.md).
 
+## Name
+
+The site and the group are "Log-Log Legends", and the wordmark is "LOG-LOG LEGENDS". Both use a plain
+hyphen (U+002D), never an en dash: the long dash reads as AI-written. The name in page titles, footers,
+descriptions and docs follows this rule, and `tests/site.test.mjs` fails on an en dash in the name on any
+built page or in the site code. #277 changed
+every place the name appeared; [project/design/naming/before-after.png](project/design/naming/before-after.png)
+shows the tab title, top bars, wordmark and Cold Read footer before and after.
+
+Lowercase "log–log" is the chart term (both axes on a log scale), not the name, and keeps its en dash.
+
 ## Page families
 
 | Pages | Stylesheets, in order | Look |
@@ -102,3 +113,25 @@ type and surface only, never a number or a control.
 - Corners: 14px on post cards, 20px on arcade panels.
 - Shadows are faint and navy-tinted. The top bar is translucent white with one hairline below.
 - Headings stay bare: no pill, chip or badge beside them.
+
+## Design artifacts
+
+Design work done outside the repo lives in claude.ai artifacts. The kit is the one to build with; the rest
+are records. All are private to Gyula unless noted.
+
+| Artifact | What it holds |
+| --- | --- |
+| [Log-Log Legends Kit](https://claude.ai/artifact/JRrSbSw7WMvvxRr57oBmWD) | The design system to build with: the site's React components with live previews, this file and the post guide as guidelines. Synced from the repo (see `.design-sync/NOTES.md`); edit the repo, not the kit. |
+| [Kit source project](https://claude.ai/design/p/90b493ad-23f8-40f4-9a54-b3d9b491d29b) | The claude.ai/design project `/design-sync` writes to; "Migrate again" copies it into the kit. Closes 14 December 2026. |
+| [Log-Log Legends tokens](https://claude.ai/artifact/2DfxHtPMWbJSRnDk19Hxf8) | The first design system, tokens only, from `corridor.css` and `week04.css` (23 Sep). Superseded by the kit. |
+| [Social Graphs design](https://claude.ai/artifact/Gcx984yt52bQBL2Bb2tJ8F) | The main canvas: Week 4 boards, the brief-gaps page, Week 5 boards, the chart and graph kits, the post template. Mirrored in `review/week04-redesign/`. Shared by link. |
+| [Home canvas](https://claude.ai/artifact/TexCswK63W8faQ5baT3Km5) | One board of the home page (29 Sep). |
+| [Week 6 essentials](https://claude.ai/artifact/PjKYabEmWLxe9kHeY1yWSS) | Week 6 canvas: Cold Read levels, practice and campaign, and the TF-IDF, PMI, GloVe, cosine and topic cards. |
+| [Corridor Control Directions](https://claude.ai/artifact/6J32d5xusbCr4heiK8erCV) | Week 3 design directions: Blockwork, Instrument, Plate and Today boards. |
+| [Corridor Control Design System](https://claude.ai/artifact/Ggj54hgjB2CY1oNjAE8kAg) | Week 3's design system read from `corridor.css`: components, charts, skins. |
+| [Screen Test](https://claude.ai/artifact/LwE1yHYd7hSyhjFDFdUa7j) | Week 2 prototype: ER, WS and BA models and the degree-preserving null on the Marvel network. |
+| [The Closure Cabinets](https://claude.ai/artifact/7PrPn4YwVmRArxbSHpZtVF) | Four Week 2 closure-game prototypes on the Marvel snapshot. |
+| [Social Graphs Test 1](https://claude.ai/artifact/51D4UuUZa1uft2rKXwKhGc) | Practice test for weeks 1 to 4. Shared by link. |
+| [Cold Read Endings](https://claude.ai/artifact/Hp6aVeQyJtD3ce5o6iQ492) | Gallery of the game's animated game-over endings. Shared by link. |
+| [Cold Read portrait sources](https://claude.ai/artifact/R2HXmQqreW9W5RfLCrMq2H) | Portrait coverage for the 303 Marvel pages, measured 7 Oct. |
+| [Log-Log Dash Fix](https://claude.ai/artifact/9rhyjkaihidKFQbzkXZMxz) | Before and after screenshots of #277, the hyphen in the name (see Name above). |
