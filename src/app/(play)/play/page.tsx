@@ -125,7 +125,7 @@ export default function Page() {
       </main>
       <footer className="site-foot">
         <div className="wide">
-          <span>LOG–LOG LEGENDS</span>
+          <span>LOG-LOG LEGENDS</span>
           <span>ONE LINK. A DIFFERENT CONVERSATION.</span>
           <a href="https://github.com/horrrt/02805_social_graphs">DTU 02805 · 2026 ↗</a>
         </div>

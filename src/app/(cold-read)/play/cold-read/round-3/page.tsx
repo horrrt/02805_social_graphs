@@ -6,7 +6,7 @@ import { MixDesk } from "@/features/cold-read/MixDesk";
 // The model comes from analysis/week06_mix_desk.py; the rules are in
 // src/features/cold-read/topics.ts.
 export const metadata: Metadata = {
-  title: "Mix Desk · Cold Read · Log–Log Legends",
+  title: "Mix Desk · Cold Read · Log-Log Legends",
   description: "Read a Marvel page's most used words and spread ten chips over eight LDA topics to guess its mixture. A game about topic models, Week 6.",
   robots: "noindex",
 };

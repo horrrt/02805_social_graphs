@@ -9,7 +9,7 @@ import "@/styles/cold-read.css";
 
 // Kept out of search (noindex); the Week 6 post links here from its game card.
 export const metadata: Metadata = {
-  title: "Cold Read · Log–Log Legends",
+  title: "Cold Read · Log-Log Legends",
   description: "A Marvel page is hidden. Flip word cards that show only how often the word appears here and on how many pages, and name the page. A game about TF-IDF and cosine similarity, Week 6.",
   robots: "noindex",
 };

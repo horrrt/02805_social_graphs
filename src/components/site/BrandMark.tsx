@@ -9,7 +9,7 @@ export function BrandMark({ href, mark }: Props) {
       <a className="brand" href={href} aria-label="Log-Log Legends home">
         <span className="brand-mark" aria-hidden="true">↗</span>
         <span>
-          LOG–LOG
+          LOG-LOG
           <br />
           LEGENDS
         </span>
@@ -17,7 +17,7 @@ export function BrandMark({ href, mark }: Props) {
     );
   return (
     <a className="brand" href={href}>
-      LOG–LOG
+      LOG-LOG
       {" "}
       <b>LEGENDS</b>
     </a>

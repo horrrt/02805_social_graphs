@@ -20,8 +20,8 @@ import "@/styles/week04-sources.css";
 
 const PAGE = {
   path: "weeks/week04/",
-  title: "Who hires America's foreign workers? · Log–Log Legends",
-  description: "Who hires America's foreign workers? Places, jobs and companies from US H-1B filings — Week 4 go-nuts, Log–Log Legends.",
+  title: "Who hires America's foreign workers? · Log-Log Legends",
+  description: "Who hires America's foreign workers? Places, jobs and companies from US H-1B filings — Week 4 go-nuts, Log-Log Legends.",
 };
 
 export const metadata: Metadata = {

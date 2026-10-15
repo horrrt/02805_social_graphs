@@ -1,6 +1,6 @@
-# design-sync notes: Log–Log Legends kit
+# design-sync notes: Log-Log Legends kit
 
-Target: Claude Design project "Log–Log Legends Kit" (projectId in config.json). The design system
+Target: Claude Design project "Log-Log Legends Kit" (projectId in config.json). The design system
 artifact at claude.ai/artifact/2DfxHtPMWbJSRnDk19Hxf8 is a separate, tokens-only Artifact; DesignSync
 can't write to it.
 

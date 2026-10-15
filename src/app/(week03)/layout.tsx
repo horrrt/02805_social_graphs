@@ -8,7 +8,7 @@ import "@/styles/corridor.css";
 
 const PAGE = {
   path: "weeks/week03/",
-  title: "Corridor Control · Log–Log Legends",
+  title: "Corridor Control · Log-Log Legends",
   description: "Corridor Control: two country networks over the same world, where people live, from the UN migrant stock, and where you can fly, from OpenFlights.",
 };
 

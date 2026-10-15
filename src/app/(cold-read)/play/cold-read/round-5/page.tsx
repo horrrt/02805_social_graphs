@@ -6,7 +6,7 @@ import { HotCold } from "@/features/cold-read/HotCold";
 // The vectors come from analysis/week06_hot_cold.py; the rules are in
 // src/features/cold-read/vectors.ts.
 export const metadata: Metadata = {
-  title: "Hot & Cold · Cold Read · Log–Log Legends",
+  title: "Hot & Cold · Cold Read · Log-Log Legends",
   description: "A word from the Marvel pages is hidden. Every guess scores its cosine similarity to it in GloVe's word vectors. A game about embeddings, Week 6.",
   robots: "noindex",
 };

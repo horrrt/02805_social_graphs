@@ -1,4 +1,4 @@
-# Log–Log Legends design
+# Log-Log Legends design
 
 This file records the course website's visual design: which stylesheets each page uses, the type scale, the
 colours and what each colour means. The stylesheets in `src/styles/` are the source of truth. When a value

@@ -35,7 +35,7 @@ export function Frame({ page, home, children }: { page: "campaign" | "practice";
         </main>
         <footer className="cr-foot">
           <p>
-            Cold Read · Week 6 · <a href={`${home}../../`}>Log–Log Legends</a> · DTU 02805
+            Cold Read · Week 6 · <a href={`${home}../../`}>Log-Log Legends</a> · DTU 02805
           </p>
         </footer>
       </div>

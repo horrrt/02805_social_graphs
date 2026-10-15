@@ -1,4 +1,4 @@
-# Log–Log Legends: how to work in this repository
+# Log-Log Legends: how to work in this repository
 
 DTU 02805 Social Graphs and Interactions, group Log-Log Legends (Àngela, Gyula, Niklas). `public/` is the
 course website, published to GitHub Pages from `main`. `analysis/` holds the Python scripts behind every

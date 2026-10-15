@@ -10,7 +10,7 @@ import "@/styles/design.css";
 
 const PAGE = {
   path: "weeks/week02/",
-  title: "Marvel Transit Authority · Log–Log Legends",
+  title: "Marvel Transit Authority · Log-Log Legends",
   description: "Marvel Transit Authority — an interactive data story from 303 Marvel Wikipedia articles.",
 };
 

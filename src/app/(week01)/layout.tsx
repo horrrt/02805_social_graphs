@@ -10,7 +10,7 @@ import "@/styles/design.css";
 
 const PAGE = {
   path: "weeks/week01/",
-  title: "Hero Packs · Log–Log Legends",
+  title: "Hero Packs · Log-Log Legends",
   description: "Hero Packs — an interactive data story from 303 Marvel Wikipedia articles.",
 };
 

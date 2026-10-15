@@ -1,6 +1,6 @@
-# Log–Log Legends kit: how to build with it
+# Log-Log Legends kit: how to build with it
 
-These are the React components of the Log–Log Legends course site (DTU 02805, Social Graphs and
+These are the React components of the Log-Log Legends course site (DTU 02805, Social Graphs and
 Interactions). The site writes up network analyses: a result against its random baseline, networks
 coloured by community, tables of counts, and quoted text evidence. Every component is on
 `window.LogLogKit`.

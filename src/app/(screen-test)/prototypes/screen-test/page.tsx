@@ -20,7 +20,7 @@ export default function Page() {
             Three famous models audition for the part of the Marvel network. Each one nails a scene and fluffs the rest. Then we stop asking which model looks right and start asking what chance could have produced.
           </p>
           <div className="billing">
-            <span className="lbl">Log–Log Legends</span>
+            <span className="lbl">Log-Log Legends</span>
             {" "}
             <span className="lbl">Àngela · Gyula · Niklas</span>
             {" "}
@@ -132,7 +132,7 @@ export default function Page() {
             {" "}
             ·
             {" "}
-            <a href="../../">Log–Log Legends</a>
+            <a href="../../">Log-Log Legends</a>
           </p>
         </footer>
       </div>

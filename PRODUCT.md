@@ -18,7 +18,7 @@ Any of them may land on a post directly, without the homepage or earlier posts.
 
 ## Product Purpose
 
-Log–Log Legends is the course website of group Log-Log Legends (Gyula Kürthy, Àngela Buxó, Niklas Johansen) for DTU 02805 Social Graphs and Interactions, autumn 2026. Each course week it publishes one free-form post that takes that week's method, points it at one question about real data, and answers it with an interactive figure. Data so far: the course's 303 Marvel Wikipedia pages (weeks 1, 2, 5, 6), global migration flows (week 3) and US H-1B hiring filings (week 4).
+Log-Log Legends is the course website of group Log-Log Legends (Gyula Kürthy, Àngela Buxó, Niklas Johansen) for DTU 02805 Social Graphs and Interactions, autumn 2026. Each course week it publishes one free-form post that takes that week's method, points it at one question about real data, and answers it with an interactive figure. Data so far: the course's 303 Marvel Wikipedia pages (weeks 1, 2, 5, 6), global migration flows (week 3) and US H-1B hiring filings (week 4).
 
 A post succeeds when a reader can state its question, its answer, and the baseline that gives the answer meaning, and when the group can defend every number on it.
 
@@ -42,7 +42,7 @@ Rigor first, play second. The identity is the evidence: every post reproduces th
 
 ## Brand Commitments
 
-- Name: Log–Log Legends (with an en dash), group Log-Log Legends.
+- Name: Log-Log Legends, with a plain hyphen, never an en dash.
 - Voice: plain, specific, no inflated claims; the group's notes and personality stay.
 
 ## Evidence on Hand

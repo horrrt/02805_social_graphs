@@ -9,7 +9,7 @@ import { GROUP, WEEKS } from "@/scripts/weeks.js";
 // The deployed site. Absolute on purpose: a canonical URL must be, and dev
 // serves from the root while GitHub Pages serves from the project path.
 export const SITE_URL = "https://horrrt.github.io/02805_social_graphs/";
-export const SITE_NAME = "Log–Log Legends";
+export const SITE_NAME = "Log-Log Legends";
 
 type Page = { path: string; title: string; description: string };
 

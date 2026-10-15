@@ -6,7 +6,7 @@ import "@/styles/corridor.css";
 import "@/styles/post.css";
 
 export const metadata: Metadata = {
-  title: "Components · Log–Log Legends",
+  title: "Components · Log-Log Legends",
   robots: "noindex",
 };
 

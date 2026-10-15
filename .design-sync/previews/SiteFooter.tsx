@@ -14,7 +14,7 @@ export const Week5 = () => (
     <span>
       The Marvel network gets language ·
       {" "}
-      <a href="../../">Log–Log Legends</a>
+      <a href="../../">Log-Log Legends</a>
       {" "}
       · DTU 02805
     </span>
@@ -29,7 +29,7 @@ export const Template = () => (
     <span>
       Post template ·
       {" "}
-      <a href="../../">Log–Log Legends</a>
+      <a href="../../">Log-Log Legends</a>
       {" "}
       · DTU 02805
     </span>

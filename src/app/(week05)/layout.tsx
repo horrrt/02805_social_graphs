@@ -9,8 +9,8 @@ import "@/styles/post.css";
 
 const PAGE = {
   path: "weeks/week05/",
-  title: "The Marvel network gets language · Log–Log Legends",
-  description: "The Marvel network gets language: seven questions about the 303 Marvel Wikipedia pages. Week 5, Log–Log Legends.",
+  title: "The Marvel network gets language · Log-Log Legends",
+  description: "The Marvel network gets language: seven questions about the 303 Marvel Wikipedia pages. Week 5, Log-Log Legends.",
 };
 
 export const metadata: Metadata = pageMeta(PAGE);

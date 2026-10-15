@@ -6,7 +6,7 @@ import "@/styles/type.css";
 import "@/styles/corridor.css";
 
 export const metadata: Metadata = {
-  title: "Style guide · Corridor Control · Log–Log Legends",
+  title: "Style guide · Corridor Control · Log-Log Legends",
   description: "Every component of the Corridor Control post, drawn once under every skin, palette and table style, from the same stylesheet the post loads.",
 };
 
