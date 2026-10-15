@@ -5,7 +5,7 @@
 // groups.ts; this file renders them.
 import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { BestBox, clickButton, HelpKey, Lives, NextButton, ScoreBox, SkipLevel, Stat, StreakBox, useBest, useHelpKey, useKeys } from "./LevelParts";
-import { Face } from "./Face";
+import { Face } from "@/kit/Portrait";
 import { LIMIT, speed, Ticker, timed, useCountdown, Worth } from "./pace";
 import { whoseLineTour } from "./tours";
 import { StartButtons, useTour } from "./Tutorial";

@@ -3,7 +3,7 @@
 Owner: Gyula. The game used to load each portrait from Wikipedia on every visit. This script fetches
 each source's images once, crops each to a square from the top (faces sit high in comic art), shrinks
 it to 160 px and stores it as WebP under public/play/cold-read/portraits/<source>/<slug>.webp.
-src/features/cold-read/portraits.ts sets the order the game tries the sources in; a page no source
+src/kit/portraits.ts sets the order the game tries the sources in; a page no source
 covers shows initials.
 
 Sources:
@@ -21,7 +21,7 @@ footing than linking; the group chose it anyway.
 The Marvel Database's image server refuses requests that don't come from its own site, so downloads
 send its address as the referrer, through curl (Python's urllib still gets 403 there).
 
-Writes the images and src/features/cold-read/portraits.generated.ts (which pages each source has).
+Writes the images and src/kit/portraits.generated.ts (which pages each source has).
 Skips images already on disk, so a rerun only fetches what is new.
 
     python analysis/week06_portraits.py              # every source, about 3 minutes
@@ -42,7 +42,7 @@ import tables
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "public/play/cold-read/portraits"
-INDEX = ROOT / "src/features/cold-read/portraits.generated.ts"
+INDEX = ROOT / "src/kit/portraits.generated.ts"
 SIZE, QUALITY, PAUSE = 160, 82, 0.2
 UA = "LogLogLegends/1.0 (DTU 02805 course project; https://github.com/horrrt/02805_social_graphs)"
 MARVELDB = "https://marvel.fandom.com/api.php?"

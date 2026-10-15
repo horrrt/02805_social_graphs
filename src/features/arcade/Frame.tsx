@@ -1,6 +1,7 @@
 // The server markup Weeks 1 and 2 share around their sections: the note shown
 // without JavaScript and the footer with its licence.
 import { SiteFooter } from "@/components/site/SiteFooter";
+import { PortraitCredit } from "@/components/site/PortraitCredit";
 
 export function ArcadeNoscript() {
   return (
@@ -20,6 +21,8 @@ export function ArcadeFooter() {
         Article names, links and text excerpts from English Wikipedia,
         {" "}
         <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>
+        .
+        <PortraitCredit />
       </span>
     </SiteFooter>
   );

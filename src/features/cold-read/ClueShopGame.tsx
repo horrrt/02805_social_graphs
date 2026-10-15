@@ -3,7 +3,7 @@
 // pages, watches the suspect board empty, and names the page from the leads
 // ranked by cosine similarity. Rules live in rules.ts; this file renders them.
 import { useMemo, useState } from "react";
-import { Face } from "./Face";
+import { Face } from "@/kit/Portrait";
 import { IdfInline, TfIdfFormula } from "./Formulas";
 import { BestBox, clickButton, Lives, NextButton, ScoreBox, SkipLevel, Stat, StreakBox, useBest, useKeys } from "./LevelParts";
 import { boldness, LIMIT, speed, Ticker, timed, useCountdown, Worth } from "./pace";

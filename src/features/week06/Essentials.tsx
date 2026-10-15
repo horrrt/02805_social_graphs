@@ -5,7 +5,7 @@
 // failed load says so in the host and logs one line, and leaves the other
 // sections alone.
 import { useEffect, useMemo, useState, type ComponentType, type ReactNode } from "react";
-import { EChart } from "@/kit";
+import { EChart, Portrait } from "@/kit";
 import { SegmentedControl } from "@/components/post/SegmentedControl";
 import { island, useIslandReady } from "@/lib/island";
 import { useData } from "@/lib/useData";
@@ -33,11 +33,12 @@ function Failed() {
   return <p className="w6-failed">This part's data file didn't load. Reload the page to try again.</p>;
 }
 
-/** A labelled native select over `options` ([value, label]). */
-function Picker({ id, label, value, options, onChange }: { id: string; label: string; value: string; options: [string, string][]; onChange: (v: string) => void }) {
+/** A labelled native select over `options` ([value, label]); `portrait`: the values are pages, so show the picked one's face. */
+function Picker({ id, label, value, options, onChange, portrait = false }: { id: string; label: string; value: string; options: [string, string][]; onChange: (v: string) => void; portrait?: boolean }) {
   return (
     <span className="w6e-picker">
       <label htmlFor={id}>{label}</label>
+      {portrait ? <Portrait page={value} /> : null}
       <select id={id} value={value} onChange={(e) => onChange(e.target.value)}>
         {options.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
       </select>
@@ -90,7 +91,7 @@ function Weights() {
   return (
     <div className="w6e-app" id="weights-app">
       <div className="w6e-controls">
-        <Picker id="w6e-weights-page" label="Page" value={p.name} options={options} onChange={setPage} />
+        <Picker id="w6e-weights-page" label="Page" value={p.name} options={options} onChange={setPage} portrait />
         <span className="w6e-note">{`This page has ${p.size.toLocaleString("en")} words. Grey rows are words with an IDF under 0.1.`}</span>
       </div>
       <div className="w6e-cols">
@@ -123,8 +124,8 @@ function Cosine() {
   return (
     <div className="w6e-app" id="cosine-app">
       <div className="w6e-controls">
-        <Picker id="w6e-cos-a" label="Page" value={a} options={options} onChange={setA} />
-        <Picker id="w6e-cos-b" label="and" value={b} options={options} onChange={setB} />
+        <Picker id="w6e-cos-a" label="Page" value={a} options={options} onChange={setA} portrait />
+        <Picker id="w6e-cos-b" label="and" value={b} options={options} onChange={setB} portrait />
       </div>
       {rec ? (
         <div className="w6e-cols">
@@ -254,7 +255,7 @@ function Topics() {
         ))}
       </ol>
       <div className="w6e-controls">
-        <Picker id="w6e-topic-page" label="Mixture of" value={page} options={options} onChange={setPage} />
+        <Picker id="w6e-topic-page" label="Mixture of" value={page} options={options} onChange={setPage} portrait />
         <span className="w6e-note">Solid rows keep half their words under the other seed.</span>
       </div>
     </div>

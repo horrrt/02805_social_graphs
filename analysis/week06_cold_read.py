@@ -24,7 +24,7 @@ hidden page about 3 times in 4 (3 in 5), so naming it after one flip is a real g
 A page enters the game only when its three sharp cards alone rank it first, all eight cards do too,
 and its loud cards alone do not, in both decks. The script prints how often that holds and stops if fewer than 60 pages pass.
 
-Portraits are looked up by page name in the game (src/features/cold-read/portraits.ts).
+Portraits are looked up by page name in the game (src/kit/portraits.ts).
 
 Writes public/play/cold-read/data/clue_shop.json.
 

@@ -1,0 +1,68 @@
+/* A character's round portrait (src/kit/Portrait.tsx), or the initials when no
+   source has one. Loaded by the component itself, since posts on post.css and
+   the arcade weeks on arcade.css both draw it; colours come from the text it
+   sits in, so it suits either palette. */
+.kit-portrait {
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  overflow: hidden;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  vertical-align: middle;
+  background: color-mix(in srgb, currentColor 12%, transparent);
+  font-size: var(--fs-caption);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.kit-portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+
+.kit-portrait[data-size="xs"] {
+  width: 20px;
+  height: 20px;
+}
+
+.kit-portrait[data-size="m"] {
+  width: 44px;
+  height: 44px;
+  font-size: var(--fs-strong);
+}
+
+.kit-portrait[data-size="l"] {
+  width: 96px;
+  height: 96px;
+  font-size: var(--fs-h2);
+}
+
+/* A tile: the larger face on a card, square with rounded corners. */
+.kit-portrait[data-shape="tile"] {
+  border-radius: 14px;
+}
+
+/* A few faces overlapping, each ringed so the edges read. */
+.kit-portrait-stack {
+  display: inline-flex;
+  vertical-align: middle;
+}
+
+.kit-portrait-stack .kit-portrait {
+  box-shadow: 0 0 0 2px var(--card, #fff);
+}
+
+.kit-portrait-stack .kit-portrait + .kit-portrait {
+  margin-left: -8px;
+}
+
+/* A name with its portrait beside it, on one line. */
+.kit-named {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+}

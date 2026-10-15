@@ -1,7 +1,8 @@
 // A concordance (key word in context), as kit.js concordance() builds it: one
-// row per hit, the page as a Wikipedia link, the left context, the hit in a
+// row per hit, the page as a Wikipedia link after its portrait, the left context, the hit in a
 // <mark> and the right context. Style: .kit-kwic in post.css.
 import type { ReactNode } from "react";
+import Portrait from "./Portrait";
 import { wikiLink } from "./wikiLink";
 
 export type KwicRow = { page: string; left: string; hit: string; right: string; extra?: ReactNode };
@@ -21,7 +22,12 @@ export default function Concordance({ rows, caption }: { rows: KwicRow[]; captio
         ) : null}
         {rows.map((r, i) => (
           <tr key={i}>
-            <td className="kit-kwic-page">{wikiLink(r.page)}</td>
+            <td className="kit-kwic-page">
+              <span className="kit-named">
+                <Portrait page={r.page} size="xs" optional />
+                {wikiLink(r.page)}
+              </span>
+            </td>
             <td className="kit-kwic-left">{r.left}</td>
             <td>
               <mark>{r.hit}</mark>

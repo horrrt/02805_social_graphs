@@ -5,7 +5,7 @@
 // load leaves the hosts empty and each part logs one line. One island per part, so a
 // fault in one leaves the others alone.
 import { useEffect, useMemo, useState, type ComponentType } from "react";
-import { MiniStrip, StripChart, Table } from "@/kit";
+import { MiniStrip, Portrait, StripChart, Table } from "@/kit";
 import type { MiniSpec } from "@/kit/MiniStrip";
 import type { StripOptions, StripRow } from "@/kit/StripChart";
 import type { TableSpec } from "@/kit/Table";
@@ -119,7 +119,10 @@ function Column({ title, rows, linked, women, other }: { title: string; rows: Ro
       <ol>
         {rows.map((r) => (
           <li key={r.index} className={[r.linked && "w6-linked", r.gender === "woman" && "w6-woman"].filter(Boolean).join(" ") || undefined}>
-            <span className="w6-name">{r.name}</span>
+            <span className="w6-name kit-named">
+              <Portrait page={r.page} />
+              {r.name}
+            </span>
             {r.gender ? <span className="visually-hidden">{`, ${r.gender}, `}</span> : <span className="w6-nolabel"><span className="visually-hidden">, </span>no label<span className="visually-hidden">, </span></span>}
             <span className="w6-where">{r.where}<span className="visually-hidden">, </span></span>
             {other.has(r.index) ? <span className="w6-both">in both lists<span className="visually-hidden">, </span></span> : null}
@@ -185,7 +188,10 @@ function Explorer({ data }: { data: Data }) {
             const i = String(at);
             return (
               <button key={name} type="button" aria-pressed={i === value} onClick={() => setValue(i)}>
-                {short(name)}
+                <span className="kit-named">
+                  <Portrait page={name} size="xs" />
+                  {short(name)}
+                </span>
               </button>
             );
           })}
@@ -230,7 +236,10 @@ function ContrastList({ title, rows }: { title: string; rows: Row[] }) {
       <ol>
         {rows.map((r) => (
           <li key={r.index}>
-            <b>{r.name}</b>
+            <b className="kit-named">
+              <Portrait page={r.page} size="m" />
+              {r.name}
+            </b>
             {" "}
             <span>{r.words.slice(0, 2).join(", ")}</span>
           </li>

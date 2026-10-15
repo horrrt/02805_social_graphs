@@ -12,7 +12,7 @@
 // and the query last run live in search/store.js, so a row or a chip fills the
 // box. A failed file logs one line.
 import { useCallback, useEffect, useMemo, type KeyboardEvent, type ReactNode } from "react";
-import { Passage } from "@/kit";
+import { Passage, Portrait } from "@/kit";
 import { island, useIslandReady } from "@/lib/island";
 import { useData, type DataState } from "@/lib/useData";
 import { useHydrated } from "@/lib/useHydrated";
@@ -89,7 +89,10 @@ function Ranks({ rows, target }: { rows: Ranked | undefined; target: string | nu
       return (
         <li key={i} className={hit ? "w5-hit" : undefined}>
           <span className="w5-pos">{String(i + 1)}</span>
-          <span className="w5-name">{hit ? `${r.name} (target)` : r.name}</span>
+          <span className="w5-name kit-named">
+            <Portrait page={r.name} />
+            {hit ? `${r.name} (target)` : r.name}
+          </span>
           <span className="w5-score">{r.cosine.toFixed(3)}</span>
         </li>
       );

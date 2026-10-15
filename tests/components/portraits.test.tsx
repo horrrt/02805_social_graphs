@@ -5,11 +5,11 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
 import { render } from "@testing-library/react";
-import { Face } from "@/features/cold-read/Face";
-import { portrait, portraitSlug, portraitSource } from "@/features/cold-read/portraits";
+import { Face } from "@/kit/Portrait";
+import { portrait, portraitSlug, portraitSource } from "@/kit/portraits";
 
 const read = (name: string) => JSON.parse(readFileSync(new URL(`../../public/play/cold-read/data/${name}.json`, import.meta.url), "utf8"));
-const file = (url: string) => new URL(`../../public${new URL(url).pathname}`, import.meta.url);
+const file = (url: string) => new URL(`../../public${new URL(url, "http://localhost").pathname}`, import.meta.url);
 
 test("Wikipedia comes first and the Marvel Database fills its gaps", () => {
   assert.equal(portraitSource("Hulk"), "wikipedia");
@@ -30,6 +30,10 @@ test("every character the games show has a portrait file", () => {
     assert.ok(url, `${name} has no portrait`);
     assert.ok(existsSync(file(url)), `${name}: ${url} is missing`);
   }
+});
+
+test("a portrait's URL is root-relative, so server and client render the same src", () => {
+  assert.match(portrait("Hulk")!, /^\/[^/]/);
 });
 
 test("a face shows initials when no source has the page", () => {

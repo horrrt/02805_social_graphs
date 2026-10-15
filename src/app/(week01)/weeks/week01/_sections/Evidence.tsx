@@ -1,3 +1,4 @@
+import Portrait from "@/kit/Portrait";
 import { Gloss } from "@/components/post/Gloss";
 import { DegreeChart, DegreeScale, DegreeTable, Sketch } from "@/features/week01/chart/Distribution";
 import { PacksGuess } from "@/features/week01/packs/Guess";
@@ -118,7 +119,12 @@ export function Evidence() {
                   </thead>
                   <tbody>
                     <tr>
-                      <th scope="row">Betsy Braddock</th>
+                      <th scope="row">
+                      <span className="kit-named">
+                        <Portrait page="Betsy Braddock" />
+                        Betsy Braddock
+                      </span>
+                    </th>
                       <td>28</td>
                       <td>28</td>
                       <td>28</td>
@@ -126,7 +132,12 @@ export function Evidence() {
                       <td>0</td>
                     </tr>
                     <tr>
-                      <th scope="row">Radian (Morituri)</th>
+                      <th scope="row">
+                      <span className="kit-named">
+                        <Portrait page="Radian (Morituri)" />
+                        Radian (Morituri)
+                      </span>
+                    </th>
                       <td>6</td>
                       <td>6</td>
                       <td>6</td>
@@ -134,7 +145,12 @@ export function Evidence() {
                       <td>0</td>
                     </tr>
                     <tr>
-                      <th scope="row">Baymax</th>
+                      <th scope="row">
+                      <span className="kit-named">
+                        <Portrait page="Baymax" />
+                        Baymax
+                      </span>
+                    </th>
                       <td>0</td>
                       <td>0</td>
                       <td>0</td>

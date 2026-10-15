@@ -14,6 +14,7 @@ export { default as EChart } from "./EChart";
 export { default as Concordance } from "./Concordance";
 export { default as Passage } from "./Passage";
 export { wikiLink } from "./wikiLink";
+export { default as Portrait, Face, PortraitStack } from "./Portrait";
 export { default as TermText } from "./TermText";
 export { default as TipBox } from "./TipBox";
 export { default as HoverTipHost } from "./HoverTipHost";

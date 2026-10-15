@@ -187,7 +187,7 @@ const GENDER = { female: "woman", male: "man" };
 /** One explorer column: a page's ten nearest pages with what places each there. */
 export function neighbourRows(data, index, rep) {
   return data[rep][index].map(([j, cos, linked, steps, words]) => ({
-    index: j, name: short(data.names[j]), cos: two(cos), linked: linked === 1, gender: GENDER[data.gender[j]] ?? "",
+    index: j, name: short(data.names[j]), page: data.names[j], cos: two(cos), linked: linked === 1, gender: GENDER[data.gender[j]] ?? "",
     where: linked === 1 ? "linked" : steps === 0 ? "no path" : `${steps} steps`, words,
   }));
 }
