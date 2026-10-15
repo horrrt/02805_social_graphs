@@ -121,8 +121,7 @@ are records. All are private to Gyula unless noted.
 
 | Artifact | What it holds |
 | --- | --- |
-| [Log-Log Legends Kit](https://claude.ai/artifact/JRrSbSw7WMvvxRr57oBmWD) | The design system to build with: the site's React components with live previews, this file and the post guide as guidelines. Synced from the repo (see `.design-sync/NOTES.md`); edit the repo, not the kit. |
-| [Kit source project](https://claude.ai/design/p/90b493ad-23f8-40f4-9a54-b3d9b491d29b) | The claude.ai/design project `/design-sync` writes to; "Migrate again" copies it into the kit. Closes 14 December 2026. |
+| [Log-Log Legends Kit](https://claude.ai/artifact/JRrSbSw7WMvvxRr57oBmWD) | The design system to build with: the site's React components with live previews, and this file, the post guide and the site and writing rules as guidelines. Claude publishes changes straight to it; claude.ai/design and `/design-sync` are retired, so do not use them. When one of those four files changes, republish it to the kit's `project/guidelines/gen/guidelines/`. |
 | [Log-Log Legends tokens](https://claude.ai/artifact/2DfxHtPMWbJSRnDk19Hxf8) | The first design system, tokens only, from `corridor.css` and `week04.css` (23 Sep). Superseded by the kit. |
 | [Social Graphs design](https://claude.ai/artifact/Gcx984yt52bQBL2Bb2tJ8F) | The main canvas: Week 4 boards, the brief-gaps page, Week 5 boards, the chart and graph kits, the post template. Mirrored in `review/week04-redesign/`. Shared by link. |
 | [Home canvas](https://claude.ai/artifact/TexCswK63W8faQ5baT3Km5) | One board of the home page (29 Sep). |

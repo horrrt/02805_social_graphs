@@ -165,8 +165,7 @@ https://claude.ai/artifact/JRrSbSw7WMvvxRr57oBmWD, where Design and Slides artif
 The other three standalone systems (Modernist, Classical, Design System) were skipped; the
 migration skips empty ones and ones built from a starter theme.
 
-Until the standalone site closes, `/design-sync` still writes to the standalone project
-(projectId in config.json). After a sync, choose "Migrate again" from the Claude Design menu on the
-Artifacts page to copy the changes over. That only works while the artifact copy has no edits made
-in Claude: an artifact edited there is skipped so the edits survive. After 14 December, syncing
-needs a new path, since DesignSync writes only to claude.ai/design projects.
+**Retired (15 Oct 2026).** Do not use claude.ai/design, `/design-sync` or "Migrate again" any more. The kit
+artifact is now edited directly: Claude publishes changed files to it with the Artifact tool (guidelines under
+`project/guidelines/gen/guidelines/`, copied from the repo files `pkg/build.sh` lists). Rebuilding the component
+bundle without the converter's upload step has no path yet. The rest of this file records how the kit was built.
