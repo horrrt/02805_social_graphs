@@ -594,6 +594,7 @@ export function install(api, d3) {
   };
 
   function onDrag(event) {
+    dragging = true;
     if (state.view === "flat") {
       const scale = equirect.scale();
       flatView.lon -= (event.dx / scale) * (180 / Math.PI);
@@ -659,11 +660,11 @@ export function install(api, d3) {
       svg.call(
         d3
           .drag()
-          .on("start", () => {
-            dragging = true;
-          })
           .on("drag", onDrag)
           .on("end", () => {
+            // Only a real drag redraws, sharp again. A plain click must find
+            // the country it pressed still in the SVG when the click lands.
+            if (!dragging) return;
             dragging = false;
             globe();
           }),
