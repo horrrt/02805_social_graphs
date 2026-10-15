@@ -2892,6 +2892,7 @@
 .corridor .w6e-list h3 { font-size: var(--fs-body); margin: 0 0 4px; }
 /* One column template per list, so every bar starts and ends on the same line. */
 .corridor .w6e-list ol { column-gap: 8px; display: grid; grid-template-columns: minmax(84px, 1.2fr) 2fr auto; list-style: none; margin: 0; padding: 0; }
+.corridor .w6e-list ol.w6e-split { grid-template-columns: minmax(84px, 1.2fr) 2fr auto auto; }
 .corridor .w6e-list li { align-items: center; display: grid; font-size: var(--fs-small); grid-column: 1 / -1; grid-template-columns: subgrid; padding: 2px 0; }
 .corridor .w6e-word { color: var(--ink); font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .corridor .w6e-track { background: var(--line-soft); border-radius: 3px; display: block; height: 8px; }
