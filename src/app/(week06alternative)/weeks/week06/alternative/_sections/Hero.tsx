@@ -7,7 +7,7 @@ export function Hero() {
   return (
     <PostHero
       id="top"
-      eyebrow="Week 6 · What words mean · Alternative"
+      eyebrow="Week 6 · What words mean"
       title="Why do two Marvel pages read alike?"
       gridClass="w4-hero-grid w5-hero-grid"
       body={
