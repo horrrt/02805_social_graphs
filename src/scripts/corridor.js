@@ -463,8 +463,11 @@ export const GLOSSARY = {
   "Flight routes ": "Direct airport-to-airport routes between these two countries.",
 };
 
-function explainAttr(note) {
-  return note ? ` class="explains" data-explain="${note.replace(/"/g, "&quot;")}"` : "";
+// The class (with "explains" added when there is a note) and the note, as one
+// set of attributes: a second class attribute would be dropped by the parser.
+function explainAttr(note, cls = "") {
+  const classes = [cls, note ? "explains" : ""].filter(Boolean).join(" ");
+  return (classes ? ` class="${classes}"` : "") + (note ? ` data-explain="${note.replace(/"/g, "&quot;")}"` : "");
 }
 
 function row(term, value, override) {
@@ -2742,7 +2745,7 @@ export function edgeView(origin, dest) {
   return {
     kind,
     facts: facts
-      .map(([term, value]) => `<div class="fact"${explainAttr(GLOSSARY[term])}><dt>${term}</dt><dd>${value}</dd></div>`)
+      .map(([term, value]) => `<div${explainAttr(GLOSSARY[term], "fact")}><dt>${term}</dt><dd>${value}</dd></div>`)
       .join(""),
     verdict,
   };
@@ -2783,7 +2786,7 @@ export function denmarkView() {
             Origins: "Origins represented",
             Destinations: "Destinations sent to",
           }[k] ?? k];
-        return `<div class="metric"${explainAttr(note)}><span>${k}</span><b>${v}</b></div>`;
+        return `<div${explainAttr(note, "metric")}><span>${k}</span><b>${v}</b></div>`;
       })
       .join("");
 

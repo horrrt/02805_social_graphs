@@ -778,25 +778,32 @@
 
 /* ----------------------------------------------------------------- denmark */
 
+/* The country on the left, its eight figures in two even rows of four. */
 .corridor .dk-head {
-  align-items: center;
+  align-items: start;
   background: #f7fafd;
   border: 1px solid var(--line-soft);
   border-radius: 10px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 18px;
+  display: grid;
+  gap: 14px 24px;
+  grid-template-columns: minmax(150px, auto) repeat(4, minmax(0, 1fr));
   margin-bottom: 16px;
-  padding: 12px 14px;
+  padding: 16px 20px;
 }
 
 .corridor .dk-head .who {
+  align-self: center;
+  border-right: 1px solid var(--line-soft);
+  grid-row: span 2;
   margin: 0;
+  padding-right: 20px;
 }
 
 .corridor .dk-head .metric {
   display: flex;
   flex-direction: column;
+  gap: 2px;
+  min-width: 0;
 }
 
 .corridor .dk-head .metric span {
@@ -807,7 +814,7 @@
 }
 
 .corridor .dk-head .metric b {
-  font-size: var(--fs-body);
+  font-size: var(--fs-strong);
   font-variant-numeric: tabular-nums;
 }
 
