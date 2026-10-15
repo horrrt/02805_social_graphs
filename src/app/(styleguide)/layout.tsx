@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import "../../../public/assets/vendor/katex-0.19.0/katex.min.css";
 import "@/styles/type.css";
 import "@/styles/corridor.css";
+import "@/styles/post.css";
 
 export const metadata: Metadata = {
   title: "Style guide · Corridor Control · Log-Log Legends",

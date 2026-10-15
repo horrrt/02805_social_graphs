@@ -1,4 +1,5 @@
-// The opening: the question, the story nav and the dataset primer.
+// The opening: the question and the story nav, with the dataset primer as a
+// panel beside them where Week 4's hero keeps its inspector.
 export function Hero() {
   return (
     <section className="hero story-hero">
@@ -24,45 +25,45 @@ export function Hero() {
           not a sign of friendship or fame. The cards use those reference
           counts; they do not rank the characters’ strength.
         </p>
-        <details className="post-primer">
-          <summary>The dataset and a few useful terms</summary>
-          <p>
-            We use the course’s frozen snapshot from 26 August 2026: 303
-            articles in Wikipedia’s Marvel Comics superheroes category, with
-            1,784 links between them. It is a selected set of pages, not every
-            Marvel character or every link on Wikipedia.
-          </p>
-          <dl>
-            <dt>Incoming and outgoing links</dt>
-            <dd>
-              If Spider-Man’s page links to Hulk’s, that is one outgoing link
-              for Spider-Man and one incoming link for Hulk. Hulk need not
-              link back. Counting direction, there are 1,784 links;
-              ignoring it, they join 1,434 distinct pairs of articles,
-              since 350 pairs link both ways. Every link has one sender and
-              one receiver, so the average in-degree and the average
-              out-degree are equal: 5.89 links per article.
-            </dd>
-            <dt>Degree</dt>
-            <dd>
-              A link count. In-degree counts incoming links; out-degree counts
-              outgoing links.
-            </dd>
-            <dt>Isolate</dt>
-            <dd>
-              An article with no links in either direction within this set.
-              There are 17. The 58 cards with no incoming links also include
-              articles that link out.
-            </dd>
-            <dt>Component</dt>
-            <dd>
-              A group whose articles can reach each other through links. Here,
-              the groupings ignore the direction of the links.
-            </dd>
-          </dl>
-          <a href="https://sunelehmann.com/socialgraphs2026-web/data/">Course dataset and loading instructions ↗</a>
-        </details>
       </div>
+      <aside className="w12-panel post-primer">
+        <h2>The dataset and a few useful terms</h2>
+        <p>
+          We use the course’s frozen snapshot from 26 August 2026: 303
+          articles in Wikipedia’s Marvel Comics superheroes category, with
+          1,784 links between them. It is a selected set of pages, not every
+          Marvel character or every link on Wikipedia.
+        </p>
+        <dl>
+          <dt>Incoming and outgoing links</dt>
+          <dd>
+            If Spider-Man’s page links to Hulk’s, that is one outgoing link
+            for Spider-Man and one incoming link for Hulk. Hulk need not
+            link back. Counting direction, there are 1,784 links;
+            ignoring it, they join 1,434 distinct pairs of articles,
+            since 350 pairs link both ways. Every link has one sender and
+            one receiver, so the average in-degree and the average
+            out-degree are equal: 5.89 links per article.
+          </dd>
+          <dt>Degree</dt>
+          <dd>
+            A link count. In-degree counts incoming links; out-degree counts
+            outgoing links.
+          </dd>
+          <dt>Isolate</dt>
+          <dd>
+            An article with no links in either direction within this set.
+            There are 17. The 58 cards with no incoming links also include
+            articles that link out.
+          </dd>
+          <dt>Component</dt>
+          <dd>
+            A group whose articles can reach each other through links. Here,
+            the groupings ignore the direction of the links.
+          </dd>
+        </dl>
+        <a href="https://sunelehmann.com/socialgraphs2026-web/data/">Course dataset and loading instructions ↗</a>
+      </aside>
     </section>
   );
 }

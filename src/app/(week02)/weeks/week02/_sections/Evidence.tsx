@@ -12,10 +12,15 @@ import { EdgeMean, Gnm, GnmM, GnmN, HubShare, PIs, Tail, ZIs } from "./Formulas"
 export function Evidence() {
   return (
     <section className="section evidence" id="evidence">
-      <h2 id="closing-title">Curious? Go deeper.</h2>
-      <p className="fine">
-        Charts, data and methods for anyone who wants to check the details.
-      </p>
+      <header className="w12-opener">
+        <span aria-hidden="true" className="w12-opener-num">4</span>
+        <div>
+          <h2 id="closing-title">Curious? Go deeper.</h2>
+          <p className="w12-scope">
+            Charts, data and methods for anyone who wants to check the details.
+          </p>
+        </div>
+      </header>
       <div className="companion-callout">
         <h3>Missing two more models? Play Screen Test.</h3>
         <p>

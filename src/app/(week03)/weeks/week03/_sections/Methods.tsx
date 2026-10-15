@@ -6,16 +6,16 @@ export function Methods() {
     <>
       {/* methods ------------------------------------------------------ */}
       <section className="step" id="methods">
-        <div className="card">
-          <div className="step-head">
-            <span className="num">✓</span>
+        <header className="w4-opener">
+          <span aria-hidden="true" className="w4-opener-num">✓</span>
+          <div>
             <h2>Methods, and what this cannot tell you</h2>
           </div>
-          <details className="qa" id="methods-drawer">
-            <summary>
-              <span className="qa-cue">Sources, methods and limits</span>
-            </summary>
-            <div className="qa-body">
+        </header>
+        <div className="rx-drawers rx-foot">
+          <details className="rx-drawer" id="methods-drawer">
+            <summary>Sources, methods and limits</summary>
+            <div className="rx-drawer-body">
               <div className="grid2">
                 <div>
                   <p className="sub">

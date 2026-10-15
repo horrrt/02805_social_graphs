@@ -6,11 +6,14 @@ export function TryIt() {
   return (
     <>
       <span className="anchor" id="try-it"></span>
-      <section className="section interaction-panel" id="pack-machine">
-        <div className="section-head">
-          <h2>Open a pack</h2>
-          <span className="tag">Five cards per pack · you can get repeats</span>
+      <header className="w12-opener">
+        <span aria-hidden="true" className="w12-opener-num">1</span>
+        <div>
+          <h2 id="pack-title">Open a pack</h2>
+          <p className="w12-scope">Five cards per pack · you can get repeats</p>
         </div>
+      </header>
+      <section aria-labelledby="pack-title" className="section interaction-panel" id="pack-machine">
         <PackControls />
         <p className="fine">
           Our rule: the more articles mention a character, the more often its

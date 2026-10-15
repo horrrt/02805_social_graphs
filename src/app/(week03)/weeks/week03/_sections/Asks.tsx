@@ -8,17 +8,17 @@ export function Asks() {
     <>
       {/* everything that goes deeper than the main path ---------------- */}
       <section className="step" data-depth="deep" id="asks">
-        <div className="card">
-          <div className="step-head">
-            <span className="num">8</span>
+        <header className="w4-opener">
+          <span aria-hidden="true" className="w4-opener-num">8</span>
+          <div>
             <h2>More ways to look at this</h2>
           </div>
+        </header>
+        <div className="card">
           <h2 id="questions-head">Six questions, answered from the same two files</h2>
-          <details className="qa" id="questions">
-            <summary>
-              <span className="qa-cue">The six questions</span>
-            </summary>
-            <div className="qa-body">
+          <details className="rx-drawer" id="questions">
+            <summary>The six questions</summary>
+            <div className="rx-drawer-body rx-wide">
               <article className="qa-item">
                 <h3>1 · Which corridors actually carry the world?</h3>
                 <RingControls />
@@ -225,11 +225,9 @@ export function Asks() {
               by a factor of thirty or more.
             </span>
           </div>
-          <details className="qa" id="gravity-method">
-            <summary>
-              <span className="qa-cue">How the model is fitted, and the full table</span>
-            </summary>
-            <div className="qa-body">
+          <details className="rx-drawer" id="gravity-method">
+            <summary>How the model is fitted, and the full table</summary>
+            <div className="rx-drawer-body rx-wide">
               <p className="sub">
                 Question 4 showed two things separately: rich countries hold more
                 foreign-born people, and the people in them came from further
@@ -439,7 +437,7 @@ export function Asks() {
             <tr>
               <td>Afghanistan and Iran</td>
               <td style={{"textAlign":"right"}}>2</td>
-              <td>Afghanistan, Iran</td>
+              <td style={{"textAlign":"left"}}>Afghanistan, Iran</td>
             </tr>
             </tbody>
           </table>
@@ -449,9 +447,9 @@ export function Asks() {
             <span>
               <b>
                 68.7% of the world's 282 million migrants live inside
-                one of the nine groups rather than between them
+                one of the nine groups rather than between them,
               </b>
-              ,
+              {" "}
               counting every corridor in 2024, including the small ones
               the 10,000-person threshold left out of the graph. The
               groups are free movement zones, old empires and shared
@@ -464,11 +462,9 @@ export function Asks() {
               above state plainly rather than explain away.
             </span>
           </div>
-          <details className="qa" id="communities-method">
-            <summary>
-              <span className="qa-cue">How the groups were found, and refugees against migrants</span>
-            </summary>
-            <div className="qa-body">
+          <details className="rx-drawer" id="communities-method">
+            <summary>How the groups were found, and refugees against migrants</summary>
+            <div className="rx-drawer-body rx-wide">
               <p className="sub">
                 A course on social graphs asks this in week three and this post
                 had not. Louvain on the undirected network, weighted by people
@@ -851,11 +847,9 @@ export function Asks() {
             Four extra views, two of them from files the rest of the
             page does not load
           </h2>
-          <details className="qa" id="views">
-            <summary>
-              <span className="qa-cue">The four extra views</span>
-            </summary>
-            <div className="qa-body">
+          <details className="rx-drawer" id="views">
+            <summary>The four extra views</summary>
+            <div className="rx-drawer-body rx-wide">
               <ViewsStatus />
               <article className="qa-item">
                 <h3>1 · The network with the geography taken away</h3>

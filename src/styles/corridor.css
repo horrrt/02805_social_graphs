@@ -423,12 +423,6 @@
   grid-template-columns: 1fr 1fr;
 }
 
-/* Section 2: stack the two heavy-tail charts so each is wide enough to click. */
-.corridor #tails .grid2 {
-  grid-template-columns: 1fr;
-  gap: 28px;
-}
-
 .corridor .grid-side {
   display: grid;
   gap: 18px;
@@ -1468,7 +1462,7 @@ body > .chart-tip[hidden] {
 
 /* --- the country picker in section 8's heading ---------------------- */
 
-.corridor .step-head #dk-country {
+.corridor .w3-opener-pick #dk-country {
   border-radius: 8px;
   font-size: var(--fs-small);
   font-weight: 600;
@@ -2042,4 +2036,47 @@ body > .chart-tip[hidden] {
 .corridor :where(.tex-pending) {
   font-family: var(--font-mono);
   font-size: var(--fs-small);
+}
+
+/* ------------------------------------------- skins on Week 4's openers and drawers */
+
+/* Week 3 opens its sections with .w4-opener and folds its depth into
+   details.rx-drawer (post.css); each skin restyles them as it did .step-head and .qa. */
+.corridor[data-skin="editorial"] .w4-opener h2 {
+  font-weight: 400;
+}
+
+.corridor[data-skin="editorial"] .w4-opener-num {
+  color: var(--ink-mute-text);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-weight: 400;
+}
+
+.corridor[data-skin="terminal"] {
+  --w4-inset: #0e151d;
+  --w4-accent: #5fb3ea;
+}
+
+.corridor[data-skin="terminal"] .w4-opener h2 {
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.corridor[data-skin="terminal"] .w4-opener-num {
+  color: var(--people);
+}
+
+.corridor[data-skin="terminal"] details.rx-drawer > summary {
+  background: #0e151d;
+  border-color: var(--line);
+}
+
+.corridor[data-skin="poster"] .w4-opener h2 {
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+}
+
+.corridor[data-skin="poster"] .w4-opener-num {
+  color: var(--people);
 }

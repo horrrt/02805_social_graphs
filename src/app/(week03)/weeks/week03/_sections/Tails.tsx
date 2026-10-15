@@ -9,20 +9,21 @@ export function Tails() {
     <>
       {/* 2 ----------------------------------------------------------- */}
       <section className="step" id="tails">
-        <div className="card">
-          <div className="step-head">
-            <span className="num">2</span>
+        <header className="w4-opener">
+          <span aria-hidden="true" className="w4-opener-num">2</span>
+          <div>
             <h2>Heavy tails in migration</h2>
-            <Slot view="tails-tag" as="span" id="tails-tag" className="year-tag" initial="(2020 · follows the slider)" />
-          </div>
-          <p className="sub">
-            <b>
+            <p>
               Three of the four tails on this page fail the test for a
               {" "}
               <Gloss id="w3-term-power-law" word="power law" />
               .
-            </b>
-            {" "}
+            </p>
+            <Slot view="tails-tag" as="p" id="tails-tag" className="w3-scope" initial="(2020 · follows the slider)" />
+          </div>
+        </header>
+        <div className="card w4-card">
+          <p className="sub">
             The fourth, flight partners, is not ruled out on
             its own terms, but the
             {" "}
@@ -131,136 +132,136 @@ export function Tails() {
                   histogram, and the flight network's tail is the longest.
                 </span>
               </div>
-              <details className="qa">
-                <summary>
-                  <span className="qa-cue">Is it a power law? We fitted it</span>
-                </summary>
-                <div className="qa-body">
-                  <p className="sub">
-                    A straight-ish line on log–log axes is not evidence of a
-                    power law, and with 232 countries the axis only spans
-                    about two
-                    {" "}
-                    <Gloss id="w3-term-decades" word="decades" />
-                    . So we fitted the tails:
-                    {" "}
-                    <Gloss id="w3-term-maximum-likelihood" word="maximum likelihood" />
-                    {" "}
-                    for the exponent, the lower bound
-                    chosen by minimising the
-                    {" "}
-                    <Gloss id="w3-term-ks-distance" word="Kolmogorov–Smirnov distance" />
-                    , a
-                    {" "}
-                    <Gloss id="w3-term-goodness-of-fit" word="goodness-of-fit test" />
-                    {" "}
-                    against 500 synthetic datasets
-                    drawn from the fitted model, and a
-                    {" "}
-                    <Gloss id="w3-term-likelihood-ratio" word="likelihood-ratio test" />
-                    {" "}
-                    against the two distributions that also look straight
-                    here. The method is Clauset, Shalizi and Newman (2009);
-                    the code is
-                    {" "}
-                    <code>analysis/week03_tails.py</code>
-                    . The fits are for
-                    2020, the null-model year, and stay there while the
-                    charts above follow the slider.
-                  </p>
-                  <table className="ego">
-                    <tbody>
-                    <tr>
-                      <th>Tail</th>
-                      <th style={{"textAlign":"right"}}>
-                        <Xmin />
-                      </th>
-                      <th style={{"textAlign":"right"}}>
-                        <TailAlpha />
-                      </th>
-                      <th style={{"textAlign":"right"}}>In tail</th>
-                      <th style={{"textAlign":"right"}}>Fit p</th>
-                      <th>Against the rivals</th>
-                    </tr>
-                    <tr>
-                      <td>Origins per destination</td>
-                      <td style={{"textAlign":"right"}}>33</td>
-                      <td style={{"textAlign":"right"}}>2.32</td>
-                      <td style={{"textAlign":"right"}}>85</td>
-                      <td style={{"textAlign":"right"}}>0.00</td>
-                      <td>lognormal fits better (p = 0.072)</td>
-                    </tr>
-                    <tr>
-                      <td>People on a corridor</td>
-                      <td style={{"textAlign":"right"}}>126,665</td>
-                      <td style={{"textAlign":"right"}}>2.05</td>
-                      <td style={{"textAlign":"right"}}>393</td>
-                      <td style={{"textAlign":"right"}}>0.01</td>
-                      <td>lognormal fits better (p = 0.026)</td>
-                    </tr>
-                    <tr>
-                      <td>Destinations per origin</td>
-                      <td style={{"textAlign":"right"}}>33</td>
-                      <td style={{"textAlign":"right"}}>2.95</td>
-                      <td style={{"textAlign":"right"}}>124</td>
-                      <td style={{"textAlign":"right"}}>0.03</td>
-                      <td>both fit better (p = 0.004, 0.000)</td>
-                    </tr>
-                    <tr>
-                      <td>Flight partners</td>
-                      <td style={{"textAlign":"right"}}>27</td>
-                      <td style={{"textAlign":"right"}}>2.93</td>
-                      <td style={{"textAlign":"right"}}>57</td>
-                      <td style={{"textAlign":"right"}}>0.21</td>
-                      <td>both fit better (p = 0.082, 0.077)</td>
-                    </tr>
-                    </tbody>
-                  </table>
-                  <p className="sub">
-                    Fit p is the share of synthetic datasets from the fitted
-                    power law that fit it
-                    {" "}
-                    <em>worse</em>
-                    {" "}
-                    than the real data
-                    does. Below 0.1 the power law is ruled out; above it the
-                    power law survives, which is not the same as winning.
-                    Three of the four are below it: origins per destination
-                    and people on a corridor solidly, destinations per
-                    origin more narrowly at 0.03. Flight partners alone
-                    survives, at 0.21, and still loses to both rivals.
-                    Where a rival can be told apart at all it is one of
-                    the two, and on this page's tails that is usually the
-                    lognormal.
-                  </p>
-                  <div className="notice">
-                    <span className="ico">💡</span>
-                    {" "}
-                    <span>
-                      <b>
-                        So the word on this page is "
-                        <Gloss id="w3-term-heavy-tailed" word="heavy-tailed" />
-                        ", not "
-                        <Gloss id="w3-term-scale-free" word="scale-free" />
-                        ".
-                      </b>
-                      {" "}
-                      Origins per destination fits
-                      {" "}
-                      <TailAlpha v="2.32" />
-                      , well inside
-                      the range every scale-free network in a lecture slide
-                      has, and it is still ruled out at
-                      {" "}
-                      <FitP v="0.00" />
-                      . That is the trap the log–log toggle above
-                      sets: a line can look right and be wrong, and the only
-                      way to find out is to fit it.
-                    </span>
-                  </div>
-                </div>
-              </details>
             </div>
+          </div>
+          <div className="rx-drawers rx-foot">
+            <details className="rx-drawer">
+              <summary>Is it a power law? We fitted it</summary>
+              <div className="rx-drawer-body">
+                <p className="sub">
+                  A straight-ish line on log–log axes is not evidence of a
+                  power law, and with 232 countries the axis only spans
+                  about two
+                  {" "}
+                  <Gloss id="w3-term-decades" word="decades" />
+                  . So we fitted the tails:
+                  {" "}
+                  <Gloss id="w3-term-maximum-likelihood" word="maximum likelihood" />
+                  {" "}
+                  for the exponent, the lower bound
+                  chosen by minimising the
+                  {" "}
+                  <Gloss id="w3-term-ks-distance" word="Kolmogorov–Smirnov distance" />
+                  , a
+                  {" "}
+                  <Gloss id="w3-term-goodness-of-fit" word="goodness-of-fit test" />
+                  {" "}
+                  against 500 synthetic datasets
+                  drawn from the fitted model, and a
+                  {" "}
+                  <Gloss id="w3-term-likelihood-ratio" word="likelihood-ratio test" />
+                  {" "}
+                  against the two distributions that also look straight
+                  here. The method is Clauset, Shalizi and Newman (2009);
+                  the code is
+                  {" "}
+                  <code>analysis/week03_tails.py</code>
+                  . The fits are for
+                  2020, the null-model year, and stay there while the
+                  charts above follow the slider.
+                </p>
+                <table className="ego">
+                  <tbody>
+                  <tr>
+                    <th>Tail</th>
+                    <th style={{"textAlign":"right"}}>
+                      <Xmin />
+                    </th>
+                    <th style={{"textAlign":"right"}}>
+                      <TailAlpha />
+                    </th>
+                    <th style={{"textAlign":"right"}}>In tail</th>
+                    <th style={{"textAlign":"right"}}>Fit p</th>
+                    <th>Against the rivals</th>
+                  </tr>
+                  <tr>
+                    <td>Origins per destination</td>
+                    <td style={{"textAlign":"right"}}>33</td>
+                    <td style={{"textAlign":"right"}}>2.32</td>
+                    <td style={{"textAlign":"right"}}>85</td>
+                    <td style={{"textAlign":"right"}}>0.00</td>
+                    <td>lognormal fits better (p = 0.072)</td>
+                  </tr>
+                  <tr>
+                    <td>People on a corridor</td>
+                    <td style={{"textAlign":"right"}}>126,665</td>
+                    <td style={{"textAlign":"right"}}>2.05</td>
+                    <td style={{"textAlign":"right"}}>393</td>
+                    <td style={{"textAlign":"right"}}>0.01</td>
+                    <td>lognormal fits better (p = 0.026)</td>
+                  </tr>
+                  <tr>
+                    <td>Destinations per origin</td>
+                    <td style={{"textAlign":"right"}}>33</td>
+                    <td style={{"textAlign":"right"}}>2.95</td>
+                    <td style={{"textAlign":"right"}}>124</td>
+                    <td style={{"textAlign":"right"}}>0.03</td>
+                    <td>both fit better (p = 0.004, 0.000)</td>
+                  </tr>
+                  <tr>
+                    <td>Flight partners</td>
+                    <td style={{"textAlign":"right"}}>27</td>
+                    <td style={{"textAlign":"right"}}>2.93</td>
+                    <td style={{"textAlign":"right"}}>57</td>
+                    <td style={{"textAlign":"right"}}>0.21</td>
+                    <td>both fit better (p = 0.082, 0.077)</td>
+                  </tr>
+                  </tbody>
+                </table>
+                <p className="sub">
+                  Fit p is the share of synthetic datasets from the fitted
+                  power law that fit it
+                  {" "}
+                  <em>worse</em>
+                  {" "}
+                  than the real data
+                  does. Below 0.1 the power law is ruled out; above it the
+                  power law survives, which is not the same as winning.
+                  Three of the four are below it: origins per destination
+                  and people on a corridor solidly, destinations per
+                  origin more narrowly at 0.03. Flight partners alone
+                  survives, at 0.21, and still loses to both rivals.
+                  Where a rival can be told apart at all it is one of
+                  the two, and on this page's tails that is usually the
+                  lognormal.
+                </p>
+                <div className="notice">
+                  <span className="ico">💡</span>
+                  {" "}
+                  <span>
+                    <b>
+                      So the word on this page is "
+                      <Gloss id="w3-term-heavy-tailed" word="heavy-tailed" />
+                      ", not "
+                      <Gloss id="w3-term-scale-free" word="scale-free" />
+                      ".
+                    </b>
+                    {" "}
+                    Origins per destination fits
+                    {" "}
+                    <TailAlpha v="2.32" />
+                    , well inside
+                    the range every scale-free network in a lecture slide
+                    has, and it is still ruled out at
+                    {" "}
+                    <FitP v="0.00" />
+                    . That is the trap the log–log toggle above
+                    sets: a line can look right and be wrong, and the only
+                    way to find out is to fit it.
+                  </span>
+                </div>
+              </div>
+            </details>
           </div>
         </div>
       </section>
