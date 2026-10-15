@@ -784,6 +784,7 @@ export function install(api, d3) {
     const lightest = api.scaleFloor(edges, 500);
     const link = api.linkSpec();
     const scale = api.THICKNESS[state.thickness] ?? 1;
+    const muted = svg.append("g").attr("fill", "none").attr("pointer-events", "none");
     const halo = svg.append("g").attr("fill", "none").attr("pointer-events", "none").attr("filter", "url(#globe-glow)");
     const arcs = svg.append("g").attr("fill", "none").attr("pointer-events", "none");
     const ends = [];
@@ -799,16 +800,28 @@ export function install(api, d3) {
       if (alpha === 0) continue;
       const share = Math.sqrt(edge.weight / heaviest);
       const rank = api.logShare(edge.weight, lightest, heaviest);
-      // A picked country keeps its corridors lit; the rest go dark.
-      if (!api.globeFocused(edge)) continue;
       // Drawn from the selection outward, so its end stays put at the seam.
       // On the globe a great circle through the middle is a straight spoke,
       // so the globe bows it the same way, lifted off the earth.
       const outward = toIso === state.selected;
       const { d, end } = bow(place(outward ? to : from), place(outward ? from : to), span);
-      const tint = link.ramp ? api.rampColour(share) : glowTint(rank);
-      const wide = (link.width ? 0.8 + rank * rank * 4.6 : 1.8) * scale;
-      const strength = Math.min(1, (0.45 + rank * 0.55) * alpha);
+      // A picked country keeps its corridors lit; the rest go grey, thin and
+      // unlit, so the shape of the network stays as context.
+      if (!api.globeFocused(edge)) {
+        muted
+          .append("path")
+          .attr("d", d)
+          .attr("stroke", `rgb(${api.GLOBE_MUTED.rgb})`)
+          .attr("stroke-opacity", api.GLOBE_MUTED.alpha)
+          .attr("stroke-width", api.GLOBE_MUTED.width * scale);
+        continue;
+      }
+      // A picked country's own corridors draw brighter and wider than the
+      // unpicked network, so they stand clear of the grey.
+      const lit = state.picked ? 0.35 : 0;
+      const tint = link.ramp ? api.rampColour(share) : glowTint(Math.min(1, rank + lit));
+      const wide = (link.width ? 0.8 + rank * rank * 4.6 : 1.8) * scale * (1 + lit * 1.6);
+      const strength = Math.min(1, (0.45 + lit + rank * 0.55) * alpha);
       halo
         .append("path")
         .attr("d", d)
