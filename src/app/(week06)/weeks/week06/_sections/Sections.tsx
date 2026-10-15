@@ -101,7 +101,7 @@ export function Weights() {
           is on 191, so
           {" "}
           <IdfWorked df={191} value="0.46" />
-          . The alternative Week 6 post shows what that gap does once names are removed. Put together, they make a
+          . Put together, they make a
           {" "}
           <Gloss id="w6-term-document-term-matrix" word="document-term matrix" />
           {" "}
@@ -131,7 +131,7 @@ export function Weights() {
       }
       plot="A page's words by raw count and by TF-IDF"
       note="Twelve words each way for any of the 303 pages."
-      method={<p>A word is a run of letters, lowercased, with one inner apostrophe kept. The alternative Week 6 post splits words the same way. The pages hold 727,261 words, 27,033 of them different.</p>}
+      method={<p>A word is a run of letters, lowercased, with one inner apostrophe kept. The pages hold 727,261 words, 27,033 of them different.</p>}
     />
   );
 }
@@ -243,7 +243,7 @@ export function Contrast() {
           sit together in the top-right corner, common in both groups, so their lean shows in the lists below and not in where they sit. Distance from the diagonal hints at a lean, but many less common words sit far from it by chance. The z-score and the dot&apos;s colour decide which words lean.
         </>
       }
-      method={<p>Scattertext&apos;s log-odds ratio with an informative Dirichlet prior (Monroe, Colaresi and Quinn 2008). The prior comes from the two groups&apos; pooled counts, scaled to the class size. Gender is from Wikidata P21, as in the alternative Week 6 post, and the 106 pages without a woman or man label are left out.</p>}
+      method={<p>Scattertext&apos;s log-odds ratio with an informative Dirichlet prior (Monroe, Colaresi and Quinn 2008). The prior comes from the two groups&apos; pooled counts, scaled to the class size. Gender is from Wikidata P21, and the 106 pages without a woman or man label are left out.</p>}
     />
   );
 }

@@ -204,6 +204,8 @@ test("the closing takeaways quote the same numbers", () => {
 test("/weeks/week06/ is the essentials post; the hero links the alternative", () => {
   assert.match(html, /<h1>Here, storm means Ororo, not the weather<\/h1>/);
   assert.match(block(html, "top"), /<a href="alternative\/">alternative Week 6 post<\/a>/);
+  const main = html.slice(html.indexOf("<main"), html.indexOf("</main>"));
+  assert.equal(main.match(/alternative/gi)?.length, 2, "the hero link (href and text) is the only mention of the alternative post");
   assert.match(html, /<link rel="canonical" href="https:\/\/horrrt\.github\.io\/02805_social_graphs\/weeks\/week06\/"/);
   assert.match(html, /"@type":"Article"[^<]*"url":"https:\/\/horrrt\.github\.io\/02805_social_graphs\/weeks\/week06\/"/);
 });
