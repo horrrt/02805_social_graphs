@@ -14,11 +14,13 @@ export type CorridorState = {
   yearIndex: number | null;
   year: number | null;
   selected: string | null;
+  picked: boolean;
   hover: string | null;
   layer: string;
   axisMode: { hist: string; ccdf: string };
   style: Style | null;
   renderer: string;
+  globe: string;
   paint: number;
   restyles: number;
   tables: Record<string, TableSpec>;

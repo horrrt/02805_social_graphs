@@ -131,10 +131,8 @@ function Stops({ model, path, station, closed, broken = false }: { model: Model;
                 )
               }
             >
-              <span className="kit-named">
-                <Portrait page={n.name} />
-                {label(id)}
-              </span>
+              <Portrait page={n.name} size="m" />
+              {label(id)}
             </button>
           </li>
         );

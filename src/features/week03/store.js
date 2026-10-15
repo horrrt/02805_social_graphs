@@ -13,8 +13,10 @@ export const corridor = createStore({
   // The year slider: its index into the payload's years, and the year itself.
   yearIndex: null,
   year: null,
-  // The one selection the whole page follows.
+  // The one selection the whole page follows, and whether a reader picked it
+  // (the opening selection is not a pick and does not focus the globe).
   selected: null,
+  picked: false,
   // The country under the pointer on a chart, and on the flat map.
   hover: null,
   mapHover: null,
@@ -26,6 +28,9 @@ export const corridor = createStore({
   // load falls back to canvas.
   style: null,
   renderer: "canvas",
+  // The library that drew the hero globe: the renderer's, unless the renderer
+  // borrows another library's globe (canvas draws its globe with d3).
+  globe: "canvas",
   // Bumped whenever every visual has to repaint: a resize, a restyle.
   paint: 0,
   // Bumped by a restyle alone, for the views that resize rather than redraw

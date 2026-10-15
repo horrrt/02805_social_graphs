@@ -654,14 +654,19 @@
 .visual-design .ride-track li:not(:last-child)::after {
   content: "";
   position: absolute;
-  top: 22px;
+  top: 30px;
   left: 50%;
   width: 100%;
   height: 4px;
   background: var(--accent);
 }
+/* Each stop is its character: the portrait sits on the line, the name under it. */
 .visual-design .ride-stop {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
   width: 100%;
   white-space: normal;
   border: 0;
@@ -673,21 +678,13 @@
   line-height: 1.25;
   font-family: var(--font-sans);
   border-radius: 8px;
-  padding: 44px 8px 10px;
-  min-height: 76px;
+  padding: 10px 8px 10px;
 }
-.visual-design .ride-stop::before {
-  content: "";
-  position: absolute;
-  top: 13px;
-  left: calc(50% - 10px);
+.visual-design .ride-stop .kit-portrait {
+  position: relative;
   z-index: 1;
-  width: 20px;
-  height: 20px;
   background: var(--bg);
-  border: 4px solid var(--accent);
-  border-radius: 50%;
-  box-sizing: border-box;
+  box-shadow: 0 0 0 3px var(--accent);
 }
 .visual-design .ride-stop:hover {
   background: var(--band);
@@ -701,11 +698,23 @@
   color: #be533c;
   text-decoration: line-through;
 }
+.visual-design .closed-stop .ride-stop .kit-portrait {
+  box-shadow: 0 0 0 3px #be533c;
+  filter: grayscale(1);
+  opacity: 0.6;
+}
+/* The closed station's cross, over its portrait. */
 .visual-design .closed-stop .ride-stop::before {
   content: "×";
+  position: absolute;
+  top: 20px;
+  left: calc(50% - 10px);
+  z-index: 2;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
   font-size: var(--fs-h3);
   line-height: 18px;
-  border: 0;
   background: #be533c;
   color: white;
   text-decoration: none;
@@ -1004,6 +1013,59 @@
 .visual-design .w1-figures span {
   color: var(--muted);
   font-size: var(--fs-caption);
+}
+/* Week 2's primer is wider and lays its four terms out two by two, so the
+   card no longer stands twice the height of the copy beside it. Each term
+   wears a station dot, the mark the transit map and section rail use. */
+.theme-transit.visual-design.guided-post .story-hero {
+  align-items: center;
+  grid-template-columns: minmax(0, 1fr) 500px;
+  gap: 56px;
+  padding: 56px 0 64px;
+}
+.theme-transit.visual-design .story-hero .w2-primer {
+  padding: 22px 24px 20px;
+}
+.theme-transit.visual-design .w2-primer > p {
+  color: #0b1f3a;
+  margin: 0;
+}
+.theme-transit.visual-design .w2-primer dl {
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 14px 24px;
+  grid-template-columns: 1fr 1fr;
+  margin: 14px 0 0;
+  padding-top: 14px;
+}
+.theme-transit.visual-design .w2-primer dt {
+  align-items: center;
+  color: #0b1f3a;
+  display: flex;
+  gap: 7px;
+  margin: 0;
+}
+.theme-transit.visual-design .w2-primer dt::before {
+  background: #ffffff;
+  border: 2.5px solid #14618f;
+  border-radius: 50%;
+  content: "";
+  flex: none;
+  height: 9px;
+  width: 9px;
+}
+.theme-transit.visual-design .w2-primer dd {
+  margin: 4px 0 0 16px;
+}
+.theme-transit.visual-design .w2-primer > a {
+  margin-top: 16px;
+}
+.theme-transit.visual-design.guided-post .story-hero .story-scope {
+  border-left: 2px solid var(--accent);
+  color: var(--muted);
+  margin-top: 26px;
+  max-width: 44ch;
+  padding-left: 12px;
 }
 .visual-design .w12-opener {
   align-items: flex-start;

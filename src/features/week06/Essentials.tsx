@@ -46,21 +46,24 @@ function Picker({ id, label, value, options, onChange, portrait = false }: { id:
   );
 }
 
-type Row = { key: string; label: ReactNode; value: number; text: string; mark?: boolean; weak?: boolean };
+/** `aside` is a second figure, drawn in its own column so both line up down the list. */
+type Row = { key: string; label: ReactNode; value: number; text: string; aside?: string; mark?: boolean; weak?: boolean };
 
 /** A ranked list with a bar per row, scaled to `max` or else the list's largest value. */
 function Bars({ title, rows, note, max: scale }: { title: ReactNode; rows: Row[]; note?: ReactNode; max?: number }) {
   const max = scale ?? Math.max(...rows.map((r) => Math.abs(r.value)), 1e-12);
+  const split = rows.some((r) => r.aside);
   return (
     <div className="w6e-list">
       <h3>{title}</h3>
       {note ? <p className="w6e-note">{note}</p> : null}
-      <ol>
+      <ol className={split ? "w6e-split" : undefined}>
         {rows.map((r) => (
           <li key={r.key} className={r.mark ? "w6e-mark" : r.weak ? "w6e-weak" : undefined}>
             <span className="w6e-word">{r.label}</span>
             <span className="w6e-track"><span className="w6e-bar" style={{ width: `${(Math.abs(r.value) / max) * 100}%` }}></span></span>
-            <span className="w6e-num">{r.text}</span>
+            <span className="w6e-num">{split ? `${r.text} ·` : r.text}</span>
+            {split ? <span className="w6e-num">{r.aside}</span> : null}
           </li>
         ))}
       </ol>
@@ -86,7 +89,7 @@ function Weights() {
   const p = (data.pages as Any[]).find((x) => x.name === page) ?? data.pages[0];
   const row = ([w, count, df, idf, tfidf]: Any, by: "count" | "tfidf") => ({
     key: w, label: w, value: by === "count" ? count : tfidf, mark: idf < 0.1,
-    text: by === "count" ? `${count} · on ${df} pages` : `${tfidf.toFixed(4)} · idf ${idf.toFixed(2)}`,
+    ...(by === "count" ? { text: String(count), aside: `on ${df} pages` } : { text: tfidf.toFixed(4), aside: `idf ${idf.toFixed(2)}` }),
   });
   return (
     <div className="w6e-app" id="weights-app">
@@ -308,7 +311,7 @@ function Pmi() {
   if (!data) return <div className="w6e-app" id="pmi-app"></div>;
   const r = data.rows[word];
   const rows = (list: [string, number, number][], by: "count" | "pmi") =>
-    list.map(([w, n, v]) => ({ key: w, label: w, value: by === "count" ? n : v, text: by === "count" ? `${n} · PMI ${signed(v)}` : `${signed(v)} · seen ${n}×` }));
+    list.map(([w, n, v]) => ({ key: w, label: w, value: by === "count" ? n : v, ...(by === "count" ? { text: String(n), aside: `PMI ${signed(v)}` } : { text: signed(v), aside: `seen ${n}×` }) }));
   return (
     <div className="w6e-app" id="pmi-app">
       <div className="w6e-controls">

@@ -17,9 +17,16 @@
 // readStyle() and installs the renderer the variant names.
 
 export const RENDERERS = {
+  // Canvas draws the charts and the flat map itself and borrows d3's globe:
+  // only the parts named in `only` are installed from the module.
   canvas: {
     label: "Canvas",
-    bytes: 0,
+    bytes: 279706,
+    script: "d3-7.9.0.min.js",
+    global: "d3",
+    module: () => import("./variants/d3.js"),
+    only: ["globe", "hint", "resetView"],
+    globe: "d3",
   },
   d3: {
     label: "D3",
