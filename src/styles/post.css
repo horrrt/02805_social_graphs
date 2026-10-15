@@ -2834,14 +2834,19 @@
 .corridor .w6-cols { display: grid; gap: 20px; grid-template-columns: 1fr 1fr; }
 .corridor .w6-col h3 { font-size: var(--fs-body); margin: 0 0 2px; }
 .corridor .w6-count { color: var(--ink-soft); font-size: var(--fs-small); margin: 0 0 8px; }
-.corridor .w6-col ol { display: flex; flex-direction: column; gap: 4px; margin: 0; padding-left: 22px; }
-.corridor .w6-col li { font-size: var(--fs-small); line-height: 1.4; padding: 3px 6px; }
-.corridor .w6-col li > span { display: inline-block; }
+/* Each row is three columns: the rank, the portrait, then the name line over the words line, so
+   every name and every words line starts at the same x. */
+.corridor .w6-col ol { counter-reset: w6-rank; display: flex; flex-direction: column; gap: 4px; list-style: none; margin: 0; padding: 0; }
+.corridor .w6-col li { align-items: center; column-gap: 8px; counter-increment: w6-rank; display: grid; font-size: var(--fs-small); grid-template-columns: 1.5em 28px 1fr; line-height: 1.4; padding: 4px 6px; }
+.corridor .w6-col li::before { color: var(--ink-soft); content: counter(w6-rank) "."; font-variant-numeric: tabular-nums; grid-row: span 2; text-align: right; }
+.corridor .w6-col li > .kit-portrait { grid-row: span 2; }
+.corridor .w6-col li > :is(.w6-line, .w6-words) { grid-column: 3; }
+.corridor .w6-line > span { display: inline-block; }
 .corridor .w6-name { font-weight: 600; margin-right: 8px; }
 .corridor .w6-where { border: 1px solid var(--line); border-radius: 999px; color: var(--ink-soft); font-size: var(--fs-caption); margin-right: 8px; padding: 0 7px; }
 .corridor .w6-linked .w6-where { background: var(--ink); border-color: var(--ink); color: var(--card); }
 .corridor .w6-cos { color: var(--ink-soft); font-variant-numeric: tabular-nums; }
-.corridor .w6-words { color: var(--ink-soft); display: block !important; font-size: var(--fs-caption); }
+.corridor .w6-words { color: var(--ink-soft); font-size: var(--fs-caption); }
 /* A strip chart reads the page's light tokens, so in the dark hero it sits on a card. */
 .corridor .w6-hero-panel { background: var(--card); border-radius: 12px; padding: 14px 18px 10px; }
 .corridor .w6-note { color: var(--ink); font-size: var(--fs-small); margin: 0 0 14px; }

@@ -119,17 +119,17 @@ function Column({ title, rows, linked, women, other }: { title: string; rows: Ro
       <ol>
         {rows.map((r) => (
           <li key={r.index} className={[r.linked && "w6-linked", r.gender === "woman" && "w6-woman"].filter(Boolean).join(" ") || undefined}>
-            <span className="w6-name kit-named">
-              <Portrait page={r.page} />
-              {r.name}
-            </span>
-            {r.gender ? <span className="visually-hidden">{`, ${r.gender}, `}</span> : <span className="w6-nolabel"><span className="visually-hidden">, </span>no label<span className="visually-hidden">, </span></span>}
-            <span className="w6-where">{r.where}<span className="visually-hidden">, </span></span>
-            {other.has(r.index) ? <span className="w6-both">in both lists<span className="visually-hidden">, </span></span> : null}
-            <span className="w6-cos">
-              <span aria-hidden="true">cos</span>
-              <span className="visually-hidden">cosine</span>
-              {` ${r.cos}`}
+            <Portrait page={r.page} />
+            <span className="w6-line">
+              <span className="w6-name">{r.name}</span>
+              {r.gender ? <span className="visually-hidden">{`, ${r.gender}, `}</span> : <span className="w6-nolabel"><span className="visually-hidden">, </span>no label<span className="visually-hidden">, </span></span>}
+              <span className="w6-where">{r.where}<span className="visually-hidden">, </span></span>
+              {other.has(r.index) ? <span className="w6-both">in both lists<span className="visually-hidden">, </span></span> : null}
+              <span className="w6-cos">
+                <span aria-hidden="true">cos</span>
+                <span className="visually-hidden">cosine</span>
+                {` ${r.cos}`}
+              </span>
             </span>
             <span className="w6-words">
               <span className="visually-hidden">, words behind the match: </span>
