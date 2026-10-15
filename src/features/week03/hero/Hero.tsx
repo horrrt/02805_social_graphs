@@ -5,7 +5,7 @@
 // a WebGL host for globe.gl, the atlas and deck.gl), plus the hint under it.
 import { type PointerEvent } from "react";
 import { island } from "@/lib/island";
-import { R, globePointer, registerHost, resetGlobe, setView, setYear, yearsOf } from "@/scripts/corridor.js";
+import { R, globePointer, registerHost, resetGlobe, setYear, yearsOf } from "@/scripts/corridor.js";
 import { useCorridor, usePaint, useReady } from "../frame/shared";
 import { CLIENT_IDS } from "./ids";
 
@@ -71,23 +71,6 @@ export const YearLine = island("week03/hero/YearLine", YearLineView, YearLinePla
 // ---- the globe stage -------------------------------------------------------------
 
 const HINT = "Drag to spin. Click a country to inspect it.";
-const FLAT_HINT = "Drag to pan. Click a country to inspect it.";
-
-// The globe and the flat map are the same picture in two projections; only
-// the d3 globe draws both.
-function ViewSwitch({ view }: { view: string }) {
-  const option = (value: string, label: string) => (
-    <button aria-pressed={view === value} onClick={() => setView(value)} type="button">
-      {label}
-    </button>
-  );
-  return (
-    <div aria-label="Globe or flat map" className="stage-view" role="group">
-      {option("globe", "Globe")}
-      {option("flat", "Map")}
-    </div>
-  );
-}
 
 // The host each library renderer draws its globe into, after the canvas.
 function GlobeHost({ renderer }: { renderer: string }) {
@@ -108,10 +91,8 @@ function GlobeHost({ renderer }: { renderer: string }) {
 function StageView() {
   const ready = useReady();
   const renderer = useCorridor((s) => s.globe);
-  const view = useCorridor((s) => s.view);
-  const deps = useCorridor((s) => [s.year, s.selected, s.paint, s.view]);
+  const deps = useCorridor((s) => [s.year, s.selected, s.paint]);
   usePaint(ready, () => R.globe(), deps);
-  const flat = ready && renderer === "d3" && view === "flat";
   const live = ready
     ? {
         onPointerDown: (e: PointerEvent<HTMLCanvasElement>) => globePointer.down(e.currentTarget, e.nativeEvent),
@@ -120,7 +101,7 @@ function StageView() {
       }
     : {};
   return (
-    <div className={flat ? "stage-wrap is-flat" : "stage-wrap"}>
+    <div className="stage-wrap">
       <canvas
         aria-label="Globe of the countries and the migration corridors between them"
         className="stage"
@@ -132,13 +113,12 @@ function StageView() {
         {...live}
       ></canvas>
       {ready ? <GlobeHost renderer={renderer} /> : null}
-      {ready && renderer === "d3" ? <ViewSwitch view={view} /> : null}
       {ready ? (
         <button className="stage-reset" onClick={resetGlobe} type="button">
           Reset view
         </button>
       ) : null}
-      <p className="stage-hint">{flat ? FLAT_HINT : (ready && (R.hint as string | undefined)) || HINT}</p>
+      <p className="stage-hint">{(ready && (R.hint as string | undefined)) || HINT}</p>
     </div>
   );
 }

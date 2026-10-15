@@ -420,17 +420,17 @@ export function install(api, d3) {
     }
   }
 
-  // The hero's world, as a d3-geo orthographic globe or an equirectangular
-  // flat map, dragged with d3.drag and rendered as SVG paths over a canvas
-  // underlay that carries the photograph when one is chosen. A corridor is a
-  // glowing bow in screen space, which reads as a route where a great circle
-  // would read as a kink on the map or a straight spoke on the globe.
+  // The hero's globe, a d3-geo orthographic projection dragged with d3.drag
+  // and rendered as SVG paths over a canvas underlay that carries the
+  // photograph when one is chosen. A corridor is a glowing bow in screen
+  // space, which reads as a route where a great circle through the middle of
+  // the globe would read as a straight spoke.
 
   // ---- the photograph, in two strengths ------------------------------------
   // The day image as it is, and the same image darkened for the night look:
   // oceans go nearly black and land keeps its colour at half strength, so the
   // corridors carry the light. Each is decoded once into pixels the globe
-  // samples and a canvas the flat map draws.
+  // samples.
   const textures = {};
   function texture(kind) {
     if (textures[kind]) return textures[kind];
@@ -455,7 +455,7 @@ export function install(api, d3) {
       }
       ctx.putImageData(data, 0, 0);
     }
-    textures[kind] = { canvas, pixels: data.data, width: canvas.width, height: canvas.height };
+    textures[kind] = { pixels: data.data, width: canvas.width, height: canvas.height };
     return textures[kind];
   }
 
@@ -503,7 +503,7 @@ export function install(api, d3) {
 
   // One canvas behind the SVG, used only when a photograph is chosen.
   let underlay = null;
-  function paintUnderlay(width, height, flat) {
+  function paintUnderlay(width, height) {
     const svg = $("globe-canvas-d3");
     if (!svg) return;
     // The hero island renders the underlay before the globe's SVG.
@@ -529,32 +529,12 @@ export function install(api, d3) {
     ctx.clearRect(0, 0, width, height);
     const sea = kind === "night" ? "#02060c" : "#0d2b4c";
     ctx.fillStyle = sea;
-    if (flat) ctx.fillRect(0, 0, width, height);
-    else {
-      ctx.beginPath();
-      ctx.arc(projection.translate()[0], projection.translate()[1], projection.scale(), 0, Math.PI * 2);
-      ctx.fill();
-    }
+    ctx.beginPath();
+    ctx.arc(projection.translate()[0], projection.translate()[1], projection.scale(), 0, Math.PI * 2);
+    ctx.fill();
     const tex = texture(kind);
     if (!tex) return;
     ctx.imageSmoothingQuality = "high";
-    if (flat) {
-      // An equirectangular image under an equirectangular projection is a
-      // plain draw, shifted by the rotation and repeated across the seam.
-      const scale = projection.scale();
-      const lon0 = -projection.rotate()[0];
-      const [cx] = projection([lon0, 0]);
-      const top = projection([lon0, 90])[1];
-      const bottom = projection([lon0, -90])[1];
-      const span = 2 * Math.PI * scale;
-      // The image's left edge is longitude -180, wherever the map is turned.
-      let left = cx + scale * ((-180 - lon0) * Math.PI) / 180;
-      while (left > 0) left -= span;
-      for (let k = 0; left + k * span < width; k += 1) {
-        ctx.drawImage(tex.canvas, left + k * span, top, span, bottom - top);
-      }
-      return;
-    }
     const radius = projection.scale();
     const [cx, cy] = projection.translate();
     ctx.save();
@@ -571,39 +551,38 @@ export function install(api, d3) {
     ctx.restore();
   }
 
-  // ---- the two projections -------------------------------------------------
+  // ---- the projection -----------------------------------------------------
   let projection = null;
-  let orthographic = null;
-  let equirect = null;
   let dragging = false;
-  const START_ROTATE = [-12, -18];
-  // The flat map opens on Europe, Africa and Asia, the middle of the network,
-  // with the Americas at its left edge.
-  const START_FLAT = { lon: 30, lat: 12 };
-  const flatView = { ...START_FLAT };
-  let centred = null;
+  let pressed = null;
   let faced = null;
-  // The flat map shows 125 degrees of latitude in a 16:9 frame.
-  const FLAT_ASPECT = 9 / 16;
-  const FLAT_SPAN = (125 * Math.PI) / 180;
-  const flatScale = (height) => (height / FLAT_SPAN) * (earthScale() / 1.12);
-  const clampLat = (lat, height) => {
-    const half = ((height / 2) / flatScale(height)) * (180 / Math.PI);
-    const room = Math.max(0, 90 - half);
-    return Math.max(-room, Math.min(room, lat));
-  };
+  const START_ROTATE = [-12, -18];
+  // A press that moves less than this is a click, not a drag: a hand is never
+  // perfectly still, and a spin under a click would lose the country.
+  const CLICK_SLOP = 4;
 
   function onDrag(event) {
+    if (!dragging && Math.hypot(event.x - pressed[0], event.y - pressed[1]) < CLICK_SLOP) return;
     dragging = true;
-    if (state.view === "flat") {
-      const scale = equirect.scale();
-      flatView.lon -= (event.dx / scale) * (180 / Math.PI);
-      flatView.lat += (event.dy / scale) * (180 / Math.PI);
-    } else {
-      const [lon, lat] = orthographic.rotate();
-      orthographic.rotate([lon + event.dx * 0.35, lat - event.dy * 0.25]);
-    }
+    const [lon, lat] = projection.rotate();
+    projection.rotate([lon + event.dx * 0.35, lat - event.dy * 0.25]);
     globe();
+  }
+
+  // A click anywhere inside a country selects it: the point is turned back
+  // into a longitude and latitude and tested against every outline, so the
+  // arcs, dots and labels drawn over a country never get in the way.
+  function onClick(event) {
+    if (!state.world || !projection) return;
+    const [x, y] = d3.pointer(event);
+    const [cx, cy] = projection.translate();
+    if (Math.hypot(x - cx, y - cy) > projection.scale()) return;
+    const at = projection.invert([x, y]);
+    if (!at) return;
+    const hit = state.world.features.find(
+      (f) => metrics(f.properties.iso3) && d3.geoContains(f, at),
+    );
+    if (hit) select(hit.properties.iso3);
   }
 
   // ---- the corridors ------------------------------------------------------
@@ -614,14 +593,10 @@ export function install(api, d3) {
   const glowTint = (rank) =>
     GLOW_LOW.map((c, i) => Math.round(c + (GLOW_HIGH[i] - c) * rank)).join(",");
 
-  // A corridor as a bow toward the pole. On the flat map the long way round
-  // the seam is never taken, so a corridor across the Pacific crosses the
-  // Pacific; the globe passes a span of 0 and has no seam.
-  function bow(a, b, span) {
+  // A corridor as a bow toward the pole.
+  function bow(a, b) {
     const [x1, y1] = a;
-    let [x2, y2] = b;
-    if (span && x2 - x1 > span / 2) x2 -= span;
-    else if (span && x1 - x2 > span / 2) x2 += span;
+    const [x2, y2] = b;
     const dx = x2 - x1;
     const dy = y2 - y1;
     const length = Math.hypot(dx, dy) || 1;
@@ -641,25 +616,27 @@ export function install(api, d3) {
     const canvas = $("globe-canvas");
     const host = $("globe-canvas-d3");
     if (!canvas || !host) return;
-    const flat = state.view === "flat";
     const nightLook = state.basemap === "night";
     // Measured on the stage, not the canvas: once the SVG has taken over, the
     // hidden canvas measures zero and a redraw (a drag) would shrink the globe.
-    // The globe's stage is square, so its width is the size; its height would
-    // include the SVG's own and grow on every redraw. The flat map is 16:9.
+    // The stage is square, so its width is the size; its height would
+    // include the SVG's own and grow on every redraw.
     const stage = host.parentElement;
     const width = stage?.clientWidth || canvas.clientWidth || 720;
-    const height = flat ? Math.round(width * FLAT_ASPECT) : width;
+    const height = width;
     takeOver(canvas, host);
     const svg = d3.select(host).attr("viewBox", `0 0 ${width} ${height}`).attr("height", height).style("display", "block");
     svg.selectAll("*").remove();
 
-    if (!orthographic) {
-      orthographic = d3.geoOrthographic().rotate(START_ROTATE);
-      equirect = d3.geoEquirectangular();
-      svg.call(
+    if (!projection) {
+      projection = d3.geoOrthographic().rotate(START_ROTATE);
+      svg.on("click", onClick).call(
         d3
           .drag()
+          .clickDistance(CLICK_SLOP)
+          .on("start", (event) => {
+            pressed = [event.x, event.y];
+          })
           .on("drag", onDrag)
           .on("end", () => {
             // Only a real drag redraws, sharp again. A plain click must find
@@ -671,33 +648,12 @@ export function install(api, d3) {
       );
     }
 
-    if (flat) {
-      // A reader's pick moves to the middle of the map once, so its corridors
-      // reach both ways; a drag after that is the reader's.
-      const pickedCoord = state.picked && state.selected ? node(state.selected)?.coord : null;
-      if (pickedCoord && centred !== state.selected) {
-        flatView.lon = pickedCoord[1];
-        flatView.lat = pickedCoord[0];
-      }
-      centred = state.picked ? state.selected : null;
-      flatView.lat = clampLat(flatView.lat, height);
-      flatView.lon = ((flatView.lon + 540) % 360) - 180;
-      projection = equirect
-        .rotate([-flatView.lon, 0])
-        .center([0, flatView.lat])
-        .scale(flatScale(height))
-        .translate([width / 2, height / 2]);
-    } else {
-      // The globe turns to a reader's pick once, the same way.
-      const pickedCoord = state.picked && state.selected ? node(state.selected)?.coord : null;
-      if (pickedCoord && faced !== state.selected) orthographic.rotate([-pickedCoord[1], -pickedCoord[0] * 0.8]);
-      faced = state.picked ? state.selected : null;
-      projection = orthographic
-        .translate([width / 2, height / 2])
-        .scale(Math.min(width * 0.48, width * 0.42 * earthScale()));
-    }
+    // The globe turns to a reader's pick once; a drag after that is theirs.
+    const pickedCoord = state.picked && state.selected ? node(state.selected)?.coord : null;
+    if (pickedCoord && faced !== state.selected) projection.rotate([-pickedCoord[1], -pickedCoord[0] * 0.8]);
+    faced = state.picked ? state.selected : null;
+    projection.translate([width / 2, height / 2]).scale(Math.min(width * 0.48, width * 0.42 * earthScale()));
     const path = d3.geoPath(projection);
-    const span = flat ? 2 * Math.PI * projection.scale() : 0;
 
     const defs = svg.append("defs");
     const glow = defs
@@ -707,43 +663,39 @@ export function install(api, d3) {
       .attr("y", "-50%")
       .attr("width", "200%")
       .attr("height", "200%");
-    glow.append("feGaussianBlur").attr("stdDeviation", flat ? 2.6 : 3);
+    glow.append("feGaussianBlur").attr("stdDeviation", 3);
 
     // The ground under everything: the sea, or space round the globe.
     // Under a photograph the SVG stays clear: the underlay behind it paints
     // its own ground, and an SVG fill here would cover it.
     const photo = state.basemap === "night" || state.basemap === "photo";
     const ground = photo ? "none" : "#0d2b4c";
-    if (flat) {
-      svg.append("rect").attr("width", width).attr("height", height).attr("fill", ground);
-    } else {
-      if (nightLook) {
-        // A thin atmosphere round the limb.
-        svg
-          .append("circle")
-          .attr("cx", width / 2)
-          .attr("cy", height / 2)
-          .attr("r", projection.scale() + 2)
-          .attr("fill", "none")
-          .attr("stroke", "rgba(120,190,255,0.35)")
-          .attr("stroke-width", 6)
-          .attr("filter", "url(#globe-glow)");
-      }
+    if (nightLook) {
+      // A thin atmosphere round the limb.
       svg
         .append("circle")
         .attr("cx", width / 2)
         .attr("cy", height / 2)
-        .attr("r", projection.scale())
-        .attr("fill", ground);
+        .attr("r", projection.scale() + 2)
+        .attr("fill", "none")
+        .attr("stroke", "rgba(120,190,255,0.35)")
+        .attr("stroke-width", 6)
+        .attr("filter", "url(#globe-glow)");
     }
+    svg
+      .append("circle")
+      .attr("cx", width / 2)
+      .attr("cy", height / 2)
+      .attr("r", projection.scale())
+      .attr("fill", ground);
 
     // SVG cannot resample a photograph through a projection, so a canvas
     // underlay paints it and the vectors sit on top.
-    paintUnderlay(width, height, flat);
+    paintUnderlay(width, height);
 
     // Countries as the canvas globe draws them: the selection filled and
-    // outlined in white, and a click on any country selects it. Under the
-    // night look they are only faint borders and click targets.
+    // outlined in white. Under the night look they are only faint borders.
+    // Clicks are hit-tested on the whole SVG (onClick), not per path.
     if ((state.basemap === "outline" || nightLook) && state.world) {
       svg
         .append("g")
@@ -759,9 +711,6 @@ export function install(api, d3) {
         })
         .attr("stroke-width", 0.6)
         .attr("cursor", (f) => (metrics(f.properties.iso3) ? "pointer" : null))
-        .on("click", (event, f) => {
-          if (metrics(f.properties.iso3)) select(f.properties.iso3);
-        })
         .append("title")
         .text((f) => f.properties.name);
     }
@@ -778,7 +727,7 @@ export function install(api, d3) {
     // Migration arcs: the same 500 corridors, sized by a log rank, faded or
     // hidden outside the selection, and every link-style choice honoured.
     const centre = [-projection.rotate()[0], -projection.rotate()[1]];
-    const facing = (coord) => flat || d3.geoDistance([coord[1], coord[0]], centre) <= Math.PI / 2;
+    const facing = (coord) => d3.geoDistance([coord[1], coord[0]], centre) <= Math.PI / 2;
     const place = (coord) => projection([coord[1], coord[0]]);
     const edges = api.topEdges(500);
     const heaviest = edges[0]?.weight ?? 1;
@@ -801,11 +750,10 @@ export function install(api, d3) {
       if (alpha === 0) continue;
       const share = Math.sqrt(edge.weight / heaviest);
       const rank = api.logShare(edge.weight, lightest, heaviest);
-      // Drawn from the selection outward, so its end stays put at the seam.
-      // On the globe a great circle through the middle is a straight spoke,
-      // so the globe bows it the same way, lifted off the earth.
+      // Drawn from the selection outward, so its far end is where the lit
+      // partner dot goes.
       const outward = toIso === state.selected;
-      const { d, end } = bow(place(outward ? to : from), place(outward ? from : to), span);
+      const { d, end } = bow(place(outward ? to : from), place(outward ? from : to));
       // A picked country keeps its corridors lit; the rest go grey, thin and
       // unlit, so the shape of the network stays as context.
       if (!api.globeFocused(edge)) {
@@ -863,7 +811,11 @@ export function install(api, d3) {
           .attr("r", 0.6 + Math.sqrt(m.in_degree) * 0.14)
           .attr("fill", "rgba(196,222,248,0.62)")
           .attr("cursor", "pointer")
-          .on("click", () => select(iso3))
+          .on("click", (event) => {
+            // The dot wins over the country under it.
+            event.stopPropagation();
+            select(iso3);
+          })
           .append("title")
           .text(`${node(iso3).name} · in-degree ${m.in_degree}`);
       }
@@ -922,12 +874,9 @@ export function install(api, d3) {
 
   return {
     globe,
-    // The reset button turns the globe back to where it opened and the flat
-    // map back to its opening frame.
+    // The globe's reset button turns it back to where it opened.
     resetView: () => {
-      orthographic?.rotate(START_ROTATE);
-      Object.assign(flatView, START_FLAT);
-      centred = null;
+      projection?.rotate(START_ROTATE);
       faced = null;
     },
     hint: "Drag to spin. Click a country. (SVG)",
