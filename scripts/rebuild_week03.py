@@ -207,6 +207,8 @@ def main() -> None:
     corridor = [python, str(ROOT / "analysis/week03_corridor_control.py")]
     if args.fast:
         corridor.append("--reuse-null")
+    if args.force or not (RAW / "wikidata_countries.json").exists():
+        corridor.append("--refresh")  # the Wikidata snapshot is a download like the others
     run(*corridor)
     # Reads the two files the line above just wrote and nothing else, so it
     # always follows them and never needs the network.

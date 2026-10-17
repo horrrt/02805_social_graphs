@@ -15,9 +15,18 @@ brokers come out as Australia, Norway and Denmark, which ranks statistical
 reporting systems rather than countries (see week03_country_networks.py). The
 z-score against a degree-preserving null is what makes any of it interpretable.
 
-Writes public/assets/data/week03_corridors.json and week03_edges.json.
+Country names, ISO codes and centroids come from Wikidata. The query result
+is kept in build/raw/wikidata_countries.json with the time it was fetched, and
+every run reads that snapshot, so a rerun computes on the same countries; the
+live query service returns its rows in no fixed order and its labels change as
+Wikidata is edited. --refresh queries again (set CONTACT_EMAIL) and replaces
+the snapshot. Each output stamps the sha256 of the snapshot and of the other
+inputs (analysis/stamps.py), and tests/derived-inputs.test.mjs checks them.
 
-    python analysis/week03_corridor_control.py [--shuffles 100] [--null-year 2020]
+Writes public/assets/data/week03_corridors.json, week03_edges.json and
+week03_flights.json.
+
+    python analysis/week03_corridor_control.py [--shuffles 100] [--null-year 2020] [--refresh]
 """
 
 from __future__ import annotations
@@ -37,6 +46,7 @@ import networkx as nx
 from scipy import stats
 
 from check_pages import check
+import stamps
 import tables
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -46,6 +56,13 @@ RAW = ROOT / "build" / "raw"
 OUT = ROOT / "public" / "assets" / "data"
 YEARS = [1990, 1995, 2000, 2005, 2010, 2015, 2020, 2024]
 FOCUS = "DNK"
+WIKIDATA = RAW / "wikidata_countries.json"
+COUNTRY_QUERY = (
+    "SELECT ?c ?iso3 ?iso2 ?label ?coord WHERE { ?c wdt:P298 ?iso3 . "
+    "OPTIONAL { ?c wdt:P297 ?iso2 } OPTIONAL { ?c wdt:P625 ?coord } "
+    "?c rdfs:label ?label FILTER(lang(?label) = 'en') }"
+)
+INPUTS = stamps.Inputs(__file__)
 
 
 def read_json(path, attempts=5):
@@ -66,7 +83,32 @@ def read_json(path, attempts=5):
 
 
 def read_table(path):
-    return tables.rows(ROOT / path)
+    return tables.rows(INPUTS.add(ROOT / path))
+
+
+def country_metadata(refresh):
+    """Wikidata's countries, from the snapshot unless refresh asks the query service again.
+
+    The snapshot keeps every row the query returned, sorted, so the same rows
+    always hash the same."""
+    if refresh:
+        from wikiclients import sparql
+        print("country metadata from Wikidata (--refresh)")
+        rows = sparql(COUNTRY_QUERY)
+        keys = ("iso3", "c", "label", "iso2", "coord")
+        rows.sort(key=lambda row: tuple(row.get(k, "") for k in keys))
+        snapshot = {"fetched_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+                    "query": COUNTRY_QUERY, "rows": rows}
+        WIKIDATA.parent.mkdir(parents=True, exist_ok=True)
+        WIKIDATA.write_text(json.dumps(snapshot, indent=1, ensure_ascii=False) + "\n")
+    elif not WIKIDATA.exists():
+        raise SystemExit(f"{WIKIDATA.relative_to(ROOT)} is missing: copy it from another checkout's build/raw/, "
+                         "or rerun with --refresh (needs CONTACT_EMAIL) to query Wikidata again")
+    snapshot = json.loads(INPUTS.read(WIKIDATA))
+    if snapshot["query"] != COUNTRY_QUERY:
+        raise SystemExit(f"{WIKIDATA.relative_to(ROOT)} answers another query; rerun with --refresh")
+    print(f"country metadata from {WIKIDATA.relative_to(ROOT)}, fetched {snapshot['fetched_at']}")
+    return snapshot["rows"]
 
 
 def forced_counts():
@@ -100,7 +142,7 @@ def flight_network(iso3_by_iso2):
     not flights per week and not passengers.
     """
     country_by_name = {}
-    with (RAW / "countries.dat").open(encoding="utf-8") as fh:
+    with INPUTS.add(RAW / "countries.dat").open(encoding="utf-8") as fh:
         for name, iso2, _ in csv.reader(fh):
             iso3 = iso3_by_iso2.get(iso2)
             if iso3:
@@ -108,7 +150,7 @@ def flight_network(iso3_by_iso2):
 
     country_by_airport = {}
     airports = {}
-    with (RAW / "airports.dat").open(encoding="utf-8") as fh:
+    with INPUTS.add(RAW / "airports.dat").open(encoding="utf-8") as fh:
         for row in csv.reader(fh):
             if len(row) < 8:
                 continue
@@ -126,7 +168,7 @@ def flight_network(iso3_by_iso2):
 
     pairs = collections.defaultdict(set)
     unresolved = 0
-    with (RAW / "routes.dat").open(encoding="utf-8") as fh:
+    with INPUTS.add(RAW / "routes.dat").open(encoding="utf-8") as fh:
         for row in csv.reader(fh):
             if len(row) < 6:
                 continue
@@ -250,16 +292,12 @@ def main():
         help="take the z-scores from the existing JSON instead of reshuffling; "
              "for changing a label or a rank without waiting for the null again",
     )
+    parser.add_argument("--refresh", action="store_true",
+                        help=f"query Wikidata again and replace {WIKIDATA.relative_to(ROOT)}")
     args = parser.parse_args()
     OUT.mkdir(parents=True, exist_ok=True)
 
-    from wikiclients import sparql
-    print("country metadata from Wikidata")
-    meta_rows = sparql(
-        "SELECT ?c ?iso3 ?iso2 ?label ?coord WHERE { ?c wdt:P298 ?iso3 . "
-        "OPTIONAL { ?c wdt:P297 ?iso2 } OPTIONAL { ?c wdt:P625 ?coord } "
-        "?c rdfs:label ?label FILTER(lang(?label) = 'en') }"
-    )
+    meta_rows = country_metadata(args.refresh)
     # Some codes belong to two items: PSE is both Q219060 (Palestine) and
     # Q407199 (Occupied Palestinian territory). The first row per code wins
     # below, and the query service returns rows in no fixed order, so the
@@ -518,6 +556,7 @@ def main():
         iso3: values for iso3, values in indicators.items()
         if iso3 in nodes and any(v is not None for v in values.values())
     }
+    payload.update(INPUTS.stamp())
     corridors_path = OUT / "week03_corridors.json"
     check(corridors_path, payload)
     corridors_path.write_text(json.dumps(payload, separators=(",", ":")))
@@ -560,6 +599,7 @@ def main():
         #  dropped. Flights are their own file now: week03_flights.json.
         "fields": ["origin", "destination", "stocks", "km", "female", "forced"],
         "edges": edges,
+        **INPUTS.stamp(),
     }
     edges_path = OUT / "week03_edges.json"
     check(edges_path, edges_payload)
@@ -574,6 +614,7 @@ def main():
         "countries": countries,
         "fields": ["origin", "destination", "routes"],
         "edges": flight_edges,
+        **INPUTS.stamp(),
     }
     flights_path = OUT / "week03_flights.json"
     check(flights_path, flights_payload)
