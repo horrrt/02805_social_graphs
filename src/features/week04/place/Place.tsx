@@ -29,7 +29,8 @@ import {
 } from "@/scripts/week04-place.js";
 import { W4Chart } from "../W4Chart";
 import { W4Table } from "../W4Table";
-import { placeStore, usePlace, type Raw } from "./usePlace";
+import { StatusLine } from "../StatusLine";
+import { placeStore, usePlace, usePlaceStatus, type Raw } from "./usePlace";
 
 const set = (patch: Partial<Raw>) => placeStore.setState(patch);
 const select = (id: string | null) => set({ selected: id });
@@ -147,7 +148,9 @@ function StatusServer() {
 
 function Status() {
   const p = usePlace();
+  const status = usePlaceStatus();
   useIslandReady(p !== null);
+  if (status === "error") return <StatusLine id="place-status" text="The place data did not load, so this section's maps and charts are empty." />;
   if (!p) return <StatusServer />;
   const meta = p.m.data.meta;
   const text = meta.status === "placeholder" ? `Scaffold · ${yr(meta.scope)} · placeholder data` : yr(meta.scope);

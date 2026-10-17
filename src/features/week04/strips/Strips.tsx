@@ -15,6 +15,7 @@ import { INTRO_FILES, backboneLayout, introSpec } from "@/scripts/week04-vis-int
 import { MORE_KEYS, drawsLayout, moreSpec } from "@/scripts/week04-vis-more.js";
 import { FILES as STAFFING_FILES, visStaffing } from "@/scripts/week04-vis-staffing.js";
 import { HBars, RankBars, Slope, Stacked } from "../charts";
+import { FAILED, StatusLine } from "../StatusLine";
 import { W4, useW4All } from "../useW4Data";
 import { useT, type T } from "../useT";
 
@@ -255,10 +256,11 @@ function Server({ id }: Props) {
 
 function View({ id }: Props) {
   const entry = ENTRIES[id];
-  const data = useW4All(entry.files, entry.label);
+  const { status, data } = useW4All(entry.files, entry.label);
   const T = useT(TOKENS);
   const spec = useMemo(() => (data ? entry.build(data) ?? null : null), [data, entry]);
   useIslandReady(spec !== null && T !== null);
+  if (status === "error") return <div {...attrs(id)}><StatusLine text={FAILED} /></div>;
   return <div {...attrs(id)}>{spec && T ? <Draw spec={spec} T={T} /> : null}</div>;
 }
 

@@ -8,6 +8,7 @@ import { useMemo } from "react";
 import { MiniStrip, StripChart } from "@/kit";
 import type { MiniSpec } from "@/kit/MiniStrip";
 import { island, useIslandReady } from "@/lib/island";
+import { FAILED, StatusLine } from "../StatusLine";
 import { W4, useW4All } from "../useW4Data";
 
 const FILES = [W4.place, W4.data("jobs"), W4.data("staffing_moves"), W4.data("footprint"), W4.data("beyond")];
@@ -91,11 +92,12 @@ function MiniHost({ finding }: { finding: string }) {
 }
 
 function MiniView({ finding }: { finding: string }) {
-  const all = useW4All(FILES, "findings");
+  const { status, data: all } = useW4All(FILES, "findings");
   const strip = useMemo(() => (all ? strips(all)[finding] : null), [all, finding]);
   useIslandReady(strip !== null);
   return (
     <div className="w4-mini" data-finding={finding}>
+      {status === "error" ? <StatusLine text={FAILED} /> : null}
       {strip ? (
         <>
           <MiniStrip spec={strip[0]} />
@@ -114,8 +116,15 @@ function OpenerHost() {
 }
 
 function OpenerView() {
-  const [place] = useW4All([W4.place], "openers") ?? [];
+  const { status, data } = useW4All([W4.place], "openers");
+  const place = data?.[0];
   useIslandReady(Boolean(place));
+  if (status === "error")
+    return (
+      <div className="w4-figure-body" data-strip="place-modularity">
+        <StatusLine text={FAILED} />
+      </div>
+    );
   if (!place) return <OpenerHost />;
   const q = place.null_model;
   return (
