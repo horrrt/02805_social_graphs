@@ -204,14 +204,14 @@ documents cover the data behind it, and both are generated from
 `scripts/migration/` harvests the data. `run_all.py` runs the whole thing:
 a Wikipedia category crawl, Wikidata classification into organisations, the
 article-link graph, then the country layer from UN DESA, UNHCR and the World
-Bank. Files land in `data/migration_*.tsv`; rebuild them rather than editing
+Bank. Files land in `data/migration_*.parquet`; rebuild them rather than editing
 them.
 
 ## Style dimensions
 
-The week 3 post offers independent style choices, each a dropdown in the
-Style menu in the top bar and each a URL parameter, so any combination is a link
-you can send. The data, the numbers and the copy never change.
+The week 3 post offers independent style choices, each a URL parameter, so any
+combination is a link you can send. The page has no Style menu since #309: set
+them in the address bar. The data, the numbers and the copy never change.
 
 | Parameter | Choices |
 | --- | --- |
@@ -223,12 +223,11 @@ you can send. The data, the numbers and the copy never change.
 
 Example: [`?variant=atlas&palette=okabe&arcs=taper&tables=compact`](https://horrrt.github.io/02805_social_graphs/weeks/week03/?variant=atlas&palette=okabe&arcs=taper&tables=compact)
 
-Only the renderer reloads when it changes; the other style controls repaint in place. A
-renderer overrides the visuals it replaces and inherits the canvas one for the
-rest, so a library that fails to load falls back rather than taking the post
-down. The palette lives in CSS custom properties and the canvas reads it back
-through `getComputedStyle`, so one definition drives the stylesheet, the SVG
-variants and the 2D canvas at once.
+A renderer overrides the visuals it replaces and inherits the canvas one for
+the rest, so a library that fails to load falls back rather than taking the
+post down. The palette lives in CSS custom properties and the canvas reads it
+back through `getComputedStyle`, so one definition drives the stylesheet, the
+SVG variants and the 2D canvas at once.
 
 `src/scripts/week03-boot.js` holds the registries; each renderer is one
 module under `src/scripts/variants/`. The React islands in
