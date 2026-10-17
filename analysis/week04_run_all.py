@@ -11,7 +11,8 @@ against them; week04_skills.py and week04_skills_radar.py read week04_jobs.py's,
 its own 60-occupation network; week04_more_page.py reads week04_perm.py,
 week04_countries.py, week04_oews.py, week04_ties.py and week04_lottery.py's;
 week04_staffing_deep_page.py reads week04_staffing.py, week04_lottery.py,
-week04_shift.py, week04_lawfirms.py and week04_ties.py's). week04_pagerank.py imports
+week04_shift.py, week04_lawfirms.py and week04_ties.py's; week04_footprint_rank.py
+reads week04_footprint.py's). week04_pagerank.py imports
 week04_jobs.py's and week04_where.py's functions directly and recomputes the
 projection and backbone itself, so it reads no file either writes and needs
 no entry here. Everything else starts immediately, so a full rerun takes
@@ -39,11 +40,12 @@ LOGS = HERE.parent / "build" / "logs"
 SCRIPTS = ["week04_where", "week04_where_who", "week04_jobs", "week04_jobs_split", "week04_staffing",
            "week04_staffing_figure", "week04_staffing_moves", "week04_lottery", "week04_perm", "week04_countries",
            "week04_ties", "week04_shift", "week04_lawfirms", "week04_oews", "week04_beyond", "week04_footprint",
-           "week04_explore", "week04_years", "week04_roles", "week04_pagerank", "week04_skills", "week04_skills_radar",
-           "week04_more_page", "week04_staffing_deep_page", "week04_entities"]
+           "week04_footprint_rank", "week04_explore", "week04_years", "week04_roles", "week04_pagerank",
+           "week04_skills", "week04_skills_radar", "week04_more_page", "week04_staffing_deep_page", "week04_entities"]
 # script -> the scripts whose output it reads (the moves and where_who scripts check theirs reproduces).
 AFTER = {"week04_staffing_figure": ("week04_staffing",), "week04_staffing_moves": ("week04_staffing",),
          "week04_where_who": ("week04_where",), "week04_explore": ("week04_where",),
+         "week04_footprint_rank": ("week04_footprint",),
          "week04_years": ("week04_staffing", "week04_shift", "week04_countries", "week04_lottery",
                            "week04_staffing_figure"),
          "week04_roles": ("week04_years", "week04_staffing"),
