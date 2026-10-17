@@ -1,8 +1,9 @@
 # Log-Log Legends: how to work in this repository
 
-DTU 02805 Social Graphs and Interactions, group Log-Log Legends (Àngela, Gyula, Niklas). `public/` is the
-course website, published to GitHub Pages from `main`. `analysis/` holds the Python scripts behind every
-number on it. `tests/` checks the site with Node's built-in test runner.
+DTU 02805 Social Graphs and Interactions, group Log-Log Legends (Àngela, Gyula, Niklas). `src/` is the
+course website, a Next.js static export built to `out/` and published to GitHub Pages from `main`.
+`public/` holds the data, vendored libraries and images it serves. `analysis/` holds the Python scripts
+behind every number on it. `tests/` checks the site with Node's built-in test runner.
 
 These rules apply to every request. The files in `.github/instructions/` add rules for analysis code,
 site code and prose. `AGENTS.md` and `project/POST_GUIDE.md` hold the group's post-writing preferences.
@@ -25,13 +26,13 @@ If the request is ambiguous or a rule below blocks it, stop and ask. Do not gues
 
 - Site or tests changed: `npm test` (it runs the React Testing Library tests in `tests/components/`,
   builds the site, then runs `node --test 'tests/*.test.mjs'`) must end with `fail 0`. It includes
-  `tests/text-budget.test.mjs`, which holds every post from Week 4 on to Week 4's density; for text a page
-  script draws, run the console check in project/POST_GUIDE.md, "Keep the card short".
+  `tests/text-budget.test.mjs`, which holds every post from Week 3 on to 350 words a card before a click;
+  for text a page script draws, run the console check in project/POST_GUIDE.md, "Keep the card short".
 - `analysis/week04_names.py`, `analysis/week04_client_aliases.parquet` or `analysis/week04_name_merges.parquet`
   changed: `python analysis/week04_names_check.py` must exit 0 and print `"failures": []`.
 - Any page data changed: `python analysis/check_pages.py` must print `ok` for every file. It checks every
   week's page JSON against the fields and cross-references its page scripts read (Pydantic models in
-  `analysis/week01_schemas.py` to `analysis/week04_schemas.py`).
+  `analysis/week01_schemas.py` to `analysis/week06_schemas.py`).
 - A page quotes a script's output: rerun that script and use its fresh JSON. For weeks 1 to 3,
   `python analysis/run_all.py` reruns every script in parallel (or `week02`, or one script) and lists each
   committed file that changed. For week 4, section 1 is `analysis/week04_where.py`, section 2
@@ -49,8 +50,9 @@ If the request is ambiguous or a rule below blocks it, stop and ask. Do not gues
 - Use the project environment: `.venv-course/bin/python` (Windows: `.venv-course\Scripts\python`), built
   from `requirements-lock.txt` as project/DEVELOPMENT.md describes.
 
-`/check` runs the matching checks for you; `/review` reviews a diff against these rules; `/ship` opens a
-pull request.
+In Copilot Chat, `/check` runs the matching checks for you, `/review` reviews a diff against these rules
+and `/ship` opens a pull request. They are prompt files in `.github/prompts/`, which other assistants can
+read and follow; Claude Code and Codex have no such commands.
 
 ## Commit messages and pull request titles
 
@@ -80,8 +82,8 @@ Why the change was needed, in plain sentences, wrapped at 72 characters.
 - Type a number into a page by hand. Change the script, rerun it, and read the number from its JSON.
 - Invent a result, a source, a group reaction or a completed submission.
 - Load a script, font or stylesheet from a CDN at runtime. Use the copies in `public/assets/vendor/`.
-- Remove the `noindex` meta tag from `src/app/(week04)/weeks/week04/page.tsx`, rename a route, element ID, storage key
-  or data file that other code reads.
+- Remove the `robots: "noindex"` metadata from `src/app/(week04)/layout.tsx`, or rename a route, element
+  ID, storage key or data file that other code reads.
 - Put an email address, password or token in code. Downloads that need a contact read `CONTACT_EMAIL`
   from the environment.
 - Push straight to `main`. Work on a branch, open a pull request and merge it once its checks pass.

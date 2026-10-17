@@ -65,8 +65,17 @@ export function Tex({ tex, block = false, label, explain }: TexProps) {
     return () => window.removeEventListener("scroll", hide, { capture: true });
   }, [tip]);
   const Tag = block ? "div" : "span";
-  if (!html) return <Tag className="tex tex-pending" aria-label={label}>{tex}</Tag>;
-  if (!explain) return <Tag className="tex" aria-label={label} dangerouslySetInnerHTML={{ __html: html }} />;
+  // A label replaces KaTeX's MathML for screen readers: aria-label needs a role
+  // to be read, and the markup inside is hidden so it isn't read twice.
+  const named = label ? ({ role: "img", "aria-label": label } as const) : {};
+  const hidden = label ? true : undefined;
+  if (!html) return <Tag className="tex tex-pending" {...named}>{tex}</Tag>;
+  if (!explain)
+    return (
+      <Tag className="tex" {...named}>
+        <span aria-hidden={hidden} dangerouslySetInnerHTML={{ __html: html }} />
+      </Tag>
+    );
 
   const over = (e: MouseEvent<HTMLElement>) => {
     // A tag's class starts with x-; KaTeX's own classes can hold "x-" too (katex-sizing).
@@ -84,8 +93,8 @@ export function Tex({ tex, block = false, label, explain }: TexProps) {
   };
 
   return (
-    <Tag className="tex tex-explain" aria-label={label} onMouseOver={over} onMouseLeave={() => setTip(null)}>
-      <span dangerouslySetInnerHTML={{ __html: html }} />
+    <Tag className="tex tex-explain" {...named} onMouseOver={over} onMouseLeave={() => setTip(null)}>
+      <span aria-hidden={hidden} dangerouslySetInnerHTML={{ __html: html }} />
       {tip ? (
         <>
           {/* Only the part under the pointer lights up, not every part that contains it. */}

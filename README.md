@@ -26,18 +26,18 @@ and limitations.
 
 ## How the site is built
 
-The site is a Next.js static export, moving page by page to React components
-([the plan](review/react-migration/plan.json)). Static markup is server
-components. Each element a script used to write is a client island made with
-`island()`: it renders the server markup until the page has hydrated and its
-data has loaded, and a failing island leaves the rest of the page alone.
-Page-wide state lives in small module stores; data, vendored libraries,
-charts, canvases and listeners go through the hooks in `src/lib/`. The rules,
-recipes and checks every change follows are in
-[src/lib/README.md](src/lib/README.md). Every page has converted, and the old
-script loader (`src/scripts/entries/` and `PageScripts`) is gone: a script
-runs only when a component imports it. Links stay plain `<a href>`, so each
-page loads fresh.
+The site is a Next.js static export built from React components; it moved to
+React page by page in October 2026 ([the
+plan](review/react-migration/plan.json)). Static markup is server components.
+Each element a script used to write is a client island made with `island()`:
+it renders the server markup until the page has hydrated and its data has
+loaded, and a failing island leaves the rest of the page alone. Page-wide
+state lives in small module stores; data, vendored libraries, charts, canvases
+and listeners go through the hooks in `src/lib/`. The rules, recipes and
+checks every change follows are in [src/lib/README.md](src/lib/README.md).
+Every page has converted, and the old script loader (`src/scripts/entries/`
+and `PageScripts`) is gone: a script runs only when a component imports it.
+Links stay plain `<a href>`, so each page loads fresh.
 
 See the [development and data reference](project/DEVELOPMENT.md) for setup and
 reproduction, the [migration questions](project/MIGRATION_QUESTIONS.md) and
@@ -68,5 +68,4 @@ site serves at `/weeks/_template/`:
    ([the post guide](project/POST_GUIDE.md), "Keep the card short").
 6. Keep `noindex` and the week "coming" in `src/scripts/weeks.js` until the
    post is done, then run the gates in [src/lib/README.md](src/lib/README.md)
-   (G1 to G6). `scripts/parity/static.mjs` reports the new page as missing on
-   main; every other page must still match it.
+   (G1, G3 and G6).

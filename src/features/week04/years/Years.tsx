@@ -11,6 +11,7 @@ import { TermText } from "@/kit";
 import { island, useIslandReady } from "@/lib/island";
 import { useFittedWidth } from "@/lib/useSize";
 import { MONTHS, YEARS, niceAxis, num, pct, spread, yearsModel, yr } from "@/scripts/week04-years.js";
+import { StatusLine } from "../StatusLine";
 import { W4Table } from "../W4Table";
 import { W4, useW4Data } from "../useW4Data";
 import { useT, type T } from "../useT";
@@ -436,16 +437,8 @@ function Card({ data, T }: { data: any; T: T }) {
   );
 }
 
-function StatusLine({ text }: { text: string }) {
-  return (
-    <p aria-live="polite" className="status-line" id="years-status">
-      {text}
-    </p>
-  );
-}
-
 function Server() {
-  return <StatusLine text="Loading five years of filings…" />;
+  return <StatusLine id="years-status" text="Loading five years of filings…" />;
 }
 
 function YearsView() {
@@ -462,7 +455,7 @@ function YearsView() {
   const state = useW4Data(W4.data("years"), "years data", { enabled: opened });
   const T = useT(TOKENS);
   useIslandReady(Boolean(state.data && T));
-  if (state.status === "error") return <StatusLine text="The five years of filings did not load." />;
+  if (state.status === "error") return <StatusLine id="years-status" text="The five years of filings did not load." />;
   if (!state.data || !T) return <Server />;
   return <Card data={state.data} T={T} />;
 }

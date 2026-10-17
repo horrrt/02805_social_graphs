@@ -9,13 +9,13 @@ applyTo: "src/**,public/**,tests/**"
 - The site is a Next.js static export (`output: "export"`). Pages are JSX in `src/app/(<page>)/`, one route
   group per page; chart code is plain ES modules in `src/scripts/`; stylesheets are in `src/styles/`. Data,
   vendored libraries and images stay in `public/`. project/DEVELOPMENT.md, "How the site is built", has the details.
-- The site is moving to React components (`review/react-migration/plan.json`). Static markup is server
-  components; every element a script writes becomes a client island made with `island()` from
-  `src/lib/island.tsx`, which renders the server markup until hydrated and its data is ready. Page-wide state
-  lives in module stores (`src/scripts/runtime/store.js`) read through `useStore`; data, vendored libraries,
-  canvases, charts, listeners and body writes go through the hooks in `src/lib/`. Its README,
-  `src/lib/README.md`, holds the rules (R1-R22), working rules, recipes and gates every change follows, and
-  `tests/react-rules.test.mjs` enforces the mechanical ones.
+- The site moved to React components in October 2026; `review/react-migration/` keeps the record of the
+  rewrite. Static markup is server components; every element a script writes is a client island made with
+  `island()` from `src/lib/island.tsx`, which renders the server markup until hydrated and its data is
+  ready. Page-wide state lives in module stores (`src/scripts/runtime/store.js`) read through `useStore`;
+  data, vendored libraries, canvases, charts, listeners and body writes go through the hooks in `src/lib/`.
+  Its README, `src/lib/README.md`, holds the rules (R2-R22), working rules, the recipe for new features and
+  the gates (G1, G3, G6) every change follows, and `tests/react-rules.test.mjs` enforces the mechanical ones.
 - Every page renders with React. A module in `src/scripts/` runs only when a component imports it: the old
   entry loader (`src/scripts/entries/` and `src/components/PageScripts.tsx`) is gone. Never add a `<script>`
   tag in JSX. Keep links as plain `<a href>`, not `next/link`, so each page loads fresh.
@@ -26,8 +26,9 @@ applyTo: "src/**,public/**,tests/**"
   deck.gl 9.0.30 are already there.
 - [DESIGN.md](../../DESIGN.md) lists each page's stylesheets, the type scale and what each colour means. Update it
   when you change a token.
-- Take colours from CSS custom properties with `getComputedStyle`, as `src/scripts/week04-staffing.js`
-  does. A hex colour in a new JavaScript file fails `tests/theme.test.mjs`.
+- Take colours from CSS custom properties with `useTokens()` from `src/lib/useTypeScale.ts`, as the kit's
+  charts in `src/kit/` do (`src/kit/EChart.tsx`), after hydration. A hex colour in a new JavaScript file fails
+  `tests/theme.test.mjs`.
 - Load files under `public/` with `asset("weeks/week05/data/x.json")` from `src/scripts/site.js`, so the path carries
   the base path on GitHub Pages and the deploy's commit.
 - Build for desktop. Do not add phone layouts.

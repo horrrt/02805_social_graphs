@@ -1,9 +1,9 @@
 # React on this site: rules, recipes and gates
 
-Every batch of the React rewrite follows this file. The plan is `review/react-migration/plan.json`
-(architecture, batches, known bugs); `review/react-migration/map.json` records how each old script behaves on
-main; `scripts/parity/README.md` documents the parity tools. Cite rules by id: W1-W7, R1-R22, F1-F8, Z1-Z6 and
-G1-G6.
+Every change to a React page follows this file. The site moved to React in October 2026; the rewrite's
+plan (`review/react-migration/plan.json`), module map and the rules that applied only while pages were being
+converted (R1, W1, W2, W5, W7, F8, recipe Z, G2, G4 and G5, in `review/react-migration/rewrite-rules.md`)
+stay in `review/react-migration/` as its record. Cite rules by id: R2-R22, W3, W4, W6, F1-F7, G1, G3 and G6.
 
 ## What lives here
 
@@ -21,8 +21,6 @@ G1-G6.
 
 ## Rules
 
-- **R1 Zero static diff.** The built HTML of every page equals main's after `normalise()` in
-  `tests/built-page.mjs`. `scripts/parity/static.mjs` checks it on every batch, locally and in CI.
 - **R2 First client render equals the server render.** Never read the browser in render: no `window`,
   `document`, `location`, storage, `matchMedia`, `getComputedStyle`, `Date.now` or `Math.random`. Render
   `url()`, `asset()` and `SITE` values only after `useHydrated()` is true. An island shows exactly its server
@@ -103,21 +101,12 @@ on:
 
 ## Working rules
 
-- **W1 Setup.** `cp -Rc "$LL_NODE_MODULES" node_modules`, then `npm ls --depth=0` exits 0. Never
-  `npm install` or `npm ci`, and never a symlink.
-- **W2 Read first:** this file, `scripts/parity/README.md`, your entries in `review/react-migration/map.json`,
-  every source you convert and your page's fixtures under `scripts/parity/fixtures/`.
 - **W3 Desktop only.** Never use the hidden Browser pane: it pauses requestAnimationFrame and ResizeObserver.
 - **W4 No command over about 2 minutes.** Run builds in the background with output to a log and poll it.
-- **W5 Edit only the files your batch owns.** Gap protocol: write `review/react-migration/requests/<batch>.md`
-  with the exact patch and the reason. If you must proceed, add a shim in your own folder whose first line is
-  `// shim: <batch>` and list it in your final message.
-- **W6 Commits** use Conventional Commits, `type(scope): subject`, with scopes site, week01 to week05, tests,
-  ci and docs.
-- **W7 Parity files.** Your scenario is `scripts/parity/scenarios/<page>/<batch>.mjs`; your known files are
-  `known/<page>/<batch>.json` and `known/<page>/faults-<batch>.json`. Never edit another batch's.
+- **W6 Commits** use Conventional Commits, `type(scope): subject`, with the scopes in `commitlint.config.mjs`
+  (week01 to week08, site, analysis, names, data, tests, ci, deps, docs).
 
-## Recipe F: feature batches
+## Recipe F: features
 
 - **F1** Converted modules keep their names and become pure: no DOM, listeners, fetch or top-level await at
   import. R12 literals stay.
@@ -132,34 +121,11 @@ on:
 - **F6** ECharts hosts keep their position, classes and renderer, initialise after hydration and data, and
   resize on both window resize and ResizeObserver.
 - **F7** Use `useOutsideClose`, `useBodyDataset` and `useBodyClass`, and raw-string inputs.
-- **F8** Your scenario drives every control (`{type}` keystrokes), opens your panels and hovers each chart.
-  Known entries carry reasons and KB or FP ids.
-
-## Recipe Z: close batches
-
-- **Z1** Rebase onto the latest main and rebuild `$BASE` from it.
-- **Z2** Delete every bridge and shim of the page with their mounts. The entry loader
-  (`src/scripts/entries/` and `src/components/PageScripts.tsx`) is already gone.
-- **Z3** Grep that no module of the page has top-level DOM, listeners, fetch or await.
-- **Z4** Run `runtime.mjs --check-known <page>` and delete superseded known files.
-- **Z5** Run all gates over every scenario file, and faults for every island (shards in the background).
-- **Z6** Check that `pageScripts('<page>')` still lists every module the tests read.
 
 ## Gates
 
-`$BASE` is `$(node scripts/parity/build-ref.mjs --ref <stage base sha> --print-out)`, prebuilt by the
-orchestrator.
-
 - **G1** `npm run typecheck`.
-- **G2** `GITHUB_SHA=parity00000 npm run build` (in the background, polled), then
-  `node scripts/parity/static.mjs $BASE out` exits 0.
 - **G3** `node --test` on the tests you touched and your page's tests, then `npm test` once, in the background.
-- **G4** `node scripts/parity/runtime.mjs --base $BASE --head out --pages <p> --scenario <file>` for every
-  scenario file of the page (the base files and every batch file present), each command under 90 s by
-  `--estimate` (split with `--steps`): every step ok.
-- **G5** `node scripts/parity/faults.mjs` with `--data` (`--files` your data and vendor files) and
-  `--islands <your prefix> --modes render,effect` (`--shard`): every assertion holds, and the only expected
-  diffs come from `faults-base.json` and your `faults-<batch>.json`.
 - **G6** `node --test tests/react-rules.test.mjs tests/markup-shapes.test.mjs tests/migration-docs.test.mjs
   tests/page-modules.test.mjs`.
 
