@@ -1,13 +1,13 @@
-"""Rerun every analysis script for weeks 1 to 3 at once, then list what moved.
+"""Rerun every analysis script for weeks 1 to 3, 5 and 6 at once, then list what moved.
 
 Week 4 has its own runner, analysis/week04_run_all.py; this one does the same
-for the earlier weeks. Each script starts once the scripts whose output it
+for the other weeks, Cold Read's data included. Each script starts once the scripts whose output it
 reads have finished (AFTER below), at most one per core, and logs to
 build/logs/<script>.log. week03_country_networks.py is the slowest at about 16
 minutes (week03_reciprocity.py about as long), so a full run takes about that
 long instead of about an hour.
 
-    python analysis/run_all.py                  # weeks 1 to 3
+    python analysis/run_all.py                  # weeks 1 to 3, 5 and 6
     python analysis/run_all.py week02           # one week
     python analysis/run_all.py week03_gravity   # one script, and nothing it depends on
 
@@ -16,14 +16,14 @@ changed. Run it before you change a script: an empty list means the committed
 JSON still reproduces. On 27 September 2026 it was not empty for three week 3
 files, and the page still quoted the stale versions.
 
-week03_corridor_control.py asks Wikidata for country names on every run, and
-Wikidata wants a contact in the User-Agent: set CONTACT_EMAIL first, as the
-week 4 downloads do.
+week03_corridor_control.py reads its country names from the Wikidata snapshot
+in build/raw/wikidata_countries.json. Only `week03_corridor_control.py
+--refresh` queries Wikidata again, and Wikidata wants a contact in the
+User-Agent: set CONTACT_EMAIL first, as the week 4 downloads do.
 
-Two scripts stay out (tests/run-all.test.mjs fails if any other week 1 to 3
-script is missing from SCRIPTS). week01_api_check.py queries live Wikipedia, so its output
-cannot reproduce; week03_forced_patch.py is a one-off patch that a full
-week03_corridor_control.py run supersedes.
+tests/run-all.test.mjs fails if an analysis/weekNN_*.py script is in no
+runner's SCRIPTS and not in its EXCLUDED list, which says why each one stays
+out (live API snapshots, shared modules, one-off patches).
 """
 
 import os
@@ -59,6 +59,23 @@ SCRIPTS = {
     "week03_reciprocity": "analysis/week03_reciprocity.py",
     "build_world_outline": "scripts/migration/build_world_outline.py",
     "course_reference": "analysis/course_reference.py",
+    "week05_communities": "analysis/week05_communities.py",
+    "week05_relations": "analysis/week05_relations.py",
+    "week05_copying": "analysis/week05_copying.py",
+    "week05_autocomplete": "analysis/week05_autocomplete.py",
+    "week05_network": "analysis/week05_network.py",
+    "week05_search": "analysis/week05_search.py",
+    "week05_fame": "analysis/week05_fame.py",
+    "week05_heaps": "analysis/week05_heaps.py",
+    "week05_weird": "analysis/week05_weird.py",
+    "week06_lookalikes": "analysis/week06_lookalikes.py",
+    "week06_essentials": "analysis/week06_essentials.py",
+    "week06_lean": "analysis/week06_lean.py",
+    "week06_cold_read": "analysis/week06_cold_read.py",
+    "week06_whose_line": "analysis/week06_whose_line.py",
+    "week06_mix_desk": "analysis/week06_mix_desk.py",
+    "week06_hot_cold": "analysis/week06_hot_cold.py",
+    "week06_tezguino": "analysis/week06_tezguino.py",
 }
 WEEK = {name: ("week02" if name == "analyse_week2_models" else
                "week03" if name == "build_world_outline" else
@@ -78,8 +95,14 @@ AFTER = {
     "week03_tails": ("week03_corridor_control",),
     "week03_asylum": ("week03_corridor_control",),
     "week03_passengers": ("week03_corridor_control",),
-    "course_reference": ("week01_facts", "week02_nullmodels"),
+    "course_reference": ("week01_facts", "week02_nullmodels", "week06_lookalikes"),
+    "week05_autocomplete": ("week05_communities",),
+    "week05_network": ("week05_communities", "week05_relations"),
+    "week06_whose_line": ("week05_communities",),
+    "week06_tezguino": ("week06_hot_cold",),
 }
+# NLTK data and tiktoken encodings download on first use; keep them in build/.
+CACHES = {"NLTK_DATA": "build/nltk_data", "TIKTOKEN_CACHE_DIR": "build/tiktoken"}
 # Checks rerun whenever a script they read reruns, so their JSON never trails it.
 CHECKS = ("course_reference",)
 # At most budget.cores() busy cores (CPU_SHARE, default 80%): a plain script
@@ -104,8 +127,9 @@ def run(commands, wanted):
                 continue
             waiting.remove(name)
             log = open(LOGS / f"{name}.log", "w")
+            env = {**{k: str(ROOT / v) for k, v in CACHES.items()}, **os.environ}
             running[name] = (subprocess.Popen([sys.executable, str(ROOT / commands[name])], stdout=log,
-                                              stderr=subprocess.STDOUT, cwd=ROOT), log)
+                                              stderr=subprocess.STDOUT, cwd=ROOT, env=env), log)
         time.sleep(2)
         for name, (proc, log) in list(running.items()):
             if proc.poll() is None:

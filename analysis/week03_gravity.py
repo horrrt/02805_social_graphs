@@ -54,8 +54,11 @@ import pathlib
 import numpy as np
 import statsmodels.api as sm
 
+import stamps
+
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 DATA = ROOT / "public" / "assets" / "data"
+INPUTS = stamps.Inputs(__file__)
 OUT = ROOT / "analysis"
 
 TERMS = [
@@ -69,8 +72,8 @@ TERMS = [
 
 
 def build(year: int):
-    corridors = json.loads((DATA / "week03_corridors.json").read_text())
-    edges = json.loads((DATA / "week03_edges.json").read_text())
+    corridors = json.loads(INPUTS.read(DATA / "week03_corridors.json"))
+    edges = json.loads(INPUTS.read(DATA / "week03_edges.json"))
     nodes = corridors["nodes"]
     ind = corridors["indicators"]
     countries = edges["countries"]
@@ -248,6 +251,7 @@ def main():
                       "than of who stayed home.",
         "under": under,
     }
+    report.update(INPUTS.stamp())
     path = OUT / "week03_gravity.json"
     path.write_text(json.dumps(report, indent=2))
     print(f"\nwrote {path.relative_to(ROOT)}")
