@@ -79,3 +79,6 @@ nltk==3.10.3
 regex==2026.9.29
 tiktoken==0.14.0
 colorspacious==1.1.2
+gensim==4.4.0
+scattertext==0.2.2
+flashtext==2.7
