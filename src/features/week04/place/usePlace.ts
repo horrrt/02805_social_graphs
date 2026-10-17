@@ -24,8 +24,13 @@ const FILES = [W4.place, W4.usa, W4.data("where_who")];
 /** The place store with its type. */
 export const placeStore = place as unknown as Store<Raw>;
 
+/** "error" once any of the section's three files fails, for its status line. */
+export function usePlaceStatus() {
+  return useW4All(FILES, "place section").status;
+}
+
 export function usePlace(): { m: Model; s: PlaceState; T: T; mapReady: boolean } | null {
-  const files = useW4All(FILES, "place section");
+  const files = useW4All(FILES, "place section").data;
   const [data, usa, whereWho] = files ?? [];
   const mapReady = useEChartsMap("USA", usa ?? null, mainland);
   const scale = useTypeScale();

@@ -22,9 +22,15 @@ export function useW4Data<T = any>(path: string | null, label: string, { enabled
   return state;
 }
 
-/** Every file in `paths` at once: the data in order once all have loaded, else null. */
-export function useW4All(paths: string[], label: string, { enabled = true }: { enabled?: boolean } = {}): any[] | null {
+export type W4All = { status: "loading" | "ready" | "error"; data: any[] | null };
+
+/** Every file in `paths` at once: { status, data }, the data in order once all
+ * have loaded. The status is "error" as soon as any file fails, so a part can
+ * say so instead of staying empty. */
+export function useW4All(paths: string[], label: string, { enabled = true }: { enabled?: boolean } = {}): W4All {
   // `paths` never changes length for a mounted component, so the hooks keep their order.
   const states = paths.map((p) => useW4Data(p, label, { enabled }));
-  return states.every((s) => s.status === "ready") ? states.map((s) => s.data) : null;
+  if (states.some((s) => s.status === "error")) return { status: "error", data: null };
+  if (states.every((s) => s.status === "ready")) return { status: "ready", data: states.map((s) => s.data) };
+  return { status: "loading", data: null };
 }
