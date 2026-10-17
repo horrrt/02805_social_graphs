@@ -33,9 +33,10 @@ If the request is ambiguous or a rule below blocks it, stop and ask. Do not gues
 - Any page data changed: `python analysis/check_pages.py` must print `ok` for every file. It checks every
   week's page JSON against the fields and cross-references its page scripts read (Pydantic models in
   `analysis/week01_schemas.py` to `analysis/week06_schemas.py`).
-- A page quotes a script's output: rerun that script and use its fresh JSON. For weeks 1 to 3,
-  `python analysis/run_all.py` reruns every script in parallel (or `week02`, or one script) and lists each
-  committed file that changed. For week 4, section 1 is `analysis/week04_where.py`, section 2
+- A page quotes a script's output: rerun that script and use its fresh JSON. For weeks 1 to 3, 5
+  and 6, `python analysis/run_all.py` reruns every script in parallel (or `week02`, or one script) and lists
+  each committed file that changed. `tests/run-all.test.mjs` fails when a `weekNN_*.py` script sits in no
+  runner and is not excluded with a reason. For week 4, section 1 is `analysis/week04_where.py`, section 2
   `analysis/week04_jobs.py`, section 3 `analysis/week04_staffing.py` then
   `analysis/week04_staffing_figure.py`, and `python analysis/week04_run_all.py` reruns them all in parallel.
   The staffing script takes about 2 minutes and prints progress.
