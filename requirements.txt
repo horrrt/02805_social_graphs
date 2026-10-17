@@ -19,3 +19,5 @@ nltk>=3.10
 tiktoken>=0.14
 en_core_web_sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl
 colorspacious>=1.1
+gensim==4.4.0
+scattertext==0.2.2
