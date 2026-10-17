@@ -590,7 +590,7 @@ export default function Page() {
                       {" "}
                       <code>.fact</code>
                     </p>
-                    <div className="facts">
+                    <dl className="facts">
                       <div className="fact">
                         <dt>People</dt>
                         <dd>11,279,561</dd>
@@ -603,7 +603,7 @@ export default function Page() {
                         <dt>Routes</dt>
                         <dd>164</dd>
                       </div>
-                    </div>
+                    </dl>
                   </div>
                   <div>
                     <p className="sg-label">

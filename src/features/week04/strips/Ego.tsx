@@ -192,6 +192,7 @@ function Board({ clients, T }: { clients: any; T: T }) {
           <input
             ref={input}
             type="search"
+            role="combobox"
             placeholder="Type any client, e.g. Apple"
             aria-label="Find a client"
             aria-controls="who-ego-matches"
