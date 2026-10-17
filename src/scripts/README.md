@@ -1,6 +1,10 @@
 # Components
 
-Every component a section script needs comes from one import, `kit.js`:
+**Nothing imports `kit.js` any more.** New code draws with the React kit, `import { … } from "@/kit"`,
+documented in [src/kit/README.md](../kit/README.md). This file stays only while `kit.js` does:
+`tests/kit.test.mjs` checks that it documents exactly that module's exports.
+
+Before the React rewrite, every component a section script needed came from one import, `kit.js`:
 
 ```js
 import { slot, figure, echart, concordance, passage, loadData } from "./kit.js";

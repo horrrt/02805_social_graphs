@@ -29,7 +29,7 @@ Rigor first, play second. The identity is the evidence: every post reproduces th
 ## Operating Context
 
 - One post per course week, linked in Teams by the Monday evening after class; the course runs eight weeks (2 September to 28 October 2026).
-- Posts are built from a template (`src/app/(template)/`) and follow `project/POST_GUIDE.md`; the weekly plan lives in `project/WEEKNN.md`.
+- Posts are built from a template (`src/app/(template)/`) and follow `project/POST_GUIDE.md`; the weekly plan lives in `project/WEEK*.md` (Week 4 on).
 - The site is a Next.js static export deployed to GitHub Pages by merging to `main`.
 
 ## Capabilities and Constraints
@@ -48,7 +48,7 @@ Rigor first, play second. The identity is the evidence: every post reproduces th
 ## Evidence on Hand
 
 - Course data snapshots in `data/` (Marvel pages and links, frozen 26 August 2026) and the group's own sources (migration, H-1B; see `project/MIGRATION_DATA_CATALOGUE.md`).
-- Analysis outputs in `analysis/*.json` and hand-read verdicts in `analysis/*.csv`.
+- Analysis outputs in `analysis/*.json` and hand-read verdicts in `analysis/*.parquet` (`python analysis/tables.py edit` opens one as CSV).
 - Team portraits in `public/assets/images/team/`.
 - None of the following exists, so do not fabricate it: testimonials, reader studies, usage statistics, awards or competition wins.
 

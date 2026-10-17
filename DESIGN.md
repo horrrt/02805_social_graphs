@@ -24,11 +24,17 @@ Lowercase "log–log" is the chart term (both axes on a log scale), not the name
 | Pages | Stylesheets, in order | Look |
 | --- | --- | --- |
 | Home | `type.css`, `corridor.css`, `home.css` | Navy text, blue controls, pale blue ground, illustrated hero |
-| Weeks 1 and 2 | `type.css`, `arcade.css`, `design.css`, `story.css` | The arcade edition: card packs, transit map |
-| Week 3 | `type.css`, `corridor.css` | White cards on a cool ground, one colour per network |
-| Week 4 onwards | `type.css`, `corridor.css`, `post.css` | Week 3's look in Week 4's card form |
+| Weeks 1 and 2 | `type.css`, `arcade.css`, `story.css`, `design.css` | The arcade edition: card packs, transit map |
+| Week 3 | `type.css`, `corridor.css`, `post.css` | White cards on a cool ground, one colour per network |
+| Week 4 | `type.css`, `corridor.css`, `post.css`, then eleven `week04-*.css` files | Week 3's look in Week 4's card form |
+| Weeks 5 and 6, the template, kit and styleguide | `type.css`, `corridor.css`, `post.css` | Week 4's form, shared rules only |
+| Toolbox | `type.css`, `corridor.css`, `post.css`, `toolbox.css` | The post look for the catalogues |
 | Play | `type.css`, `site.css`, `signal.css` | Dark scoreboard with yellow highlights |
+| Cold Read | `type.css`, `cold-read.css` | The game's own look over the site's tokens |
+| Mockups | `type.css`, `site.css`, `mockups.css` | The design mockups |
 
+Each layout in `src/app/(<page>)/layout.tsx` imports its stylesheets in this order. Every post and the
+styleguide import the vendored KaTeX stylesheet first, and Cold Read imports Driver.js's before its own.
 A new post links `type.css`, `corridor.css` and `post.css` and nothing else. A rule another post could use
 goes into `post.css` (`tests/stylesheets.test.mjs` checks this). The `/styleguide` page shows Week 3's
 palettes and skins live.
@@ -121,7 +127,7 @@ are records. All are private to Gyula unless noted.
 
 | Artifact | What it holds |
 | --- | --- |
-| [Log-Log Legends Kit](https://claude.ai/artifact/JRrSbSw7WMvvxRr57oBmWD) | The design system to build with: the site's React components with live previews, and this file, the post guide and the site and writing rules as guidelines. Claude publishes changes straight to it; claude.ai/design and `/design-sync` are retired, so do not use them. When one of those four files changes, republish it to the kit's `project/guidelines/gen/guidelines/`. |
+| [Log-Log Legends Kit](https://claude.ai/artifact/JRrSbSw7WMvvxRr57oBmWD) | The design system to build with: the site's React components with live previews, and this file, the post guide and the site and writing rules as guidelines. Claude publishes changes straight to it; claude.ai/design and `/design-sync` are retired, so do not use them. When one of those four files changes, republish it to the kit artifact's guidelines folder (project/guidelines/gen/guidelines/ inside the artifact, not this repository). |
 | [Log-Log Legends tokens](https://claude.ai/artifact/2DfxHtPMWbJSRnDk19Hxf8) | The first design system, tokens only, from `corridor.css` and `week04.css` (23 Sep). Superseded by the kit. |
 | [Social Graphs design](https://claude.ai/artifact/Gcx984yt52bQBL2Bb2tJ8F) | The main canvas: Week 4 boards, the brief-gaps page, Week 5 boards, the chart and graph kits, the post template. Mirrored in `review/week04-redesign/`. Shared by link. |
 | [Home canvas](https://claude.ai/artifact/TexCswK63W8faQ5baT3Km5) | One board of the home page (29 Sep). |
