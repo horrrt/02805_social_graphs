@@ -29,6 +29,9 @@ const stamped = tracked.flatMap((file) => {
 test("the Week 3 outputs carry their input stamps", () => {
   const files = stamped.map((s) => s.file);
   for (const file of [
+    "public/assets/data/week03_corridors.json",
+    "public/assets/data/week03_edges.json",
+    "public/assets/data/week03_flights.json",
     "analysis/week03_gravity.json",
     "analysis/week03_communities.json",
     "public/assets/data/week03_cartography.json",
