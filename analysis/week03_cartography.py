@@ -64,10 +64,12 @@ import statistics
 
 import networkx as nx
 
+import stamps
 from check_pages import check
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 DATA = ROOT / "public" / "assets" / "data"
+INPUTS = stamps.Inputs(__file__)
 
 # Guimerà and Amaral (2005), table 1. A hub is z >= 2.5; the participation
 # coefficient then splits hubs three ways and non-hubs four.
@@ -247,8 +249,8 @@ def main() -> None:
                         help="cross-check the two coordinates against bctpy and stop")
     args = parser.parse_args()
 
-    edges = json.loads((DATA / "week03_edges.json").read_text())
-    corridors = json.loads((DATA / "week03_corridors.json").read_text())
+    edges = json.loads(INPUTS.read(DATA / "week03_edges.json"))
+    corridors = json.loads(INPUTS.read(DATA / "week03_corridors.json"))
     names = {iso3: node["name"] for iso3, node in corridors["nodes"].items()}
     everyone = set(corridors["nodes"])
 
@@ -319,6 +321,7 @@ def main() -> None:
                 "role most runs gave it together with the share that agreed. The "
                 "thresholds are Guimerà and Amaral's own and are not tuned to this "
                 "network, which is much denser than the ones they were set on.",
+        **INPUTS.stamp(),
     }
     path = DATA / "week03_cartography.json"
     check(path, payload)

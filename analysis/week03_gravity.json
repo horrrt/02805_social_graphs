@@ -374,5 +374,10 @@
       "ratio": 0.001,
       "km": 2027
     }
-  ]
+  ],
+  "inputs": {
+    "public/assets/data/week03_corridors.json": "cc6b1838cec184c45c3a84d820dac6065a1aec5ea5de12d2bb4cf8932f408c7f",
+    "public/assets/data/week03_edges.json": "2f7b99c8ca05b622d9912409c9f328d4b753dd7915c868ed4adf17f3909c7065"
+  },
+  "rerun": "python analysis/week03_gravity.py"
 }

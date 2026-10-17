@@ -37,19 +37,21 @@ import random
 
 import networkx as nx
 
+import stamps
 from week04_staffing import labels, louvain, nmi
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 DATA = ROOT / "public" / "assets" / "data"
 OUT = ROOT / "analysis"
+INPUTS = stamps.Inputs(__file__)
 
 STABILITY_SEEDS = range(100)
 
 
 def build(year: int, threshold: int):
     """Undirected, weighted by the people moving in both directions."""
-    corridors = json.loads((DATA / "week03_corridors.json").read_text())
-    edges = json.loads((DATA / "week03_edges.json").read_text())
+    corridors = json.loads(INPUTS.read(DATA / "week03_corridors.json"))
+    edges = json.loads(INPUTS.read(DATA / "week03_edges.json"))
     countries = edges["countries"]
     yi = edges["years"].index(year)
     graph = nx.Graph()
@@ -241,6 +243,7 @@ def main():
         },
         "communities": out,
     }
+    payload.update(INPUTS.stamp())
     path = OUT / "week03_communities.json"
     path.write_text(json.dumps(payload, separators=(",", ":")))
     print(f"\nwrote {path.relative_to(ROOT)} ({path.stat().st_size // 1024} KB)")
