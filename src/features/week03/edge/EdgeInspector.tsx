@@ -38,7 +38,7 @@ function EdgeView() {
         {" "}
         <span className="chip" id="edge-kind">{view?.kind ?? "—"}</span>
       </div>
-      <div className="facts" id="edge-facts">{rich(view?.facts)}</div>
+      <dl className="facts" id="edge-facts">{rich(view?.facts)}</dl>
       <div className="notice" id="edge-note">
         <span className="ico">💡</span>
         {" "}
@@ -60,7 +60,7 @@ function EdgePlaceholder() {
         {" "}
         <span className="chip" id="edge-kind">—</span>
       </div>
-      <div className="facts" id="edge-facts"></div>
+      <dl className="facts" id="edge-facts"></dl>
       <div className="notice" id="edge-note">
         <span className="ico">💡</span>
         {" "}
