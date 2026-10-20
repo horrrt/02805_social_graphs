@@ -24,7 +24,7 @@ applyTo: "analysis/**"
   from there, and a test in `tests/` builds each sentence from that JSON (`tests/week04-prose.test.mjs`).
   Pin the names and the words a sentence attaches to a number too, such as "about twice".
 - When a page script reads a new field, add it to that week's model (`analysis/week01_schemas.py` to
-  `analysis/week06_schemas.py`), and run `python analysis/check_pages.py`. Call `check(path, data)` from
+  `analysis/week07_schemas.py`), and run `python analysis/check_pages.py`. Call `check(path, data)` from
   `analysis/check_pages.py` right before writing a page file.
 - Wrap a loop that runs longer than a minute in `tracked()` from `analysis/week04_staffing.py`, so it prints
   progress and time left. Run independent scripts in parallel, as `analysis/week04_run_all.py` does.

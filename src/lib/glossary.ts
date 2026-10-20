@@ -128,6 +128,9 @@ export function explainFor(ids: readonly ExplainId[], more: Partial<Record<Expla
 
 export const TERMS: Record<string, { word: string; definition: string }> = {
   // ---- text
+  "named-entity-recognition": { word: "named entity recognition", definition: "A model that marks the spans of a text that name a person, a place, an organisation or another named thing, and gives each span a type." },
+  "entity-resolution": { word: "entity resolution", definition: "Deciding which mentions name the same thing, such as Peter Parker and Spider-Man; a separate step from finding the mentions." },
+  "co-mention": { word: "co-mention", definition: "Two names in the same stretch of text, such as one sentence. It records that a text names both, not that the two met." },
   "tf-idf": { word: "TF-IDF", definition: "A word's weight in one document. It's high when the word is frequent in that document and rare in the others." },
   tf: { word: "TF", definition: "Term frequency: how often a word appears in a document, divided by the number of words in that document." },
   df: { word: "DF", definition: "Document frequency: the number of documents a word appears in at least once." },

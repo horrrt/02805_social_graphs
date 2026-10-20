@@ -1,0 +1,1526 @@
+{
+ "generated_by": "analysis/week07_comention.py",
+ "pages": 303,
+ "sentences": 33243,
+ "links": 1434,
+ "names": {
+  "resolved": 593,
+  "blocked": 26,
+  "kept_by_hand": 7,
+  "rejected_by_hand": 8,
+  "candidates": 678
+ },
+ "mentions": 24919,
+ "characters_named": 300,
+ "raw_person_strings": 8014,
+ "units": {
+  "sentence": {
+   "characters": 276,
+   "ties": 1568,
+   "linked": 876,
+   "share_linked": 0.5586734693877551,
+   "share_links_found": 0.6108786610878661,
+   "null_mean": 0.1503609693877551,
+   "null_sd": 0.006707166070927762,
+   "z": 60.877052347016146
+  },
+  "paragraph": {
+   "characters": 284,
+   "ties": 2280,
+   "linked": 1094,
+   "share_linked": 0.47982456140350876,
+   "share_links_found": 0.7629009762900977,
+   "null_mean": 0.1399688596491228,
+   "null_sd": 0.005193741527944217,
+   "z": 65.43562091525709
+  },
+  "page": {
+   "characters": 290,
+   "ties": 7214,
+   "linked": 1345,
+   "share_linked": 0.18644302744663155,
+   "share_links_found": 0.9379358437935844,
+   "null_mean": 0.09832298308843915,
+   "null_sd": 0.0019122794641948935,
+   "z": 46.0811539359874
+  }
+ },
+ "ner_sentence": {
+  "characters": 240,
+  "ties": 876,
+  "linked": 572,
+  "share_linked": 0.6529680365296804,
+  "share_links_found": 0.398884239888424,
+  "null_mean": 0.16675570776255708,
+  "null_sd": 0.00949763025850795,
+  "z": 51.19301505042015
+ },
+ "weights": [
+  {
+   "bin": "1",
+   "ties": 837,
+   "linked": 362,
+   "share_linked": 0.4324970131421744,
+   "null_mean": 0.12109318996415772,
+   "null_sd": 0.00909881179552354
+  },
+  {
+   "bin": "2",
+   "ties": 313,
+   "linked": 171,
+   "share_linked": 0.5463258785942492,
+   "null_mean": 0.1599041533546326,
+   "null_sd": 0.017363027102359308
+  },
+  {
+   "bin": "3–4",
+   "ties": 191,
+   "linked": 145,
+   "share_linked": 0.7591623036649214,
+   "null_mean": 0.19089005235602094,
+   "null_sd": 0.024774054634477946
+  },
+  {
+   "bin": "5–9",
+   "ties": 142,
+   "linked": 117,
+   "share_linked": 0.823943661971831,
+   "null_mean": 0.24049295774647889,
+   "null_sd": 0.0265358359259999
+  },
+  {
+   "bin": "10+",
+   "ties": 85,
+   "linked": 81,
+   "share_linked": 0.9529411764705882,
+   "null_mean": 0.3805294117647059,
+   "null_sd": 0.04214019381411
+  }
+ ],
+ "link_only": {
+  "links": 558,
+  "page_names_other": 436,
+  "share_page_names_other": 0.7813620071684588
+ },
+ "arcs": {
+  "arcs": 1784,
+  "source_names_target": 1590
+ },
+ "pairs_read": {
+  "n": 25,
+  "title": 8,
+  "wrong name": 7,
+  "passing": 4,
+  "story": 6
+ },
+ "links_read": {
+  "n": 20,
+  "other name": 10,
+  "pronoun": 7,
+  "no mention": 3
+ },
+ "most_unlinked": {
+  "characters": [
+   {
+    "name": "Hawkeye (comics)",
+    "ties": 42,
+    "linked": 2
+   },
+   {
+    "name": "Spider-Man",
+    "ties": 121,
+    "linked": 86
+   },
+   {
+    "name": "Hulk",
+    "ties": 83,
+    "linked": 49
+   },
+   {
+    "name": "Force (comics)",
+    "ties": 32,
+    "linked": 0
+   },
+   {
+    "name": "Wolverine (character)",
+    "ties": 74,
+    "linked": 42
+   }
+  ],
+  "unlinked": 692
+ },
+ "instrument": {
+  "names": {
+   "found": 48,
+   "right": 40,
+   "missed": 17,
+   "precision": 0.8333333333333334,
+   "recall": 0.7017543859649122
+  },
+  "ner": {
+   "found": 32,
+   "right": 29,
+   "missed": 28,
+   "precision": 0.90625,
+   "recall": 0.5087719298245614
+  },
+  "sentences": 80,
+  "mentions": 57
+ },
+ "course": {
+  "sentences": 445,
+  "person_spans": 635,
+  "distinct": 179,
+  "nodes": 146,
+  "edges": 293,
+  "top": [
+   [
+    "Mary Jane",
+    "Peter",
+    15
+   ],
+   [
+    "Peter Parker",
+    "Spider-Man",
+    14
+   ],
+   [
+    "Peter",
+    "Spider-Man",
+    9
+   ],
+   [
+    "Ditko",
+    "Lee",
+    8
+   ]
+  ]
+ },
+ "runs": 1000,
+ "seed": 7,
+ "pairs": [
+  {
+   "a": "Hawkeye (comics)",
+   "b": "Mockingbird (Marvel Comics)",
+   "a_id": "Hawkeye_(comics)",
+   "b_id": "Mockingbird_(Marvel_Comics)",
+   "sentences": 45,
+   "bucket": "title",
+   "note": "the Hawkeye & Mockingbird series title; the two are married in the comics, but this sentence names a book",
+   "example": "The series was a crossover between Black Widow and the ongoing Hawkeye & Mockingbird series."
+  },
+  {
+   "a": "Human Torch",
+   "b": "Toro (character)",
+   "a_id": "Human_Torch",
+   "b_id": "Toro_(character)",
+   "sentences": 15,
+   "bucket": "wrong name",
+   "note": "the WWII Human Torch who partnered Toro is the android (Jim Hammond); the bare name goes to Johnny Storm's page",
+   "example": "However, word of Basil Frankenstein's activities leaked out to the Allied Forces and the Human Torch and Toro went out to investigate."
+  },
+  {
+   "a": "Spider-Man",
+   "b": "Spider-Woman (Jessica Drew)",
+   "a_id": "Spider-Man",
+   "b_id": "Spider-Woman_(Jessica_Drew)",
+   "sentences": 15,
+   "bucket": "passing",
+   "note": "a costume design compared with both; no shared story",
+   "example": "This version wears a costume based on that of Jessica Drew's, modified to resemble Spider-Man's, and has the ability to fire venom blasts like Miles Morales.\n\n\n"
+  },
+  {
+   "a": "Ghost Rider",
+   "b": "Morbius",
+   "a_id": "Ghost_Rider",
+   "b_id": "Morbius",
+   "sentences": 13,
+   "bucket": "title",
+   "note": "a list of Midnight Sons series titles",
+   "example": "1990s\nBlade next came into prominence in the 1990s, beginning with Ghost Rider #28 (Aug. 1992), in the Midnight Sons imprint that included issues of Darkhold: Pages from the Book of Sins, Ghost Rider, Ghost Rider/Blaze: Spirits of Vengeance, Midnight Sons Unlimited, Morbius, and Nightstalkers."
+  },
+  {
+   "a": "Blade (character)",
+   "b": "Phoenix (Guardians of the Galaxy)",
+   "a_id": "Blade_(character)",
+   "b_id": "Phoenix_Force",
+   "sentences": 8,
+   "bucket": "wrong name",
+   "note": "Blade of the Phoenix is a weapon; neither Blade nor the Phoenix Force is in the sentence",
+   "example": "Korvus uses a weapon known as the Blade of the Phoenix."
+  },
+  {
+   "a": "Darkdevil",
+   "b": "Spider-Girl",
+   "a_id": "Darkdevil",
+   "b_id": "Spider-Girl",
+   "sentences": 7,
+   "bucket": "title",
+   "note": "Darkdevil debuted in the Spider-Girl series",
+   "example": "Publication history\nDarkdevil debuted in Spider-Girl #2 (November 1998), by writer Tom DeFalco and artist Pat Olliffe."
+  },
+  {
+   "a": "Hawkeye (comics)",
+   "b": "U.S. Agent",
+   "a_id": "Hawkeye_(comics)",
+   "b_id": "U.S._Agent",
+   "sentences": 7,
+   "bucket": "title",
+   "note": "Solo Avengers and Hawkeye's own series; the sentence names books",
+   "example": "Like some West Coast Avengers teammates who had their own series (such as Iron Man, or Hawkeye in Solo Avengers), the character U.S. Agent was popular enough to support his own limited series in 1993."
+  },
+  {
+   "a": "Solo (Marvel Comics)",
+   "b": "Spider-Man",
+   "a_id": "Solo_(Marvel_Comics)",
+   "b_id": "Spider-Man",
+   "sentences": 7,
+   "bucket": "wrong name",
+   "note": "Solo matches a Solo Movie list title; a list of Black Cat rankings",
+   "example": "\"\n\nScreen Rant included Black Cat in their \"10 Best Marvel Characters Who Made Their Debut In Spider-Man Comics\" list, in their \"10 Spider-Man Villains That Should Get A Solo Movie\" list, in their \"10 Most Powerful Vigilantes In Marvel Comics\" list, and in their \"10 Best Spider-Man Comics Characters Not In The MCU\" list, and ranked her 3rd in their \"10 Best Relationships in Spider-Man Comics\" list, 10th in their in their \"Spider-Man: 10 Best Female Villains\" list, 10th in their \"10 Most Powerful Silk Villains In Marvel Comics\" list, and 10th in their \"10 LGBTQ+ Marvel Heroes That Should Join The MCU\" list."
+  },
+  {
+   "a": "Blade (character)",
+   "b": "Korvus",
+   "a_id": "Blade_(character)",
+   "b_id": "Korvus",
+   "sentences": 6,
+   "bucket": "wrong name",
+   "note": "Blade of the Phoenix is a weapon Korvus uses; Blade does not appear",
+   "example": "Korvus uses a weapon known as the Blade of the Phoenix."
+  },
+  {
+   "a": "Hawkeye (comics)",
+   "b": "Scarlet Witch",
+   "a_id": "Hawkeye_(comics)",
+   "b_id": "Scarlet_Witch",
+   "sentences": 6,
+   "bucket": "story",
+   "note": "Hawkeye is with the Avengers in Children's Crusade; the Scarlet Witch is the one they fight over",
+   "example": "She returns in Avengers: The Children's Crusade #6 in which she, Beast, and Hawkeye attempted to defuse the situation between the Avengers and X-Men who were fighting over who was to punish the Scarlet Witch."
+  },
+  {
+   "a": "Hawkeye (comics)",
+   "b": "Silencer (comics)",
+   "a_id": "Hawkeye_(comics)",
+   "b_id": "Silencer_(comics)",
+   "sentences": 6,
+   "bucket": "title",
+   "note": "Silencer first appeared in the Hawkeye series",
+   "example": "The Dean Helm version of Silencer was a supervillain and made his first and only appearance in Hawkeye #2 (1983), created by Mark Gruenwald.\n"
+  },
+  {
+   "a": "Hellion (character)",
+   "b": "Wolverine (character)",
+   "a_id": "Hellion_(character)",
+   "b_id": "Wolverine_(character)",
+   "sentences": 6,
+   "bucket": "passing",
+   "note": "Hellion's class follows Wolverine's death; no shared scene",
+   "example": "In 2014, Hellion was then one of the students in the Special Class taught by Spider-Man, in the limited series Spider-Man and the X-Men by writer Elliott Kalan and artist Marco Failla, following Wolverine's death."
+  },
+  {
+   "a": "Hercules (Marvel Comics)",
+   "b": "Storm (Marvel Comics)",
+   "a_id": "Hercules_(Marvel_Comics)",
+   "b_id": "Storm_(Marvel_Comics)",
+   "sentences": 6,
+   "bucket": "wrong name",
+   "note": "the Uprising Storm is a group, not Storm",
+   "example": "During the battle, while Cho helps the other heroes, Hercules encounters the Uprising Storm, who tell him of their plan to destroy the world and turn him into one of them by teasing him into believing that the other heroes don't want him anymore."
+  },
+  {
+   "a": "Human Torch",
+   "b": "Storm (Marvel Comics)",
+   "a_id": "Human_Torch",
+   "b_id": "Storm_(Marvel_Comics)",
+   "sentences": 6,
+   "bucket": "wrong name",
+   "note": "Johnny Storm is the Human Torch; the surname matched Storm",
+   "example": "The series Marvel Team-Up featured Spider-Man joining forces with one or more Marvel characters in each issue, and issue #121 paired the web-slinger with his longtime friend and occasional rival Johnny Storm, the Fantastic Four member known as the Human Torch."
+  },
+  {
+   "a": "Morbius",
+   "b": "Venom (character)",
+   "a_id": "Morbius",
+   "b_id": "Venom_(character)",
+   "sentences": 6,
+   "bucket": "story",
+   "note": "both join the team-up against Carnage in Maximum Carnage",
+   "example": "Maximum Carnage\nDuring the 1993 \"Maximum Carnage\" event, Cloak and Dagger teamed up with Spider-Man, Captain America, Black Cat, Nightwatch, Iron Fist, Deathlok, Morbius, Venom, and Firestar to halt Carnage and his allies' murderous rampage across New York City."
+  },
+  {
+   "a": "Ms. Marvel",
+   "b": "Spider-Man",
+   "a_id": "Ms._Marvel",
+   "b_id": "Spider-Man",
+   "sentences": 6,
+   "bucket": "story",
+   "note": "Ms. Marvel and Spider-Man break into Alchemax together",
+   "example": "Spider-Man, Ms. Marvel, She-Hulk, Spider-Gwen, and Spider-Man 2099 break into Alchemax, but are attacked by scientists infected by Venom and Carnage's symbiotes."
+  },
+  {
+   "a": "Black Widow (Natasha Romanova)",
+   "b": "Bucky (Marvel Comics)",
+   "a_id": "Black_Widow_(Natasha_Romanova)",
+   "b_id": "Bucky_(Marvel_Comics)",
+   "sentences": 5,
+   "bucket": "story",
+   "note": "Black Widow operates alongside Bucky Barnes as Captain America",
+   "example": "When Tony Stark becomes director of S.H.I.E.L.D., Black Widow operates alongside Bucky Barnes as he becomes the new Captain America.\n"
+  },
+  {
+   "a": "Captain Marvel (Marvel Comics)",
+   "b": "She-Hulk",
+   "a_id": "Captain_Marvel_(Marvel_Comics)",
+   "b_id": "She-Hulk",
+   "sentences": 5,
+   "bucket": "title",
+   "note": "MCU film and series titles: Captain Marvel (2019), She-Hulk: Attorney at Law",
+   "example": "In the Marvel Cinematic Universe (MCU), the character was first portrayed by Edward Norton in the film The Incredible Hulk (2008) and by Mark Ruffalo in later appearances, including the films The Avengers (2012), Iron Man 3 (2013), Avengers: Age of Ultron (2015), Thor: Ragnarok (2017), Avengers: Infinity War (2018), Captain Marvel (2019), Avengers: Endgame (2019), Shang-Chi and the Legend of the Ten Rings (2021), and Spider-Man: Brand New Day (2026), and the television series She-Hulk: Attorney at Law (2022) and What If...?"
+  },
+  {
+   "a": "Captain Marvel (Marvel Comics)",
+   "b": "Spider-Man",
+   "a_id": "Captain_Marvel_(Marvel_Comics)",
+   "b_id": "Spider-Man",
+   "sentences": 5,
+   "bucket": "title",
+   "note": "Spider-Man here is a TV series Captain Marvel appears in",
+   "example": "Carol Danvers / Captain Marvel appears in Spider-Man, voiced again by Grey DeLisle."
+  },
+  {
+   "a": "Darkdevil",
+   "b": "Spider-Man",
+   "a_id": "Darkdevil",
+   "b_id": "Spider-Man",
+   "sentences": 5,
+   "bucket": "passing",
+   "note": "Darkdevil's father is Spider-Man's clone; Spider-Man is a family reference",
+   "example": "Fictional character biography\nReilly Tyne is the son of Ben Reilly (Spider-Man's clone) and Elizabeth Tyne."
+  },
+  {
+   "a": "Force (comics)",
+   "b": "Iron Man 2020",
+   "a_id": "Force_(comics)",
+   "b_id": "Iron_Man_2020",
+   "sentences": 5,
+   "bucket": "wrong name",
+   "note": "Force Works is a team and Iron Man 2020 an event; neither character is in the sentence",
+   "example": "Deathloks of Lingares\nDuring the \"Iron Man 2020\" event, Force Works encounters a group of Deathloks on the island of Lingares who overwhelm and capture them."
+  },
+  {
+   "a": "Ghost Rider",
+   "b": "Man-Thing",
+   "a_id": "Ghost_Rider",
+   "b_id": "Man-Thing",
+   "sentences": 5,
+   "bucket": "passing",
+   "note": "a list of mash-up characters such as Ghost Panther and Man-Thing-Thang-Thoom",
+   "example": "This causes them to round up Arachknight (a combination of Spider-Man and Moon Knight), Ghost Panther (a combination of Ghost Rider and Black Panther), Green Widow (a combination of Black Widow and She-Hulk), Iron Hammer (a combination of Iron Man and Thor), Man-Thing-Thang-Thoom (a combination of Man-Thing and Fin Fang Foom), Moon Squirrel (a combination of Moon Girl and Squirrel Girl) and Tippysaurus (a combination of Tippy-Toe and Devil Dinosaur), Soldier Supreme (a combination of Captain America and Doctor Strange), Weapon Hex (a combination of Scarlet Witch and X-23), and Fantastic Two members Mister Invisible (a combination of Mister Fantastic and Invisible Woman) and Hot Rocks (a combination of Human Torch and Thing) as well as a saxophone-playing version of Drax the Destroyer.\n"
+  },
+  {
+   "a": "Ghost Rider",
+   "b": "Wolverine (character)",
+   "a_id": "Ghost_Rider",
+   "b_id": "Wolverine_(character)",
+   "sentences": 5,
+   "bucket": "title",
+   "note": "the crossover title Ghost Rider/Wolverine/Punisher",
+   "example": "This transformation was not strictly limited to the motorcycle he was found in the cemetery with as he was once seen able to transform another cycle in \"Ghost Rider/Wolverine/Punisher: Hearts of Darkness\"."
+  },
+  {
+   "a": "Hawkeye (comics)",
+   "b": "Quicksilver (Marvel Comics)",
+   "a_id": "Hawkeye_(comics)",
+   "b_id": "Quicksilver_(Marvel_Comics)",
+   "sentences": 5,
+   "bucket": "story",
+   "note": "Quicksilver kills Hawkeye in the story",
+   "example": "Later in the story, Mockingbird refrains from killing Quicksilver who then goes on to kill Hawkeye."
+  },
+  {
+   "a": "Hawkeye (comics)",
+   "b": "Spider-Man",
+   "a_id": "Hawkeye_(comics)",
+   "b_id": "Spider-Man",
+   "sentences": 5,
+   "bucket": "story",
+   "note": "Frankenstein's Monster fights Spider-Man and Hawkeye",
+   "example": "Marvel Adventures\nIn the pages of \"Marvel Adventures\", Frankenstein's Monster was found in a crate and briefly fought Spider-Man and Hawkeye before disappearing into the night.\n\n\n"
+  }
+ ],
+ "links_missed": [
+  {
+   "a": "Betsy Braddock",
+   "b": "Black Cat (Marvel Comics)",
+   "a_id": "Betsy_Braddock",
+   "b_id": "Black_Cat_(Marvel_Comics)",
+   "rule": "named",
+   "bucket": "other name",
+   "note": "Betsy's page calls her Betsy in the sentence that names Black Cat"
+  },
+  {
+   "a": "Betsy Braddock",
+   "b": "Surge (Marvel Comics)",
+   "a_id": "Betsy_Braddock",
+   "b_id": "Surge_(Marvel_Comics)",
+   "rule": "named",
+   "bucket": "pronoun",
+   "note": "teammate Surge, with Betsy left implicit in a sentence about her team"
+  },
+  {
+   "a": "Bill Foster (character)",
+   "b": "Mockingbird (Marvel Comics)",
+   "a_id": "Bill_Foster_(character)",
+   "b_id": "Mockingbird_(Marvel_Comics)",
+   "rule": "named",
+   "bucket": "pronoun",
+   "note": "Mockingbird answers his summons"
+  },
+  {
+   "a": "Bill Foster (character)",
+   "b": "Moon Knight",
+   "a_id": "Bill_Foster_(character)",
+   "b_id": "Moon_Knight",
+   "rule": "named",
+   "bucket": "pronoun",
+   "note": "Moon Knight answers his summons"
+  },
+  {
+   "a": "Black Knight (Marvel Comics)",
+   "b": "Marvel Boy (Robert Grayson)",
+   "a_id": "Black_Knight_(Marvel_Comics)",
+   "b_id": "Marvel_Boy_(Robert_Grayson)",
+   "rule": "not named",
+   "bucket": "no mention",
+   "note": "neither page names the other by any name in its text"
+  },
+  {
+   "a": "Black Panther (character)",
+   "b": "Alice Nugent",
+   "a_id": "Black_Panther_(character)",
+   "b_id": "Doctor_Spectrum",
+   "rule": "named",
+   "bucket": "other name",
+   "note": "the Doctor Spectrum page names Obatu, one holder of the name"
+  },
+  {
+   "a": "Black Widow (Natasha Romanova)",
+   "b": "Iron Man (Ultimate Marvel character)",
+   "a_id": "Black_Widow_(Natasha_Romanova)",
+   "b_id": "Iron_Man_(Ultimate_Marvel_character)",
+   "rule": "named",
+   "bucket": "other name",
+   "note": "Tony Stark, an alias we reject because it mostly names the main Iron Man"
+  },
+  {
+   "a": "Blackthorn (character)",
+   "b": "Snapdragon (Morituri)",
+   "a_id": "Blackthorn_(character)",
+   "b_id": "Snapdragon_(Morituri)",
+   "rule": "not named",
+   "bucket": "no mention",
+   "note": "Strikeforce: Morituri teammates; neither page names the other"
+  },
+  {
+   "a": "Blazing Skull",
+   "b": "Ghost Rider (Johnny Blaze)",
+   "a_id": "Blazing_Skull",
+   "b_id": "Ghost_Rider_(Johnny_Blaze)",
+   "rule": "not named",
+   "bucket": "other name",
+   "note": "the Ghost Rider, which goes to the generic Ghost Rider page"
+  },
+  {
+   "a": "Cloak and Dagger (characters)",
+   "b": "Eddie Brock",
+   "a_id": "Cloak_and_Dagger_(characters)",
+   "b_id": "Eddie_Brock",
+   "rule": "not named",
+   "bucket": "other name",
+   "note": "Venom on one page and Cloak on the other"
+  },
+  {
+   "a": "Doctor Nemesis",
+   "b": "Human Torch (android)",
+   "a_id": "Doctor_Nemesis",
+   "b_id": "Human_Torch_(android)",
+   "rule": "not named",
+   "bucket": "other name",
+   "note": "the original Human Torch, which goes to Johnny Storm's page"
+  },
+  {
+   "a": "Eddie Brock",
+   "b": "John Jameson (character)",
+   "a_id": "Eddie_Brock",
+   "b_id": "John_Jameson_(character)",
+   "rule": "named",
+   "bucket": "other name",
+   "note": "Brock, a surname we do not match"
+  },
+  {
+   "a": "Hercules (Marvel Comics)",
+   "b": "Kismet (Marvel Comics)",
+   "a_id": "Hercules_(Marvel_Comics)",
+   "b_id": "Kismet_(Marvel_Comics)",
+   "rule": "named",
+   "bucket": "pronoun",
+   "note": "She selects Hercules"
+  },
+  {
+   "a": "Iron Fist (character)",
+   "b": "Star Brand",
+   "a_id": "Iron_Fist_(character)",
+   "b_id": "Star_Brand",
+   "rule": "named",
+   "bucket": "pronoun",
+   "note": "He came together with Iron Fist; the Iron Fist page names Fan Fei, an earlier holder"
+  },
+  {
+   "a": "Jessica Jones",
+   "b": "Misty Knight",
+   "a_id": "Jessica_Jones",
+   "b_id": "Misty_Knight",
+   "rule": "named",
+   "bucket": "pronoun",
+   "note": "she forms a partnership with Misty Knight"
+  },
+  {
+   "a": "Luke Cage",
+   "b": "Spider-Woman (Jessica Drew)",
+   "a_id": "Luke_Cage",
+   "b_id": "Spider-Woman_(Jessica_Drew)",
+   "rule": "not named",
+   "bucket": "no mention",
+   "note": "neither page names the other by any name in its text"
+  },
+  {
+   "a": "Makkari (character)",
+   "b": "Thena",
+   "a_id": "Makkari_(character)",
+   "b_id": "Thena",
+   "rule": "named",
+   "bucket": "pronoun",
+   "note": "she was affected, like Sersi and Makkari"
+  },
+  {
+   "a": "Mayday Parker",
+   "b": "Steel Spider",
+   "a_id": "Mayday_Parker",
+   "b_id": "Steel_Spider",
+   "rule": "not named",
+   "bucket": "other name",
+   "note": "Spider-Girl, which goes to the generic Spider-Girl page"
+  },
+  {
+   "a": "Scarlet Witch",
+   "b": "Spider-Woman (Jessica Drew)",
+   "a_id": "Scarlet_Witch",
+   "b_id": "Spider-Woman_(Jessica_Drew)",
+   "rule": "not named",
+   "bucket": "other name",
+   "note": "Spider-Woman, which goes to the generic Spider-Woman page, beside Wanda"
+  },
+  {
+   "a": "Tarantula (Marvel Comics)",
+   "b": "U.S. Agent",
+   "a_id": "Tarantula_(Marvel_Comics)",
+   "b_id": "U.S._Agent",
+   "rule": "named",
+   "bucket": "other name",
+   "note": "Walker, a surname we do not match"
+  }
+ ],
+ "sentences_read": [
+  {
+   "page": "Anya Corazon",
+   "sentence": "The Heart of the Spider, starting in March 2005 as part of Marvel Next.",
+   "read": [],
+   "names": [],
+   "ner": [],
+   "note": ""
+  },
+  {
+   "page": "Baymax",
+   "sentence": "His feet are equipped with jet engines capable of generating a thrust sufficient to propel him at speeds up to Mach 4.",
+   "read": [],
+   "names": [],
+   "ner": [],
+   "note": ""
+  },
+  {
+   "page": "Betsy Braddock",
+   "sentence": "Elizabeth, in her Asian body, became the leader of X-Force and the world.\n\n\n",
+   "read": [
+    "Betsy Braddock"
+   ],
+   "names": [],
+   "ner": [],
+   "note": "Elizabeth"
+  },
+  {
+   "page": "Black Bolt",
+   "sentence": "Another back-up feature in What If?",
+   "read": [],
+   "names": [],
+   "ner": [],
+   "note": ""
+  },
+  {
+   "page": "Black Cat (Marvel Comics)",
+   "sentence": "So, I never even thought of Catwoman when I did her.",
+   "read": [],
+   "names": [],
+   "ner": [],
+   "note": "Catwoman is DC's"
+  },
+  {
+   "page": "Black Jack Tarr",
+   "sentence": "When MI6's and MI13's tampering causes the Ten Rings to summon an alien parasite called the Wyrm of Desolation, Shang-Chi reacquires the Rings to rescue them.",
+   "read": [
+    "Shang-Chi"
+   ],
+   "names": [
+    "Shang-Chi"
+   ],
+   "ner": [
+    "Shang-Chi"
+   ],
+   "note": ""
+  },
+  {
+   "page": "Blackthorn (character)",
+   "sentence": "After meeting the specific biological criteria which ensure whether a person's organism can be compatible with the process, Pagrovna becomes the first member of the premier generation of Strikeforce: Morituri to undergo the process.",
+   "read": [
+    "Blackthorn (character)"
+   ],
+   "names": [],
+   "ner": [],
+   "note": "Pagrovna, her surname"
+  },
+  {
+   "page": "Blade (character)",
+   "sentence": "Blade appears in Hulk and the Agents of S.M.A.S.H., voiced again by Terry Crews.",
+   "read": [
+    "Blade (character)"
+   ],
+   "names": [
+    "Blade (character)",
+    "Hulk"
+   ],
+   "ner": [
+    "Blade (character)",
+    "Hulk"
+   ],
+   "note": "Hulk and the Agents of S.M.A.S.H. is a show title"
+  },
+  {
+   "page": "Blue Bullet",
+   "sentence": "The German army prevented the Invaders from taking Jacob away by firing at a group of Jews, obliging the Invaders to surrender.",
+   "read": [],
+   "names": [],
+   "ner": [],
+   "note": "Jacob is his brother; the Invaders are a team"
+  },
+  {
+   "page": "Brian Braddock",
+   "sentence": "Unbeknownst to Brian, the events leading up to his assumption of the Otherworld were orchestrated by Kang the Conqueror, for reasons yet to be revealed.\n",
+   "read": [
+    "Brian Braddock"
+   ],
+   "names": [],
+   "ner": [],
+   "note": "Brian"
+  },
+  {
+   "page": "Captain Universe",
+   "sentence": "Peter Parker / Captain Universe, referred to as Cosmic Spider-Man, appears as a playable character in Spider-Man Unlimited.\n\n\n",
+   "read": [
+    "Captain Universe",
+    "Spider-Man"
+   ],
+   "names": [
+    "Captain Universe",
+    "Spider-Man"
+   ],
+   "ner": [],
+   "note": "Peter Parker"
+  },
+  {
+   "page": "Ch'od",
+   "sentence": "He helped save Colossus's life in outer space, and engaged in mock combat with Carol Danvers.",
+   "read": [],
+   "names": [],
+   "ner": [],
+   "note": "Carol Danvers has no page of her own in the roster; Colossus is not in it"
+  },
+  {
+   "page": "Citizen V",
+   "sentence": "The V-Battalion began hunting down Nazi war criminals and was allowed to place their secret headquarters at Castle Masada in Symkaria.\n",
+   "read": [],
+   "names": [],
+   "ner": [],
+   "note": ""
+  },
+  {
+   "page": "Cyclops (Marvel Comics)",
+   "sentence": "Leading the original X-Men, Cyclops battles Magneto and the Brotherhood of Evil Mutants while developing a complicated relationship with his teammate Jean Grey.",
+   "read": [
+    "Cyclops (Marvel Comics)",
+    "Jean Grey"
+   ],
+   "names": [
+    "Cyclops (Marvel Comics)",
+    "Jean Grey"
+   ],
+   "ner": [
+    "Cyclops (Marvel Comics)",
+    "Jean Grey"
+   ],
+   "note": ""
+  },
+  {
+   "page": "Cyclops (Marvel Comics)",
+   "sentence": "Cyclops can nevertheless manipulate the beams in several different ways, partially through the use of adjustable apertures in his visor that allow the beams to fire through their shielding at variable levels.\n",
+   "read": [
+    "Cyclops (Marvel Comics)"
+   ],
+   "names": [
+    "Cyclops (Marvel Comics)"
+   ],
+   "ner": [],
+   "note": ""
+  },
+  {
+   "page": "Deadpool",
+   "sentence": "In a What If...?",
+   "read": [],
+   "names": [],
+   "ner": [],
+   "note": ""
+  },
+  {
+   "page": "Devil Dinosaur",
+   "sentence": "While there, Devil attempts to eat a cowboy's horse.\n\n\n",
+   "read": [
+    "Devil Dinosaur"
+   ],
+   "names": [],
+   "ner": [],
+   "note": "Devil"
+  },
+  {
+   "page": "Doom 2099",
+   "sentence": "While the original 2099 imprint is known as Earth-928 in the Marvel Multiverse, this event causes a divergent timeline known as Earth-2992.\n\n\n",
+   "read": [],
+   "names": [],
+   "ner": [],
+   "note": ""
+  },
+  {
+   "page": "Elsa Bloodstone",
+   "sentence": "This power was never utilized previously and has not been used since.",
+   "read": [],
+   "names": [],
+   "ner": [],
+   "note": ""
+  },
+  {
+   "page": "Emma Frost",
+   "sentence": "Alongside the Hellfire Club, Frost battled the High Evolutionary's forces to rescue Magma, helped Magneto search for the New Mutants when they had gone missing, encountered the effects of the Inferno, and eventually formed an alliance with Selene and Magneto to oust Shaw from the inner circle.\n",
+   "read": [
+    "Emma Frost"
+   ],
+   "names": [
+    "Inferno (Dante Pertuz)"
+   ],
+   "ner": [
+    "Inferno (Dante Pertuz)"
+   ],
+   "note": "Frost; the Inferno is an event, not the character"
+  },
+  {
+   "page": "Emma Frost",
+   "sentence": "This version is a teenager, student at the Worthington Academy, and girlfriend of Sebastian Shaw.\n\n\n",
+   "read": [],
+   "names": [],
+   "ner": [],
+   "note": ""
+  },
+  {
+   "page": "Fin Fang Foom",
+   "sentence": "Fin Fang Foom is a Makluan, a dragon-like alien from the planet Kakaranathara (also known as Maklu IV) in the Greater Magellanic Cloud.",
+   "read": [
+    "Fin Fang Foom"
+   ],
+   "names": [
+    "Fin Fang Foom"
+   ],
+   "ner": [
+    "Fin Fang Foom"
+   ],
+   "note": ""
+  },
+  {
+   "page": "Firebird (Marvel Comics)",
+   "sentence": "She is also shown to have a romantic attraction to Henry Pym which manifests when she kisses him after he has an argument with the Wasp.\n\n\nCivil War\nAfter a vicious battle between Captain America's Secret Avengers and Iron Man's Pro-Registration forces during the Civil War, in which Bill Foster was killed by Ragnarok, Firebird, along with twenty other superheroes, joined the Secret Avengers in opposing the Superhuman Registration Act.",
+   "read": [
+    "Bill Foster (character)",
+    "Firebird (Marvel Comics)",
+    "Hank Pym"
+   ],
+   "names": [
+    "Bill Foster (character)",
+    "Firebird (Marvel Comics)",
+    "Hank Pym"
+   ],
+   "ner": [
+    "Bill Foster (character)",
+    "Firebird (Marvel Comics)",
+    "Hank Pym"
+   ],
+   "note": "Henry Pym; the Wasp and Iron Man are not in the roster"
+  },
+  {
+   "page": "Frog-Man",
+   "sentence": "While Eugene is imprisoned, a Skrull infiltrator takes his place, preparing to help a wide-scale invasion.",
+   "read": [
+    "Frog-Man"
+   ],
+   "names": [],
+   "ner": [],
+   "note": "Eugene"
+  },
+  {
+   "page": "Golem (Marvel Comics)",
+   "sentence": "Golem agreed, but after the Hood left, told Rapier to kill the thief at their rendezvous.\n",
+   "read": [
+    "Golem (Marvel Comics)"
+   ],
+   "names": [
+    "Golem (Marvel Comics)"
+   ],
+   "ner": [],
+   "note": ""
+  },
+  {
+   "page": "Hellion (character)",
+   "sentence": "Ashley Fields, for Screen Rant in 2024, expressed disappointment that Julian appeared as the villain Krakoan in NYX (vol. 2) #1.",
+   "read": [
+    "Hellion (character)"
+   ],
+   "names": [],
+   "ner": [],
+   "note": "Julian"
+  },
+  {
+   "page": "Hercules (Marvel Comics)",
+   "sentence": "They find out from the Black Knight's spirit he lost his memory after being thrown from Olympus and drifting for six days and nights.\n\n\n",
+   "read": [
+    "Black Knight (Marvel Comics)"
+   ],
+   "names": [
+    "Black Knight (Marvel Comics)"
+   ],
+   "ner": [
+    "Black Knight (Marvel Comics)"
+   ],
+   "note": "Hercules is he"
+  },
+  {
+   "page": "Hercules (Marvel Comics)",
+   "sentence": "A last second intervention by Zeus saves Herc's life, and both he and the Hulk are teleported to Olympus.",
+   "read": [
+    "Hercules (Marvel Comics)",
+    "Hulk"
+   ],
+   "names": [
+    "Hulk"
+   ],
+   "ner": [
+    "Hulk"
+   ],
+   "note": "Herc"
+  },
+  {
+   "page": "Hercules (Marvel Comics)",
+   "sentence": "In 2022, Sportskeeda ranked Hercules 1st in their \"10 best Greek gods from Marvel comics\" list.\n",
+   "read": [
+    "Hercules (Marvel Comics)"
+   ],
+   "names": [
+    "Hercules (Marvel Comics)"
+   ],
+   "ner": [],
+   "note": ""
+  },
+  {
+   "page": "Hulkling",
+   "sentence": "\"\n\n\nOther versions\n\n\nAvengers Fairy Tales\nAn alternate universe version of Hulkling from Earth-88183, based on the Mad Hatter, appears in the one-shot Avengers Fairy Tales.\n\n\n",
+   "read": [
+    "Hulkling"
+   ],
+   "names": [
+    "Hulkling"
+   ],
+   "ner": [
+    "Hulkling"
+   ],
+   "note": ""
+  },
+  {
+   "page": "Human Torch",
+   "sentence": "Storm, with the ability to become a flaming human with the power of flight and the ability to project fire, dubs himself the Human Torch, in tribute to the World War II-era hero known as the Human Torch.",
+   "read": [
+    "Human Torch",
+    "Human Torch (android)"
+   ],
+   "names": [
+    "Human Torch",
+    "Storm (Marvel Comics)"
+   ],
+   "ner": [
+    "Human Torch"
+   ],
+   "note": "Storm is Johnny; the World War II hero is the android"
+  },
+  {
+   "page": "Iron Fist (character)",
+   "sentence": "Fictional character biography\n\n\nBackground\nDanny Rand was born in New York City.",
+   "read": [
+    "Iron Fist (character)"
+   ],
+   "names": [
+    "Iron Fist (character)"
+   ],
+   "ner": [],
+   "note": "Danny Rand"
+  },
+  {
+   "page": "Iron Fist (character)",
+   "sentence": "Heather sacrifices herself to save Danny even as archers from K'un-Lun attempt to save her.",
+   "read": [
+    "Iron Fist (character)"
+   ],
+   "names": [],
+   "ner": [],
+   "note": "Danny"
+  },
+  {
+   "page": "Isaiah Bradley",
+   "sentence": "The character is an early product of the United States' Super Soldier program (codenamed Project: Rebirth) during World War II.\n",
+   "read": [],
+   "names": [],
+   "ner": [],
+   "note": ""
+  },
+  {
+   "page": "Jean Grey",
+   "sentence": "Jean then reconciles with Cyclops and fully bonds with the Phoenix Force and ascends to a higher plane of existence called the \"White Hot Room\".\n",
+   "read": [
+    "Cyclops (Marvel Comics)",
+    "Jean Grey",
+    "Phoenix (Guardians of the Galaxy)"
+   ],
+   "names": [
+    "Cyclops (Marvel Comics)",
+    "Phoenix (Guardians of the Galaxy)"
+   ],
+   "ner": [
+    "Cyclops (Marvel Comics)",
+    "Phoenix (Guardians of the Galaxy)"
+   ],
+   "note": "Jean"
+  },
+  {
+   "page": "Jean Grey",
+   "sentence": "She is sent as part of a strike team to outer space to stop a satellite near the sun from being used as a Sentinel factory.",
+   "read": [],
+   "names": [],
+   "ner": [],
+   "note": ""
+  },
+  {
+   "page": "Jessica Jones",
+   "sentence": "Blair Marnell of Nerdist gave Jessica Jones #1 a grade of 4 out of 5, stating, \"It is a lot of fun to see her back in action, even if she doesn't quite have the same edge that she did in her original run.",
+   "read": [],
+   "names": [
+    "Jessica Jones"
+   ],
+   "ner": [],
+   "note": "Jessica Jones #1 is a comic title"
+  },
+  {
+   "page": "John Jameson (character)",
+   "sentence": "However, when he attempts to save an astronaut from his crashing capsule, his rocket pack runs out of fuel.",
+   "read": [],
+   "names": [],
+   "ner": [],
+   "note": ""
+  },
+  {
+   "page": "Karnak (character)",
+   "sentence": "Publication history\n\nKarnak first appeared in Fantastic Four #45, and was created by Stan Lee and Jack Kirby, as part of their run on the title that helped lay the foundations for the Marvel Universe.\n",
+   "read": [
+    "Karnak (character)"
+   ],
+   "names": [
+    "Karnak (character)"
+   ],
+   "ner": [],
+   "note": ""
+  },
+  {
+   "page": "Killraven",
+   "sentence": "Killraven possesses an encyclopedic knowledge of human history, art, and science predating the Martian invasion of A.D. 2001, implanted in his mind by Keeper Whitman.\n",
+   "read": [
+    "Killraven"
+   ],
+   "names": [
+    "Killraven"
+   ],
+   "ner": [
+    "Killraven"
+   ],
+   "note": ""
+  },
+  {
+   "page": "Luke Cage",
+   "sentence": "This setting depicts less desirable aspects of New York City relative to the settings of other superhero stories, showing a poorer, rougher area.\n",
+   "read": [],
+   "names": [],
+   "ner": [],
+   "note": ""
+  },
+  {
+   "page": "Luke Cage",
+   "sentence": "Cage's balancing of his life as a father and as a superhero then became a major theme used to comment on the fatherhood of Black men and domestic life more generally.",
+   "read": [
+    "Luke Cage"
+   ],
+   "names": [],
+   "ner": [],
+   "note": "Cage"
+  },
+  {
+   "page": "Miracleman (character)",
+   "sentence": "Leach and Moore opted for a graceful look for the character in contrast to the more common musclebound superhero archetype.\n",
+   "read": [],
+   "names": [],
+   "ner": [],
+   "note": ""
+  },
+  {
+   "page": "Miracleman (character)",
+   "sentence": "The Qys take Miracleman and Miraclewoman to their homeworld where the future of the Miracleman Family – and Earth itself – is discussed by the ambassadors of the Qys and their mortal enemies the Warpsmiths.",
+   "read": [
+    "Miracleman (character)"
+   ],
+   "names": [
+    "Miracleman (character)"
+   ],
+   "ner": [],
+   "note": ""
+  },
+  {
+   "page": "Moon Knight",
+   "sentence": "In his most recent ongoing series, Spector establishes the Midnight Mission, a congregation devoted to Khonshu's teachings, serving simultaneously as its high priest and as Moon Knight.",
+   "read": [
+    "Moon Knight"
+   ],
+   "names": [
+    "Moon Knight"
+   ],
+   "ner": [
+    "Moon Knight"
+   ],
+   "note": "Spector"
+  },
+  {
+   "page": "Moon Knight",
+   "sentence": "Two incarnations of Moon Knight appear in Marvel Future Revolution, voiced again by Gideon Emery.",
+   "read": [
+    "Moon Knight"
+   ],
+   "names": [
+    "Moon Knight"
+   ],
+   "ner": [
+    "Moon Knight"
+   ],
+   "note": ""
+  },
+  {
+   "page": "Ms. Marvel",
+   "sentence": "Here is one of the most powerful characters in the Marvel U and she has basically been seen as a B player.",
+   "read": [],
+   "names": [],
+   "ner": [],
+   "note": ""
+  },
+  {
+   "page": "Noh-Varr",
+   "sentence": "He is in a relationship with fellow Guardian Hercules.\n",
+   "read": [
+    "Hercules (Marvel Comics)"
+   ],
+   "names": [
+    "Guardian (Marvel Comics)",
+    "Hercules (Marvel Comics)"
+   ],
+   "ner": [],
+   "note": "Guardian here means a Guardians of the Galaxy member"
+  },
+  {
+   "page": "Quicksilver (Marvel Comics)",
+   "sentence": "He recuperates alongside the Avengers and briefly reconciles with Crystal, before subsequently learning of Crystal's relationship with Black Knight, which strains the marriage.\n",
+   "read": [
+    "Black Knight (Marvel Comics)"
+   ],
+   "names": [
+    "Black Knight (Marvel Comics)"
+   ],
+   "ner": [
+    "Black Knight (Marvel Comics)"
+   ],
+   "note": ""
+  },
+  {
+   "page": "Radian (Morituri)",
+   "sentence": "The objective of this process was the formation of a team of superpowered beings which could be utilized as Earth's combatants in Earth's ongoing war against the savage alien race known as the Horde.\n",
+   "read": [],
+   "names": [],
+   "ner": [],
+   "note": ""
+  },
+  {
+   "page": "Radian (Morituri)",
+   "sentence": "However, during his lifetime, he never achieved coherence, i.e. lasing.",
+   "read": [],
+   "names": [],
+   "ner": [],
+   "note": ""
+  },
+  {
+   "page": "Rocket Raccoon",
+   "sentence": "In this appearance the character spoke using stock British English phrases such as \"bloody well,\" \"old bean,\" \"jolly good,\" etc., which did not continue in later appearances.",
+   "read": [],
+   "names": [],
+   "ner": [],
+   "note": ""
+  },
+  {
+   "page": "Rocket Raccoon",
+   "sentence": "Rocket's fan base will only grow in the coming months, and.",
+   "read": [
+    "Rocket Raccoon"
+   ],
+   "names": [],
+   "ner": [],
+   "note": "Rocket"
+  },
+  {
+   "page": "Rocket Raccoon",
+   "sentence": "Rocket Raccoon appears in Guardians of the Galaxy (2015), voiced again by Trevor Devall.",
+   "read": [
+    "Rocket Raccoon"
+   ],
+   "names": [
+    "Rocket Raccoon"
+   ],
+   "ner": [
+    "Rocket Raccoon"
+   ],
+   "note": ""
+  },
+  {
+   "page": "Scarlet Witch",
+   "sentence": "This plot twist was published while Marvel Studios and 20th Century Fox had a legal dispute over the film rights to the character.",
+   "read": [],
+   "names": [],
+   "ner": [],
+   "note": ""
+  },
+  {
+   "page": "Scarlet Witch",
+   "sentence": "Evidence is found against Toad, who is found guilty and punished, and the Avengers leave.",
+   "read": [],
+   "names": [],
+   "ner": [],
+   "note": ""
+  },
+  {
+   "page": "Scarlet Witch",
+   "sentence": "Abad-Santos appreciated the complexity of her origin, describing her as having been raised in unusual circumstances, including by a sentient humanoid cow, gypsies, and the villain Magneto.",
+   "read": [],
+   "names": [],
+   "ner": [],
+   "note": ""
+  },
+  {
+   "page": "Scarlet Witch",
+   "sentence": "Feminist interpretation\nThough later incarnations took on feminist overtones, the character of Scarlet Witch was not conceived with ideas of female empowerment in mind.",
+   "read": [
+    "Scarlet Witch"
+   ],
+   "names": [
+    "Scarlet Witch"
+   ],
+   "ner": [
+    "Scarlet Witch"
+   ],
+   "note": ""
+  },
+  {
+   "page": "Scorpio (Marvel Comics)",
+   "sentence": "The Zodiac Key is a power object of extradimensional origin that possesses a degree of sentience and harnesses an unidentified extradimensional energy for a variety of effects, including concussive force, electricity, magnetism, teleportation, and physical transformation.\n",
+   "read": [],
+   "names": [],
+   "ner": [],
+   "note": ""
+  },
+  {
+   "page": "Shang-Chi",
+   "sentence": "In a 2020s relaunch of the character, Shang-Chi began a relationship with Delilah Wang, a lawyer and the granddaughter of the woman who had once employed him at her San Francisco bakery.\n\n\n",
+   "read": [
+    "Shang-Chi"
+   ],
+   "names": [
+    "Shang-Chi"
+   ],
+   "ner": [
+    "Shang-Chi"
+   ],
+   "note": ""
+  },
+  {
+   "page": "Shatterstar",
+   "sentence": "He would have figured, this is my best friend, I care about him, he cares about me, we spend time together, fight together, laugh together – I guess I must be in love with him.\"",
+   "read": [],
+   "names": [],
+   "ner": [],
+   "note": ""
+  },
+  {
+   "page": "Shuri (character)",
+   "sentence": "Following the war with Doom, T'Challa relocates to Hell's Kitchen so that he can better test his capabilities and re-learn what he is capable of without his usual resources, replacing Daredevil while Matt Murdock is going through a similar period of self-analysis after his time possessed as a demon and the leader of the Hand.",
+   "read": [
+    "Black Panther (character)"
+   ],
+   "names": [
+    "Black Panther (character)"
+   ],
+   "ner": [
+    "Black Panther (character)"
+   ],
+   "note": "T'Challa; Daredevil is not in the roster"
+  },
+  {
+   "page": "Silencer (comics)",
+   "sentence": "She also has enhanced strength.\n",
+   "read": [],
+   "names": [],
+   "ner": [],
+   "note": ""
+  },
+  {
+   "page": "Speed (character)",
+   "sentence": "Afterwards, Speed continued to appear alongside his team in miniseries such as Young Avengers Presents and Dark Reign: Young Avengers; the event comic tie-ins Civil War, Secret Invasion and Siege: Young Avengers (co-starring with The Runaways in the former two); and various other guest appearances.",
+   "read": [
+    "Speed (character)"
+   ],
+   "names": [
+    "Speed (character)"
+   ],
+   "ner": [],
+   "note": ""
+  },
+  {
+   "page": "Spider-Man",
+   "sentence": "Later, he becomes a friend of Peter and adopts his own superhero identity, Agent Venom, after merging with the Venom symbiote.",
+   "read": [
+    "Spider-Man",
+    "Venom (character)"
+   ],
+   "names": [
+    "Venom (character)"
+   ],
+   "ner": [
+    "Venom (character)"
+   ],
+   "note": "Peter; the Venom symbiote"
+  },
+  {
+   "page": "Spider-Woman",
+   "sentence": "Erin returns in the video game Spider-Man Unlimited, now wielding a specialized set of web-shooters made for those lacking spider-strength as a \"real\" Spider-Woman.",
+   "read": [
+    "Spider-Woman"
+   ],
+   "names": [
+    "Spider-Man",
+    "Spider-Woman"
+   ],
+   "ner": [
+    "Spider-Woman"
+   ],
+   "note": "Erin becomes a Spider-Woman; Spider-Man Unlimited is a game title"
+  },
+  {
+   "page": "Spider-Woman (Gwen Stacy)",
+   "sentence": "After Harry injects himself with the Lizard formula, he discovers Spider-Woman is Gwen Stacy and is consumed by anger.",
+   "read": [
+    "Spider-Woman (Gwen Stacy)"
+   ],
+   "names": [
+    "Spider-Woman"
+   ],
+   "ner": [
+    "Spider-Woman"
+   ],
+   "note": "Spider-Woman is Gwen Stacy"
+  },
+  {
+   "page": "Stingray (Marvel Comics)",
+   "sentence": "Created by Roy Thomas and Bill Everett, the character first appeared in Tales to Astonish #95 (September 1967).",
+   "read": [],
+   "names": [],
+   "ner": [],
+   "note": ""
+  },
+  {
+   "page": "Storm (Marvel Comics)",
+   "sentence": "DK.",
+   "read": [],
+   "names": [],
+   "ner": [],
+   "note": ""
+  },
+  {
+   "page": "Tarantula (Marvel Comics)",
+   "sentence": "An alternate universe version of Tarantula from Earth-1048 appears in Spider-Geddon.",
+   "read": [
+    "Tarantula (Marvel Comics)"
+   ],
+   "names": [
+    "Tarantula (Marvel Comics)"
+   ],
+   "ner": [
+    "Tarantula (Marvel Comics)"
+   ],
+   "note": ""
+  },
+  {
+   "page": "Thin Man (character)",
+   "sentence": "He is made a member of the New Invaders, and begins to contribute his knowledge to the group.",
+   "read": [],
+   "names": [],
+   "ner": [],
+   "note": ""
+  },
+  {
+   "page": "Ursa Major (character)",
+   "sentence": "Ultimate Universe\nAn alternate universe version of Ursa Major from Earth-6160 appears in Ultimate Wolverine #13.",
+   "read": [
+    "Ursa Major (character)"
+   ],
+   "names": [
+    "Ursa Major (character)",
+    "Wolverine (Ultimate Marvel character)"
+   ],
+   "ner": [
+    "Ursa Major (character)"
+   ],
+   "note": "Ultimate Wolverine #13 is a comic title"
+  },
+  {
+   "page": "Vulcan (Marvel Comics)",
+   "sentence": "Deadly Genesis explores what would have happened if Vulcan and his team had survived their venture on Krakoa.",
+   "read": [
+    "Vulcan (Marvel Comics)"
+   ],
+   "names": [
+    "Vulcan (Marvel Comics)"
+   ],
+   "ner": [
+    "Vulcan (Marvel Comics)"
+   ],
+   "note": ""
+  },
+  {
+   "page": "War Machine",
+   "sentence": "He is willing to give the benefit of the doubt to other characters as opposed to Stark's brasher approach.",
+   "read": [],
+   "names": [],
+   "ner": [],
+   "note": "Stark is the main Iron Man, not in the roster"
+  },
+  {
+   "page": "War Machine",
+   "sentence": "ISSN 0014-164X. JSTOR 42578930.\n",
+   "read": [],
+   "names": [],
+   "ner": [],
+   "note": ""
+  },
+  {
+   "page": "Wild Child (character)",
+   "sentence": "After returning to his original universe, Wild Child is killed while trying to stop Archangel's genocidal plans on Earth-616.\n\n\n",
+   "read": [
+    "Wild Child (character)"
+   ],
+   "names": [
+    "Wild Child (character)"
+   ],
+   "ner": [
+    "Wild Child (character)"
+   ],
+   "note": ""
+  },
+  {
+   "page": "Will o' the Wisp (comics)",
+   "sentence": "Will o' the Wisp later forces his former partner, James Melvin, to expose the Brand Corporation's illicit activities to the news media.\n",
+   "read": [
+    "Will o' the Wisp (comics)"
+   ],
+   "names": [
+    "Will o' the Wisp (comics)"
+   ],
+   "ner": [],
+   "note": ""
+  },
+  {
+   "page": "Wolverine (Ultimate Marvel character)",
+   "sentence": "Bruce asks why Logan simply won't just kill him and get it over with, and Logan says that he didn't want to kill Bruce, he wanted to kill the Hulk.",
+   "read": [
+    "Hulk",
+    "Wolverine (Ultimate Marvel character)"
+   ],
+   "names": [
+    "Hulk"
+   ],
+   "ner": [
+    "Hulk"
+   ],
+   "note": "Logan"
+  },
+  {
+   "page": "Wolverine (character)",
+   "sentence": "Logan received praise from critics, and a nomination for an Academy Award for Best Adapted Screenplay in 2018; it was the first superhero film to be nominated in the category.",
+   "read": [],
+   "names": [],
+   "ner": [],
+   "note": "Logan is a film title here"
+  },
+  {
+   "page": "Yo-Yo Rodriguez",
+   "sentence": "After signing the Sokovia Accords, Rodriguez returned to her life with occasional monitoring by S.H.I.E.L.D. before returning to the team after encountering the Watchdogs and pursuing a relationship with Mack in the fourth season.",
+   "read": [
+    "Yo-Yo Rodriguez"
+   ],
+   "names": [],
+   "ner": [],
+   "note": "Rodriguez"
+  }
+ ]
+}

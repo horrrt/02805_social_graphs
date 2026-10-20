@@ -13,14 +13,17 @@ brief prints them; if we do not, every later number inherits the difference.
 - Lookalikes (brief 6): linked pages among each page's ten nearest by text,
   read from analysis/week06_lookalikes.json, which rebuilds the course's
   explorable with its own token rule. A miss exits non-zero.
+- Entities (brief 7): the brief's Spider-Man co-mention example, spaCy's
+  en_core_web_sm on the whole page, read from analysis/week07_comention.json.
+  A miss exits non-zero.
 - Text (brief 5): the brief quotes tokens, types and the share of types used
   once without naming a tokenizer. We report our word rule
   (week05_text.WORD_RULE) and spaCy's tokenizer with punctuation and spaces
   dropped, and record the gap rather than tune either rule to close it.
 
 Briefs reviewed 6 October 2026 at
-https://sunelehmann.com/socialgraphs2026-web/weeks/week{1,2,3,5,6}.html. They
-change; reread them before trusting this file.
+https://sunelehmann.com/socialgraphs2026-web/weeks/week{1,2,3,5,6}.html, and
+week7.html on 20 October 2026. They change; reread them before trusting this file.
 
     python analysis/course_reference.py      # about a minute, most of it spaCy
 """
@@ -40,6 +43,8 @@ def network_checks():
     f = json.loads((ROOT / "analysis/week01_facts.json").read_text())
     look = json.loads((ROOT / "analysis/week06_lookalikes.json").read_text())
     c = look["course"]
+    spidey = json.loads((ROOT / "analysis/week07_comention.json").read_text())["course"]
+    top = {(a, b): w for a, b, w in spidey["top"]}
     everywhere = {"marvel", "comics", "the"} <= set(look["on_every_page"])
     nulls = json.loads((ROOT / "analysis/week02_nullmodels_facts.json").read_text())
     er = {q["key"]: q["er"] for q in nulls["quantities"]}
@@ -67,6 +72,15 @@ def network_checks():
         (6, "lookalikes: linked in ten, TF-IDF", 4.01, c["tfidf"], 2),
         (6, "lookalikes: linked in ten, ten random pages", 0.31, c["random"], 2),
         (6, "Marvel, Comics and the on all 303 pages (1 = yes)", 1, int(everywhere), 0),
+        (7, "Spider-Man page: sentences", 445, spidey["sentences"], 0),
+        (7, "Spider-Man page: PERSON spans", 635, spidey["person_spans"], 0),
+        (7, "Spider-Man page: distinct PERSON spans", 179, spidey["distinct"], 0),
+        (7, "Spider-Man co-mention network: nodes", 146, spidey["nodes"], 0),
+        (7, "Spider-Man co-mention network: edges", 293, spidey["edges"], 0),
+        (7, "Spider-Man top pair: Mary Jane and Peter", 15, top.get(("Mary Jane", "Peter"), 0), 0),
+        (7, "Spider-Man pair: Peter Parker and Spider-Man", 14, top.get(("Peter Parker", "Spider-Man"), 0), 0),
+        (7, "Spider-Man pair: Peter and Spider-Man", 9, top.get(("Peter", "Spider-Man"), 0), 0),
+        (7, "Spider-Man pair: Ditko and Lee", 8, top.get(("Ditko", "Lee"), 0), 0),
     ]
 
 
