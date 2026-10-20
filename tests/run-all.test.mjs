@@ -1,5 +1,5 @@
 // The runners rerun the analysis and report what moved: analysis/run_all.py
-// for weeks 1 to 3, 5 and 6, analysis/week04_run_all.py for week 4. A script
+// for weeks 1 to 3 and 5 to 7, analysis/week04_run_all.py for week 4. A script
 // no runner lists never reruns, so its output can go stale without anyone
 // noticing (Week 4's runner missed three scripts that way). Every
 // analysis/weekNN_*.py script must be in a runner's SCRIPTS or in EXCLUDED
@@ -39,6 +39,7 @@ const EXCLUDED = {
   "analysis/week06_gender.py": `${LIVE} (Wikidata): week06_gender.parquet`,
   "analysis/week06_cold_read_images.py": `${LIVE} (Wikipedia pageimages): week06_cold_read_images.json`,
   "analysis/week06_portraits.py": "downloads portrait images once and skips those on disk; not a derived number",
+  "analysis/week07_wikidata_names.py": `${LIVE} (Wikidata): week07_wikidata_names.parquet`,
 };
 
 test("every analysis/weekNN_*.py script is in a runner or excluded with a reason", () => {
