@@ -1,0 +1,259 @@
+/* Two Stripes: the Week 7 game for section 2, at /play/week07/two-stripes/.
+   Built on cold-read.css (the same tokens, scoreboard, result and debrief);
+   this sheet adds the map and the bars. Sizes come from type.css. */
+
+.ts-field {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: 24px;
+  align-items: start;
+  padding: 16px 24px 8px;
+}
+
+/* The map: every page a pale dot, the four candidates ringed, the target orange. */
+.ts-map {
+  margin: 0;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 8px;
+}
+
+.ts-map svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.ts-map figcaption {
+  padding: 6px 6px 2px;
+  color: var(--ink-mute-text);
+  font-size: var(--fs-caption);
+}
+
+.ts-dot {
+  fill: var(--ink-mute);
+  opacity: 0.35;
+}
+
+.ts-cand {
+  cursor: pointer;
+}
+
+.ts-cand circle {
+  fill: none;
+  stroke: var(--access);
+  stroke-width: 2.5;
+}
+
+.ts-cand text {
+  fill: var(--access);
+  stroke: var(--card);
+  stroke-width: 3px;
+  paint-order: stroke;
+  font-family: var(--font-sans);
+  font-size: var(--fs-small);
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+.ts-cand[data-answer="true"] circle {
+  stroke: var(--gain);
+}
+
+.ts-cand[data-answer="true"] text {
+  fill: var(--gain);
+}
+
+.ts-cand[data-pick="true"][data-answer="false"] circle {
+  stroke: var(--loss);
+  stroke-dasharray: 3 2;
+}
+
+.ts-cand[data-pick="true"][data-answer="false"] text {
+  fill: var(--loss);
+}
+
+.ts-target {
+  fill: var(--people);
+  stroke: var(--card);
+  stroke-width: 2.5;
+}
+
+.ts-true {
+  stroke: var(--gain);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+
+/* The strips: the target first, then the four candidates as buttons. */
+.ts-strips {
+  display: grid;
+  gap: 8px;
+}
+
+.ts-row {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 9.5em) minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  padding: 8px 12px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+}
+
+.ts-target-row {
+  border-color: var(--people);
+  box-shadow: 0 0 0 1px var(--people-soft);
+}
+
+.ts-pick {
+  cursor: pointer;
+  transition: box-shadow 0.15s, border-color 0.15s, transform 0.15s;
+}
+
+.ts-pick:hover:not(:disabled),
+.ts-pick:focus-visible {
+  border-color: var(--access);
+  box-shadow: var(--lift);
+  transform: translateY(-1px);
+}
+
+.ts-pick:focus-visible {
+  outline: 2px solid var(--access);
+  outline-offset: 2px;
+}
+
+.ts-pick:disabled {
+  cursor: default;
+}
+
+.ts-pick[data-answer="true"] {
+  border-color: var(--gain);
+  box-shadow: 0 0 0 2px var(--gain);
+}
+
+.ts-pick[data-pick="true"][data-answer="false"] {
+  border-color: var(--loss);
+  box-shadow: 0 0 0 2px var(--loss);
+}
+
+.ts-letter {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  margin-inline: auto;
+  border: 2.5px solid var(--access);
+  border-radius: 50%;
+  color: var(--access);
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+}
+
+.ts-pick[data-answer="true"] .ts-letter {
+  border-color: var(--gain);
+  background: var(--gain);
+  color: var(--card);
+}
+
+.ts-face {
+  margin-inline: auto;
+}
+
+.ts-label {
+  display: grid;
+  min-width: 0;
+  line-height: var(--lh-small);
+}
+
+.ts-label b {
+  overflow: hidden;
+  font-size: var(--fs-strong);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ts-label small {
+  color: var(--ink-mute-text);
+  font-size: var(--fs-caption);
+}
+
+/* A page vector as signed bars; the lit page's bars outlined on each candidate. */
+.ts-bars {
+  display: block;
+  width: 100%;
+  height: 64px;
+  overflow: visible;
+}
+
+.ts-axes {
+  fill: var(--people-soft);
+  opacity: 0.6;
+}
+
+.ts-zero {
+  stroke: var(--line);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.ts-bar {
+  fill: var(--access);
+}
+
+.ts-bars[data-lit="true"] .ts-bar {
+  fill: var(--people);
+}
+
+.ts-over {
+  fill: none;
+  stroke: var(--people);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+}
+
+.ts-axis-note {
+  margin: -2px 0 0;
+  padding-left: calc(52px + 9.5em + 36px);
+  color: var(--ink-mute-text);
+  font-size: var(--fs-caption);
+}
+
+.ts-axis-note i {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin: 0 4px 0 2px;
+  border: 1.5px solid var(--people);
+  vertical-align: -1px;
+}
+
+.ts-axis-note span {
+  display: inline-block;
+  margin-right: 6px;
+  padding: 0 6px;
+  border-radius: 4px;
+  background: var(--people-soft);
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.ts-summary {
+  margin-top: 12px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ts-pick {
+    transition: none;
+  }
+
+  .ts-pick:hover:not(:disabled) {
+    transform: none;
+  }
+}

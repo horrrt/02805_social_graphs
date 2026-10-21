@@ -1,13 +1,13 @@
-"""Rerun every analysis script for weeks 1 to 3, 5 and 6 at once, then list what moved.
+"""Rerun every analysis script for weeks 1 to 3 and 5 to 7 at once, then list what moved.
 
 Week 4 has its own runner, analysis/week04_run_all.py; this one does the same
-for the other weeks, Cold Read's data included. Each script starts once the scripts whose output it
+for the other weeks, the games' data included (Cold Read, Two Stripes). Each script starts once the scripts whose output it
 reads have finished (AFTER below), at most one per core, and logs to
 build/logs/<script>.log. week03_country_networks.py is the slowest at about 16
 minutes (week03_reciprocity.py about as long), so a full run takes about that
 long instead of about an hour.
 
-    python analysis/run_all.py                  # weeks 1 to 3, 5 and 6
+    python analysis/run_all.py                  # weeks 1 to 3 and 5 to 7
     python analysis/run_all.py week02           # one week
     python analysis/run_all.py week03_gravity   # one script, and nothing it depends on
 
@@ -76,6 +76,7 @@ SCRIPTS = {
     "week06_mix_desk": "analysis/week06_mix_desk.py",
     "week06_hot_cold": "analysis/week06_hot_cold.py",
     "week06_tezguino": "analysis/week06_tezguino.py",
+    "week07_two_stripes": "analysis/week07_two_stripes.py",
 }
 WEEK = {name: ("week02" if name == "analyse_week2_models" else
                "week03" if name == "build_world_outline" else

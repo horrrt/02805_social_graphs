@@ -1,5 +1,5 @@
 // The runners rerun the analysis and report what moved: analysis/run_all.py
-// for weeks 1 to 3, 5 and 6, analysis/week04_run_all.py for week 4. A script
+// for weeks 1 to 3 and 5 to 7, analysis/week04_run_all.py for week 4. A script
 // no runner lists never reruns, so its output can go stale without anyone
 // noticing (Week 4's runner missed three scripts that way). Every
 // analysis/weekNN_*.py script must be in a runner's SCRIPTS or in EXCLUDED
