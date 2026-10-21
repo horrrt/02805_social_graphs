@@ -30,6 +30,27 @@ export const GAMES: Game[] = [
     topic: topic(6),
     blurb: "A Marvel page is hidden. Flip word cards that show how often each word appears, and name the page against the clock.",
   },
+  {
+    href: "play/week07/two-stripes/",
+    name: "Two Stripes",
+    week: 7,
+    topic: topic(7),
+    blurb: "Find the Marvel page nearest another in 384 dimensions, when the map can draw only two.",
+  },
+  {
+    href: "play/topic-tetris/",
+    name: "Topic Tetris",
+    week: 7,
+    topic: topic(7),
+    blurb: "Nine Marvel pages fall three times. Group them by their words, their meaning and their links, and watch the groups change.",
+  },
+  {
+    href: "play/search-detective/",
+    name: "Semantic Search Detective",
+    week: 7,
+    topic: topic(7),
+    blurb: "Pick the page that best answers a query, then see how search by meaning ranks them, and where a 2D map misleads.",
+  },
 ];
 
 /** "Week 1 · Give Baymax a Voice", the game's line in the site nav's menu. */
