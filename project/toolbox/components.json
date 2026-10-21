@@ -2147,8 +2147,11 @@
       "what": "A top-to-bottom figure of the steps by which one version of the world becomes the next before any model runs.",
       "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/bias-flow.html",
       "seen_at": null,
-      "week": null,
-      "concepts": []
+      "week": 7,
+      "concepts": [
+        "sentiment",
+        "embeddings"
+      ]
     },
     {
       "name": "From documents to a Bag-of-Words matrix",
@@ -2247,10 +2250,13 @@
       "what": "A zoomable map of the characters; click one to compare its neighbours in the high-dimensional space with those in the 2D drawing.",
       "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/corpus-atlas.html",
       "seen_at": null,
-      "week": null,
+      "week": 7,
       "concepts": [
         "embeddings",
-        "network-visualization"
+        "network-visualization",
+        "projections",
+        "topic-models",
+        "communities"
       ]
     },
     {
@@ -2306,10 +2312,11 @@
       "what": "Names extracted from text, aliases resolved, and a co-occurrence rule that builds a network.",
       "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/entity-network.html",
       "seen_at": null,
-      "week": null,
+      "week": 7,
       "concepts": [
         "bipartite",
-        "network-visualization"
+        "network-visualization",
+        "entities"
       ]
     },
     {
@@ -2445,8 +2452,10 @@
       "what": "One sentence token by token with entity labels or BIO span tags, then the structured spans.",
       "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/ner-bio.html",
       "seen_at": null,
-      "week": null,
-      "concepts": []
+      "week": 7,
+      "concepts": [
+        "entities"
+      ]
     },
     {
       "name": "Next-token prediction",
@@ -2555,13 +2564,14 @@
     {
       "name": "Sparse and dense search",
       "kind": "course explorable",
-      "what": "TF-IDF search against a 40D SVD dense preview over the 303 short descriptions.",
+      "what": "The same query ranked by TF-IDF and by a sentence encoder over the full pages, side by side, with preset queries that keep score.",
       "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/semantic-search.html",
       "seen_at": null,
-      "week": null,
+      "week": 7,
       "concepts": [
         "search-tfidf",
-        "embeddings"
+        "embeddings",
+        "dense-search"
       ]
     },
     {
@@ -2579,12 +2589,13 @@
     {
       "name": "Three ways to measure sentiment",
       "kind": "course explorable",
-      "what": "A lexicon, a TF-IDF logistic regression and a third method side by side on the same text.",
+      "what": "A lexicon, a TF-IDF logistic regression and a contextual classifier side by side on the same sentence; try negation and sarcasm.",
       "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/sentiment-lab.html",
       "seen_at": null,
-      "week": null,
+      "week": 7,
       "concepts": [
-        "sentiment"
+        "sentiment",
+        "search-tfidf"
       ]
     },
     {
@@ -2721,6 +2732,28 @@
       "week": 5,
       "concepts": [
         "word-frequency"
+      ]
+    },
+    {
+      "name": "Two sentiment instruments through a novel",
+      "kind": "course explorable",
+      "what": "Sentence-by-sentence sentiment from a movie-review classifier and the VADER lexicon along a whole novel, with a smoothing slider and the sentences where they disagree.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/story-sentiment.html",
+      "seen_at": null,
+      "week": 7,
+      "concepts": [
+        "sentiment"
+      ]
+    },
+    {
+      "name": "DeepMoji through a novel",
+      "kind": "course explorable",
+      "what": "The most likely emoji for each chapter and slice of a novel, and one emotion traced sentence by sentence.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/story-emotion.html",
+      "seen_at": null,
+      "week": 7,
+      "concepts": [
+        "sentiment"
       ]
     }
   ]
