@@ -2016,6 +2016,18 @@
       ]
     },
     {
+      "name": "Semantic Minefield",
+      "kind": "game",
+      "what": "Minesweeper with Marvel characters: each round's target category decides who is a bomb, and a debrief sets keyword search against the category labels.",
+      "where": "src/features/semantic-minefield/SemanticMinefieldGame.tsx",
+      "seen_at": "/play/week07/semantic-minefield/",
+      "week": 7,
+      "concepts": [
+        "dense-search",
+        "search-tfidf"
+      ]
+    },
+    {
       "name": "Watch an example game",
       "kind": "game",
       "what": "A guided tour on a round's start screen that plays an example round by pressing the game's own buttons, then hands over.",
