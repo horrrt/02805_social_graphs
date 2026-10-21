@@ -1,0 +1,643 @@
+/* Semantic Search Detective: the Week 7 game at /play/search-detective/.
+   Loaded after cold-read.css, whose tokens, scoreboard (.cr-hud), buttons
+   (.cr-go) and debrief boxes it reuses; these rules add the query, the
+   cards, the ranking bars and the 2D map. Sizes come from type.css. */
+
+.sd-lede {
+  max-width: 68ch;
+  margin: 0 0 16px;
+  font-size: var(--fs-lead);
+  line-height: var(--lh-lead);
+  color: var(--ink);
+}
+
+.sd-case {
+  padding: 22px 28px 28px;
+}
+
+/* ---------- progress ---------- */
+
+.sd-progress {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 28px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.sd-cases {
+  flex: 1 1 260px;
+  display: flex;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sd-cases li {
+  flex: 1;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--line);
+}
+
+.sd-cases li[data-state="now"] {
+  background: var(--access);
+}
+
+.sd-cases li[data-state="hit"] {
+  background: var(--gain);
+}
+
+.sd-cases li[data-state="near"] {
+  background: var(--people);
+}
+
+.sd-cases li[data-state="miss"] {
+  background: var(--loss);
+}
+
+.sd-steps {
+  display: flex;
+  gap: 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--fs-small);
+  font-weight: 600;
+  color: var(--ink-mute-text);
+}
+
+.sd-steps span {
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  margin-right: 4px;
+  border-radius: 50%;
+  background: var(--line-soft);
+  font-size: var(--fs-caption);
+}
+
+.sd-steps li[aria-current="step"] {
+  color: var(--ink);
+}
+
+.sd-steps li[aria-current="step"] span {
+  background: var(--people);
+  color: #fff;
+}
+
+/* ---------- query ---------- */
+
+.sd-query {
+  margin-bottom: 18px;
+  padding: 14px 18px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--ground);
+}
+
+.sd-query-text {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin: 4px 0 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  line-height: var(--lh-title);
+}
+
+.sd-query-text q::before {
+  content: "“";
+}
+
+.sd-query-text q::after {
+  content: "”";
+}
+
+/* A magnifying glass in CSS: a ring and a handle. */
+.sd-glass {
+  position: relative;
+  flex: none;
+  width: 18px;
+  height: 18px;
+  border: 3px solid var(--access);
+  border-radius: 50%;
+  margin-right: 6px;
+}
+
+.sd-glass::after {
+  content: "";
+  position: absolute;
+  right: -8px;
+  bottom: -6px;
+  width: 9px;
+  height: 3px;
+  background: var(--access);
+  transform: rotate(45deg);
+}
+
+/* ---------- predict ---------- */
+
+.sd-pick {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.sd-pick legend {
+  margin-bottom: 10px;
+  font-size: var(--fs-strong);
+  font-weight: 700;
+}
+
+.sd-docs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.sd-doc {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 14px 16px;
+  border: 2px solid var(--line);
+  border-radius: 12px;
+  background: var(--card);
+  cursor: pointer;
+  transition: border-color 0.12s, transform 0.12s, box-shadow 0.12s;
+}
+
+.sd-doc:hover {
+  border-color: var(--ink-mute);
+  transform: translateY(-1px);
+}
+
+.sd-doc[data-on="true"] {
+  border-color: var(--access);
+  background: var(--access-soft);
+  box-shadow: var(--shadow);
+}
+
+.sd-doc:focus-within {
+  outline: 3px solid var(--access);
+  outline-offset: 2px;
+}
+
+.sd-doc input {
+  margin: 3px 0 0;
+  width: 18px;
+  height: 18px;
+  accent-color: var(--access);
+}
+
+.sd-doc span {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sd-doc b {
+  font-size: var(--fs-strong);
+}
+
+.sd-doc small {
+  font-size: var(--fs-body);
+  color: var(--ink-soft);
+}
+
+.sd-doc .cr-key-inline {
+  order: 3;
+  margin-left: auto;
+}
+
+.sd-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 18px;
+}
+
+.sd-actions .cr-go:disabled {
+  box-shadow: none;
+  transform: none;
+}
+
+/* ---------- inspect ---------- */
+
+.sd-verdict {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.sd-bonus {
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--people-soft);
+  font-size: var(--fs-small);
+  font-weight: 700;
+}
+
+.sd-ranking h3,
+.sd-detail h3 {
+  margin: 0 0 8px;
+  font-size: var(--fs-h4);
+  line-height: var(--lh-title);
+}
+
+.sd-bars {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sd-bars li {
+  display: grid;
+  grid-template-columns: 28px minmax(140px, 1.1fr) minmax(120px, 2fr) 48px minmax(110px, 1fr);
+  gap: 12px;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: var(--ground);
+  font-size: var(--fs-body);
+}
+
+.sd-bars li[data-top="true"] {
+  background: #e3f4ec;
+}
+
+.sd-rank {
+  font-family: var(--font-display);
+  font-size: var(--fs-h4);
+  color: var(--ink-mute-text);
+}
+
+.sd-bar-title {
+  font-weight: 700;
+}
+
+.sd-bar-title em {
+  margin-left: 8px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: var(--people);
+  color: #fff;
+  font-size: var(--fs-caption);
+  font-style: normal;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.sd-bar {
+  height: 10px;
+  border-radius: 999px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.sd-bar span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--ink-mute);
+  animation: sd-grow 0.6s ease-out;
+  transform-origin: left;
+}
+
+.sd-bars li[data-accepted="true"] .sd-bar span {
+  background: var(--gain);
+}
+
+.sd-cos {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.sd-shared {
+  font-size: var(--fs-small);
+  color: var(--ink-mute-text);
+}
+
+.sd-why {
+  margin: 18px 0 0;
+}
+
+@keyframes sd-grow {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+/* ---------- explore ---------- */
+
+.sd-explore {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  gap: 22px;
+  align-items: start;
+}
+
+.sd-map {
+  margin: 0;
+}
+
+.sd-map figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.sd-legend {
+  display: flex;
+  gap: 14px;
+  font-size: var(--fs-caption);
+  color: var(--ink-mute-text);
+}
+
+.sd-legend span::before {
+  content: "";
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 5px;
+  border-radius: 50%;
+  vertical-align: -1px;
+  background: var(--ink-mute);
+}
+
+.sd-legend [data-kind="query"]::before {
+  border-radius: 2px;
+  transform: rotate(45deg);
+  background: var(--r-rare);
+}
+
+.sd-legend [data-kind="top"]::before {
+  background: var(--gain);
+}
+
+.sd-map svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.sd-map-frame {
+  fill: var(--ground);
+  stroke: var(--line);
+}
+
+.sd-point {
+  cursor: pointer;
+  outline: none;
+}
+
+.sd-hit {
+  fill: transparent;
+}
+
+.sd-dot {
+  fill: var(--ink-mute);
+  stroke: var(--card);
+  stroke-width: 2;
+  transition: r 0.15s;
+}
+
+.sd-point[data-kind="query"] .sd-dot {
+  fill: var(--r-rare);
+}
+
+.sd-point[data-kind="top"] .sd-dot {
+  fill: var(--gain);
+}
+
+.sd-point[data-pick="true"] .sd-dot {
+  stroke: var(--people);
+  stroke-width: 3;
+}
+
+.sd-point text {
+  font-family: var(--font-sans);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  fill: var(--ink-soft);
+  paint-order: stroke;
+  stroke: var(--ground);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}
+
+.sd-point[data-on="true"] .sd-hit,
+.sd-point:focus-visible .sd-hit {
+  fill: var(--access-soft);
+  stroke: var(--access);
+  stroke-width: 2;
+}
+
+.sd-point[data-on="true"] text {
+  fill: var(--ink);
+}
+
+.sd-side {
+  display: grid;
+  gap: 14px;
+}
+
+.sd-detail {
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+.sd-detail p {
+  margin: 0 0 10px;
+  color: var(--ink-soft);
+}
+
+.sd-detail dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 14px;
+  margin: 0;
+  font-size: var(--fs-body);
+}
+
+.sd-detail dt {
+  color: var(--ink-mute-text);
+}
+
+.sd-detail dd {
+  margin: 0;
+  font-weight: 700;
+}
+
+.sd-detail dd small {
+  font-size: var(--fs-caption);
+  font-weight: 400;
+  color: var(--ink-mute-text);
+}
+
+.sd-compare {
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: #e3f4ec;
+  font-size: var(--fs-body);
+}
+
+.sd-compare[data-agree="false"] {
+  background: #fbe3dc;
+}
+
+.sd-compare p {
+  margin: 0;
+}
+
+.sd-compare p + p {
+  margin-top: 6px;
+  color: var(--ink-soft);
+}
+
+.sd-how {
+  padding: 12px 16px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  font-size: var(--fs-body);
+}
+
+.sd-how summary {
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.sd-how ol {
+  margin: 10px 0;
+  padding-left: 1.4em;
+  display: grid;
+  gap: 6px;
+  color: var(--ink-soft);
+}
+
+.sd-how .cr-formula {
+  display: block;
+  margin: 6px 0 0;
+  padding: 4px 0;
+}
+
+.sd-warn {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--access-soft);
+}
+
+/* ---------- final ---------- */
+
+.sd-final {
+  padding: 26px 28px 28px;
+}
+
+.sd-final .cr-verdict small {
+  font-family: var(--font-sans);
+  font-size: var(--fs-strong);
+  text-transform: none;
+  color: var(--ink-mute-text);
+}
+
+.sd-final-sub {
+  margin: 4px 0 16px;
+  font-size: var(--fs-strong);
+}
+
+.sd-final-list {
+  display: grid;
+  gap: 6px;
+  margin: 0 0 18px;
+  padding: 0;
+  list-style: none;
+}
+
+.sd-final-list li {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) 56px;
+  gap: 12px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: var(--ground);
+  font-size: var(--fs-body);
+}
+
+.sd-final-list li[data-grade="hit"] span {
+  color: var(--gain);
+}
+
+.sd-final-list li[data-grade="near"] span {
+  color: var(--people);
+}
+
+.sd-final-list li[data-grade="miss"] span {
+  color: var(--loss);
+}
+
+.sd-final-list b {
+  text-align: right;
+}
+
+.sd-takeaway {
+  margin: 0;
+}
+
+/* ---------- narrow screens ---------- */
+
+@media (max-width: 760px) {
+  .sd-case,
+  .sd-final {
+    padding: 18px 16px 22px;
+  }
+
+  .sd-docs,
+  .sd-explore {
+    grid-template-columns: 1fr;
+  }
+
+  .sd-bars li {
+    grid-template-columns: 22px minmax(0, 1fr) 48px;
+  }
+
+  .sd-bars .sd-bar,
+  .sd-bars .sd-shared {
+    grid-column: 2 / -1;
+  }
+
+  .sd-final-list li {
+    grid-template-columns: minmax(0, 1fr) 48px;
+  }
+
+  .sd-final-list li span {
+    grid-row: 2;
+  }
+
+  .cr-hud {
+    flex-wrap: wrap;
+  }
+
+  /* The map shrinks to about half size here, so its labels are drawn larger. */
+  .sd-point text {
+    font-size: var(--fs-h3);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sd-bar span {
+    animation: none;
+  }
+}
