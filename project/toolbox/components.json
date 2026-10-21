@@ -2040,6 +2040,17 @@
       ]
     },
     {
+      "name": "Sentiment Trap",
+      "kind": "game",
+      "what": "Three sentiment instruments (a word-score sum, TF-IDF with logistic regression, DistilBERT) read four sentences and a Marvel page; the player spots when the score isn't measuring what it seems to.",
+      "where": "src/features/sentiment-trap/SentimentTrapGame.tsx",
+      "seen_at": "/play/week07/sentiment-trap/",
+      "week": 7,
+      "concepts": [
+        "sentiment"
+      ]
+    },
+    {
       "name": "Watch an example game",
       "kind": "game",
       "what": "A guided tour on a round's start screen that plays an example round by pressing the game's own buttons, then hands over.",

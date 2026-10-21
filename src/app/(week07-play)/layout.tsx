@@ -11,6 +11,7 @@ import "@/styles/semantic-minefield.css";
 // Same Word reuses Search Detective's progress bar, answer cards and results list.
 import "@/styles/search-detective.css";
 import "@/styles/same-word.css";
+import "@/styles/sentiment-trap.css";
 
 // The Week 7 games. Kept out of search (noindex); the Games menu and home page link them.
 export const metadata: Metadata = {

@@ -310,6 +310,15 @@ test. Its spec has three problems against our rules.
 
 The fix keeps its look and its four challenges and swaps the multiple choice for one of the pitches below.
 
+Built 21 October at `/play/week07/sentiment-trap/` (noindex), on the spec's own loop: Gyula chose the
+mockup's flow (inspect the evidence, pick what should make you distrust the score) over Red Wire. Problem 2 is
+fixed: `analysis/week07_sentiment_trap.py` runs the three instruments (VADER word valences summed with no rules,
+TF-IDF and logistic regression on SST-2, distilbert SST-2 at a pinned revision) and reproduces the brief's 0.998,
+0.999 and 179 of 303. A test pins them, and every number on screen is read from its JSON. The fourth challenge
+is a Marvel page (Jubilee) rather than an invented biography, and the three instruments disagree on it. Problem 1
+stands in part: a player who read the section can still answer from the lesson, so Red Wire remains the
+candidate if a playtest shows that.
+
 - Red Wire as the core loop. Each challenge gives a sentence and an order such as "flip the classifier,
   leave the lookup". The player cuts one of four one-word edits (add "not", swap a sentiment word, a sarcasm
   frame, a contrast clause) and three real meters swing: a word lookup, TF-IDF with logistic regression, and
