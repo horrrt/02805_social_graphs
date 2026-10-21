@@ -33,6 +33,12 @@ analysis scripts. The browser only reads precomputed numbers, as Cold Read does.
 
 Test 2 asks you to tell a static embedding from a contextual one using an ambiguous word such as *bank*.
 
+Same Word, Different Worlds (built 21 October) covers this section in the meantime, at `/play/week07/same-word/`. It
+uses six hand-written sentence pairs and computes no vectors. Each round says how its model makes a word's vector
+(looked up in a table, or computed from the sentence). The player says whether the two occurrences get the same
+representation and whether the model is static or contextual, and on three rounds taps the words that set the
+sense. Twin Stamp, with real BERT cosines on the Marvel pages, is still open.
+
 ### Twin Stamp (build this): every card says "vision", the dictionary says they're all twins, and it's wrong
 
 - Concept: a static embedding has one vector per word type, so two occurrences of a word always score cosine
