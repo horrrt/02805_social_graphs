@@ -8,6 +8,7 @@ import { useData } from "@/lib/useData";
 import { useHydrated } from "@/lib/useHydrated";
 import { asset } from "@/scripts/site.js";
 import { readBest, saveBest } from "./best";
+import { nextCard } from "./gameOverPick";
 import { playGameOver, playPoints } from "./gameOverSfx";
 import { FINISH, type Level, SKIP_COST } from "./levels";
 
@@ -116,8 +117,8 @@ export function SkipLevel({ points, level }: { points: number; level?: Level }) 
  * shake's transform would trap it in the card. A lost heart's flash unmounts
  * when its animation ends, so the next hit plays it again.
  *
- * The last heart is game over: one of the game-over cards, picked at random,
- * plays with its sound, and "Out of lives" stays on screen with two ways out.
+ * The last heart is game over: one of the game-over cards, picked at random
+ * with recent ones made rare (gameOverPick.ts), plays with its sound, and "Out of lives" stays on screen with two ways out.
  * The cards load once the player is down to the last heart; until they arrive,
  * or if they fail, the knocked-out mask stands in. Retry calls `onRetry`; "Why
  * am I such a failure?" clears the screen and scrolls to the round's debrief. A
@@ -131,7 +132,7 @@ export function Lives({ lives, max, onRetry }: { lives: number; max: number; onR
   const art = useData<GameOverArt>(hydrated && lives <= 1 ? asset(GAME_OVER) : null);
   useEffect(() => {
     if (lives < before.current) {
-      const card = lives === 0 ? 1 + Math.floor(Math.random() * GAME_OVER_CARDS) : 0;
+      const card = lives === 0 ? nextCard(GAME_OVER_CARDS) : 0;
       if (card) playGameOver(card);
       setHit((h) => ({ n: (h?.n ?? 0) + 1, heart: lives }));
       setFlash((f) => ({ n: (f?.n ?? 0) + 1, dead: lives === 0, card }));

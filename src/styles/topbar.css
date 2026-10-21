@@ -299,3 +299,89 @@
   background: var(--bar-menu-here);
   color: var(--bar-accent);
 }
+
+/* Games menu: one line per week, its games sliding down under a chevron.
+   Server markup (no data-open) shows them all. */
+.topbar .site-nav-week-line {
+  align-items: center;
+  display: flex;
+}
+
+.topbar .site-nav-week-line > a,
+.topbar .site-nav-week-name {
+  flex: 1;
+}
+
+.topbar .site-nav-week-name,
+.topbar .site-nav-week-toggle {
+  background: none;
+  border: 0;
+  border-radius: calc(var(--bar-radius) - 6px);
+  color: var(--bar-muted);
+  cursor: pointer;
+  filter: none;
+  font-family: inherit;
+  font-size: var(--fs-body);
+  font-weight: 600;
+  line-height: inherit;
+  min-height: 0;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.topbar .site-nav-week-name {
+  padding: 8px 12px;
+}
+
+.topbar .site-nav-week-toggle {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  padding: 0 12px;
+}
+
+.topbar .site-nav-week-name:hover,
+.topbar .site-nav-week-toggle:hover {
+  background: var(--bar-menu-hover);
+  color: var(--bar-text);
+}
+
+.topbar .site-nav-week-name:focus-visible,
+.topbar .site-nav-week-toggle:focus-visible {
+  outline: 2px solid var(--bar-accent);
+  outline-offset: -2px;
+}
+
+.topbar .site-nav-week-toggle svg {
+  display: block;
+  height: 10px;
+  transition: transform 0.2s ease;
+  width: 10px;
+}
+
+.topbar .site-nav-week[data-open="true"] .site-nav-week-toggle svg {
+  transform: rotate(180deg);
+}
+
+.topbar .site-nav-week-games {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 0.2s ease, visibility 0.2s;
+}
+
+.topbar .site-nav-week-games > ul {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.topbar .site-nav-week[data-open="false"] .site-nav-week-games {
+  grid-template-rows: 0fr;
+  visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .topbar .site-nav-week-games,
+  .topbar .site-nav-week-toggle svg {
+    transition: none;
+  }
+}

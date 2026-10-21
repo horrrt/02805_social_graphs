@@ -31,13 +31,6 @@ export const GAMES: Game[] = [
     blurb: "A Marvel page is hidden. Flip word cards that show how often each word appears, and name the page against the clock.",
   },
   {
-    href: "play/week07/",
-    name: "Meaning to Measurement",
-    week: 7,
-    topic: topic(7),
-    blurb: "Week 7's games as one campaign with one score: contextual vectors, corpus maps, sentiment and search by meaning.",
-  },
-  {
     href: "play/week07/same-word/",
     name: "Same Word, Different Worlds",
     week: 7,
@@ -81,5 +74,15 @@ export const GAMES: Game[] = [
   },
 ];
 
-/** "Week 1 · Give Baymax a Voice", the game's line in the site nav's menu. */
-export const gameLabel = (game: Game) => `Week ${game.week} · ${game.name}`;
+// A week's campaign, the route that plays its games in a row, once it has one.
+const CAMPAIGNS: Record<number, string> = { 7: "play/week07/" };
+
+/** One line per week in the site nav's Games menu: "Week 7 · NLP III" links to
+ * the week's campaign, or to its game when it has only one, and its games
+ * slide down under it. A week with several games and no campaign has no link. */
+export type GameWeek = { week: number; label: string; href?: string; games: Game[] };
+
+export const GAME_WEEKS: GameWeek[] = [...new Set(GAMES.map((g) => g.week))].map((week) => {
+  const games = GAMES.filter((g) => g.week === week);
+  return { week, label: `Week ${week} · ${games[0].topic}`, href: CAMPAIGNS[week] ?? (games.length === 1 ? games[0].href : undefined), games };
+});
