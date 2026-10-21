@@ -45,8 +45,8 @@ test("the Games menu lists one line per week, each linking to its game or campai
   assert.deepEqual(lines, ["Week 1 · Networks", "Week 2 · Models & null models", "Week 6 · What words mean", "Week 7 · NLP III"]);
   const hrefs = ["play/", "prototypes/screen-test/", "play/cold-read/", "play/week07/same-word/", "play/week07/two-stripes/", "play/topic-tetris/", "play/week07/sentiment-trap/", "play/search-detective/", "play/week07/semantic-minefield/"];
   assert.deepEqual(GAMES.map((g) => g.href), hrefs);
-  // A one-game week's line goes to that game; Week 7 has no campaign yet, so its line only unfolds.
-  assert.deepEqual(GAME_WEEKS.map((w) => w.href), ["play/", "prototypes/screen-test/", "play/cold-read/", undefined]);
+  // A one-game week's line goes to that game, and Week 7's to its campaign.
+  assert.deepEqual(GAME_WEEKS.map((w) => w.href), ["play/", "prototypes/screen-test/", "play/cold-read/", "play/week07/"]);
   const games = within(menu);
   for (const game of GAMES) {
     const link = games.getAllByRole("link", { name: game.name }).at(-1)!;
@@ -64,8 +64,9 @@ test("a week's chevron slides its games down and back up", async () => {
   await user.click(week);
   assert.equal(line.getAttribute("data-open"), "true");
   assert.equal(week.getAttribute("aria-expanded"), "true");
-  await user.click(screen.getByRole("button", { name: "Week 7 · NLP III" }));
-  assert.equal(line.getAttribute("data-open"), "false", "the week's name folds it too when it has no campaign");
+  await user.click(week);
+  assert.equal(line.getAttribute("data-open"), "false");
+  assert.equal(screen.getByRole("link", { name: "Week 7 · NLP III" }).getAttribute("href"), "../../play/week07/", "the week's name goes to its campaign");
 });
 
 test("every game page under play/ is in the games list", () => {
@@ -74,7 +75,8 @@ test("every game page under play/ is in the games list", () => {
     .filter((f) => f.endsWith("page.tsx"))
     .map((f) => f.split("/").filter((part) => !part.startsWith("(")).slice(0, -1).join("/") + "/")
     .filter((r) => r.startsWith("play/"));
-  const games = new Set(GAMES.map((g) => g.href));
+  // A week's campaign counts too: its games are its levels.
+  const games = new Set([...GAMES.map((g) => g.href), ...GAME_WEEKS.flatMap((w) => (w.href ? [w.href] : []))]);
   const tops = routes.filter((r) => !routes.some((o) => o !== r && o !== "play/" && r.startsWith(o)));
   assert.deepEqual(tops.filter((r) => !games.has(r)), []);
 });

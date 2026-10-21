@@ -13,7 +13,14 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <>
-      <PostTopbar root="../../../" />
+      <PostTopbar
+        root="../../../"
+        tools={
+          <nav className="cr-rounds" aria-label="Game tools">
+            <a href="../">Campaign</a>
+          </nav>
+        }
+      />
       <div className="cr-shell">
         <main id="main">
           <p className="cr-h">Week 7 · One vector for a whole text</p>

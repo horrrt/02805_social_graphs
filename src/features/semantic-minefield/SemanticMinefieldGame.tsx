@@ -9,7 +9,8 @@
 // play a short game.
 import { type KeyboardEvent, type MouseEvent, type Ref, useEffect, useMemo, useRef, useState } from "react";
 import { CosineFormula } from "@/features/cold-read/Formulas";
-import { BestBox, Lives, ScoreBox, Stat, useBest } from "@/features/cold-read/LevelParts";
+import { BestBox, Lives, ScoreBox, SkipLevel, Stat, useBest } from "@/features/cold-read/LevelParts";
+import { FINISH, type Level } from "@/features/cold-read/levels";
 import { Rules } from "@/features/cold-read/StartPanel";
 import { Face } from "@/kit/Portrait";
 import { type Board, chipCategories, flood } from "./board";
@@ -72,7 +73,10 @@ export function Chip({ cat, on, bare }: { cat: CatId; on?: boolean; bare?: boole
   );
 }
 
-export function SemanticMinefieldGame({ rounds = ROUNDS }: { rounds?: Round[] }) {
+// As a campaign level it plays the first `level.items` rounds with no retry, and the final screen hands its
+// points to level.onDone.
+export function SemanticMinefieldGame({ rounds: deck = ROUNDS, level }: { rounds?: Round[]; level?: Level }) {
+  const rounds = useMemo(() => (level ? deck.slice(0, level.items) : deck), [deck, level?.items]);
   const [phase, setPhaseState] = useState<Phase>("intro");
   const [run, setRun] = useState(0);
   const [at, setAt] = useState(0);
@@ -96,7 +100,7 @@ export function SemanticMinefieldGame({ rounds = ROUNDS }: { rounds?: Round[] })
   };
   const [mode, setMode] = useState<Mode>("reveal");
   const [selected, setSelected] = useState<number | null>(null);
-  const { best, record } = useBest(BEST);
+  const { best, record } = useBest(level ? null : BEST);
   const [isNew, setIsNew] = useState(false);
   const action = useRef<HTMLButtonElement>(null);
   const table = useRef<HTMLElement>(null);
@@ -191,13 +195,14 @@ export function SemanticMinefieldGame({ rounds = ROUNDS }: { rounds?: Round[] })
   return (
     <section className="cr-table sm-table" id="semantic-minefield" aria-label="Semantic Minefield" ref={table}>
       <div className="cr-hud" role="status">
-        <ScoreBox points={total} />
+        <ScoreBox points={total} level={level} />
         <Stat label="Round">
           {phase === "intro" ? 0 : Math.min(at + 1, rounds.length)}/{rounds.length}
         </Stat>
         <Stat label="Bombs left">{play && phase !== "intro" && phase !== "done" ? play.board.bomb.filter(Boolean).length - play.flagged.size - play.hits.size : "–"}</Stat>
-        <Lives lives={lives} max={LIVES} onRetry={start} />
-        <BestBox best={best} />
+        <Lives lives={lives} max={LIVES} onRetry={level ? undefined : start} />
+        <BestBox best={best} level={level} />
+        <SkipLevel points={total} level={level} />
       </div>
 
       {phase === "intro" ? (
@@ -230,7 +235,7 @@ export function SemanticMinefieldGame({ rounds = ROUNDS }: { rounds?: Round[] })
           </p>
         </div>
       ) : phase === "done" ? (
-        <Final rounds={rounds} banked={banked} total={total} isNew={isNew} again={start} buttonRef={action} />
+        <Final rounds={rounds} banked={banked} total={total} isNew={isNew} again={level ? () => level.onDone(total) : start} againLabel={level ? FINISH : "Play again"} buttonRef={action} />
       ) : play ? (
         <div className="sm-round">
           <Progress rounds={rounds} at={at} banked={banked} />
@@ -278,9 +283,11 @@ export function SemanticMinefieldGame({ rounds = ROUNDS }: { rounds?: Round[] })
                     <button type="button" className="cr-ghost" onClick={end}>
                       See the results
                     </button>
-                    <button type="button" className="cr-go" onClick={start}>
-                      Play again
-                    </button>
+                    {level ? null : (
+                      <button type="button" className="cr-go" onClick={start}>
+                        Play again
+                      </button>
+                    )}
                   </div>
                 </div>
               ) : (
@@ -609,7 +616,9 @@ function SearchPanel() {
   );
 }
 
-function Final({ rounds, banked, total, isNew, again, buttonRef }: { rounds: Round[]; banked: number[]; total: number; isNew: boolean; again: () => void; buttonRef: Ref<HTMLButtonElement> }) {
+function Final({ rounds, banked, total, isNew, again, againLabel, buttonRef }: {
+  rounds: Round[]; banked: number[]; total: number; isNew: boolean; again: () => void; againLabel: string; buttonRef: Ref<HTMLButtonElement>;
+}) {
   const max = useMemo(() => rounds.reduce((s, r) => s + maxPoints(boardFor(r)), 0), [rounds]);
   return (
     <div className="sm-final">
@@ -648,7 +657,7 @@ function Final({ rounds, banked, total, isNew, again, buttonRef }: { rounds: Rou
       <SearchPanel />
       <div className="sm-actions">
         <button ref={buttonRef} type="button" className="cr-go" onClick={again}>
-          Play again
+          {againLabel}
         </button>
       </div>
     </div>

@@ -6,7 +6,8 @@
 // analysis/week07_sentiment_trap.py writes; the data comes in as a prop so
 // tests can play a game without a page.
 import { type ReactNode, type Ref, useEffect, useRef, useState } from "react";
-import { BestBox, ScoreBox, Stat, useBest } from "@/features/cold-read/LevelParts";
+import { BestBox, ScoreBox, SkipLevel, Stat, useBest } from "@/features/cold-read/LevelParts";
+import { FINISH, type Level } from "@/features/cold-read/levels";
 import { Rules } from "@/features/cold-read/StartPanel";
 import { CHALLENGES, type Challenge, POINTS, reflection } from "./challenges";
 import { count, type Label, type Reading, type SentimentTrapData, type Sentence, score3, signed } from "./data";
@@ -230,7 +231,8 @@ function Progress({ at, results }: { at: number; results: boolean[] }) {
   );
 }
 
-export function SentimentTrapGame({ data }: { data: SentimentTrapData }) {
+// As a campaign level it plays every challenge, then the final screen hands its points to level.onDone.
+export function SentimentTrapGame({ data, level }: { data: SentimentTrapData; level?: Level }) {
   const [phase, setPhase] = useState<Phase>("intro");
   const [at, setAt] = useState(0);
   const [choice, setChoice] = useState<string | null>(null);
@@ -239,7 +241,7 @@ export function SentimentTrapGame({ data }: { data: SentimentTrapData }) {
   const [lenses, setLenses] = useState<Set<Lens>>(new Set());
   const [reflect, setReflect] = useState<string | null>(null);
   const [reflected, setReflected] = useState(false);
-  const { best, record } = useBest(BEST);
+  const { best, record } = useBest(level ? null : BEST);
   const [isNew, setIsNew] = useState(false);
   const action = useRef<HTMLButtonElement>(null);
   const heading = useRef<HTMLHeadingElement>(null);
@@ -298,14 +300,15 @@ export function SentimentTrapGame({ data }: { data: SentimentTrapData }) {
   return (
     <section className="cr-table st-table" id="sentiment-trap" aria-label="Sentiment Trap">
       <div className="cr-hud" role="status">
-        <ScoreBox points={total} />
+        <ScoreBox points={total} level={level} />
         <Stat label="Challenge">
           {String(phase === "intro" ? 0 : Math.min(at + 1, CHALLENGES.length)).padStart(2, "0")} / {String(CHALLENGES.length).padStart(2, "0")}
         </Stat>
         <Stat label="Caught">
           {correct}/{results.length}
         </Stat>
-        <BestBox best={best} />
+        <BestBox best={best} level={level} />
+        <SkipLevel points={total} level={level} />
       </div>
 
       {phase === "intro" ? (
@@ -320,7 +323,8 @@ export function SentimentTrapGame({ data }: { data: SentimentTrapData }) {
           reflected={reflected}
           onReflect={setReflect}
           onCheck={() => setReflected(true)}
-          again={start}
+          again={level ? () => level.onDone(total) : start}
+          inCampaign={Boolean(level)}
           headingRef={heading}
         />
       ) : (
@@ -503,6 +507,7 @@ function Final(props: {
   onReflect: (v: string) => void;
   onCheck: () => void;
   again: () => void;
+  inCampaign: boolean;
   headingRef: Ref<HTMLHeadingElement>;
 }) {
   const { data, results, total, isNew, reflect, reflected } = props;
@@ -579,11 +584,13 @@ function Final(props: {
           </ul>
           <div className="st-actions">
             <button type="button" className="cr-go" onClick={props.again}>
-              Play again
+              {props.inCampaign ? FINISH : "Play again"}
             </button>
-            <a className="cr-ghost" href="../../../#games">
-              More games
-            </a>
+            {props.inCampaign ? null : (
+              <a className="cr-ghost" href="../../../#games">
+                More games
+              </a>
+            )}
           </div>
         </div>
       </div>

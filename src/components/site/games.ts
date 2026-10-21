@@ -75,7 +75,7 @@ export const GAMES: Game[] = [
 ];
 
 // A week's campaign, the route that plays its games in a row, once it has one.
-const CAMPAIGNS: Record<number, string> = {};
+const CAMPAIGNS: Record<number, string> = { 7: "play/week07/" };
 
 /** One line per week in the site nav's Games menu: "Week 7 · NLP III" links to
  * the week's campaign, or to its game when it has only one, and its games

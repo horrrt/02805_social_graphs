@@ -227,7 +227,7 @@ Test 2 asks you to tell sparse from dense retrieval, explain vocabulary mismatch
 from a generation error in RAG.
 
 Built 21 October alongside the plan: Semantic Minefield at `/play/week07/semantic-minefield/` (noindex, linked
-from nowhere). It is Minesweeper over hand-labelled Marvel characters: the round's target category is the query and
+from the Games menu and the campaign). It is Minesweeper over hand-labelled Marvel characters: the round's target category is the query and
 decides the bombs, hidden tiles show one non-target category, and the debrief sets a keyword match over one-line
 descriptions against the labels. Its labels are teaching data, not encoder output, so Dense Dan below is still the
 game that runs the real retrievers.
@@ -345,6 +345,13 @@ in a hidden route group with `robots: noindex`, levels follow the brief's order,
 and each game keeps a practice page. Topic Tetris can join as level 3 if its author wants. The working route is `/play/week07/`,
 with each game under it (Two Stripes at `/play/week07/two-stripes/`). Both encoders are approved for the
 analysis scripts. Build order: Two Stripes, then the others.
+
+Built 21 October: the campaign, "Meaning to Measurement", at `/play/week07/` (levels in
+`src/features/week07-campaign/levels.ts`). Its four levels are Same Word (6 rounds), Two Stripes (3 pages), Sentiment
+Trap (all 4 challenges) and Semantic Minefield (3 boards), in section order. Each game takes Cold Read's `level` prop:
+its scoreboard shows the campaign total, it writes no practice best, and Minefield allows no retry inside a level. A
+level that ends below 0 adds nothing. Topic Tetris (section 3) and Semantic Search Detective live in their own
+route groups and are not levels yet. Head Count, Twin Stamp and Dense Dan join when they are built.
 
 ## Rejected pitches
 

@@ -44,7 +44,8 @@ export function useBest(key: string | null) {
   const [best, setBest] = useState(0);
   useEffect(() => setBest(readBest(key)), []);
   const record = (total: number) => {
-    if (total <= best) return false;
+    // A null key (a round played as a level) keeps no best, so nothing is ever new.
+    if (!key || total <= best) return false;
     setBest(total);
     saveBest(key, total);
     return true;
