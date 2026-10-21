@@ -93,6 +93,9 @@ export const short = (name: string) => name.replace(/\s*\(.*\)\s*$/, "");
 export const label = (data: TopicTetrisData, name: string) =>
   data.pages.some((p) => p.name !== name && short(p.name) === short(name)) ? name : short(name);
 
+/** "1 link from Storm", "38 links from Storm". */
+export const linksFrom = (n: number, page: TetrisPage) => `${n} link${n === 1 ? "" : "s"} from ${short(page.name)}`;
+
 const list = (items: string[]) => (items.length < 2 ? items.join("") : `${items.slice(0, -1).join(", ")} and ${items[items.length - 1]}`);
 
 /** The page's evidence, in a sentence that names the group it points to. */

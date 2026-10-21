@@ -4,6 +4,7 @@ import "@/styles/type.css";
 // Cold Read's sheet styles the shared parts (score box, rules, start row, faces); topic-tetris.css the board.
 import "@/styles/cold-read.css";
 import "@/styles/topic-tetris.css";
+import "@/styles/topic-tetris-stack.css";
 
 // Kept out of search (noindex) and linked from nowhere until the group says otherwise.
 export const metadata: Metadata = {

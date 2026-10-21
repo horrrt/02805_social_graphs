@@ -5,15 +5,16 @@
 // lift out of their groups back into one pile; at the end they move between
 // the three groupings on one board. Takes the data as a prop, and the clock,
 // so tests can stop time.
-import { type CSSProperties, type ReactNode, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { type CSSProperties, type ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import { SegmentedControl } from "@/components/post/SegmentedControl";
 import { Face } from "@/kit/Portrait";
 import { Rules, StartRow } from "@/features/cold-read/StartPanel";
 import { ScoreBox, Stat } from "@/features/cold-read/LevelParts";
 import { reducedMotion, useFlip } from "./flip";
+import { useRound, useWires } from "./useRound";
 import {
-  FALL_S, POINTS, QUIZ, ROUND, ROUND_KEYS, type RoundKey, type Tally, type TetrisPage, type TopicTetrisData,
-  answer, feedback, label, letter, movers, placementPoints, short, tallyPoints,
+  POINTS, QUIZ, ROUND, ROUND_KEYS, type RoundKey, type Tally, type TetrisPage, type TopicTetrisData,
+  answer, label, letter, linksFrom, movers, short, tallyPoints,
 } from "./rules";
 
 type Stage =
@@ -25,10 +26,8 @@ type Stage =
   | { kind: "quiz" }
   | { kind: "end" };
 
-type Note = ReturnType<typeof feedback> & { page: TetrisPage; chosen: number; points: number };
-
 const EMPTY: Tally = { right: 0, fast: 0, wrong: 0 };
-const TICK_MS = 60;
+const identity = (p: number) => p;
 
 /** A page's face in Cold Read's round frame. */
 function Avatar({ name, size = "m" }: { name: string; size?: "xs" | "s" | "m" | "l" }) {
@@ -76,7 +75,7 @@ function IntroArt({ data }: { data: TopicTetrisData }) {
 }
 
 /** The evidence on a falling block, in the round's own representation. */
-function Clue({ data, page, round }: { data: TopicTetrisData; page: TetrisPage; round: number }) {
+export function Clue({ data, page, round }: { data: TopicTetrisData; page: TetrisPage; round: number }) {
   const key = ROUND_KEYS[round];
   if (key === "words")
     return (
@@ -164,7 +163,7 @@ function Bin({ data, round, group, block, placed, onDrop, active }: {
         </ul>
         {block ? (
           <p className="tt-bin-links" data-match={active || undefined}>
-            {block.connections.links[group]} links from {short(block.name)}
+            {linksFrom(block.connections.links[group], block)}
           </p>
         ) : null}
       </>
@@ -222,118 +221,21 @@ function Round({ data, round, clock, total, onPoints, onDone }: {
   onPoints: (points: number, right: boolean, fast: boolean) => void; onDone: () => void;
 }) {
   const pages = data.pages;
-  const [index, setIndex] = useState(0);
-  const [col, setCol] = useState(1);
-  const [placed, setPlaced] = useState<{ page: TetrisPage; chosen: number }[]>([]);
-  const [note, setNote] = useState<Note | null>(null);
-  const [paused, setPaused] = useState(false);
-  const started = useRef(clock());
-  const pausedAt = useRef<number | null>(null);
-  const [now, setNow] = useState(() => clock());
-  const waiting = note !== null && !note.right;
-  const block = index < pages.length ? pages[index] : null;
-  const fallMs = FALL_S[ROUND_KEYS[round]] * 1000;
-  const running = block !== null && !waiting && !paused;
-
-  useEffect(() => {
-    if (!running) return;
-    const id = window.setInterval(() => setNow(clock()), TICK_MS);
-    return () => window.clearInterval(id);
-  }, [running, clock]);
-
-  const elapsed = Math.max(0, now - started.current);
-  const fraction = Math.min(1, elapsed / fallMs);
-
-  const next = useCallback(() => {
-    started.current = clock();
-    setNow(started.current);
-    setCol(1);
-    setNote(null);
-    setIndex((i) => i + 1);
-  }, [clock]);
-
-  const place = useCallback(
-    (chosen: number) => {
-      if (!block || waiting || paused) return;
-      const spent = clock() - started.current;
-      const right = chosen === answer(block, round);
-      const points = placementPoints(right, spent, round);
-      setPlaced((p) => [...p, { page: block, chosen }]);
-      onPoints(points, right, right && points > POINTS.right);
-      const result: Note = { ...feedback(data, block, round, chosen), page: block, chosen, points };
-      if (right) {
-        next();
-        setNote(result);
-      } else setNote(result);
-    },
-    [block, waiting, paused, clock, round, data, onPoints, next],
-  );
-
-  // A block that reaches the floor lands in the column it is over.
-  useEffect(() => {
-    if (running && fraction >= 1) place(col);
-  }, [running, fraction, col, place]);
-
-  const togglePause = useCallback(() => {
-    setPaused((p) => {
-      if (p) {
-        // Resume where the block stopped: shift the start by the time spent paused.
-        started.current += clock() - (pausedAt.current ?? clock());
-        setNow(clock());
-      } else pausedAt.current = clock();
-      return !p;
-    });
-  }, [clock]);
-
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      const onControl = e.target instanceof HTMLElement && e.target.closest("button, input, a, select, textarea");
-      if (e.key === "ArrowLeft" || e.key === "a") {
-        e.preventDefault();
-        if (running) setCol((c) => Math.max(0, c - 1));
-      } else if (e.key === "ArrowRight" || e.key === "d") {
-        e.preventDefault();
-        if (running) setCol((c) => Math.min(2, c + 1));
-      } else if (e.key === "ArrowDown" || ((e.key === " " || e.key === "Enter") && !onControl)) {
-        e.preventDefault();
-        if (waiting) next();
-        else if (running) place(col);
-      } else if ((e.key === "p" || e.key === "Escape") && block && !waiting) togglePause();
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [running, waiting, block, col, place, next, togglePause]);
+  const { block, pos: col, placed, note, paused, waiting, running, fraction, done, queue: upcoming, move, drop, place, next, togglePause } =
+    useRound({ data, round, clock, onPoints, width: 3, lane: identity });
 
   // Round 3 draws the falling page's links to the pages already placed.
   const board = useRef<HTMLDivElement>(null);
   const blockEl = useRef<HTMLElement>(null);
-  const [wires, setWires] = useState<number[][]>([]);
   const partners = ROUND_KEYS[round] === "connections" && block && !waiting ? block.connections.partners : [];
-  useLayoutEffect(() => {
-    const el = board.current;
-    const b = blockEl.current;
-    const out: number[][] = [];
-    if (el && b) {
-      const o = el.getBoundingClientRect();
-      const from = b.getBoundingClientRect();
-      for (const name of partners) {
-        const id = pages.find((p) => p.name === name)?.id;
-        const tile = id ? el.querySelector(`.tt-bin [data-flip="${id}"]`) : null;
-        if (!tile) continue;
-        const to = tile.getBoundingClientRect();
-        out.push([from.left + from.width / 2 - o.left, from.bottom - o.top, to.left + to.width / 2 - o.left, to.top + to.height / 2 - o.top]);
-      }
-    }
-    if (JSON.stringify(out) !== JSON.stringify(wires)) setWires(out);
-  });
+  const wires = useWires(board, blockEl, partners, data, ".tt-bin");
 
-  const done = block === null && !waiting;
   const groups = data.rounds[round].groups;
   const tiles = (g: number) =>
     placed
       .filter(({ page }) => answer(page, round) === g)
       .map(({ page, chosen }) => ({ page, missed: chosen !== g ? `you: ${letter(data, round, chosen)}` : undefined }));
-  const queue = pages.slice(index + 1, index + 3);
+  const queue = upcoming(2);
 
   return (
     <section className="cr-table tt-table" aria-label={`Round ${round + 1}: ${ROUND[ROUND_KEYS[round]].title}`}>
@@ -424,13 +326,13 @@ function Round({ data, round, clock, total, onPoints, onDone }: {
             )}
           </div>
           <div className="tt-pad" aria-label="Controls">
-            <button type="button" onClick={() => running && setCol((c) => Math.max(0, c - 1))} aria-label="Move left" disabled={!running}>
+            <button type="button" onClick={() => move(-1)} aria-label="Move left" disabled={!running}>
               ←
             </button>
-            <button type="button" onClick={() => running && place(col)} aria-label="Drop" disabled={!running}>
+            <button type="button" onClick={drop} aria-label="Drop" disabled={!running}>
               ↓
             </button>
-            <button type="button" onClick={() => running && setCol((c) => Math.min(2, c + 1))} aria-label="Move right" disabled={!running}>
+            <button type="button" onClick={() => move(1)} aria-label="Move right" disabled={!running}>
               →
             </button>
             <button type="button" className="tt-pause" onClick={togglePause} aria-pressed={paused} disabled={!block || waiting}>
@@ -710,7 +612,7 @@ function End({ data, score, tallies, home, onAgain }: { data: TopicTetrisData; s
 }
 
 /** What is real in the simplified model: the groupings come from real runs on the whole corpus. */
-function Real({ data }: { data: TopicTetrisData }) {
+export function Real({ data }: { data: TopicTetrisData }) {
   const s = data.source;
   return (
     <details className="tt-real">
