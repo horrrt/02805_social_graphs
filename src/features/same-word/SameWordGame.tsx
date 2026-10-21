@@ -6,7 +6,8 @@
 // in rounds.ts; this file renders them, and takes the rounds as a prop so
 // tests can play it without a page.
 import { type Ref, useEffect, useRef, useState } from "react";
-import { BestBox, ScoreBox, Stat, useBest, useKeys } from "@/features/cold-read/LevelParts";
+import { BestBox, ScoreBox, SkipLevel, Stat, useBest, useKeys } from "@/features/cold-read/LevelParts";
+import { FINISH, type Level } from "@/features/cold-read/levels";
 import { Rules } from "@/features/cold-read/StartPanel";
 import {
   COMPARE,
@@ -44,14 +45,16 @@ export function Intro() {
   );
 }
 
-export function SameWordGame({ rounds = ROUNDS }: { rounds?: Round[] }) {
+// As a campaign level it plays the first `level.items` rounds and hands its points to level.onDone.
+export function SameWordGame({ rounds: deck = ROUNDS, level }: { rounds?: Round[]; level?: Level }) {
+  const rounds = level ? deck.slice(0, level.items) : deck;
   const [phase, setPhase] = useState<Phase>("intro");
   const [at, setAt] = useState(0);
   const [compare, setCompare] = useState<Compare | null>(null);
   const [method, setMethod] = useState<Method | null>(null);
   const [picks, setPicks] = useState<Pick[]>([]);
   const [results, setResults] = useState<Result[]>([]);
-  const { best, record } = useBest(BEST);
+  const { best, record } = useBest(level ? null : BEST);
   const [isNew, setIsNew] = useState(false);
   const action = useRef<HTMLButtonElement>(null);
   const table = useRef<HTMLElement>(null);
@@ -113,12 +116,13 @@ export function SameWordGame({ rounds = ROUNDS }: { rounds?: Round[] }) {
   return (
     <section className="cr-table sd-table sw-table" id="same-word" aria-label="Same Word, Different Worlds" ref={table}>
       <div className="cr-hud" role="status">
-        <ScoreBox points={total} />
+        <ScoreBox points={total} level={level} />
         <Stat label="Round">
           {phase === "intro" ? 0 : Math.min(at + 1, rounds.length)}/{rounds.length}
         </Stat>
         <Stat label="Last round">{results.length ? `+${results.at(-1)!.points}` : "–"}</Stat>
-        <BestBox best={best} />
+        <BestBox best={best} level={level} />
+        <SkipLevel points={total} level={level} />
       </div>
 
       {phase === "intro" ? (
@@ -141,7 +145,7 @@ export function SameWordGame({ rounds = ROUNDS }: { rounds?: Round[] }) {
           </div>
         </div>
       ) : phase === "done" ? (
-        <Final rounds={rounds} results={results} total={total} isNew={isNew} again={start} buttonRef={action} />
+        <Final rounds={rounds} results={results} total={total} isNew={isNew} again={level ? () => level.onDone(total) : start} againLabel={level ? FINISH : "Play again"} buttonRef={action} />
       ) : (
         <div className="sd-case">
           <div className="sd-progress">
@@ -446,8 +450,8 @@ function Difference({ round }: { round: Round }) {
   );
 }
 
-function Final({ rounds, results, total, isNew, again, buttonRef }: {
-  rounds: Round[]; results: Result[]; total: number; isNew: boolean; again: () => void; buttonRef: Ref<HTMLButtonElement>;
+function Final({ rounds, results, total, isNew, again, againLabel, buttonRef }: {
+  rounds: Round[]; results: Result[]; total: number; isNew: boolean; again: () => void; againLabel: string; buttonRef: Ref<HTMLButtonElement>;
 }) {
   const max = maxScore(rounds);
   const both = results.filter((r) => r.compareOk && r.methodOk).length;
@@ -493,7 +497,7 @@ function Final({ rounds, results, total, isNew, again, buttonRef }: {
       </div>
       <div className="sd-actions">
         <button ref={buttonRef} type="button" className="cr-go" onClick={again}>
-          Play again
+          {againLabel}
         </button>
       </div>
     </div>

@@ -18,6 +18,7 @@ export default function Page() {
         root="../../../"
         tools={
           <nav className="cr-rounds" aria-label="Game tools">
+            <a href="../">Campaign</a>
             <SoundToggle />
           </nav>
         }

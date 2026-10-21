@@ -41,9 +41,9 @@ test("the menu lists every post and marks this page current, and not the alterna
 test("the Games menu lists every game with its week, and marks none current", () => {
   render(<SiteNav root="../../" current="weeks/week06/" />);
   const menu = within(document.getElementById("site-nav-games-menu")!);
-  const labels = ["Week 1 · Give Baymax a Voice", "Week 2 · Screen Test", "Week 6 · Cold Read", "Week 7 · Same Word, Different Worlds", "Week 7 · Two Stripes", "Week 7 · Topic Tetris", "Week 7 · Sentiment Trap", "Week 7 · Semantic Search Detective", "Week 7 · Semantic Minefield"];
+  const labels = ["Week 1 · Give Baymax a Voice", "Week 2 · Screen Test", "Week 6 · Cold Read", "Week 7 · Meaning to Measurement", "Week 7 · Same Word, Different Worlds", "Week 7 · Two Stripes", "Week 7 · Topic Tetris", "Week 7 · Sentiment Trap", "Week 7 · Semantic Search Detective", "Week 7 · Semantic Minefield"];
   assert.deepEqual(menu.getAllByRole("link").map((a) => a.textContent), labels);
-  const hrefs = ["play/", "prototypes/screen-test/", "play/cold-read/", "play/week07/same-word/", "play/week07/two-stripes/", "play/topic-tetris/", "play/week07/sentiment-trap/", "play/search-detective/", "play/week07/semantic-minefield/"];
+  const hrefs = ["play/", "prototypes/screen-test/", "play/cold-read/", "play/week07/", "play/week07/same-word/", "play/week07/two-stripes/", "play/topic-tetris/", "play/week07/sentiment-trap/", "play/search-detective/", "play/week07/semantic-minefield/"];
   assert.deepEqual(GAMES.map((g) => g.href), hrefs);
   for (const [i, label] of labels.entries()) {
     const link = menu.getByRole("link", { name: label });

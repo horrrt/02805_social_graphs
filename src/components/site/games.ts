@@ -31,6 +31,13 @@ export const GAMES: Game[] = [
     blurb: "A Marvel page is hidden. Flip word cards that show how often each word appears, and name the page against the clock.",
   },
   {
+    href: "play/week07/",
+    name: "Meaning to Measurement",
+    week: 7,
+    topic: topic(7),
+    blurb: "Week 7's games as one campaign with one score: contextual vectors, corpus maps, sentiment and search by meaning.",
+  },
+  {
     href: "play/week07/same-word/",
     name: "Same Word, Different Worlds",
     week: 7,
