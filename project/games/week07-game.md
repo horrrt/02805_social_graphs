@@ -220,6 +220,12 @@ main's `build/`, so either game needs a rerun of about 2 minutes.
 Test 2 asks you to tell sparse from dense retrieval, explain vocabulary mismatch, and tell a retrieval error
 from a generation error in RAG.
 
+Built 21 October alongside the plan: Semantic Minefield at `/play/week07/semantic-minefield/` (noindex, linked
+from nowhere). It is Minesweeper over hand-labelled Marvel characters: the round's target category is the query and
+decides the bombs, hidden tiles show one non-target category, and the debrief sets a keyword match over one-line
+descriptions against the labels. Its labels are teaching data, not encoder output, so Dense Dan below is still the
+game that runs the real retrievers.
+
 ### Dense Dan (build this): a ghost always trusts the encoder, and you pass him only where plain word matching wins
 
 - Concept: sparse TF-IDF against dense MiniLM, both ranking by s = q·d, which equals the cosine because both

@@ -7,6 +7,7 @@ import "../../../public/assets/vendor/katex-0.19.0/katex.min.css";
 import "@/styles/type.css";
 import "@/styles/cold-read.css";
 import "@/styles/two-stripes.css";
+import "@/styles/semantic-minefield.css";
 
 // The Week 7 games. Kept out of search (noindex) and linked from nowhere yet.
 export const metadata: Metadata = {
