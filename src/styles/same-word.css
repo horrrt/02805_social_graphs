@@ -1,0 +1,379 @@
+/* Same Word, Different Worlds: the Week 7 game at /play/week07/same-word/.
+   Loaded after cold-read.css and search-detective.css, whose scoreboard,
+   progress bar, answer cards and results list it reuses; these rules add the
+   sentences, the clue words and the static-against-contextual panel. Sizes
+   come from type.css. */
+
+.sw-table .cr-h + .sw-predict,
+.sw-table .cr-h + .sw-clues,
+.sw-table .cr-h + .sw-reveal {
+  margin-top: 10px;
+}
+
+/* ---------- reading ---------- */
+
+.sw-predict,
+.sw-reveal {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 22px;
+  align-items: start;
+}
+
+.sw-read {
+  display: grid;
+  gap: 10px;
+}
+
+.sw-type {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin: 0;
+  font-size: var(--fs-small);
+  color: var(--ink-mute-text);
+}
+
+.sw-chip {
+  display: inline-block;
+  padding: 3px 12px;
+  border: 1px solid #c9bdf0;
+  border-radius: 8px;
+  background: #efeafb;
+  font-size: var(--fs-strong);
+  font-weight: 700;
+  color: var(--r-rare);
+}
+
+.sw-sentence {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  margin: 0;
+  padding: 12px 16px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--card);
+  font-size: var(--fs-strong);
+  line-height: 1.7;
+}
+
+.sw-n {
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--line-soft);
+  font-size: var(--fs-caption);
+  font-weight: 700;
+  color: var(--ink-mute-text);
+}
+
+.sw-word {
+  padding: 1px 6px;
+  border-radius: 6px;
+  background: var(--access-soft);
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.sw-clue {
+  padding: 1px 4px;
+  border-radius: 4px;
+  background: var(--people-soft);
+  color: var(--ink);
+}
+
+.sw-how {
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: var(--ground);
+}
+
+.sw-how p {
+  margin: 4px 0 0;
+  font-size: var(--fs-body);
+  color: var(--ink-soft);
+}
+
+.sw-how[data-method="none"] p {
+  font-style: italic;
+}
+
+/* ---------- questions ---------- */
+
+.sw-questions {
+  display: grid;
+  gap: 16px;
+}
+
+.sw-q {
+  display: grid;
+  gap: 8px;
+}
+
+.sw-q legend {
+  margin-bottom: 8px;
+  font-size: var(--fs-strong);
+}
+
+.sw-q legend b {
+  color: var(--accent);
+}
+
+.sw-q .sd-doc {
+  align-items: center;
+  padding: 10px 14px;
+}
+
+.sw-q .sd-doc span {
+  font-size: var(--fs-body);
+  font-weight: 600;
+}
+
+.sw-q .sd-actions,
+.sw-questions .sd-actions {
+  margin-top: 0;
+}
+
+/* ---------- clue words ---------- */
+
+.sw-clues {
+  display: grid;
+  gap: 10px;
+}
+
+.sw-ask {
+  margin: 0 0 4px;
+  font-size: var(--fs-strong);
+}
+
+.sw-tokens > span:last-child {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: baseline;
+}
+
+.sw-token {
+  padding: 2px 8px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--card);
+  font: inherit;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.sw-token:hover {
+  border-color: var(--ink-mute);
+}
+
+.sw-token[aria-pressed="true"] {
+  border-color: var(--people);
+  background: var(--people-soft);
+  font-weight: 700;
+}
+
+.sw-token:focus-visible {
+  outline: 3px solid var(--access);
+  outline-offset: 1px;
+}
+
+.sw-clues .sd-actions {
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.sw-clues .sd-actions .cr-note {
+  margin: 0;
+}
+
+/* ---------- feedback ---------- */
+
+.sw-feedback {
+  display: grid;
+  gap: 10px;
+}
+
+.sw-feedback .sd-verdict {
+  margin-bottom: 4px;
+}
+
+.sw-feedback .cr-debrief {
+  margin: 4px 0 0;
+}
+
+.sw-yours,
+.sw-clue-score {
+  margin: 0;
+  font-size: var(--fs-body);
+  color: var(--ink-soft);
+}
+
+/* ---------- the difference ---------- */
+
+.sw-diff {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--ground);
+}
+
+.sw-diff h3 {
+  margin: 0;
+  font-size: var(--fs-h4);
+}
+
+.sw-diff .cr-note {
+  margin: 0;
+}
+
+.sw-model {
+  position: relative;
+  padding: 12px 14px;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  background: var(--card);
+}
+
+.sw-model[data-this="true"] {
+  border-color: var(--access);
+}
+
+.sw-this {
+  position: absolute;
+  top: -10px;
+  right: 12px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: var(--access);
+  font-size: var(--fs-caption);
+  font-weight: 700;
+  color: #fff;
+}
+
+.sw-model h4 {
+  margin: 0;
+  font-size: var(--fs-strong);
+}
+
+.sw-model p {
+  margin: 2px 0 10px;
+  font-size: var(--fs-small);
+  color: var(--ink-mute-text);
+}
+
+.sw-model .sw-foot {
+  margin: 10px 0 0;
+  color: var(--ink-soft);
+}
+
+.sw-fan {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* Two arrows from the word type, one to each occurrence's strip. */
+.sw-arrows {
+  position: relative;
+  flex: none;
+  width: 34px;
+  height: 40px;
+}
+
+.sw-arrows::before,
+.sw-arrows::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 34px;
+  height: 2px;
+  background: var(--ink-mute);
+  transform-origin: left center;
+}
+
+.sw-arrows::before {
+  transform: rotate(-24deg);
+}
+
+.sw-arrows::after {
+  transform: rotate(24deg);
+}
+
+.sw-pair {
+  display: grid;
+  gap: 10px;
+}
+
+.sw-rows {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 8px 14px;
+  align-items: center;
+  justify-content: start;
+}
+
+.sw-occ {
+  font-size: var(--fs-small);
+  font-weight: 700;
+}
+
+.sw-occ small {
+  font-size: var(--fs-caption);
+  font-weight: 400;
+  color: var(--ink-mute-text);
+}
+
+.sw-strip {
+  display: inline-flex;
+  gap: 4px;
+  padding: 5px 8px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--card);
+}
+
+.sw-strip i {
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--access);
+}
+
+.sw-strip[data-tone="one"] i {
+  background: var(--gain);
+}
+
+.sw-strip[data-tone="two"] i {
+  background: var(--r-rare);
+}
+
+/* ---------- results ---------- */
+
+.sw-final-word b {
+  color: var(--accent);
+}
+
+/* ---------- narrow screens ---------- */
+
+@media (max-width: 760px) {
+  .sw-predict,
+  .sw-reveal {
+    grid-template-columns: 1fr;
+  }
+
+  .sw-clues .sd-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

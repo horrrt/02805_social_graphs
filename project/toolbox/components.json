@@ -2003,6 +2003,18 @@
       ]
     },
     {
+      "name": "Same Word, Different Worlds",
+      "kind": "game",
+      "what": "Read one word in two sentences and the way a model makes its vector, then say whether the two representations match and whether the model is static or contextual; tap the words that set the sense.",
+      "where": "src/features/same-word/SameWordGame.tsx",
+      "seen_at": "/play/week07/same-word/",
+      "week": 7,
+      "concepts": [
+        "embeddings",
+        "word-context"
+      ]
+    },
+    {
       "name": "Semantic Search Detective",
       "kind": "game",
       "what": "Pick the document that best answers a query, see a semantic search rank the four by cosine similarity next to keyword matching, then explore a 2D map that can mislead.",
