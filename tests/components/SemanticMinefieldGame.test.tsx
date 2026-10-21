@@ -11,7 +11,7 @@ import userEvent from "@testing-library/user-event";
 import { chipCategories, countClues, flood, makeBoard, neighbours, solves } from "@/features/semantic-minefield/board";
 import { CATEGORIES, CHARACTERS, type CatId, character, isIn } from "@/features/semantic-minefield/characters";
 import { boardFor, compare, explain, keywordHit, POINTS, ROUNDS, roundPoints } from "@/features/semantic-minefield/rounds";
-import { SemanticMinefieldGame } from "@/features/semantic-minefield/SemanticMinefieldGame";
+import { nearby, SemanticMinefieldGame } from "@/features/semantic-minefield/SemanticMinefieldGame";
 
 // The best lives in localStorage and a cookie; clear both so one test's best never leaks into the next.
 beforeEach(() => {
@@ -162,7 +162,7 @@ test("a game plays through flags, a bomb, a cleared round and the results, and p
   const safe = board.bomb.flatMap((b, i) => (!b && !board.opening.includes(i) ? [i] : []));
   fireEvent.contextMenu(tiles()[bombs[0]]);
   assert.equal(tiles()[bombs[0]].dataset.state, "flag");
-  await user.click(screen.getByRole("button", { name: "⚑ Flag" }));
+  await user.click(screen.getByRole("button", { name: "Flag" }));
   await user.click(tiles()[safe[0]]);
   assert.equal(tiles()[safe[0]].dataset.state, "flag");
   assert.equal(score(), 0, "flags are not scored while the round runs");
@@ -174,6 +174,7 @@ test("a game plays through flags, a bomb, a cleared round and the results, and p
   assert.equal(tiles()[bombs[1]].dataset.state, "hit");
   assert.equal(score(), -POINTS.bomb);
   assert.ok(screen.getByText(new RegExp(`^${board.tiles[bombs[1]].name} is a bomb`)));
+  assert.ok(screen.getByText("Hit a bomb"), "the bomb's result card");
   assert.equal(document.querySelector(".cr-lives")!.getAttribute("aria-label"), "2 of 3");
 
   // Reveal every safe tile.
@@ -219,4 +220,19 @@ test("a run that ends out of lives keeps its score as the best when retried", as
   await user.click(screen.getByRole("button", { name: "Play again" }));
   assert.equal(score(), 0);
   assert.equal(readBestValue(), total);
+});
+
+test("a safe reveal's card names the clue in words", async () => {
+  const user = userEvent.setup();
+  const rounds = ROUNDS.slice(0, 1);
+  const board = boardFor(rounds[0]);
+  render(<SemanticMinefieldGame rounds={rounds} />);
+  await user.click(screen.getByRole("button", { name: "Start" }));
+  const i = board.opening.find((j) => board.counts[j] > 0)!;
+  await user.click(tiles()[i]);
+  assert.ok(screen.getByText("Safe reveal"));
+  assert.ok(screen.getByText(nearby(board.counts[i], "villain")));
+  assert.equal(nearby(0, "alien"), "No aliens nearby");
+  assert.equal(nearby(1, "ai"), "1 artificial intelligence nearby");
+  assert.equal(nearby(2, "villain"), "2 villains nearby");
 });

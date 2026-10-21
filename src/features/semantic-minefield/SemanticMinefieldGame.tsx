@@ -1,8 +1,9 @@
 // Semantic Minefield, a Week 7 game for search by meaning. Minesweeper with
 // Marvel characters under the tiles: each round names a target category, and
 // every character in it is a bomb. A revealed tile shows its character and
-// how many of its eight neighbours are in the target; a hidden tile may show
-// one of its character's other categories, which helps without settling it. The
+// how many of its eight neighbours are in the target; a hidden tile takes the
+// colour and icon of one of its character's other categories, which helps
+// without settling it. The
 // boards, clues and solver are in board.ts, the rounds and sentences in
 // rounds.ts, the labels in characters.ts. Rounds come in as a prop so tests can
 // play a short game.
@@ -12,7 +13,8 @@ import { BestBox, Lives, ScoreBox, Stat, useBest } from "@/features/cold-read/Le
 import { Rules } from "@/features/cold-read/StartPanel";
 import { Face } from "@/kit/Portrait";
 import { type Board, chipCategories, flood } from "./board";
-import { CATEGORIES, type CatId, type Character, isIn } from "./characters";
+import { CATEGORIES, type CatId, type Character, character, isIn } from "./characters";
+import { CatIcon, CheckIcon, CrossIcon, FlagIcon, TargetIcon } from "./icons";
 import { boardFor, compare, explain, LIVES, list, maxPoints, POINTS, ROUNDS, type Round, roundPoints, type Tally } from "./rounds";
 
 const BEST = "semantic-minefield:best";
@@ -51,18 +53,20 @@ export function Intro() {
         ["Each round names a target category,", "such as Villain. Every hidden character in it is a bomb."],
         ["Reveal", "a safe tile to see its character and a number: how many of its eight neighbours are in the target."],
         ["Flag", "the tiles you think are bombs (right-click, F, or the Flag button). Flags are scored when you clear the board."],
-        ["Read the chips.", "A hidden tile may show one of its character’s other categories, one that bombs and safe tiles both carry. It hints; only the numbers settle a tile."],
+        ["Read the colours.", "A hidden tile is coloured by one of its character’s other categories, one that bombs and safe tiles both carry. It hints; only the numbers settle a tile."],
       ]}
     />
   );
 }
 
-/** A category chip: its mark, and its name unless `bare`. */
+/** A category chip: its icon, and its name unless `bare`. */
 export function Chip({ cat, on, bare }: { cat: CatId; on?: boolean; bare?: boolean }) {
   const c = CATEGORIES[cat];
   return (
     <span className="sm-chip" data-cat={cat} data-on={on} title={bare ? c.label : undefined}>
-      <i aria-hidden="true">{c.mark}</i>
+      <i aria-hidden="true">
+        <CatIcon cat={cat} />
+      </i>
       {bare ? <span className="sm-sr">{c.label}</span> : c.label}
     </span>
   );
@@ -215,7 +219,15 @@ export function SemanticMinefieldGame({ rounds = ROUNDS }: { rounds?: Round[] })
               </button>
             </div>
           </div>
+          <ManyCategories />
           <SearchPanel />
+          <p className="sm-objective">
+            <b>Educational objective</b>
+            <span>
+              Use semantic categories to reason about characters and their relationships, and see how meaning-based search differs from matching
+              keywords.
+            </span>
+          </p>
         </div>
       ) : phase === "done" ? (
         <Final rounds={rounds} banked={banked} total={total} isNew={isNew} again={start} buttonRef={action} />
@@ -224,22 +236,31 @@ export function SemanticMinefieldGame({ rounds = ROUNDS }: { rounds?: Round[] })
           <Progress rounds={rounds} at={at} banked={banked} />
           <div className="sm-layout">
             <div className="sm-left">
-              <div className="sm-target">
-                <span className="cr-h">
-                  Round {at + 1} · {round.title}
+              <div className="sm-target" data-cat={round.target}>
+                <span className="sm-target-icon" aria-hidden="true">
+                  <TargetIcon />
                 </span>
-                <p>
-                  Query: <Chip cat={round.target} on /> <small>{CATEGORIES[round.target].rule}</small>
-                </p>
+                <b>
+                  Round {at + 1}: {round.title}
+                </b>
+                <span className="sm-target-query">
+                  Target category <Chip cat={round.target} on />
+                </span>
               </div>
+              <p className="sm-rule">
+                <b>{CATEGORIES[round.target].label}:</b> {CATEGORIES[round.target].rule}
+              </p>
               <Grid play={play} phase={phase} selected={selected} onPress={press} onFlag={flag} onSelect={setSelected} />
               <div className="sm-controls">
+                <span className="sm-flags">
+                  <FlagIcon /> Flags: {play.flagged.size}/{play.board.bomb.filter(Boolean).length}
+                </span>
                 <div className="sm-mode" role="group" aria-label="What a click does">
                   <button type="button" aria-pressed={mode === "reveal"} onClick={() => setMode("reveal")} disabled={phase !== "play"}>
                     Reveal
                   </button>
                   <button type="button" aria-pressed={mode === "flag"} onClick={() => setMode("flag")} disabled={phase !== "play"}>
-                    ⚑ Flag
+                    <FlagIcon /> Flag
                   </button>
                 </div>
                 <p className="cr-note">Click to {mode === "flag" ? "flag" : "reveal"}. Right-click or F flags. Arrow keys move.</p>
@@ -336,6 +357,7 @@ function Grid({ play, phase, selected, onPress, onFlag, onSelect }: {
             type="button"
             className="sm-tile"
             data-state={state}
+            data-cat={!shown && !flagged && chip ? chip : undefined}
             data-on={selected === i}
             aria-label={tileLabel(play, i)}
             onClick={() => (open || hit || ended ? onSelect(i) : onPress(i))}
@@ -365,15 +387,15 @@ function Grid({ play, phase, selected, onPress, onFlag, onSelect }: {
                 <small className="sm-name">{c.name}</small>
               </>
             ) : flagged ? (
-              <b className="sm-flag" aria-hidden="true">
-                ⚑
-              </b>
+              <span className="sm-flag" aria-hidden="true">
+                <FlagIcon />
+              </span>
             ) : chip ? (
-              <span className="sm-tile-chip" data-cat={chip} aria-hidden="true">
-                {CATEGORIES[chip].mark}
+              <span className="sm-tile-icon" aria-hidden="true">
+                <CatIcon cat={chip} />
               </span>
             ) : (
-              <span className="sm-tile-chip" aria-hidden="true">
+              <span className="sm-tile-icon" aria-hidden="true">
                 ?
               </span>
             )}
@@ -384,22 +406,51 @@ function Grid({ play, phase, selected, onPress, onFlag, onSelect }: {
   );
 }
 
-function CharacterCard({ c, target }: { c: Character; target: CatId }) {
+/** A character's categories as rows of icon and name, the target first and marked. */
+function CatRows({ c, target }: { c: Character; target: CatId }) {
+  const cats = [...c.cats].sort((x, y) => Number(y === target) - Number(x === target));
   return (
-    <div className="sm-card" data-bomb={isIn(c, target)}>
-      <span className="sm-face sm-face-l" aria-hidden="true">
-        <Face name={c.page ?? c.name} />
-      </span>
-      <div>
-        <h3>{c.name}</h3>
-        <p className="sm-chips">
-          {c.cats.map((cat) => (
-            <Chip key={cat} cat={cat} on={cat === target} />
-          ))}
-        </p>
+    <ul className="sm-catrows">
+      {cats.map((cat) => (
+        <li key={cat} data-cat={cat} data-on={cat === target}>
+          <i aria-hidden="true">
+            <CatIcon cat={cat} />
+          </i>
+          {CATEGORIES[cat].label}
+          {cat === target ? <small>target</small> : null}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+/** "2 villains nearby", "No aliens nearby". */
+export function nearby(n: number, target: CatId) {
+  const c = CATEGORIES[target];
+  return n ? `${n} ${n === 1 ? c.one : c.many} nearby` : `No ${c.many} nearby`;
+}
+
+/** The result card for a revealed tile: a safe reveal or a bomb, as the mockup's win-or-lose cards. */
+function ResultCard({ c, target, count }: { c: Character; target: CatId; count: number | null }) {
+  const bomb = isIn(c, target);
+  return (
+    <div className="sm-result" data-bomb={bomb}>
+      <p className="sm-result-head">
+        <span aria-hidden="true">{bomb ? <CrossIcon /> : <CheckIcon />}</span>
+        {bomb ? "Hit a bomb" : "Safe reveal"}
+      </p>
+      <div className="sm-card">
+        <span className="sm-portrait" aria-hidden="true">
+          <Face name={c.page ?? c.name} />
+        </span>
+        <div>
+          <h3>{c.name}</h3>
+          {count !== null ? <p className="sm-nearby">{nearby(count, target)}</p> : null}
+          <CatRows c={c} target={target} />
+        </div>
+        <p className="sm-why">{explain(c, target)}</p>
+        <p className="sm-blurb">{c.blurb}</p>
       </div>
-      <p className="sm-why">{explain(c, target)}</p>
-      <p className="sm-blurb">{c.blurb}</p>
     </div>
   );
 }
@@ -407,32 +458,70 @@ function CharacterCard({ c, target }: { c: Character; target: CatId }) {
 function Detail({ play, index }: { play: Play; index: number | null }) {
   const { board } = play;
   if (index === null || !(play.open.has(index) || play.hits.has(index))) {
+    const chips = chipCategories(board.target);
     return (
       <div className="sm-detail" aria-live="polite">
-        <span className="cr-h">Chips on hidden tiles</span>
+        <h3 className="sm-panel-title">Semantic categories</h3>
         <ul className="sm-legend">
-          {Object.values(CATEGORIES)
-            .filter((c) => chipCategories(board.target).includes(c.id))
-            .map((c) => (
-              <li key={c.id}>
-                <Chip cat={c.id} />
-              </li>
-            ))}
+          {Object.values(CATEGORIES).map((c) => (
+            <li key={c.id} data-cat={c.id} data-role={c.id === board.target ? "target" : chips.includes(c.id) ? "chip" : "none"}>
+              <i aria-hidden="true">
+                <CatIcon cat={c.id} />
+              </i>
+              {c.label}
+              {c.id === board.target ? <small>target</small> : null}
+            </li>
+          ))}
         </ul>
         <p className="cr-note">
-          A chip is one of the hidden character’s categories, never the target, and only one that some bombs and some safe characters share. A “?”
-          means none of its categories qualifies.
+          A hidden tile is coloured by one of its character’s categories, never the target, and only one that some bombs and some safe characters
+          share. Greyed categories never show this round. A “?” tile has none of them.
         </p>
       </div>
     );
   }
   return (
-    <div className="sm-detail" aria-live="polite">
-      <span className="cr-h">{play.hits.has(index) ? "Bomb" : "Revealed"}</span>
-      <CharacterCard c={board.tiles[index]} target={board.target} />
+    <div aria-live="polite">
+      <ResultCard c={board.tiles[index]} target={board.target} count={play.open.has(index) ? board.counts[index] : null} />
     </div>
   );
 }
+
+/** The intro's point that one character sits in several categories, on three characters from the data. */
+function ManyCategories() {
+  return (
+    <div className="sm-many">
+      <h3>Characters can belong to several categories</h3>
+      <div className="sm-many-cards">
+        {EXAMPLES.map(character).map((c) => (
+          <div key={c.id} className="sm-mini">
+            <span className="sm-portrait" aria-hidden="true">
+              <Face name={c.page ?? c.name} />
+            </span>
+            <b>{c.name}</b>
+            <ul className="sm-catrows">
+              {c.cats.map((cat) => (
+                <li key={cat} data-cat={cat}>
+                  <i aria-hidden="true">
+                    <CatIcon cat={cat} />
+                  </i>
+                  {CATEGORIES[cat].label}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+      <p className="cr-note">
+        Membership in one category does not imply membership in another. Each round counts only its target, so the same character is a bomb in one
+        round and safe in the next.
+      </p>
+    </div>
+  );
+}
+
+/** Three characters with portraits and overlapping categories. */
+const EXAMPLES = ["storm", "strange", "machineman"];
 
 const names = (cs: Character[]) => list(cs.map((c) => c.name));
 

@@ -1,18 +1,25 @@
 /* Semantic Minefield: the Week 7 game at /play/week07/semantic-minefield/.
    Loaded after cold-read.css, whose tokens, scoreboard (.cr-hud), buttons
    (.cr-go, .cr-ghost) and debrief boxes it reuses; these rules add the
-   board, the category chips and the side panel. Sizes come from type.css. */
+   board, the category icons and chips, the result cards and the intro's
+   example cards. Sizes come from type.css; icons are in icons.tsx. */
+
+.sm-icon {
+  display: block;
+  width: 1em;
+  height: 1em;
+}
 
 .sm-table {
   --c-hero: var(--gain);
   --c-villain: var(--loss);
   --c-avenger: var(--access);
-  --c-xmen: var(--r-legendary);
-  --c-mutant: var(--t5);
+  --c-xmen: var(--t5);
+  --c-mutant: #12968a;
   --c-magic: var(--r-rare);
-  --c-tech: #0f8b8d;
-  --c-ai: var(--t7);
-  --c-alien: var(--accent);
+  --c-tech: var(--people);
+  --c-ai: #455a9e;
+  --c-alien: var(--t7);
 }
 
 .sm-lede {
@@ -53,15 +60,13 @@
 .sm-chip i {
   display: inline-grid;
   place-items: center;
-  min-width: 20px;
+  width: 20px;
   height: 20px;
-  padding: 0 3px;
-  border-radius: 999px;
+  border-radius: 50%;
   background: var(--c);
   color: #fff;
   font-size: var(--fs-caption);
   font-style: normal;
-  font-weight: 700;
 }
 
 .sm-chip[data-on="true"] {
@@ -117,24 +122,65 @@
 }
 
 .sm-target {
-  margin-bottom: 12px;
-}
-
-.sm-target p {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 6px 10px;
-  margin: 4px 0 0;
+  gap: 8px 12px;
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  background: var(--deep);
+  color: #fff;
+}
+
+.sm-target > b {
+  flex: 1;
   font-size: var(--fs-strong);
+}
+
+.sm-target-icon {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--c);
+  font-size: var(--fs-h4);
+}
+
+.sm-target-query {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: var(--fs-small);
+}
+
+.sm-rule {
+  margin: 8px 2px 12px;
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+  color: var(--ink-soft);
+}
+
+.sm-flags {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--fs-body);
   font-weight: 700;
   color: var(--ink);
 }
 
-.sm-target small {
-  font-size: var(--fs-small);
-  font-weight: 400;
-  color: var(--ink-soft);
+.sm-flags .sm-icon {
+  color: var(--loss);
+  font-size: var(--fs-h4);
+}
+
+.sm-mode button {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
 }
 
 /* ---------- the board ---------- */
@@ -164,7 +210,6 @@
   cursor: pointer;
 }
 
-.sm-tile:hover[data-state="hidden"],
 .sm-tile:hover[data-state="flag"] {
   background: linear-gradient(160deg, #36598a, #21416a);
 }
@@ -174,27 +219,46 @@
   outline-offset: 1px;
 }
 
-.sm-tile-chip:not([data-cat]) {
-  --c: var(--ink-mute);
+/* A hidden tile takes the colour of its chip category, with the icon
+   large in white; a "?" tile is slate. */
+.sm-tile[data-state="hidden"][data-cat] {
+  background: linear-gradient(160deg, color-mix(in srgb, var(--c) 82%, #fff), var(--c) 55%, color-mix(in srgb, var(--c) 78%, #000));
 }
 
-.sm-tile-chip {
+.sm-tile[data-state="hidden"]:not([data-cat]) {
+  background: linear-gradient(160deg, #6f819b, #4b5d78);
+}
+
+.sm-tile[data-state="hidden"]:hover {
+  filter: brightness(1.1);
+}
+
+.sm-tile-icon {
   display: grid;
   place-items: center;
-  min-width: 26px;
-  height: 26px;
-  padding: 0 4px;
-  border-radius: 999px;
-  background: var(--c);
-  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.25);
   color: #fff;
-  font-size: var(--fs-small);
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-size: var(--fs-numeral);
+  font-weight: 800;
+  line-height: 1;
+  opacity: 0.92;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.25));
+}
+
+.sm-tile-icon .sm-icon {
+  width: 0.62em;
+  height: 0.62em;
 }
 
 .sm-flag {
-  color: var(--people);
-  font-size: var(--fs-h3);
+  color: var(--loss);
+  font-size: var(--fs-numeral);
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.3));
+}
+
+.sm-flag .sm-icon {
+  width: 0.55em;
+  height: 0.55em;
 }
 
 .sm-tile[data-state="open"],
@@ -407,40 +471,159 @@
   background: var(--card);
 }
 
-.sm-legend {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin: 8px 0;
-  padding: 0;
-  list-style: none;
-}
-
-.sm-card {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 8px 12px;
-  margin-top: 6px;
-}
-
-.sm-face-l {
-  position: static;
-  width: 56px;
-  height: 56px;
-  font-size: var(--fs-strong);
-}
-
-.sm-card h3 {
-  margin: 0 0 6px;
+.sm-panel-title {
+  margin: 0 0 10px;
   font-size: var(--fs-h4);
   color: var(--ink);
 }
 
-.sm-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
+/* Category rows: a round icon in the category's colour, then its name. */
+.sm-catrows,
+.sm-legend {
+  display: grid;
+  gap: 6px;
   margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sm-legend {
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 12px;
+  margin-bottom: 10px;
+}
+
+.sm-catrows li,
+.sm-legend li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+  color: var(--ink);
+}
+
+.sm-catrows i,
+.sm-legend i {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--c);
+  color: #fff;
+  font-size: var(--fs-caption);
+}
+
+.sm-legend i {
+  width: 28px;
+  height: 28px;
+  font-size: var(--fs-body);
+}
+
+.sm-catrows li[data-on="true"],
+.sm-legend li[data-role="target"] {
+  font-weight: 700;
+}
+
+.sm-catrows small,
+.sm-legend small {
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--c);
+  color: #fff;
+  font-size: var(--fs-caption);
+  font-weight: 700;
+}
+
+.sm-legend li[data-role="none"] {
+  opacity: 0.4;
+}
+
+/* The result card: a green safe reveal or a red bomb, as in a win-or-lose panel. */
+.sm-result {
+  --tone: var(--gain);
+  --tone-soft: #ddf0e7;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--tone) 45%, transparent);
+  border-radius: var(--radius);
+  background: var(--tone-soft);
+}
+
+.sm-result[data-bomb="true"] {
+  --tone: var(--loss);
+  --tone-soft: #fde3dc;
+}
+
+.sm-result-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding: 10px 14px;
+  font-size: var(--fs-strong);
+  font-weight: 800;
+  color: var(--tone);
+}
+
+.sm-result-head span {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--tone);
+  color: #fff;
+  font-size: var(--fs-small);
+}
+
+.sm-card {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 10px 14px;
+  margin: 0 8px 8px;
+  padding: 12px;
+  border-radius: 10px;
+  background: var(--card);
+}
+
+.sm-portrait {
+  display: grid;
+  place-items: center;
+  width: 96px;
+  height: 112px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: var(--access-soft);
+  color: var(--access);
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  font-weight: 700;
+}
+
+.sm-portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+}
+
+.sm-card h3 {
+  margin: 0 0 2px;
+  font-size: var(--fs-h4);
+  color: var(--ink);
+}
+
+.sm-nearby {
+  margin: 0 0 8px;
+  font-size: var(--fs-small);
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+.sm-card h3 + .sm-catrows {
+  margin-top: 8px;
 }
 
 .sm-why,
@@ -451,18 +634,74 @@
   line-height: var(--lh-body);
 }
 
-.sm-card[data-bomb="true"] .sm-why {
-  color: var(--loss);
-  font-weight: 600;
-}
-
-.sm-card[data-bomb="false"] .sm-why {
-  color: var(--gain);
-  font-weight: 600;
+.sm-why {
+  color: var(--ink);
 }
 
 .sm-blurb {
   color: var(--ink-soft);
+}
+
+/* ---------- intro ---------- */
+
+.sm-many {
+  margin-top: 22px;
+}
+
+.sm-many h3 {
+  margin: 0 0 10px;
+  font-size: var(--fs-h4);
+  color: var(--ink);
+}
+
+.sm-many-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.sm-mini {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--card);
+}
+
+.sm-mini .sm-portrait {
+  width: 100%;
+  height: 120px;
+}
+
+.sm-mini b {
+  font-size: var(--fs-strong);
+  color: var(--ink);
+}
+
+.sm-objective {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 18px;
+  margin: 18px 0 0;
+  padding: 12px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--access-soft);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--ink);
+}
+
+.sm-objective b {
+  font-size: var(--fs-strong);
+}
+
+.sm-objective span {
+  flex: 1 1 320px;
 }
 
 .sm-lesson {
