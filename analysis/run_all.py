@@ -78,6 +78,7 @@ SCRIPTS = {
     "week06_tezguino": "analysis/week06_tezguino.py",
     "week07_two_stripes": "analysis/week07_two_stripes.py",
     "week07_topic_tetris": "analysis/week07_topic_tetris.py",
+    "week07_sentiment_trap": "analysis/week07_sentiment_trap.py",
 }
 WEEK = {name: ("week02" if name == "analyse_week2_models" else
                "week03" if name == "build_world_outline" else

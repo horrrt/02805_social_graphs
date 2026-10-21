@@ -45,6 +45,13 @@ export const GAMES: Game[] = [
     blurb: "Nine Marvel pages fall three times. Group them by their words, their meaning and their links, and watch the groups change.",
   },
   {
+    href: "play/week07/sentiment-trap/",
+    name: "Sentiment Trap",
+    week: 7,
+    topic: topic(7),
+    blurb: "Three sentiment instruments score the same sentence. Spot when a confident score isn't measuring what you care about.",
+  },
+  {
     href: "play/search-detective/",
     name: "Semantic Search Detective",
     week: 7,

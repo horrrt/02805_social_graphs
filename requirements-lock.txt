@@ -84,6 +84,7 @@ scattertext==0.2.2
 flashtext==2.7
 sentence-transformers==6.1.0
 torch==2.14.1
+vaderSentiment==3.3.2
 transformers==5.20.2
 tokenizers==0.23.3
 safetensors==0.8.0
