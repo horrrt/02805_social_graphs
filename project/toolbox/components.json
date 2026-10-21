@@ -2003,6 +2003,19 @@
       ]
     },
     {
+      "name": "Semantic Search Detective",
+      "kind": "game",
+      "what": "Pick the document that best answers a query, see a semantic search rank the four by cosine similarity next to keyword matching, then explore a 2D map that can mislead.",
+      "where": "src/features/search-detective/SearchDetectiveGame.tsx",
+      "seen_at": "/play/search-detective/",
+      "week": 7,
+      "concepts": [
+        "embeddings",
+        "dense-search",
+        "projections"
+      ]
+    },
+    {
       "name": "Watch an example game",
       "kind": "game",
       "what": "A guided tour on a round's start screen that plays an example round by pressing the game's own buttons, then hands over.",

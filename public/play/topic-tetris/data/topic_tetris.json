@@ -2,7 +2,7 @@
  "source": {
   "pages": 303,
   "words": "Week 6's LDA: scikit-learn, 8 topics, random_state 0, names removed",
-  "meaning": "all-MiniLM-L6-v2, 180-word passages averaged per page (4473 passages), k-means with 4 clusters, random_state 0",
+  "meaning": "sentence-transformers/all-MiniLM-L6-v2, 180-word passages averaged per page (4473 passages), k-means with 4 clusters, random_state 0",
   "connections": "Week 5's link communities: consensus of 100 Louvain runs on the weighted link network",
   "topics": 8,
   "passages": 4473

@@ -39,7 +39,6 @@ const EXCLUDED = {
   "analysis/week06_gender.py": `${LIVE} (Wikidata): week06_gender.parquet`,
   "analysis/week06_cold_read_images.py": `${LIVE} (Wikipedia pageimages): week06_cold_read_images.json`,
   "analysis/week06_portraits.py": "downloads portrait images once and skips those on disk; not a derived number",
-  "analysis/week07_page_vectors.py": "needs sentence-transformers (PyTorch), which the course environment does not carry; writes build/week07/ once",
 };
 
 test("every analysis/weekNN_*.py script is in a runner or excluded with a reason", () => {

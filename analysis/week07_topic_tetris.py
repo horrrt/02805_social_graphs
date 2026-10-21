@@ -6,8 +6,8 @@ player to put every page in one of three groups. The pages never change; the rep
 
 - Words: Week 6's LDA (analysis/week06_mix_desk.fit(): 8 topics on word counts, names removed). A page's
   group is its highest-weight topic.
-- Meaning: the brief's document embeddings (analysis/week07_page_vectors.py: all-MiniLM-L6-v2, 180-word
-  passages, mean vector) split by k-means into K_MEANING clusters, seeded. BERTopic clusters the same
+- Meaning: the brief's document embeddings (page_vectors() from analysis/week07_two_stripes.py:
+  all-MiniLM-L6-v2, 180-word passages, mean vector) split by k-means into K_MEANING clusters, seeded. BERTopic clusters the same
   vectors with UMAP and HDBSCAN; k-means is the simpler stand-in, and its four clusters match the four
   topics the brief's BERTopic run found.
 - Connections: Week 5's link communities (public/weeks/week05/data/communities.json, consensus Louvain on
@@ -36,11 +36,9 @@ between two rounds.
 
 Writes public/play/topic-tetris/data/topic_tetris.json.
 
-    python analysis/week07_page_vectors.py   # once, with sentence-transformers; writes build/week07/
-    python analysis/week07_topic_tetris.py   # about 20 seconds (the LDA)
+    python analysis/week07_topic_tetris.py   # about 20 seconds (the LDA), plus 2 minutes the first time the vectors are cached
 """
 
-import hashlib
 import json
 import re
 import sys
@@ -55,7 +53,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 import stamps  # noqa: E402
 import week05_text as t  # noqa: E402
 import week06_mix_desk as lda  # noqa: E402
-from week07_page_vectors import MAX_WORDS, MODEL, OUT as VECTORS, ZIP  # noqa: E402
+from week07_two_stripes import MAX_WORDS, MODEL, page_vectors, passages  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 COMMUNITIES = ROOT / "public/weeks/week05/data/communities.json"
@@ -105,8 +103,7 @@ def first_seen(assign):
 
 def main():
     inputs = stamps.Inputs(__file__)
-    # The page vectors under build/ are checked against the zip's hash below instead.
-    for path in (t.DATA / "week1_nodes.parquet", ZIP, t.DATA / "week4_edges_weighted.parquet", PORTRAITS):
+    for path in (t.DATA / "week1_nodes.parquet", t.DATA / "marvel_pages.zip", t.DATA / "week4_edges_weighted.parquet", PORTRAITS):
         inputs.add(path)
     nodes = t.nodes().set_index("node_id")
     names = nodes.name
@@ -118,10 +115,9 @@ def main():
     w_assign = {p: int(np.argmax(theta[row[p]])) for p in PAGES}
 
     # Meaning: the brief's page vectors, k-means.
-    meta = json.loads(VECTORS.with_suffix(".json").read_text())
-    if meta["ids"] != ids or meta["zip_sha256"] != hashlib.sha256(ZIP.read_bytes()).hexdigest():
-        raise SystemExit("build/week07/page_vectors is stale: rerun analysis/week07_page_vectors.py")
-    V = np.load(VECTORS.with_suffix(".npy")).astype(np.float64)
+    text = t.pages()
+    V = page_vectors([text[i] for i in ids], fresh=False).astype(np.float64)
+    chunks = sum(len(passages(text[i])) for i in ids)
     km = KMeans(K_MEANING, n_init=10, random_state=SEED).fit(V)
     m_assign = {p: int(km.labels_[row[p]]) for p in PAGES}
 
@@ -227,11 +223,11 @@ def main():
         "source": {
             "pages": len(ids),
             "words": f"Week 6's LDA: scikit-learn, {lda.K} topics, random_state {lda.SEED}, names removed",
-            "meaning": f"{MODEL}, {MAX_WORDS}-word passages averaged per page ({meta['passages']} passages), "
+            "meaning": f"{MODEL}, {MAX_WORDS}-word passages averaged per page ({chunks} passages), "
                        f"k-means with {K_MEANING} clusters, random_state {SEED}",
             "connections": "Week 5's link communities: consensus of 100 Louvain runs on the weighted link network",
             "topics": lda.K,
-            "passages": meta["passages"],
+            "passages": chunks,
         },
         "rounds": out_rounds,
         "pages": [out_pages[p] for p in PAGES],
