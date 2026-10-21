@@ -58,7 +58,7 @@ python analysis/week01_packs.py
 python analysis/week02_transit.py
 ```
 
-`python analysis/run_all.py` runs these and the week 3, 5 and 6 scripts (Cold Read's data included)
+`python analysis/run_all.py` runs these and the week 3, 5, 6 and 7 scripts (the games' data included)
 in parallel, each as soon as the files it reads are ready, in about 16 minutes. `python analysis/run_all.py week02` runs one week. It ends by
 listing every committed file under `analysis/` and `public/` that changed, so run it before editing a
 script: an empty list means the committed data still reproduces.
