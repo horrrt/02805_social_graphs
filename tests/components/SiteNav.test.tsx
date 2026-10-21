@@ -69,6 +69,19 @@ test("a week's chevron slides its games down and back up", async () => {
   assert.equal(screen.getByRole("link", { name: "Week 7 · NLP III" }).getAttribute("href"), "../../play/week07/", "the week's name goes to its campaign");
 });
 
+test("unfolding a week folds the week that was open", async () => {
+  const user = userEvent.setup();
+  render(<SiteNav root="../../" />);
+  const six = screen.getByRole("button", { name: "Show Week 6's games" });
+  const seven = screen.getByRole("button", { name: "Show Week 7's games" });
+  await user.click(six);
+  assert.equal(six.getAttribute("aria-expanded"), "true");
+  await user.click(seven);
+  assert.equal(seven.getAttribute("aria-expanded"), "true");
+  assert.equal(six.getAttribute("aria-expanded"), "false", "Week 6 folds when Week 7 unfolds");
+  assert.equal(six.closest("li")!.getAttribute("data-open"), "false");
+});
+
 test("every game page under play/ is in the games list", () => {
   // A game's own page is a play/.../page.tsx route; its rounds, practice and stack pages sit one folder below it.
   const routes = readdirSync("src/app", { recursive: true, encoding: "utf8" })
