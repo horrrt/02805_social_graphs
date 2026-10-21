@@ -1,5 +1,5 @@
 // The bar across the top of every page: the brand on the left, the site nav
-// (Home, Posts, About) on the right, and the page's own controls in two
+// (Home, Posts, Games, About) on the right, and the page's own controls in two
 // places. `children` sit just after the brand (Week 3's and the style guide's
 // style menu); `tools` sit on the right, just before the site nav and set
 // off from it by a divider (Weeks 1 and 2's data link and logbook, Cold

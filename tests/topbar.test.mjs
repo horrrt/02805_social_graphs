@@ -1,5 +1,5 @@
 // Every page opens with the site's top bar (PostTopbar): the brand on the
-// left, the site nav (Home, Posts, About) on the right, and no in-page
+// left, the site nav (Home, Posts, Games, About) on the right, and no in-page
 // section links. It is the page's only header: no second logo or site links
 // under it. Pages are every page.tsx under src/app, read from out/, plus
 // out/404.html, which GitHub Pages serves for any unknown path.
@@ -74,13 +74,14 @@ const links = (html, route) => [...html.matchAll(/<a [^>]*href="([^"]*)"[^>]*>/g
 });
 
 for (const [route, path] of PAGES) {
-  test(`/${route === "404" ? "404.html" : route} has one header: one logo, one link home besides Home, one to the posts`, () => {
+  test(`/${route === "404" ? "404.html" : route} has one header: one logo, one link home besides Home, one to the posts, one to the games`, () => {
     const html = builtPage(path);
     const logos = html.match(/<a [^>]*(class="[^"]*\b(brand|[a-z-]*wordmark)\b[^"]*"|aria-label="[^"]*\bhome")[^>]*>/gi) ?? [];
     assert.equal(logos.length, 1, "one brand or logo link on the page");
     const head = links(chrome(html), route);
     assert.equal(head.filter((href) => href === "").length, 2, "the brand and Home are the header's only links to the site's root");
     assert.equal(head.filter((href) => href === "#weeks").length, 1, "Posts is the header's only link to the list of posts");
+    assert.equal(head.filter((href) => href === "#games").length, 1, "Games is the header's only link to the list of games");
   });
 }
 
