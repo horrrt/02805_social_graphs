@@ -350,10 +350,13 @@ function Grid({ play, phase, selected, onPress, onFlag, onSelect }: {
                 <span className="sm-face" aria-hidden="true">
                   <Face name={c.page ?? c.name} />
                 </span>
+                {/* A zero shows no badge, as in Minesweeper; the portrait fills the tile. */}
                 {open ? (
-                  <b className="sm-n" data-n={n}>
-                    {n || ""}
-                  </b>
+                  n ? (
+                    <b className="sm-n" data-n={n}>
+                      {n}
+                    </b>
+                  ) : null
                 ) : (
                   <b className="sm-n" aria-hidden="true">
                     ☠
