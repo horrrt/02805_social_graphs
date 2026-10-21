@@ -46,8 +46,11 @@ CONCEPTS = [
     ("comparing-groups", "Comparing groups", "text"),
     ("topic-models", "Topic models", "text"),
     ("word-context", "Word context, PMI", "text"),
-    ("embeddings", "Word embeddings", "text"),
+    ("embeddings", "Word and document embeddings", "text"),
+    ("projections", "Corpus maps: PCA, t-SNE, UMAP", "text"),
     ("sentiment", "Sentiment, transformers", "text"),
+    ("entities", "Named entities, entity networks", "text"),
+    ("dense-search", "Dense search, RAG", "text"),
     ("deduction", "Deduction, information gain", "general"),
     ("probability", "Probability, estimation", "general"),
 ]
@@ -58,7 +61,7 @@ WEEKS = [
     (4, "Communities", ["communities", "weak-ties", "robustness", "flows"]),
     (5, "From language to numbers", ["word-frequency", "search-tfidf"]),
     (6, "From counts to meaning", ["search-tfidf", "comparing-groups", "topic-models", "word-context", "embeddings"]),
-    (7, "NLP III: sentiment and context", ["sentiment", "embeddings", "topic-models"]),
+    (7, "From meaning to measurement", ["embeddings", "projections", "topic-models", "sentiment", "entities", "dense-search"]),
     (8, "Networks and language", ["spreading", "communities", "bipartite", "embeddings"]),
 ]
 # Each materials topic file, its week and its concepts.
@@ -79,8 +82,9 @@ TOPICS = {
     "14": (6, ["search-tfidf"]),
     "15": (6, ["comparing-groups", "topic-models"]),
     "16": (6, ["word-context", "embeddings"]),
-    "17": (7, ["sentiment", "embeddings"]),
+    "17": (7, ["sentiment", "embeddings", "topic-models"]),
     "18": (8, ["spreading", "communities", "embeddings"]),
+    "19": (7, ["projections", "entities", "dense-search", "embeddings"]),
 }
 # Suggested concepts for a library example, from words in its title and gallery section.
 EXAMPLE_RULES = [
@@ -92,6 +96,7 @@ EXAMPLE_RULES = [
     ("degree-hubs", r"histogram|distribution|\blog\b|logarithm|density|\bcdf\b|power"),
     ("comparing-groups", r"scatter|bubble|parallel|beeswarm|dot ?plot|slope|diverg"),
     ("embeddings", r"scatter|projection|umap|t-?sne|embedding|point ?cloud|points?\b"),
+    ("projections", r"umap|t-?sne|\bpca\b|dimensionality"),
     ("topic-models", r"treemap|sunburst|stream|stacked|mosaic|icicle"),
     ("word-frequency", r"\bwords?\b|\btext|wordcloud|zipf"),
     ("word-context", r"heat ?map|matrix|adjacency"),

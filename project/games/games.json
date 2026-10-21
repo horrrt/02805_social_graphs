@@ -20,6 +20,9 @@
   "topic-models": "Topic models",
   "word-context": "Word context, PMI",
   "embeddings": "Word embeddings, cosine similarity",
+  "projections": "Corpus maps: PCA, t-SNE, UMAP",
+  "entities": "Named entities, entity networks",
+  "dense-search": "Dense search, RAG",
   "comparing-groups": "Comparing groups",
   "deduction": "Deduction by elimination, information gain",
   "probability": "Probability, estimation"

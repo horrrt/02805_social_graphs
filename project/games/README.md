@@ -54,6 +54,9 @@ jq -r '.lists[] | .label as $l | .games[] | select(.concepts | index("centrality
 | Topic models | `topic-models` | 1 | 0 |
 | Word context, PMI | `word-context` | 6 | 2 |
 | Word embeddings, cosine similarity | `embeddings` | 3 | 1 |
+| Corpus maps: PCA, t-SNE, UMAP | `projections` | 0 | 0 |
+| Named entities, entity networks | `entities` | 0 | 0 |
+| Dense search, RAG | `dense-search` | 0 | 0 |
 | Comparing groups | `comparing-groups` | 4 | 0 |
 | Deduction by elimination, information gain | `deduction` | 89 | 54 |
 | Probability, estimation | `probability` | 83 | 9 |
