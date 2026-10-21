@@ -77,6 +77,7 @@ SCRIPTS = {
     "week06_hot_cold": "analysis/week06_hot_cold.py",
     "week06_tezguino": "analysis/week06_tezguino.py",
     "week07_two_stripes": "analysis/week07_two_stripes.py",
+    "week07_topic_tetris": "analysis/week07_topic_tetris.py",
 }
 WEEK = {name: ("week02" if name == "analyse_week2_models" else
                "week03" if name == "build_world_outline" else
@@ -101,6 +102,7 @@ AFTER = {
     "week05_network": ("week05_communities", "week05_relations"),
     "week06_whose_line": ("week05_communities",),
     "week06_tezguino": ("week06_hot_cold",),
+    "week07_topic_tetris": ("week05_communities",),
 }
 # NLTK data and tiktoken encodings download on first use; keep them in build/.
 CACHES = {"NLTK_DATA": "build/nltk_data", "TIKTOKEN_CACHE_DIR": "build/tiktoken"}

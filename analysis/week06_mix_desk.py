@@ -42,11 +42,11 @@ MIN_WORDS, TOP_RANGE, SECOND = 500, (0.3, 0.92), 0.08
 MIN_PAGES = 40
 
 
-def main():
+def fit():
+    """The brief's LDA on all 303 pages: (ids, vocab, X, theta, beta), rows in ids order. Week 7's Topic
+    Tetris reads the same model through this."""
     text = t.pages()
     ids = sorted(text)
-    names = t.nodes().set_index("node_id").name
-    images = json.loads(IMAGES.read_text())
 
     # The brief's name rule, on its own token pattern.
     seen, capitalized = Counter(), Counter()
@@ -63,6 +63,13 @@ def main():
     lda = LatentDirichletAllocation(n_components=K, random_state=SEED)
     theta = lda.fit_transform(X)
     beta = lda.components_ / lda.components_.sum(axis=1, keepdims=True)
+    return ids, vocab, X, theta, beta
+
+
+def main():
+    ids, vocab, X, theta, beta = fit()
+    names = t.nodes().set_index("node_id").name
+    images = json.loads(IMAGES.read_text())
 
     topics = []
     for k in range(K):
