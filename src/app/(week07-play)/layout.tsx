@@ -9,7 +9,7 @@ import "@/styles/cold-read.css";
 import "@/styles/two-stripes.css";
 import "@/styles/semantic-minefield.css";
 
-// The Week 7 games. Kept out of search (noindex) and linked from nowhere yet.
+// The Week 7 games. Kept out of search (noindex); the Games menu and home page link them.
 export const metadata: Metadata = {
   title: "Week 7 games · Log-Log Legends",
   description: "Games for Week 7 of DTU 02805: document embeddings, corpus maps, sentiment, named entities and search by meaning, on the Marvel pages.",

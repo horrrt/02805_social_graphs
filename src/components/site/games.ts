@@ -51,6 +51,13 @@ export const GAMES: Game[] = [
     topic: topic(7),
     blurb: "Pick the page that best answers a query, then see how search by meaning ranks them, and where a 2D map misleads.",
   },
+  {
+    href: "play/week07/semantic-minefield/",
+    name: "Semantic Minefield",
+    week: 7,
+    topic: topic(7),
+    blurb: "Minesweeper with Marvel characters. Each round's target category decides who is a bomb.",
+  },
 ];
 
 /** "Week 1 · Give Baymax a Voice", the game's line in the site nav's menu. */
