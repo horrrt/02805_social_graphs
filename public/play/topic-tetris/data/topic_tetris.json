@@ -1,0 +1,710 @@
+{
+ "source": {
+  "pages": 303,
+  "words": "Week 6's LDA: scikit-learn, 8 topics, random_state 0, names removed",
+  "meaning": "all-MiniLM-L6-v2, 180-word passages averaged per page (4473 passages), k-means with 4 clusters, random_state 0",
+  "connections": "Week 5's link communities: consensus of 100 Louvain runs on the weighted link network",
+  "topics": 8,
+  "passages": 4473
+ },
+ "rounds": [
+  {
+   "key": "words",
+   "groups": [
+    {
+     "letter": "A",
+     "topic": 3,
+     "words": [
+      "mutant",
+      "mutants",
+      "energy",
+      "relationship",
+      "members",
+      "reality"
+     ]
+    },
+    {
+     "letter": "B",
+     "topic": 5,
+     "words": [
+      "blood",
+      "vampire",
+      "god",
+      "gods",
+      "true",
+      "son"
+     ]
+    },
+    {
+     "letter": "C",
+     "topic": 1,
+     "words": [
+      "voiced",
+      "playable",
+      "best",
+      "issues",
+      "identity",
+      "written"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "meaning",
+   "clusters": 4,
+   "groups": [
+    {
+     "letter": "A",
+     "cluster": 1,
+     "size": 34,
+     "anchors": [
+      "Emma Frost",
+      "Surge (Marvel Comics)",
+      "Jean Grey (X-Men film series)",
+      "Phoenix (Guardians of the Galaxy)"
+     ]
+    },
+    {
+     "letter": "B",
+     "cluster": 4,
+     "size": 119,
+     "anchors": [
+      "Werewolf by Night",
+      "Blade (character)",
+      "Human Torch (android)",
+      "Power Man (Victor Alvarez)"
+     ]
+    },
+    {
+     "letter": "C",
+     "cluster": 3,
+     "size": 112,
+     "anchors": [
+      "Doctor Druid",
+      "Jericho Drumm",
+      "Gladiator (Kallark)",
+      "Korvus"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "connections",
+   "communities": 8,
+   "groups": [
+    {
+     "letter": "A",
+     "community": 2,
+     "size": 40,
+     "hubs": [
+      "Wolverine (character)",
+      "Phoenix (Guardians of the Galaxy)",
+      "Rachel Summers"
+     ]
+    },
+    {
+     "letter": "B",
+     "community": 4,
+     "size": 38,
+     "hubs": [
+      "Scarlet Witch",
+      "Human Torch (android)",
+      "U.S. Agent"
+     ]
+    },
+    {
+     "letter": "C",
+     "community": 6,
+     "size": 34,
+     "hubs": [
+      "Moon Knight",
+      "Ghost Rider",
+      "Blade (character)"
+     ]
+    }
+   ]
+  }
+ ],
+ "pages": [
+  {
+   "id": "Storm_(Marvel_Comics)",
+   "name": "Storm (Marvel Comics)",
+   "about": "Storm is a superhero appearing in American comic books published by Marvel Comics.",
+   "words": {
+    "group": 0,
+    "share": 0.78,
+    "chips": [
+     [
+      "mutants",
+      29,
+      0
+     ],
+     [
+      "relationship",
+      27,
+      0
+     ],
+     [
+      "mutant",
+      22,
+      0
+     ],
+     [
+      "written",
+      17,
+      2
+     ]
+    ]
+   },
+   "meaning": {
+    "group": 0,
+    "near": [
+     [
+      "Emma Frost",
+      0.71,
+      0
+     ],
+     [
+      "Surge (Marvel Comics)",
+      0.68,
+      0
+     ],
+     [
+      "Jean Grey (X-Men film series)",
+      0.65,
+      0
+     ]
+    ]
+   },
+   "connections": {
+    "group": 0,
+    "links": [
+     38,
+     3,
+     3
+    ],
+    "elsewhere": 29,
+    "partners": [
+     "Jean Grey",
+     "Doctor Strange"
+    ]
+   }
+  },
+  {
+   "id": "Morbius",
+   "name": "Morbius",
+   "about": "Morbius (born Michael Morbius, also known as Morbius the Living Vampire) is a character appearing in American comic books published by Marvel Comics.",
+   "words": {
+    "group": 1,
+    "share": 1.0,
+    "chips": [
+     [
+      "vampire",
+      77,
+      1
+     ],
+     [
+      "blood",
+      68,
+      1
+     ],
+     [
+      "true",
+      31,
+      1
+     ],
+     [
+      "identity",
+      10,
+      2
+     ]
+    ]
+   },
+   "meaning": {
+    "group": 1,
+    "near": [
+     [
+      "Werewolf by Night",
+      0.63,
+      1
+     ],
+     [
+      "Blade (character)",
+      0.59,
+      1
+     ],
+     [
+      "Jericho Drumm",
+      0.49,
+      2
+     ]
+    ]
+   },
+   "connections": {
+    "group": 2,
+    "links": [
+     1,
+     1,
+     22
+    ],
+    "elsewhere": 17,
+    "partners": [
+     "Doctor Strange",
+     "Deadpool",
+     "Human Torch"
+    ]
+   }
+  },
+  {
+   "id": "Doctor_Strange",
+   "name": "Doctor Strange",
+   "about": "Dr. Stephen Vincent Strange is a superhero appearing in American comic books published by Marvel Comics.",
+   "words": {
+    "group": 2,
+    "share": 0.89,
+    "chips": [
+     [
+      "voiced",
+      29,
+      2
+     ],
+     [
+      "playable",
+      18,
+      2
+     ],
+     [
+      "issues",
+      10,
+      2
+     ],
+     [
+      "god",
+      4,
+      1
+     ]
+    ]
+   },
+   "meaning": {
+    "group": 2,
+    "near": [
+     [
+      "Doctor Druid",
+      0.82,
+      2
+     ],
+     [
+      "Jericho Drumm",
+      0.68,
+      2
+     ],
+     [
+      "Power Man (Victor Alvarez)",
+      0.45,
+      1
+     ]
+    ]
+   },
+   "connections": {
+    "group": 2,
+    "links": [
+     3,
+     7,
+     46
+    ],
+    "elsewhere": 45,
+    "partners": [
+     "Morbius",
+     "Deadpool",
+     "Human Torch",
+     "Storm (Marvel Comics)"
+    ]
+   }
+  },
+  {
+   "id": "Jean_Grey",
+   "name": "Jean Grey",
+   "about": "Jean Grey is a superhero appearing in American comic books published by Marvel Comics, usually those featuring the X-Men, a group of superheroes of which she is a founding member.",
+   "words": {
+    "group": 0,
+    "share": 0.89,
+    "chips": [
+     [
+      "mutant",
+      23,
+      0
+     ],
+     [
+      "voiced",
+      22,
+      2
+     ],
+     [
+      "mutants",
+      17,
+      0
+     ],
+     [
+      "relationship",
+      17,
+      0
+     ]
+    ]
+   },
+   "meaning": {
+    "group": 0,
+    "near": [
+     [
+      "Jean Grey (X-Men film series)",
+      0.93,
+      0
+     ],
+     [
+      "Phoenix (Guardians of the Galaxy)",
+      0.85,
+      0
+     ],
+     [
+      "Emma Frost",
+      0.78,
+      0
+     ]
+    ]
+   },
+   "connections": {
+    "group": 0,
+    "links": [
+     78,
+     1,
+     0
+    ],
+    "elsewhere": 8,
+    "partners": [
+     "Storm (Marvel Comics)"
+    ]
+   }
+  },
+  {
+   "id": "Human_Torch",
+   "name": "Human Torch",
+   "about": "The Human Torch (Jonathan Lowell Spencer \"Johnny\" Storm) is a superhero appearing in American comic books published by Marvel Comics.",
+   "words": {
+    "group": 2,
+    "share": 0.93,
+    "chips": [
+     [
+      "voiced",
+      25,
+      2
+     ],
+     [
+      "playable",
+      13,
+      2
+     ],
+     [
+      "relationship",
+      13,
+      0
+     ],
+     [
+      "issues",
+      4,
+      2
+     ]
+    ]
+   },
+   "meaning": {
+    "group": 1,
+    "near": [
+     [
+      "Human Torch (android)",
+      0.81,
+      1
+     ],
+     [
+      "Power Man (Victor Alvarez)",
+      0.66,
+      1
+     ],
+     [
+      "Jericho Drumm",
+      0.54,
+      2
+     ]
+    ]
+   },
+   "connections": {
+    "group": 1,
+    "links": [
+     3,
+     11,
+     2
+    ],
+    "elsewhere": 14,
+    "partners": [
+     "Quicksilver (Marvel Comics)",
+     "Doctor Strange",
+     "Morbius"
+    ]
+   }
+  },
+  {
+   "id": "Vulcan_(Marvel_Comics)",
+   "name": "Vulcan (Marvel Comics)",
+   "about": "Vulcan (Gabriel Summers) is a fictional character appearing in American comic books published by Marvel Comics.",
+   "words": {
+    "group": 0,
+    "share": 0.96,
+    "chips": [
+     [
+      "energy",
+      17,
+      0
+     ],
+     [
+      "mutant",
+      4,
+      0
+     ],
+     [
+      "written",
+      3,
+      2
+     ],
+     [
+      "reality",
+      2,
+      0
+     ]
+    ]
+   },
+   "meaning": {
+    "group": 2,
+    "near": [
+     [
+      "Gladiator (Kallark)",
+      0.55,
+      2
+     ],
+     [
+      "Korvus",
+      0.54,
+      2
+     ],
+     [
+      "Phoenix (Guardians of the Galaxy)",
+      0.46,
+      0
+     ]
+    ]
+   },
+   "connections": {
+    "group": 0,
+    "links": [
+     18,
+     2,
+     0
+    ],
+    "elsewhere": 2,
+    "partners": []
+   }
+  },
+  {
+   "id": "Deadpool",
+   "name": "Deadpool",
+   "about": "Deadpool is a character appearing in American comic books published by Marvel Comics.",
+   "words": {
+    "group": 2,
+    "share": 0.6,
+    "chips": [
+     [
+      "written",
+      25,
+      2
+     ],
+     [
+      "issues",
+      11,
+      2
+     ],
+     [
+      "mutants",
+      9,
+      0
+     ],
+     [
+      "identity",
+      6,
+      2
+     ]
+    ]
+   },
+   "meaning": {
+    "group": 1,
+    "near": [
+     [
+      "Blade (character)",
+      0.51,
+      1
+     ],
+     [
+      "Power Man (Victor Alvarez)",
+      0.51,
+      1
+     ],
+     [
+      "Emma Frost",
+      0.49,
+      0
+     ]
+    ]
+   },
+   "connections": {
+    "group": 2,
+    "links": [
+     16,
+     4,
+     47
+    ],
+    "elsewhere": 25,
+    "partners": [
+     "Doctor Strange",
+     "Morbius"
+    ]
+   }
+  },
+  {
+   "id": "Quicksilver_(Marvel_Comics)",
+   "name": "Quicksilver (Marvel Comics)",
+   "about": "Quicksilver is a character appearing in American comic books published by Marvel Comics.",
+   "words": {
+    "group": 0,
+    "share": 0.9,
+    "chips": [
+     [
+      "mutants",
+      27,
+      0
+     ],
+     [
+      "voiced",
+      10,
+      2
+     ],
+     [
+      "son",
+      8,
+      1
+     ],
+     [
+      "mutant",
+      7,
+      0
+     ]
+    ]
+   },
+   "meaning": {
+    "group": 0,
+    "near": [
+     [
+      "Surge (Marvel Comics)",
+      0.58,
+      0
+     ],
+     [
+      "Emma Frost",
+      0.56,
+      0
+     ],
+     [
+      "Power Man (Victor Alvarez)",
+      0.55,
+      1
+     ]
+    ]
+   },
+   "connections": {
+    "group": 1,
+    "links": [
+     3,
+     21,
+     0
+    ],
+    "elsewhere": 5,
+    "partners": [
+     "Human Torch"
+    ]
+   }
+  },
+  {
+   "id": "Union_Jack_(Marvel_Comics)",
+   "name": "Union Jack (Marvel Comics)",
+   "about": "Union Jack is the name of three superheroes appearing in American comic books published by Marvel Comics.",
+   "words": {
+    "group": 1,
+    "share": 0.47,
+    "chips": [
+     [
+      "blood",
+      13,
+      1
+     ],
+     [
+      "son",
+      8,
+      1
+     ],
+     [
+      "written",
+      5,
+      2
+     ],
+     [
+      "identity",
+      4,
+      2
+     ]
+    ]
+   },
+   "meaning": {
+    "group": 1,
+    "near": [
+     [
+      "Werewolf by Night",
+      0.53,
+      1
+     ],
+     [
+      "Human Torch (android)",
+      0.47,
+      1
+     ],
+     [
+      "Power Man (Victor Alvarez)",
+      0.42,
+      1
+     ]
+    ]
+   },
+   "connections": {
+    "group": 1,
+    "links": [
+     1,
+     23,
+     0
+    ],
+    "elsewhere": 2,
+    "partners": []
+   }
+  }
+ ],
+ "inputs": {
+  "data/marvel_pages.zip": "36023ca077053b3df5bd55630754cb514c3f9dbecbd70afcb2283e5bcc0017ee",
+  "data/week1_nodes.parquet": "5f48a86f3e63ec70c33a5b9972b040e5943a8060dc805aa1ad2d1b1d1d965586",
+  "data/week4_edges_weighted.parquet": "280536bb7b27a27855e41df1a7f710253c0f213573c118c7b2b4f07febabe1eb",
+  "public/weeks/week05/data/communities.json": "586f4044825823c7ddf73d0100f454431bf424436a041f361fde2c5262c141de",
+  "src/kit/portraits.generated.ts": "becf912209db8c053328c4a70017f19459b030d9faf18dde702e102e61805229"
+ },
+ "rerun": "python analysis/week07_topic_tetris.py"
+}
