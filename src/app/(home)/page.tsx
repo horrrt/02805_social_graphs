@@ -1,4 +1,4 @@
-import { GAMES } from "@/components/site/games";
+import { GAME_WEEKS } from "@/components/site/games";
 import { PostTopbar } from "@/components/site/PostTopbar";
 import { SiteFooter } from "@/components/site/SiteFooter";
 
@@ -153,13 +153,13 @@ export default function Page() {
             </div>
             <div className="home-half">
               <ol className="week-grid">
-                {GAMES.map((game) => (
-                  <li key={game.href}>
-                    <a className="week-card" href={game.href}>
-                      <span className="week-tag">{`Week ${game.week} · ${game.topic}`}</span>
-                      <h3>{game.name}</h3>
-                      <p className="week-q">{game.blurb}</p>
-                      <span className="week-go">Play →</span>
+                {GAME_WEEKS.map(({ week, label, href, games }) => (
+                  <li key={week}>
+                    <a className="week-card" href={href ?? games[0].href}>
+                      <span className="week-tag">{label}</span>
+                      <h3>{games.length === 1 ? games[0].name : `${games.length} games`}</h3>
+                      <p className="week-q">{games.length === 1 ? games[0].blurb : games.map((g) => g.name).join(" · ")}</p>
+                      <span className="week-go">{games.length === 1 ? "Play →" : "Play them all →"}</span>
                     </a>
                   </li>
                 ))}

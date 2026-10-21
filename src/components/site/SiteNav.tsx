@@ -3,7 +3,7 @@
 // goes to the home page's list of posts and its menu lists every post
 // (posts.ts); Games goes to the home page's games and its menu lists every
 // game (games.ts) by week: each week's line links to its campaign and a
-// chevron slides its games down under it. Without JavaScript a menu opens on hover and on focus
+// chevron slides its games down under it, folding any other week's away. Without JavaScript a menu opens on hover and on focus
 // inside it (CSS on .site-nav-drop without data-open). Once hydrated the
 // island owns each menu: pointer and focus entering open it, the chevron
 // toggles it, and Escape or a click outside closes it, Escape returning focus
@@ -55,12 +55,14 @@ const Chevron = () => (
 );
 
 // A week in the Games menu: its line and, under a chevron, its games. Without
-// `live` (the server markup) the games show; once hydrated they start folded.
-function Week({ week, root, current, live }: { week: GameWeek; root: string; current?: string; live: boolean }) {
-  const [unfolded, setUnfolded] = useState(false);
+// `live` (the server markup) the games show; once hydrated they start folded,
+// and the menu keeps at most one week unfolded.
+type WeekProps = { week: GameWeek; root: string; current?: string; live: boolean; unfolded: boolean; onFlip: () => void };
+
+function Week({ week, root, current, live, unfolded, onFlip }: WeekProps) {
   const open = live ? unfolded : true;
   const id = `site-nav-games-${week.week}`;
-  const flip = () => setUnfolded(!unfolded);
+  const flip = onFlip;
   return (
     <li className="site-nav-week" data-open={live ? String(open) : undefined}>
       <div className="site-nav-week-line">
@@ -99,6 +101,8 @@ const isWeek = (entry: Post | GameWeek): entry is GameWeek => "games" in entry;
 // A link with a chevron and its menu; without `live` it is the server markup.
 function Drop({ root, current, id, href, label, toggleLabel, entries, live }: DropProps) {
   const open = live ? live.menu !== "closed" : false;
+  // The one week whose games show; unfolding another folds it.
+  const [unfolded, setUnfolded] = useState<number | null>(null);
   // Focus moving in from outside opens the menu and moving out closes it;
   // moves inside it (Escape sending focus back to the chevron) change nothing.
   const inside = (event: FocusEvent) => live?.drop.current?.contains(event.relatedTarget as Node | null) ?? false;
@@ -142,7 +146,15 @@ function Drop({ root, current, id, href, label, toggleLabel, entries, live }: Dr
       <ul className="site-nav-menu" id={id}>
         {entries.map((entry) =>
           isWeek(entry) ? (
-            <Week key={entry.week} week={entry} root={root} current={current} live={Boolean(live)} />
+            <Week
+              key={entry.week}
+              week={entry}
+              root={root}
+              current={current}
+              live={Boolean(live)}
+              unfolded={unfolded === entry.week}
+              onFlip={() => setUnfolded(unfolded === entry.week ? null : entry.week)}
+            />
           ) : (
             <Entry key={entry.href} post={entry} root={root} current={current} />
           ),
