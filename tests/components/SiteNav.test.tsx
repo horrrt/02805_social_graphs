@@ -9,6 +9,7 @@ import userEvent from "@testing-library/user-event";
 import { SiteNav } from "@/components/site/SiteNav";
 import { GAMES } from "@/components/site/games";
 import { POSTS } from "@/components/site/posts";
+import { readdirSync } from "node:fs";
 
 const chevron = () => screen.getByRole("button", { name: "Show all posts" });
 const isOpen = () => chevron().getAttribute("aria-expanded") === "true";
@@ -40,15 +41,26 @@ test("the menu lists every post and marks this page current, and not the alterna
 test("the Games menu lists every game with its week, and marks none current", () => {
   render(<SiteNav root="../../" current="weeks/week06/" />);
   const menu = within(document.getElementById("site-nav-games-menu")!);
-  const labels = ["Week 1 · Give Baymax a Voice", "Week 2 · Screen Test", "Week 6 · Cold Read", "Week 7 · Two Stripes", "Week 7 · Topic Tetris", "Week 7 · Semantic Search Detective"];
+  const labels = ["Week 1 · Give Baymax a Voice", "Week 2 · Screen Test", "Week 6 · Cold Read", "Week 7 · Two Stripes", "Week 7 · Topic Tetris", "Week 7 · Semantic Search Detective", "Week 7 · Semantic Minefield"];
   assert.deepEqual(menu.getAllByRole("link").map((a) => a.textContent), labels);
-  const hrefs = ["play/", "prototypes/screen-test/", "play/cold-read/", "play/week07/two-stripes/", "play/topic-tetris/", "play/search-detective/"];
+  const hrefs = ["play/", "prototypes/screen-test/", "play/cold-read/", "play/week07/two-stripes/", "play/topic-tetris/", "play/search-detective/", "play/week07/semantic-minefield/"];
   assert.deepEqual(GAMES.map((g) => g.href), hrefs);
   for (const [i, label] of labels.entries()) {
     const link = menu.getByRole("link", { name: label });
     assert.equal(link.getAttribute("href"), `../../${hrefs[i]}`);
     assert.equal(link.getAttribute("aria-current"), null);
   }
+});
+
+test("every game page under play/ is in the games list", () => {
+  // A game's own page is a play/.../page.tsx route; its rounds, practice and stack pages sit one folder below it.
+  const routes = readdirSync("src/app", { recursive: true, encoding: "utf8" })
+    .filter((f) => f.endsWith("page.tsx"))
+    .map((f) => f.split("/").filter((part) => !part.startsWith("(")).slice(0, -1).join("/") + "/")
+    .filter((r) => r.startsWith("play/"));
+  const games = new Set(GAMES.map((g) => g.href));
+  const tops = routes.filter((r) => !routes.some((o) => o !== r && o !== "play/" && r.startsWith(o)));
+  assert.deepEqual(tops.filter((r) => !games.has(r)), []);
 });
 
 test("on the home page Home is current", () => {
