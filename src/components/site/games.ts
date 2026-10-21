@@ -31,6 +31,13 @@ export const GAMES: Game[] = [
     blurb: "A Marvel page is hidden. Flip word cards that show how often each word appears, and name the page against the clock.",
   },
   {
+    href: "play/week07/same-word/",
+    name: "Same Word, Different Worlds",
+    week: 7,
+    topic: topic(7),
+    blurb: "One word in two sentences. Does its vector change? It depends on whether the model looks the word up or reads the sentence.",
+  },
+  {
     href: "play/week07/two-stripes/",
     name: "Two Stripes",
     week: 7,
@@ -57,6 +64,13 @@ export const GAMES: Game[] = [
     week: 7,
     topic: topic(7),
     blurb: "Pick the page that best answers a query, then see how search by meaning ranks them, and where a 2D map misleads.",
+  },
+  {
+    href: "play/week07/semantic-minefield/",
+    name: "Semantic Minefield",
+    week: 7,
+    topic: topic(7),
+    blurb: "Minesweeper with Marvel characters. Each round's target category decides who is a bomb.",
   },
 ];
 

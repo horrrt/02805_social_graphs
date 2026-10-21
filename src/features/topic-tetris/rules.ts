@@ -137,9 +137,16 @@ export const movers = (data: TopicTetrisData, round: number) =>
   round === 0 ? [] : data.pages.filter((p) => letter(data, round - 1, answer(p, round - 1)) !== letter(data, round, answer(p, round)));
 
 /** Each round's tally: right, fast and wrong placements, and the points they make with the round bonus. */
-export type Tally = { right: number; fast: number; wrong: number };
+export type Tally = { right: number; fast: number; wrong: number; lost: number };
 
-export const tallyPoints = (t: Tally) => t.right * POINTS.right + t.fast * POINTS.fast + t.wrong * POINTS.wrong + POINTS.round;
+export const EMPTY_TALLY: Tally = { right: 0, fast: 0, wrong: 0, lost: 0 };
+
+/**
+ * The round's points. A wrong call takes off 25, but the score never goes
+ * below zero, so `lost` holds what the wrong calls actually took off and the
+ * breakdown adds up to the score.
+ */
+export const tallyPoints = (t: Tally) => t.right * POINTS.right + t.fast * POINTS.fast - t.lost + POINTS.round;
 
 /** The final check: what changed between the rounds. */
 export const QUIZ = {

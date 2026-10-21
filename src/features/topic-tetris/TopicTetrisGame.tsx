@@ -14,7 +14,7 @@ import { reducedMotion, useFlip } from "./flip";
 import { useRound, useWires } from "./useRound";
 import {
   POINTS, QUIZ, ROUND, ROUND_KEYS, type RoundKey, type Tally, type TetrisPage, type TopicTetrisData,
-  answer, label, letter, linksFrom, movers, short, tallyPoints,
+  answer, label, letter, linksFrom, movers, short, tallyPoints, EMPTY_TALLY,
 } from "./rules";
 
 type Stage =
@@ -26,7 +26,6 @@ type Stage =
   | { kind: "quiz" }
   | { kind: "end" };
 
-const EMPTY: Tally = { right: 0, fast: 0, wrong: 0 };
 const identity = (p: number) => p;
 
 /** A page's face in Cold Read's round frame. */
@@ -405,7 +404,7 @@ function RoundDone({ data, round, tally, onNext }: { data: TopicTetrisData; roun
           <dt>Fast</dt>
           <dd>+{tally.fast * POINTS.fast}</dd>
           <dt>Not quite ({tally.wrong})</dt>
-          <dd>{tally.wrong * POINTS.wrong}</dd>
+          <dd>{-tally.lost}</dd>
           <dt>Round bonus</dt>
           <dd>+{POINTS.round}</dd>
         </dl>
@@ -638,15 +637,26 @@ export function Real({ data }: { data: TopicTetrisData }) {
 
 export function TopicTetrisGame({ data, clock = Date.now, home = "../../" }: { data: TopicTetrisData; clock?: () => number; home?: string }) {
   const [stage, setStage] = useState<Stage>({ kind: "intro" });
-  const [tallies, setTallies] = useState<Tally[]>([EMPTY, EMPTY, EMPTY]);
-  const [score, setScore] = useState(0);
+  const [tallies, setTallies] = useState<Tally[]>([EMPTY_TALLY, EMPTY_TALLY, EMPTY_TALLY]);
+  const [score, setScoreState] = useState(0);
+  // The score as of the last event, so a wrong call knows how much the floor at zero lets it take off.
+  const scoreRef = useRef(0);
+  const setScore = (n: number) => {
+    scoreRef.current = n;
+    setScoreState(n);
+  };
   const round = stage.kind === "play" || stage.kind === "done" || stage.kind === "shift" ? stage.round : 0;
 
   const onPoints = useCallback(
     (points: number, right: boolean, fast: boolean) => {
-      setScore((s) => Math.max(0, s + points));
+      const before = scoreRef.current;
+      const after = Math.max(0, before + points);
+      scoreRef.current = after;
+      setScoreState(after);
       setTallies((all) =>
-        all.map((t, r) => (r === round ? { right: t.right + Number(right), fast: t.fast + Number(fast), wrong: t.wrong + Number(!right) } : t)),
+        all.map((t, r) =>
+          r === round ? { right: t.right + Number(right), fast: t.fast + Number(fast), wrong: t.wrong + Number(!right), lost: t.lost + Math.max(0, before - after) } : t,
+        ),
       );
     },
     [round],
@@ -654,7 +664,7 @@ export function TopicTetrisGame({ data, clock = Date.now, home = "../../" }: { d
 
   /** A round starts with an empty tally, so a round played again never counts twice. */
   const play = (r: number) => {
-    setTallies((all) => all.map((t, i) => (i === r ? EMPTY : t)));
+    setTallies((all) => all.map((t, i) => (i === r ? EMPTY_TALLY : t)));
     setStage({ kind: "play", round: r });
   };
 
@@ -696,7 +706,7 @@ export function TopicTetrisGame({ data, clock = Date.now, home = "../../" }: { d
         total={score}
         onPoints={onPoints}
         onDone={() => {
-          setScore((s) => s + POINTS.round);
+          setScore(scoreRef.current + POINTS.round);
           setStage({ kind: "done", round: stage.round });
         }}
       />
