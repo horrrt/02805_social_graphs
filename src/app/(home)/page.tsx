@@ -1,3 +1,4 @@
+import { GAMES } from "@/components/site/games";
 import { PostTopbar } from "@/components/site/PostTopbar";
 import { SiteFooter } from "@/components/site/SiteFooter";
 
@@ -27,6 +28,7 @@ export default function Page() {
               </p>
               <div className="home-hero-actions">
                 <a className="home-button" href="weeks/week06/">Read the latest post →</a>
+                <a className="home-link" href="#games">Or play one of our games ↓</a>
               </div>
             </div>
             <aside aria-label="The course so far" className="home-progress">
@@ -141,6 +143,26 @@ export default function Page() {
                     <span className="week-go">Read the post →</span>
                   </a>
                 </li>
+              </ol>
+            </div>
+          </section>
+          <section aria-labelledby="games-title" className="home-section" id="games">
+            <div className="home-section-head">
+              <h2 id="games-title">Games</h2>
+              <p>Each one turns a week’s method into something you play.</p>
+            </div>
+            <div className="home-half">
+              <ol className="week-grid">
+                {GAMES.map((game) => (
+                  <li key={game.href}>
+                    <a className="week-card" href={game.href}>
+                      <span className="week-tag">{`Week ${game.week} · ${game.topic}`}</span>
+                      <h3>{game.name}</h3>
+                      <p className="week-q">{game.blurb}</p>
+                      <span className="week-go">Play →</span>
+                    </a>
+                  </li>
+                ))}
               </ol>
             </div>
           </section>

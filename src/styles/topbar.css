@@ -153,7 +153,7 @@
   outline-offset: 2px;
 }
 
-/* Home, Posts and About. Posts holds a menu of every post, shown on hover and
+/* Home, Posts, Games and About. Posts and Games each hold a menu, shown on hover and
    on focus inside it until the island hydrates and sets data-open, which
    decides from then on. */
 .topbar .site-nav {
@@ -174,27 +174,27 @@
 }
 
 .topbar .site-nav > a,
-.topbar .site-nav-posts > a {
+.topbar .site-nav-drop > a {
   padding: 7px 13px;
 }
 
-.topbar .site-nav-posts > a {
+.topbar .site-nav-drop > a {
   padding-right: 4px;
 }
 
-/* Posts and its chevron are one control: the pill lights up as a whole. */
+/* Posts or Games and its chevron are one control: the pill lights up as a whole. */
 .topbar .site-nav > a:hover,
-.topbar .site-nav-posts:hover,
-.topbar .site-nav-posts:not([data-open]):focus-within,
-.topbar .site-nav-posts[data-open="true"] {
+.topbar .site-nav-drop:hover,
+.topbar .site-nav-drop:not([data-open]):focus-within,
+.topbar .site-nav-drop[data-open="true"] {
   background: var(--bar-hover);
 }
 
 .topbar .site-nav > a:hover,
-.topbar .site-nav-posts:hover > a,
-.topbar .site-nav-posts:hover > .site-nav-toggle,
-.topbar .site-nav-posts[data-open="true"] > a,
-.topbar .site-nav-posts[data-open="true"] > .site-nav-toggle {
+.topbar .site-nav-drop:hover > a,
+.topbar .site-nav-drop:hover > .site-nav-toggle,
+.topbar .site-nav-drop[data-open="true"] > a,
+.topbar .site-nav-drop[data-open="true"] > .site-nav-toggle {
   color: var(--bar-text);
 }
 
@@ -209,7 +209,7 @@
   outline-offset: 2px;
 }
 
-.topbar .site-nav-posts {
+.topbar .site-nav-drop {
   align-items: center;
   border-radius: 999px;
   display: flex;
@@ -236,11 +236,11 @@
   width: 10px;
 }
 
-.topbar .site-nav-posts[data-open="true"] .site-nav-toggle svg {
+.topbar .site-nav-drop[data-open="true"] .site-nav-toggle svg {
   transform: rotate(180deg);
 }
 
-/* The nav sits at the right edge, so the menu opens leftwards from Posts. */
+/* The nav sits at the right edge, so each menu opens leftwards from its link. */
 .topbar .site-nav-menu {
   background: var(--bar-menu);
   border: 1px solid var(--bar-line);
@@ -267,9 +267,9 @@
   top: -10px;
 }
 
-.topbar .site-nav-posts:not([data-open]):hover > .site-nav-menu,
-.topbar .site-nav-posts:not([data-open]):focus-within > .site-nav-menu,
-.topbar .site-nav-posts[data-open="true"] > .site-nav-menu {
+.topbar .site-nav-drop:not([data-open]):hover > .site-nav-menu,
+.topbar .site-nav-drop:not([data-open]):focus-within > .site-nav-menu,
+.topbar .site-nav-drop[data-open="true"] > .site-nav-menu {
   display: block;
 }
 

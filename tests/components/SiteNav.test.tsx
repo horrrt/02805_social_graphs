@@ -1,5 +1,5 @@
-// The site nav in every top bar: Home, Posts and About, with a menu of every
-// post under Posts. jsdom applies no stylesheet, so the menu's state is read
+// The site nav in every top bar: Home, Posts, Games and About, with a menu of
+// every post under Posts and of every game under Games. jsdom applies no stylesheet, so the menu's state is read
 // from data-open and the chevron's aria-expanded, which the CSS follows.
 import "./dom";
 import test from "node:test";
@@ -7,19 +7,22 @@ import assert from "node:assert/strict";
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { SiteNav } from "@/components/site/SiteNav";
+import { GAMES } from "@/components/site/games";
 import { POSTS } from "@/components/site/posts";
 
 const chevron = () => screen.getByRole("button", { name: "Show all posts" });
 const isOpen = () => chevron().getAttribute("aria-expanded") === "true";
 const posts = () => chevron().parentElement!;
 
-test("Home, Posts and About link to the root, its post list and its about section", () => {
+test("Home, Posts, Games and About link to the root, its post list, its games and its about section", () => {
   render(<SiteNav root="../../" current="weeks/week05/" />);
   const nav = screen.getByRole("navigation", { name: "Site" });
   assert.equal(within(nav).getByRole("link", { name: "Home" }).getAttribute("href"), "../../");
   assert.equal(within(nav).getByRole("link", { name: "Posts" }).getAttribute("href"), "../../#weeks");
+  assert.equal(within(nav).getByRole("link", { name: "Games" }).getAttribute("href"), "../../#games");
   assert.equal(within(nav).getByRole("link", { name: "About" }).getAttribute("href"), "../../#about");
   assert.equal(chevron().getAttribute("aria-controls"), "site-nav-menu");
+  assert.equal(screen.getByRole("button", { name: "Show all games" }).getAttribute("aria-controls"), "site-nav-games-menu");
   assert.ok(document.getElementById("site-nav-menu"), "the chevron controls a menu that exists");
 });
 
@@ -32,6 +35,20 @@ test("the menu lists every post and marks this page current, and not the alterna
   assert.equal(menu.queryByRole("link", { name: /alternative/i }), null, "the alternative post is not in the menu");
   const current = screen.getAllByRole("link").filter((a) => a.getAttribute("aria-current") === "page");
   assert.deepEqual(current, [menu.getByRole("link", { name: labels[5] })]);
+});
+
+test("the Games menu lists every game with its week, and marks none current", () => {
+  render(<SiteNav root="../../" current="weeks/week06/" />);
+  const menu = within(document.getElementById("site-nav-games-menu")!);
+  const labels = ["Week 1 · Give Baymax a Voice", "Week 2 · Screen Test", "Week 6 · Cold Read"];
+  assert.deepEqual(menu.getAllByRole("link").map((a) => a.textContent), labels);
+  const hrefs = ["play/", "prototypes/screen-test/", "play/cold-read/"];
+  assert.deepEqual(GAMES.map((g) => g.href), hrefs);
+  for (const [i, label] of labels.entries()) {
+    const link = menu.getByRole("link", { name: label });
+    assert.equal(link.getAttribute("href"), `../../${hrefs[i]}`);
+    assert.equal(link.getAttribute("aria-current"), null);
+  }
 });
 
 test("on the home page Home is current", () => {
@@ -98,11 +115,17 @@ test("from the keyboard: focus opens it, Tab reaches every post, Escape closes i
   await user.keyboard("{Enter}");
   assert.equal(isOpen(), false, "and Enter again closes it");
   await user.keyboard("{Enter}");
-  // Every entry in the menu, its parts included, then one more tab reaches About.
+  // Every entry in the menu, its parts included, then one more tab reaches Games.
   const entries = POSTS.flatMap((p) => [p, ...(p.parts ?? [])]).length;
   for (let i = 0; i < entries + 1; i++) await user.tab();
-  assert.equal(document.activeElement?.textContent, "About");
+  assert.equal(document.activeElement?.textContent, "Games");
   assert.equal(isOpen(), false, "tabbing out of the menu closes it");
+  const games = screen.getByRole("button", { name: "Show all games" });
+  assert.equal(games.getAttribute("aria-expanded"), "true", "focus on Games opens its menu");
+  // Its chevron and every game, then one more tab reaches About.
+  for (let i = 0; i < GAMES.length + 2; i++) await user.tab();
+  assert.equal(document.activeElement?.textContent, "About");
+  assert.equal(games.getAttribute("aria-expanded"), "false", "tabbing out of the Games menu closes it");
 });
 
 test("Escape while the menu is closed leaves focus where it is", async () => {
