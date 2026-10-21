@@ -12,7 +12,7 @@ import { Clue, Real } from "./TopicTetrisGame";
 import { useRound, useWires } from "./useRound";
 import {
   POINTS, QUIZ, ROUND, ROUND_KEYS, type Tally, type TetrisPage, type TopicTetrisData,
-  answer, label, letter, linksFrom, movers, short, tallyPoints,
+  answer, label, letter, linksFrom, movers, short, tallyPoints, EMPTY_TALLY,
 } from "./rules";
 
 type Stage =
@@ -23,7 +23,6 @@ type Stage =
   | { kind: "maps" }
   | { kind: "end" };
 
-const EMPTY: Tally = { right: 0, fast: 0, wrong: 0 };
 /** Cells across, cells per group, and rows. */
 export const COLS = 9;
 const LANE = 3;
@@ -37,9 +36,16 @@ const scatter = (i: number): CSSProperties => ({
   rotate: `${((i * 7) % 24) - 12}deg`,
 });
 
+/** The intro's falling cascade: [left %, top %, tilt in degrees] per tile, then faint empty cells. */
+const CASCADE: [number, number, number][] = [
+  [30, 0, -8], [52, 6, 10], [12, 26, -4], [40, 28, 6], [64, 22, -10],
+  [22, 54, 8], [50, 52, -6], [74, 46, 4], [36, 76, -10],
+];
+const GHOSTS: [number, number][] = [[6, 4], [82, 8], [4, 70], [86, 74], [62, 82], [18, 88]];
+
 /** A page as a square tile: its portrait on its group's colour (or plain, with no group). */
 function Cell({ page, group, size, missed, hot, still }: {
-  page: TetrisPage | string; group?: number; size?: "s" | "m"; missed?: string; hot?: boolean; still?: boolean;
+  page: TetrisPage | string; group?: number; size?: "s" | "m" | "l"; missed?: string; hot?: boolean; still?: boolean;
 }) {
   const name = typeof page === "string" ? page : page.name;
   return (
@@ -87,9 +93,12 @@ function Intro({ data, onStart }: { data: TopicTetrisData; onStart: () => void }
         <p className="ts-note">A simplified model of three ways to group the same corpus.</p>
       </div>
       <div className="ts-intro-art" aria-hidden="true">
-        {data.pages.map((p, i) => (
-          <span key={p.id} style={{ ...scatter(i), animationDelay: `${i * 80}ms` }}>
-            <Cell page={p} group={answer(p, i % 3)} size="m" />
+        {GHOSTS.map(([x, y]) => (
+          <i key={`${x}-${y}`} style={{ left: `${x}%`, top: `${y}%` }} />
+        ))}
+        {data.pages.slice(0, CASCADE.length).map((p, i) => (
+          <span key={p.id} style={{ left: `${CASCADE[i][0]}%`, top: `${CASCADE[i][1]}%`, rotate: `${CASCADE[i][2]}deg`, animationDelay: `${i * 80}ms` }}>
+            <Cell page={p} group={answer(p, i % 3)} size="l" />
           </span>
         ))}
       </div>
@@ -350,7 +359,11 @@ function RoundDone({ data, round, tally, score, onNext }: { data: TopicTetrisDat
       <div className="ts-dark-body">
         <div className="ts-dark-copy">
           <h2 id="ts-done-title">
-            <span className="ts-check" aria-hidden="true">✓</span> Round {round + 1} complete!
+            <span className="ts-check" aria-hidden="true">
+              <svg viewBox="0 0 16 16">
+                <path d="M3.5 8.5l3 3 6-7" />
+              </svg>
+            </span> Round {round + 1} complete!
           </h2>
           <p className="ts-lead">{r.done}</p>
           <p>{r.lesson}</p>
@@ -372,7 +385,7 @@ function RoundDone({ data, round, tally, score, onNext }: { data: TopicTetrisDat
             {tally.wrong ? (
               <>
                 <dt>Not quite</dt>
-                <dd>{tally.wrong * POINTS.wrong}</dd>
+                <dd>{-tally.lost}</dd>
               </>
             ) : null}
             <dt>Round bonus</dt>
@@ -429,9 +442,9 @@ function Shift({ data, round, onGo }: { data: TopicTetrisData; round: number; on
               {loose ? data.pages.map((p, i) => <span key={p.id} style={scatter(i)}><Cell page={p} size="s" /></span>) : null}
             </div>
             <figcaption>
-              Same documents.
+              Same documents,
               <br />
-              New grouping.
+              not yet regrouped.
             </figcaption>
           </figure>
         </div>
@@ -594,21 +607,32 @@ function End({ data, score, tallies, home, onAgain }: { data: TopicTetrisData; s
 
 export function StackGame({ data, clock = Date.now, home = "../../../" }: { data: TopicTetrisData; clock?: () => number; home?: string }) {
   const [stage, setStage] = useState<Stage>({ kind: "intro" });
-  const [tallies, setTallies] = useState<Tally[]>([EMPTY, EMPTY, EMPTY]);
-  const [score, setScore] = useState(0);
+  const [tallies, setTallies] = useState<Tally[]>([EMPTY_TALLY, EMPTY_TALLY, EMPTY_TALLY]);
+  const [score, setScoreState] = useState(0);
+  // The score as of the last event, so a wrong call knows how much the floor at zero lets it take off.
+  const scoreRef = useRef(0);
+  const setScore = (n: number) => {
+    scoreRef.current = n;
+    setScoreState(n);
+  };
   const round = stage.kind === "play" || stage.kind === "done" || stage.kind === "shift" ? stage.round : 0;
 
   const onPoints = useCallback(
     (points: number, right: boolean, fast: boolean) => {
-      setScore((s) => Math.max(0, s + points));
+      const before = scoreRef.current;
+      const after = Math.max(0, before + points);
+      scoreRef.current = after;
+      setScoreState(after);
       setTallies((all) =>
-        all.map((t, r) => (r === round ? { right: t.right + Number(right), fast: t.fast + Number(fast), wrong: t.wrong + Number(!right) } : t)),
+        all.map((t, r) =>
+          r === round ? { right: t.right + Number(right), fast: t.fast + Number(fast), wrong: t.wrong + Number(!right), lost: t.lost + Math.max(0, before - after) } : t,
+        ),
       );
     },
     [round],
   );
   const play = (r: number) => {
-    setTallies((all) => all.map((t, i) => (i === r ? EMPTY : t)));
+    setTallies((all) => all.map((t, i) => (i === r ? EMPTY_TALLY : t)));
     setStage({ kind: "play", round: r });
   };
 
@@ -625,7 +649,7 @@ export function StackGame({ data, clock = Date.now, home = "../../../" }: { data
           score={score}
           onPoints={onPoints}
           onDone={() => {
-            setScore((s) => s + POINTS.round);
+            setScore(scoreRef.current + POINTS.round);
             setStage({ kind: "done", round: stage.round });
           }}
         />

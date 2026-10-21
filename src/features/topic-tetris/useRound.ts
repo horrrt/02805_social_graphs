@@ -18,6 +18,8 @@ export function useRound({ data, round, clock, onPoints, width, lane }: {
   const home = Math.floor(width / 2);
   const [index, setIndex] = useState(0);
   const [pos, setPos] = useState(home);
+  // The latest position, for a drop that arrives before the move before it has rendered.
+  const posRef = useRef(home);
   const [placed, setPlaced] = useState<Placed[]>([]);
   const [note, setNote] = useState<Note | null>(null);
   const [paused, setPaused] = useState(false);
@@ -40,6 +42,7 @@ export function useRound({ data, round, clock, onPoints, width, lane }: {
   const next = useCallback(() => {
     started.current = clock();
     setNow(started.current);
+    posRef.current = home;
     setPos(home);
     setNote(null);
     setIndex((i) => i + 1);
@@ -61,8 +64,15 @@ export function useRound({ data, round, clock, onPoints, width, lane }: {
     [block, waiting, paused, clock, round, data, onPoints, next],
   );
 
-  const move = useCallback((dx: number) => running && setPos((p) => Math.min(width - 1, Math.max(0, p + dx))), [running, width]);
-  const drop = useCallback(() => running && place(lane(pos)), [running, place, lane, pos]);
+  const move = useCallback(
+    (dx: number) => {
+      if (!running) return;
+      posRef.current = Math.min(width - 1, Math.max(0, posRef.current + dx));
+      setPos(posRef.current);
+    },
+    [running, width],
+  );
+  const drop = useCallback(() => running && place(lane(posRef.current)), [running, place, lane]);
 
   // A block that reaches the floor lands where it is.
   useEffect(() => {
