@@ -92,6 +92,7 @@ test("Same Word as a level plays its first rounds and hands over their points", 
     await user.click(screen.getByRole("button", { name: i === 1 ? "See the results" : "Next round →" }));
   }
   assert.equal(score(), level.total + earned);
+  assert.doesNotMatch(document.body.textContent!, /new best/, "a level claims no best");
   await user.click(screen.getByRole("button", { name: FINISH }));
   assert.deepEqual(calls.done, [earned]);
   assert.equal(localStorage.getItem("same-word:best"), null, "a level writes no practice best");
@@ -111,6 +112,7 @@ test("Sentiment Trap as a level ends on its takeaway, then Finish hands over the
   assert.equal(screen.queryByRole("link", { name: "More games" }), null);
   const earned = CHALLENGES.length * POINTS.correct + POINTS.bonus;
   assert.equal(score(), level.total + earned);
+  assert.doesNotMatch(document.body.textContent!, /new best/, "a level claims no best");
   await user.click(screen.getByRole("button", { name: FINISH }));
   assert.deepEqual(calls.done, [earned]);
   assert.equal(localStorage.getItem("sentiment-trap:best"), null);
@@ -129,6 +131,7 @@ test("Semantic Minefield as a level has no retry: out of lives goes to the resul
   const total = score();
   assert.ok(total < 0, "three bombs cost more than nothing");
   await user.click(screen.getByRole("button", { name: "See the results" }));
+  assert.doesNotMatch(document.body.textContent!, /new best/);
   await user.click(screen.getByRole("button", { name: FINISH }));
   assert.deepEqual(calls.done, [total], "the game hands over what it scored; the campaign floors it");
   assert.equal(localStorage.getItem("semantic-minefield:best"), null);
