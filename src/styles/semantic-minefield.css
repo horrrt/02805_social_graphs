@@ -332,7 +332,12 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(11, 31, 58, 0) 45%, rgba(11, 31, 58, 0.85) 100%);
+  /* A vignette: clear in the middle, shaded at the edges, with a little
+     more along the bottom so the name stays readable. --edge tints it. */
+  --edge: rgba(11, 31, 58, 0.6);
+  background:
+    linear-gradient(180deg, transparent 72%, rgba(11, 31, 58, 0.55) 100%),
+    radial-gradient(ellipse 75% 75% at 50% 45%, transparent 55%, var(--edge) 100%);
 }
 
 /* A revealed tile's state ring, drawn above the portrait. */
@@ -352,11 +357,11 @@
 
 .sm-tile[data-state="hit"] .sm-face::after,
 .sm-tile[data-state="bomb"] .sm-face::after {
-  background: linear-gradient(180deg, rgba(204, 51, 17, 0.35) 0%, rgba(11, 31, 58, 0.85) 100%);
+  --edge: rgba(204, 51, 17, 0.75);
 }
 
 .sm-tile[data-state="found"] .sm-face::after {
-  background: linear-gradient(180deg, rgba(0, 135, 90, 0.3) 0%, rgba(11, 31, 58, 0.85) 100%);
+  --edge: rgba(0, 135, 90, 0.7);
 }
 
 .sm-n {
@@ -412,7 +417,7 @@
   line-height: var(--lh-caption);
   text-align: center;
   text-overflow: ellipsis;
-  text-shadow: 0 1px 2px rgba(11, 31, 58, 0.6);
+  text-shadow: 0 1px 3px rgba(11, 31, 58, 0.95), 0 0 8px rgba(11, 31, 58, 0.6);
   white-space: nowrap;
 }
 
