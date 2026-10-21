@@ -253,7 +253,60 @@
   object-fit: cover;
 }
 
+/* On a revealed tile the portrait fills the tile, the clue sits in a
+   badge on top of it and the name runs along the bottom. Characters with
+   no portrait fill it with their initials. */
+.sm-tile .sm-face {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  font-size: var(--fs-h2);
+}
+
+.sm-tile .sm-face::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(11, 31, 58, 0) 45%, rgba(11, 31, 58, 0.85) 100%);
+}
+
+/* A revealed tile's state ring, drawn above the portrait. */
+.sm-tile:has(.sm-face)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inherit;
+  pointer-events: none;
+}
+
+.sm-tile[data-state="hit"] .sm-face img,
+.sm-tile[data-state="bomb"] .sm-face img {
+  filter: saturate(0.6);
+}
+
+.sm-tile[data-state="hit"] .sm-face::after,
+.sm-tile[data-state="bomb"] .sm-face::after {
+  background: linear-gradient(180deg, rgba(204, 51, 17, 0.35) 0%, rgba(11, 31, 58, 0.85) 100%);
+}
+
+.sm-tile[data-state="found"] .sm-face::after {
+  background: linear-gradient(180deg, rgba(0, 135, 90, 0.3) 0%, rgba(11, 31, 58, 0.85) 100%);
+}
+
 .sm-n {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--card);
+  box-shadow: 0 2px 6px rgba(11, 31, 58, 0.35);
   font-family: var(--font-display);
   font-size: var(--fs-h2);
   font-weight: 800;
@@ -271,24 +324,31 @@
 
 .sm-tile[data-state="hit"] .sm-n,
 .sm-tile[data-state="bomb"] .sm-n {
-  color: var(--loss);
+  background: var(--loss);
+  color: #fff;
+  font-size: var(--fs-h4);
 }
 
 .sm-tile[data-state="found"] .sm-n {
-  color: var(--gain);
+  background: var(--gain);
+  color: #fff;
+  font-size: var(--fs-h4);
 }
 
 .sm-name {
   position: absolute;
   right: 4px;
-  bottom: 3px;
+  bottom: 4px;
   left: 4px;
+  z-index: 1;
   overflow: hidden;
-  color: var(--ink-soft);
+  color: #fff;
   font-size: var(--fs-caption);
+  font-weight: 600;
   line-height: var(--lh-caption);
   text-align: center;
   text-overflow: ellipsis;
+  text-shadow: 0 1px 2px rgba(11, 31, 58, 0.6);
   white-space: nowrap;
 }
 
