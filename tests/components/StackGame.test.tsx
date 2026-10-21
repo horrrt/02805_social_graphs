@@ -6,7 +6,7 @@ import "./dom";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { COLS, StackGame } from "@/features/topic-tetris/StackGame";
 import { answer, letter, POINTS, QUIZ, ROUND, ROUND_KEYS, short, type TopicTetrisData } from "@/features/topic-tetris/rules";
@@ -50,6 +50,33 @@ test("a tile stacks in its group's third, and a miss is marked and explained", a
   assert.equal(tile(first.id)!.getAttribute("data-missed"), `you: ${letter(data, 0, wrong)}`);
   await user.click(screen.getByRole("button", { name: "Got it" }));
   assert.equal(falling(), short(data.pages[1].name));
+});
+
+test("moves and a drop sent in one burst land where the moves left the tile", async () => {
+  await started();
+  const first = data.pages[0];
+  const target = answer(first, 0);
+  const steps = (target - 1) * 3;
+  const key = steps < 0 ? "ArrowLeft" : "ArrowRight";
+  // Every key in one task, so React renders nothing between the moves and the drop.
+  act(() => {
+    for (let i = 0; i < Math.abs(steps); i++) window.dispatchEvent(new KeyboardEvent("keydown", { key }));
+    window.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowDown" }));
+  });
+  assert.ok(screen.getByText("Right"));
+  assert.equal(tile(first.id)!.getAttribute("data-missed"), null);
+});
+
+test("a miss on an empty score takes nothing off, and the breakdown says so", async () => {
+  const user = await started();
+  const [first, ...rest] = data.pages;
+  await user.click(screen.getByRole("button", { name: `Drop into ${groupLabel(0, (answer(first, 0) + 1) % 3)}` }));
+  await user.click(screen.getByRole("button", { name: "Got it" }));
+  for (const page of rest) await user.click(screen.getByRole("button", { name: `Drop into ${groupLabel(0, answer(page, 0))}` }));
+  await user.click(screen.getByRole("button", { name: "See the round" }));
+  const round = rest.length * (POINTS.right + POINTS.fast) + POINTS.round;
+  assert.ok(screen.getByText(`This round ${round.toLocaleString("en")}`));
+  assert.ok(screen.getByText(`Score: ${round.toLocaleString("en")}`, { exact: false }));
 });
 
 test("three rounds, the maps, the check and the result", async () => {
