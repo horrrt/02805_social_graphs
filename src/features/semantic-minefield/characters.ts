@@ -19,20 +19,23 @@ export type Category = {
   label: string;
   /** The rule a character must meet, shown in the legend and the round's query. */
   rule: string;
-  /** A short mark for the tile's chip. */
+  /** A short mark, for text that cannot hold the icon. */
   mark: string;
+  /** What one member and several members are called: "2 villains nearby". */
+  one: string;
+  many: string;
 };
 
 export const CATEGORIES: Record<CatId, Category> = {
-  hero: { id: "hero", label: "Hero", rule: "Best known as a hero.", mark: "★" },
-  villain: { id: "villain", label: "Villain", rule: "Best known as a villain.", mark: "☠" },
-  avenger: { id: "avenger", label: "Avengers member", rule: "Has served on an official Avengers team in the comics.", mark: "A" },
-  xmen: { id: "xmen", label: "X-Men member", rule: "Has served on the X-Men.", mark: "X" },
-  mutant: { id: "mutant", label: "Mutant", rule: "Born with the X-gene. Powers from a spider, a serum or radiation do not count.", mark: "M" },
-  magic: { id: "magic", label: "Uses magic", rule: "Casts spells or practises sorcery. A god’s power, chi or the Power Cosmic alone does not count.", mark: "✦" },
-  tech: { id: "tech", label: "Uses advanced technology", rule: "Builds or fights with machines: armour, gadgets or weapons with working parts. Being a machine is not enough.", mark: "⚙" },
-  ai: { id: "ai", label: "Artificial intelligence", rule: "A machine mind: a robot, android or synthezoid whose mind was built, not born.", mark: "AI" },
-  alien: { id: "alien", label: "Alien", rule: "Comes from beyond Earth: another planet, or another realm such as Asgard or the Dark Dimension.", mark: "☄" },
+  hero: { id: "hero", label: "Hero", rule: "Best known as a hero.", mark: "★", one: "hero", many: "heroes" },
+  villain: { id: "villain", label: "Villain", rule: "Best known as a villain.", mark: "☠", one: "villain", many: "villains" },
+  avenger: { id: "avenger", label: "Avengers member", rule: "Has served on an official Avengers team in the comics.", mark: "A", one: "Avenger", many: "Avengers" },
+  xmen: { id: "xmen", label: "X-Men member", rule: "Has served on the X-Men.", mark: "X", one: "X-Man", many: "X-Men" },
+  mutant: { id: "mutant", label: "Mutant", rule: "Born with the X-gene. Powers from a spider, a serum or radiation do not count.", mark: "M", one: "mutant", many: "mutants" },
+  magic: { id: "magic", label: "Uses magic", rule: "Casts spells or practises sorcery. A god’s power, chi or the Power Cosmic alone does not count.", mark: "✦", one: "magic user", many: "magic users" },
+  tech: { id: "tech", label: "Uses advanced technology", rule: "Builds or fights with machines: armour, gadgets or weapons with working parts. Being a machine is not enough.", mark: "⚙", one: "technology user", many: "technology users" },
+  ai: { id: "ai", label: "Artificial intelligence", rule: "A machine mind: a robot, android or synthezoid whose mind was built, not born.", mark: "AI", one: "artificial intelligence", many: "artificial intelligences" },
+  alien: { id: "alien", label: "Alien", rule: "Comes from beyond Earth: another planet, or another realm such as Asgard or the Dark Dimension.", mark: "☄", one: "alien", many: "aliens" },
 };
 
 export type Character = {
