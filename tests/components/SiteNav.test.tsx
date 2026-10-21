@@ -7,7 +7,7 @@ import assert from "node:assert/strict";
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { SiteNav } from "@/components/site/SiteNav";
-import { GAMES } from "@/components/site/games";
+import { GAMES, GAME_WEEKS } from "@/components/site/games";
 import { POSTS } from "@/components/site/posts";
 import { readdirSync } from "node:fs";
 
@@ -38,18 +38,34 @@ test("the menu lists every post and marks this page current, and not the alterna
   assert.deepEqual(current, [menu.getByRole("link", { name: labels[5] })]);
 });
 
-test("the Games menu lists every game with its week, and marks none current", () => {
+test("the Games menu lists one line per week, each linking to its game or campaign, with its games under it", () => {
   render(<SiteNav root="../../" current="weeks/week06/" />);
-  const menu = within(document.getElementById("site-nav-games-menu")!);
-  const labels = ["Week 1 · Give Baymax a Voice", "Week 2 · Screen Test", "Week 6 · Cold Read", "Week 7 · Same Word, Different Worlds", "Week 7 · Two Stripes", "Week 7 · Topic Tetris", "Week 7 · Sentiment Trap", "Week 7 · Semantic Search Detective", "Week 7 · Semantic Minefield"];
-  assert.deepEqual(menu.getAllByRole("link").map((a) => a.textContent), labels);
+  const menu = document.getElementById("site-nav-games-menu")!;
+  const lines = [...menu.querySelectorAll(":scope > li > .site-nav-week-line > :first-child")].map((el) => el.textContent);
+  assert.deepEqual(lines, ["Week 1 · Networks", "Week 2 · Models & null models", "Week 6 · What words mean", "Week 7 · NLP III"]);
   const hrefs = ["play/", "prototypes/screen-test/", "play/cold-read/", "play/week07/same-word/", "play/week07/two-stripes/", "play/topic-tetris/", "play/week07/sentiment-trap/", "play/search-detective/", "play/week07/semantic-minefield/"];
   assert.deepEqual(GAMES.map((g) => g.href), hrefs);
-  for (const [i, label] of labels.entries()) {
-    const link = menu.getByRole("link", { name: label });
-    assert.equal(link.getAttribute("href"), `../../${hrefs[i]}`);
+  // A one-game week's line goes to that game; Week 7 has no campaign yet, so its line only unfolds.
+  assert.deepEqual(GAME_WEEKS.map((w) => w.href), ["play/", "prototypes/screen-test/", "play/cold-read/", undefined]);
+  const games = within(menu);
+  for (const game of GAMES) {
+    const link = games.getAllByRole("link", { name: game.name }).at(-1)!;
+    assert.equal(link.getAttribute("href"), `../../${game.href}`);
     assert.equal(link.getAttribute("aria-current"), null);
   }
+});
+
+test("a week's chevron slides its games down and back up", async () => {
+  const user = userEvent.setup();
+  render(<SiteNav root="../../" />);
+  const week = screen.getByRole("button", { name: "Show Week 7's games" });
+  const line = week.closest("li")!;
+  assert.equal(line.getAttribute("data-open"), "false", "games start folded");
+  await user.click(week);
+  assert.equal(line.getAttribute("data-open"), "true");
+  assert.equal(week.getAttribute("aria-expanded"), "true");
+  await user.click(screen.getByRole("button", { name: "Week 7 · NLP III" }));
+  assert.equal(line.getAttribute("data-open"), "false", "the week's name folds it too when it has no campaign");
 });
 
 test("every game page under play/ is in the games list", () => {
@@ -134,8 +150,8 @@ test("from the keyboard: focus opens it, Tab reaches every post, Escape closes i
   assert.equal(isOpen(), false, "tabbing out of the menu closes it");
   const games = screen.getByRole("button", { name: "Show all games" });
   assert.equal(games.getAttribute("aria-expanded"), "true", "focus on Games opens its menu");
-  // Its chevron and every game, then one more tab reaches About.
-  for (let i = 0; i < GAMES.length + 2; i++) await user.tab();
+  // Its chevron and each week's line and chevron, its games folded away, then one more tab reaches About.
+  for (let i = 0; i < 2 * GAME_WEEKS.length + 2; i++) await user.tab();
   assert.equal(document.activeElement?.textContent, "About");
   assert.equal(games.getAttribute("aria-expanded"), "false", "tabbing out of the Games menu closes it");
 });

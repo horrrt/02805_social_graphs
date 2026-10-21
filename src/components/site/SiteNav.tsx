@@ -2,7 +2,8 @@
 // The site's own links in the top bar: Home, Posts, Games and About. Posts
 // goes to the home page's list of posts and its menu lists every post
 // (posts.ts); Games goes to the home page's games and its menu lists every
-// game (games.ts). Without JavaScript a menu opens on hover and on focus
+// game (games.ts) by week: each week's line links to its campaign and a
+// chevron slides its games down under it. Without JavaScript a menu opens on hover and on focus
 // inside it (CSS on .site-nav-drop without data-open). Once hydrated the
 // island owns each menu: pointer and focus entering open it, the chevron
 // toggles it, and Escape or a click outside closes it, Escape returning focus
@@ -12,7 +13,7 @@ import { useRef, useState, type FocusEvent, type MouseEvent, type RefObject } fr
 import { island } from "@/lib/island";
 import { useOutsideClose } from "@/lib/useEvents";
 import { useHydrated } from "@/lib/useHydrated";
-import { GAMES, gameLabel } from "./games";
+import { GAME_WEEKS, type GameWeek } from "./games";
 import { POSTS, type Post } from "./posts";
 
 type Props = { root: string; current?: string };
@@ -27,8 +28,6 @@ type Live = {
   drop: RefObject<HTMLDivElement | null>;
   toggle: RefObject<HTMLButtonElement | null>;
 };
-
-const GAME_ENTRIES: Post[] = GAMES.map((game) => ({ href: game.href, label: gameLabel(game) }));
 
 const here = (current: string | undefined, href: string) => (current === href ? ("page" as const) : undefined);
 
@@ -49,7 +48,53 @@ function Entry({ post, root, current }: { post: Post; root: string; current?: st
   );
 }
 
-type DropProps = Props & { id: string; href: string; label: string; toggleLabel: string; entries: Post[]; live?: Live };
+const Chevron = () => (
+  <svg aria-hidden="true" viewBox="0 0 10 10">
+    <path d="M2 3.5 5 6.5 8 3.5" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.6" />
+  </svg>
+);
+
+// A week in the Games menu: its line and, under a chevron, its games. Without
+// `live` (the server markup) the games show; once hydrated they start folded.
+function Week({ week, root, current, live }: { week: GameWeek; root: string; current?: string; live: boolean }) {
+  const [unfolded, setUnfolded] = useState(false);
+  const open = live ? unfolded : true;
+  const id = `site-nav-games-${week.week}`;
+  const flip = () => setUnfolded(!unfolded);
+  return (
+    <li className="site-nav-week" data-open={live ? String(open) : undefined}>
+      <div className="site-nav-week-line">
+        {week.href ? (
+          <a href={root + week.href} aria-current={here(current, week.href)}>
+            {week.label}
+          </a>
+        ) : (
+          <button aria-controls={id} aria-expanded={open} className="site-nav-week-name" type="button" onClick={flip}>
+            {week.label}
+          </button>
+        )}
+        <button aria-controls={id} aria-expanded={open} aria-label={`Show Week ${week.week}'s games`} className="site-nav-week-toggle" type="button" onClick={flip}>
+          <Chevron />
+        </button>
+      </div>
+      <div className="site-nav-week-games">
+        <ul id={id}>
+          {week.games.map((game) => (
+            <li key={game.href}>
+              <a href={root + game.href} aria-current={here(current, game.href)} tabIndex={open ? undefined : -1}>
+                {game.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </li>
+  );
+}
+
+type DropProps = Props & { id: string; href: string; label: string; toggleLabel: string; entries: Post[] | GameWeek[]; live?: Live };
+
+const isWeek = (entry: Post | GameWeek): entry is GameWeek => "games" in entry;
 
 // A link with a chevron and its menu; without `live` it is the server markup.
 function Drop({ root, current, id, href, label, toggleLabel, entries, live }: DropProps) {
@@ -92,14 +137,16 @@ function Drop({ root, current, id, href, label, toggleLabel, entries, live }: Dr
         type="button"
         onClick={toggle}
       >
-        <svg aria-hidden="true" viewBox="0 0 10 10">
-          <path d="M2 3.5 5 6.5 8 3.5" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.6" />
-        </svg>
+        <Chevron />
       </button>
       <ul className="site-nav-menu" id={id}>
-        {entries.map((post) => (
-          <Entry key={post.href} post={post} root={root} current={current} />
-        ))}
+        {entries.map((entry) =>
+          isWeek(entry) ? (
+            <Week key={entry.week} week={entry} root={root} current={current} live={Boolean(live)} />
+          ) : (
+            <Entry key={entry.href} post={entry} root={root} current={current} />
+          ),
+        )}
       </ul>
     </div>
   );
@@ -113,7 +160,7 @@ function Nav({ root, current, live }: Props & { live?: { posts: Live; games: Liv
         Home
       </a>
       <Drop root={root} current={current} id="site-nav-menu" href={`${root}#weeks`} label="Posts" toggleLabel="Show all posts" entries={POSTS} live={live?.posts} />
-      <Drop root={root} current={current} id="site-nav-games-menu" href={`${root}#games`} label="Games" toggleLabel="Show all games" entries={GAME_ENTRIES} live={live?.games} />
+      <Drop root={root} current={current} id="site-nav-games-menu" href={`${root}#games`} label="Games" toggleLabel="Show all games" entries={GAME_WEEKS} live={live?.games} />
       <a href={`${root}#about`}>About</a>
     </nav>
   );
