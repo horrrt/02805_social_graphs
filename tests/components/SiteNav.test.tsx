@@ -42,7 +42,7 @@ test("the Games menu lists one line per week, each linking to its game or campai
   render(<SiteNav root="../../" current="weeks/week06/" />);
   const menu = document.getElementById("site-nav-games-menu")!;
   const lines = [...menu.querySelectorAll(":scope > li > .site-nav-week-line > :first-child")].map((el) => el.textContent);
-  assert.deepEqual(lines, ["Week 1 · Networks", "Week 2 · Models & null models", "Week 6 · What words mean", "Week 7 · NLP III"]);
+  assert.deepEqual(lines, ["Week 1 · Networks", "Week 2 · Models & null models", "Week 6 · What words mean", "Week 7 · Measuring with words"]);
   const hrefs = ["play/", "prototypes/screen-test/", "play/cold-read/", "play/week07/same-word/", "play/week07/two-stripes/", "play/topic-tetris/", "play/week07/sentiment-trap/", "play/search-detective/", "play/week07/semantic-minefield/"];
   assert.deepEqual(GAMES.map((g) => g.href), hrefs);
   // A one-game week's line goes to that game, and Week 7's to its campaign.
@@ -66,7 +66,7 @@ test("a week's chevron slides its games down and back up", async () => {
   assert.equal(week.getAttribute("aria-expanded"), "true");
   await user.click(week);
   assert.equal(line.getAttribute("data-open"), "false");
-  assert.equal(screen.getByRole("link", { name: "Week 7 · NLP III" }).getAttribute("href"), "../../play/week07/", "the week's name goes to its campaign");
+  assert.equal(screen.getByRole("link", { name: "Week 7 · Measuring with words" }).getAttribute("href"), "../../play/week07/", "the week's name goes to its campaign");
 });
 
 test("unfolding a week folds the week that was open", async () => {

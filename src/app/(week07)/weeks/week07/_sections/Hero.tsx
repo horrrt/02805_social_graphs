@@ -7,7 +7,7 @@ export function Hero() {
   return (
     <PostHero
       id="top"
-      eyebrow="Week 7 · From meaning to measurement"
+      eyebrow="Week 7 · Measuring with words"
       title="Can the text rebuild the Marvel network?"
       gridClass="w4-hero-grid w5-hero-grid"
       body={

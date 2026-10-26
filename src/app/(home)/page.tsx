@@ -27,7 +27,7 @@ export default function Page() {
                 needed.
               </p>
               <div className="home-hero-actions">
-                <a className="home-button" href="weeks/week06/">Read the latest post →</a>
+                <a className="home-button" href="weeks/week07/">Read the latest post →</a>
                 <a className="home-link" href="#games">Or play one of our games ↓</a>
               </div>
             </div>
@@ -69,16 +69,19 @@ export default function Page() {
                     <i aria-hidden="true">→</i>
                   </a>
                 </li>
-                <li className="live current">
+                <li className="live">
                   <a href="weeks/week06/">
                     <span>W6</span>
                     What words mean
                     <i aria-hidden="true">→</i>
                   </a>
                 </li>
-                <li>
-                  <span>W7</span>
-                  NLP III
+                <li className="live current">
+                  <a href="weeks/week07/">
+                    <span>W7</span>
+                    Measuring with words
+                    <i aria-hidden="true">→</i>
+                  </a>
                 </li>
                 <li>
                   <span>W8</span>
@@ -145,7 +148,7 @@ export default function Page() {
                 </li>
                 <li>
                   <a data-week="7" className="week-card current" href="weeks/week07/">
-                    <span className="week-tag">Week 7 · NLP III</span>
+                    <span className="week-tag">Week 7 · Measuring with words</span>
                     <h3>Named Together</h3>
                     <p className="week-q">When a Marvel page names two characters in one sentence, are their pages linked?</p>
                     <span className="week-go">Read the post →</span>

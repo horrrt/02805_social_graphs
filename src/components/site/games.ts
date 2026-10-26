@@ -81,7 +81,7 @@ const CAMPAIGNS: Record<number, Campaign> = {
   7: { href: "play/week07/", name: "Meaning to Measurement", levels: WEEK07_LEVELS.map((l) => l.name) },
 };
 
-/** One line per week in the site nav's Games menu: "Week 7 · NLP III" links to
+/** One line per week in the site nav's Games menu: "Week 7 · Measuring with words" links to
  * the week's campaign, or to its game when it has only one, and its games
  * slide down under it. A week with several games and no campaign has no link. */
 export type GameWeek = { week: number; label: string; href?: string; games: Game[]; campaign?: Campaign };

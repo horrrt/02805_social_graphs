@@ -89,8 +89,8 @@ export const WEEKS = [
   },
   {
     n: 7,
-    courseTitle: "NLP III",
-    short: "NLP III",
+    courseTitle: "Measuring with words",
+    short: "MEASURING",
     date: "2026-10-21",
     status: "live",
     cabinet: {
