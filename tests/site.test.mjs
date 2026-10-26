@@ -63,7 +63,7 @@ const COURSE = [
   [4, "Communities & backbones", "2026-09-23"],
   [5, "Counting words", "2026-09-30"],
   [6, "What words mean", "2026-10-07"],
-  [7, "NLP III", "2026-10-21"],
+  [7, "Measuring with words", "2026-10-21"],
   [8, "Networks × language", "2026-10-28"],
 ];
 
