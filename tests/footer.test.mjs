@@ -43,6 +43,7 @@ const PAGES = {
     'href="https://opendatacommons.org/licenses/pddl/1-0/"',
     "Every number comes from analysis/week06_essentials.py. An AI coding assistant (Claude) wrote the analysis",
   ],
+  "weeks/week07/": ["English Wikipedia", BY_SA, 'href="https://www.wikidata.org/"', CC0],
   "weeks/week06/alternative/": ["English Wikipedia", BY_SA, 'href="https://www.wikidata.org/wiki/Property:P21"', CC0],
   "weeks/_template/": ["Credit each data source here"],
 };

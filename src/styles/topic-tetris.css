@@ -3,7 +3,8 @@
    The three groups of every round keep one colour each (blue, orange, purple)
    and always show their letter too, so colour is never the only cue. */
 
-body.topic-tetris {
+/* The page's body, or the wrapper the Week 7 campaign puts around its level. */
+.topic-tetris {
   --g0: #1f8fd6;
   --g0-soft: #e3f1fb;
   --g1: #d06f06;

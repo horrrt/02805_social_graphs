@@ -30,13 +30,15 @@ const ner = f.ner_sentence;
 const top = f.weights.at(-1);
 const one = f.weights[0];
 
-test("week 7 is Gyula's, stays unpublished and has no placeholder left", () => {
-  for (const id of ["opening", "explore", "together", "unit", "only", "closing"]) {
+test("week 7 is Gyula's, is published, links its campaign and has no placeholder left", () => {
+  for (const id of ["opening", "explore", "together", "unit", "only", "game", "closing"]) {
     assert.match(html, new RegExp(`<section class="step" data-owner="Gyula" id="${id}">`));
   }
   assert.doesNotMatch(html, /[Tt]oy (figure|numbers|network)|<<<<<<<|>>>>>>>/);
-  assert.match(html, /<meta name="robots" content="noindex"/);
-  assert.match(read("src/scripts/weeks.js"), /n: 7, [^\n]*status: "coming"/);
+  assert.doesNotMatch(html, /<meta name="robots" content="noindex"/);
+  assert.match(html, /href="\.\.\/\.\.\/play\/week07\/"/);
+  // Published before the group's review, so the AI note still says so.
+  assert.match(html, /The group has not yet reviewed this page\./);
   assert.match(read("analysis/week07_comention.py"), /Owner: Gyula/);
 });
 

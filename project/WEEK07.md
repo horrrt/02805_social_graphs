@@ -14,11 +14,10 @@ Class is Wednesday 21 October; the post link goes in the Teams channel by **Mond
 Owners as in Week 6: Gyula for every section, built for Gyula by Claude. The split below is a proposal if
 Àngela and Niklas want a section each.
 
-Not published: the layout sets `robots: "noindex"`, Week 7 stays `status: "coming"` in `src/scripts/weeks.js`,
-and the closing's AI note says the group has not yet reviewed the page. To publish: review the readings in the
-three `week07_*_read.parquet` files, remove that sentence, set Week 7 live with a cabinet in `weeks.js`, drop
-`robots`, and add the route to the lists in `tests/footer.test.mjs`, `tests/topbar.test.mjs` and
-`tests/stylesheets.test.mjs` the way Week 6 is listed.
+Published 26 October at Gyula's request, before the group's review: Week 7 is live in `src/scripts/weeks.js`
+as "Named Together", the layout no longer sets `robots`, and the route is in the footer, top bar and stylesheet
+tests. The closing's AI note still says the group has not yet reviewed the page. Once the group has read the
+three `week07_*_read.parquet` files, remove that sentence. A card before the closing links the Week 7 campaign.
 
 ## What the brief asks of the post
 

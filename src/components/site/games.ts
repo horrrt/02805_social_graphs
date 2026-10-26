@@ -2,6 +2,7 @@
 // home page's Games section both read this list, so the two cannot drift.
 // `href` is relative to the site's root; `week` names the week from
 // src/scripts/weeks.js whose post the game goes with.
+import { LEVELS as WEEK07_LEVELS } from "@/features/week07-campaign/levels";
 import { WEEKS } from "@/scripts/weeks.js";
 
 export type Game = { href: string; name: string; week: number; topic: string; blurb: string };
@@ -74,15 +75,19 @@ export const GAMES: Game[] = [
   },
 ];
 
-// A week's campaign, the route that plays its games in a row, once it has one.
-const CAMPAIGNS: Record<number, string> = { 7: "play/week07/" };
+// A week's campaign, the route that plays one game per section in a row, once it has one.
+export type Campaign = { href: string; name: string; levels: string[] };
+const CAMPAIGNS: Record<number, Campaign> = {
+  7: { href: "play/week07/", name: "Meaning to Measurement", levels: WEEK07_LEVELS.map((l) => l.name) },
+};
 
 /** One line per week in the site nav's Games menu: "Week 7 · NLP III" links to
  * the week's campaign, or to its game when it has only one, and its games
  * slide down under it. A week with several games and no campaign has no link. */
-export type GameWeek = { week: number; label: string; href?: string; games: Game[] };
+export type GameWeek = { week: number; label: string; href?: string; games: Game[]; campaign?: Campaign };
 
 export const GAME_WEEKS: GameWeek[] = [...new Set(GAMES.map((g) => g.week))].map((week) => {
   const games = GAMES.filter((g) => g.week === week);
-  return { week, label: `Week ${week} · ${games[0].topic}`, href: CAMPAIGNS[week] ?? (games.length === 1 ? games[0].href : undefined), games };
+  const campaign = CAMPAIGNS[week];
+  return { week, label: `Week ${week} · ${games[0].topic}`, href: campaign?.href ?? (games.length === 1 ? games[0].href : undefined), games, ...(campaign ? { campaign } : {}) };
 });

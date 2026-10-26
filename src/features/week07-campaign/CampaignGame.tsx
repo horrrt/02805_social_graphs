@@ -1,20 +1,22 @@
 // The Week 7 campaign: this week's games as levels, with one running score,
 // on Cold Read's pattern (CampaignGame.tsx there). A level can be skipped for
-// SKIP_COST points; a level that ends below 0 (a bad minefield) adds nothing,
+// SKIP_COST points; a level that ends below 0 adds nothing,
 // and the total never goes below 0. The levels are in levels.ts.
 import { useEffect, useRef, useState } from "react";
 import { SkipLevel, useBest } from "@/features/cold-read/LevelParts";
 import { afterSkip, type Result, SKIP_COST } from "@/features/cold-read/levels";
 import { Rules, StartRow } from "@/features/cold-read/StartPanel";
 import { SameWordGame } from "@/features/same-word/SameWordGame";
-import { SemanticMinefieldGame } from "@/features/semantic-minefield/SemanticMinefieldGame";
+import { SearchDetectiveGame } from "@/features/search-detective/SearchDetectiveGame";
 import type { SentimentTrapData } from "@/features/sentiment-trap/data";
 import { SentimentTrapGame } from "@/features/sentiment-trap/SentimentTrapGame";
+import type { TopicTetrisData } from "@/features/topic-tetris/rules";
+import { TopicTetrisGame } from "@/features/topic-tetris/TopicTetrisGame";
 import type { TwoStripesData } from "@/features/two-stripes/rules";
 import { TwoStripesGame } from "@/features/two-stripes/TwoStripesGame";
 import { LEVELS, type LevelId } from "./levels";
 
-export type CampaignData = { stripes?: TwoStripesData; sentiment?: SentimentTrapData };
+export type CampaignData = { stripes?: TwoStripesData; sentiment?: SentimentTrapData; tetris?: TopicTetrisData };
 
 const BEST = "week07:best-campaign";
 
@@ -24,7 +26,7 @@ export function CampaignIntro() {
   return (
     <Rules
       rules={[
-        ["Play", "Week 7’s games in the brief’s order: contextual vectors, corpus maps, sentiment and search by meaning."],
+        ["Play", "Week 7’s games in the brief’s order, one per section: contextual vectors, corpus maps, grouping, sentiment and search by meaning."],
         ["Score", "in every level; it all adds up to your total score."],
         ["Stuck?", <>Skip a level for −{SKIP_COST} points.</>],
       ]}
@@ -85,8 +87,9 @@ export function CampaignGame({ data, random = Math.random, clock = Date.now }: {
   const loaded: Record<LevelId, boolean> = {
     "same-word": true,
     "two-stripes": Boolean(data.stripes),
+    "topic-tetris": Boolean(data.tetris),
     "sentiment-trap": Boolean(data.sentiment),
-    "semantic-minefield": true,
+    "search-detective": true,
   };
 
   return (
@@ -131,10 +134,14 @@ export function CampaignGame({ data, random = Math.random, clock = Date.now }: {
           <SameWordGame key="same-word" level={level} />
         ) : spec.id === "two-stripes" ? (
           <TwoStripesGame key="two-stripes" data={data.stripes!} random={random} level={level} clock={clock} />
+        ) : spec.id === "topic-tetris" ? (
+          <div key="topic-tetris" className="topic-tetris">
+            <TopicTetrisGame data={data.tetris!} clock={clock} level={level} />
+          </div>
         ) : spec.id === "sentiment-trap" ? (
           <SentimentTrapGame key="sentiment-trap" data={data.sentiment!} level={level} />
         ) : (
-          <SemanticMinefieldGame key="semantic-minefield" level={level} />
+          <SearchDetectiveGame key="search-detective" level={level} />
         )
       ) : null}
 

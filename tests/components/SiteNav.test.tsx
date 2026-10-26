@@ -30,7 +30,7 @@ test("Home, Posts, Games and About link to the root, its post list, its games an
 test("the menu lists every post and marks this page current, and not the alternative Week 6 post", () => {
   render(<SiteNav root="../../../" current="weeks/week06/" />);
   const menu = within(document.getElementById("site-nav-menu")!);
-  const labels = ["Week 1 · Hero Packs", "Week 2 · Transit Authority", "Week 3 · Corridor Control", "Week 4 · Who Hires", "Week 5 · Marvel in Words", "Week 6 · Storm, Not Weather"];
+  const labels = ["Week 1 · Hero Packs", "Week 2 · Transit Authority", "Week 3 · Corridor Control", "Week 4 · Who Hires", "Week 5 · Marvel in Words", "Week 6 · Storm, Not Weather", "Week 7 · Named Together"];
   assert.deepEqual(POSTS.map((p) => p.label), labels);
   for (const [i, label] of labels.entries()) assert.equal(menu.getByRole("link", { name: label }).getAttribute("href"), `../../../weeks/week0${i + 1}/`);
   assert.equal(menu.queryByRole("link", { name: /alternative/i }), null, "the alternative post is not in the menu");

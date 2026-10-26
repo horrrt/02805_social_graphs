@@ -13,6 +13,7 @@ export function Frame({ root, children }: { root: string; children: ReactNode })
         root={root}
         tools={
           <nav className="cr-rounds" aria-label="Game tools">
+            <a href={`${root}play/week07/`}>Campaign</a>
             <SoundToggle />
             <Fullscreen />
           </nav>

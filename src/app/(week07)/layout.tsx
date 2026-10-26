@@ -11,8 +11,7 @@ const PAGE = {
   description: "Can the text rebuild the Marvel network? Characters named in one sentence on the 303 Marvel pages, compared with the links. Week 7, Log-Log Legends.",
 };
 
-// Built, not yet published: noindex, and Week 7 stays "coming" in src/scripts/weeks.js until the group signs it off.
-export const metadata: Metadata = { ...pageMeta(PAGE), robots: "noindex" };
+export const metadata: Metadata = pageMeta(PAGE);
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (

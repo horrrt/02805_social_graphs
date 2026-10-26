@@ -12,6 +12,8 @@ import "@/styles/semantic-minefield.css";
 import "@/styles/search-detective.css";
 import "@/styles/same-word.css";
 import "@/styles/sentiment-trap.css";
+// Topic Tetris plays as a campaign level here; its sheet is scoped to .topic-tetris.
+import "@/styles/topic-tetris.css";
 
 // The Week 7 games. Kept out of search (noindex); the Games menu and home page link them.
 export const metadata: Metadata = {

@@ -2030,7 +2030,8 @@ body.cold-read {
   color: var(--people);
 }
 
-.cr-note .cr-skip {
+.cr-note .cr-skip,
+.cr-start .cr-skip {
   margin-left: 12px;
   border-color: var(--line);
   color: var(--ink);

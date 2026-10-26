@@ -350,8 +350,14 @@ Built 21 October: the campaign, "Meaning to Measurement", at `/play/week07/` (le
 `src/features/week07-campaign/levels.ts`). Its four levels are Same Word (6 rounds), Two Stripes (3 pages), Sentiment
 Trap (all 4 challenges) and Semantic Minefield (3 boards), in section order. Each game takes Cold Read's `level` prop:
 its scoreboard shows the campaign total, it writes no practice best, and Minefield allows no retry inside a level. A
-level that ends below 0 adds nothing. Topic Tetris (section 3) and Semantic Search Detective live in their own
-route groups and are not levels yet. Head Count, Twin Stamp and Dense Dan join when they are built.
+level that ends below 0 adds nothing.
+
+Changed 26 October: one level per section, so no two levels teach the same topic. Topic Tetris joined as level 3
+and Search Detective as level 5 (section 6), both through Cold Read's `level` prop. Semantic Minefield, also
+section 6, left the campaign and stays a game of its own. The levels are now Same Word, Two Stripes, Topic
+Tetris, Sentiment Trap and Search Detective. The home page's Week 7 games card and the Week 7 post's card
+before the closing both point to the campaign. Head Count (section 5) joins when it is built; Twin Stamp and
+Dense Dan would replace the level of their section rather than add a second one.
 
 ## Rejected pitches
 

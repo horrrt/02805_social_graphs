@@ -3,12 +3,12 @@ import { PostTopbar } from "@/components/site/PostTopbar";
 import { SoundToggle } from "@/features/cold-read/SoundToggle";
 import { Campaign } from "@/features/week07-campaign/Campaign";
 
-// The Week 7 campaign: this week's games as levels in the brief's order, with
-// one running score. The levels are in src/features/week07-campaign/levels.ts;
+// The Week 7 campaign: one game per section of the brief as levels, in its
+// order, with one running score. The levels are in src/features/week07-campaign/levels.ts;
 // each game keeps its own practice page under this one.
 export const metadata: Metadata = {
   title: "Meaning to Measurement · Log-Log Legends",
-  description: "Week 7's games as one campaign: contextual vectors, corpus maps, sentiment and search by meaning, on the Marvel pages.",
+  description: "Week 7's games as one campaign: contextual vectors, corpus maps, three ways to group a corpus, sentiment and search by meaning, on the Marvel pages.",
   robots: "noindex",
 };
 

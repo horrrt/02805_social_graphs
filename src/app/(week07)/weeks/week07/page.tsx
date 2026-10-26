@@ -6,6 +6,7 @@ import { Closing } from "./_sections/Closing";
 import { Explore } from "./_sections/Explore";
 import { Findings } from "./_sections/Findings";
 import { Footer } from "./_sections/Footer";
+import { Game } from "./_sections/Game";
 import { Hero } from "./_sections/Hero";
 import { Only } from "./_sections/Only";
 import { Opening } from "./_sections/Opening";
@@ -42,6 +43,7 @@ export default function Page() {
           <Together />
           <Unit />
           <Only />
+          <Game />
           <Closing />
         </div>
       </main>
