@@ -2853,6 +2853,26 @@
 .corridor .w6-nolabel { color: var(--ink-mute-text); font-size: var(--fs-caption); margin-right: 8px; }
 .corridor .w6-key { align-items: center; color: var(--ink-soft); display: flex; font-size: var(--fs-small); gap: 8px; margin: -6px 0 14px; }
 .corridor .w6-key-woman { background: var(--people-soft); border-radius: 3px; display: inline-block; height: 12px; width: 18px; }
+/* Week 7: sentences with the two names marked, the hero's three examples, and the explorer's list of ties. */
+.corridor .w7-name { background: none; border-bottom: 2px solid var(--w4-accent); color: inherit; font-weight: 600; padding: 0; }
+.corridor .w7-quote { color: var(--ink-soft); display: block; font-size: var(--fs-caption); line-height: 1.45; }
+.corridor .w7-quote .w7-name { color: var(--ink); }
+.corridor .w7-hero ol { display: flex; flex-direction: column; gap: 14px; list-style: none; margin: 0; padding: 0; }
+.corridor .w7-hero-pair { color: var(--ink); font-size: var(--fs-body); margin: 0 0 4px; }
+.corridor .w7-tag { border: 1px solid var(--line); border-radius: 999px; color: var(--ink-soft); font-size: var(--fs-caption); margin-left: 6px; padding: 0 7px; white-space: nowrap; }
+.corridor .w7-tag-linked { background: var(--ink); border-color: var(--ink); color: var(--card); }
+.corridor .w7-ties { display: flex; flex-direction: column; gap: 6px; list-style: none; margin: 0; padding: 0; }
+.corridor .w7-ties li { column-gap: 10px; display: grid; grid-template-columns: 28px 1fr; padding: 4px 6px; }
+.corridor .w7-ties li > .kit-portrait { grid-row: span 2; }
+.corridor .w7-ties li > :is(.w7-line, .w7-quote) { grid-column: 2; }
+.corridor .w7-line { font-size: var(--fs-small); }
+.corridor .w7-linked .w6-where { background: var(--ink); border-color: var(--ink); color: var(--card); }
+.corridor .w7-n { color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.corridor .w7-from { color: var(--ink-mute-text); }
+.corridor .w7-more { margin: 10px 0 0; }
+.corridor .w7-missed { color: var(--ink); font-size: var(--fs-small); margin: 14px 0 0; }
+.corridor :is(.w7-more, #w7-character):focus-visible { outline: 2px solid var(--w4-accent); outline-offset: 2px; }
+.corridor #units-instrument + #units-read, .corridor #only-pairs-read + #only-links-read { margin-top: 18px; }
 
 /* ==== Week 6 essentials, the Week 6 post (/weeks/week06/) ==== */
 .corridor .w6e-hero { padding: 56px 0 40px; }

@@ -76,6 +76,7 @@ SCRIPTS = {
     "week06_mix_desk": "analysis/week06_mix_desk.py",
     "week06_hot_cold": "analysis/week06_hot_cold.py",
     "week06_tezguino": "analysis/week06_tezguino.py",
+    "week07_comention": "analysis/week07_comention.py",
     "week07_two_stripes": "analysis/week07_two_stripes.py",
     "week07_topic_tetris": "analysis/week07_topic_tetris.py",
     "week07_sentiment_trap": "analysis/week07_sentiment_trap.py",
@@ -98,7 +99,7 @@ AFTER = {
     "week03_tails": ("week03_corridor_control",),
     "week03_asylum": ("week03_corridor_control",),
     "week03_passengers": ("week03_corridor_control",),
-    "course_reference": ("week01_facts", "week02_nullmodels", "week06_lookalikes"),
+    "course_reference": ("week01_facts", "week02_nullmodels", "week06_lookalikes", "week07_comention"),
     "week05_autocomplete": ("week05_communities",),
     "week05_network": ("week05_communities", "week05_relations"),
     "week06_whose_line": ("week05_communities",),
@@ -111,7 +112,7 @@ CACHES = {"NLTK_DATA": "build/nltk_data", "TIKTOKEN_CACHE_DIR": "build/tiktoken"
 CHECKS = ("course_reference",)
 # At most budget.cores() busy cores (CPU_SHARE, default 80%): a plain script
 # counts one, a script with its own worker pool counts the whole budget.
-POOLED = {"week03_tails"}
+POOLED = {"week03_tails", "week07_comention"}
 
 
 def span(seconds):

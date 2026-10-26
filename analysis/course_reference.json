@@ -160,6 +160,78 @@
    "ours": 1,
    "digits": 0,
    "match": true
+  },
+  {
+   "brief": "https://sunelehmann.com/socialgraphs2026-web/weeks/week7.html",
+   "what": "Spider-Man page: sentences",
+   "course": 445,
+   "ours": 445,
+   "digits": 0,
+   "match": true
+  },
+  {
+   "brief": "https://sunelehmann.com/socialgraphs2026-web/weeks/week7.html",
+   "what": "Spider-Man page: PERSON spans",
+   "course": 635,
+   "ours": 635,
+   "digits": 0,
+   "match": true
+  },
+  {
+   "brief": "https://sunelehmann.com/socialgraphs2026-web/weeks/week7.html",
+   "what": "Spider-Man page: distinct PERSON spans",
+   "course": 179,
+   "ours": 179,
+   "digits": 0,
+   "match": true
+  },
+  {
+   "brief": "https://sunelehmann.com/socialgraphs2026-web/weeks/week7.html",
+   "what": "Spider-Man co-mention network: nodes",
+   "course": 146,
+   "ours": 146,
+   "digits": 0,
+   "match": true
+  },
+  {
+   "brief": "https://sunelehmann.com/socialgraphs2026-web/weeks/week7.html",
+   "what": "Spider-Man co-mention network: edges",
+   "course": 293,
+   "ours": 293,
+   "digits": 0,
+   "match": true
+  },
+  {
+   "brief": "https://sunelehmann.com/socialgraphs2026-web/weeks/week7.html",
+   "what": "Spider-Man top pair: Mary Jane and Peter",
+   "course": 15,
+   "ours": 15,
+   "digits": 0,
+   "match": true
+  },
+  {
+   "brief": "https://sunelehmann.com/socialgraphs2026-web/weeks/week7.html",
+   "what": "Spider-Man pair: Peter Parker and Spider-Man",
+   "course": 14,
+   "ours": 14,
+   "digits": 0,
+   "match": true
+  },
+  {
+   "brief": "https://sunelehmann.com/socialgraphs2026-web/weeks/week7.html",
+   "what": "Spider-Man pair: Peter and Spider-Man",
+   "course": 9,
+   "ours": 9,
+   "digits": 0,
+   "match": true
+  },
+  {
+   "brief": "https://sunelehmann.com/socialgraphs2026-web/weeks/week7.html",
+   "what": "Spider-Man pair: Ditko and Lee",
+   "course": 8,
+   "ours": 8,
+   "digits": 0,
+   "match": true
   }
  ],
  "text": {

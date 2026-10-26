@@ -20,7 +20,7 @@ const TERMS = keys(section("TERMS"), "\\{ word:");
 const files = codeFiles(join(ROOT, "src"), /\.(tsx|ts|js)$/).map((path) => [relative(ROOT, path), readFileSync(path, "utf8")]);
 
 // Pages whose terms all come from the shared glossary.
-const CONVERTED = /^src\/app\/\((week0[12356]|week06alternative)\)\//;
+const CONVERTED = /^src\/app\/\((week0[123567]|week06alternative)\)\//;
 
 test("the glossary has entries to check against", () => {
   assert.ok(EXPLAIN.length > 50 && TERMS.length > 50, `${EXPLAIN.length} explanations, ${TERMS.length} terms`);
