@@ -9,7 +9,8 @@ import { type CSSProperties, type ReactNode, useCallback, useEffect, useRef, use
 import { SegmentedControl } from "@/components/post/SegmentedControl";
 import { Face } from "@/kit/Portrait";
 import { Rules, StartRow } from "@/features/cold-read/StartPanel";
-import { ScoreBox, Stat } from "@/features/cold-read/LevelParts";
+import { ScoreBox, SkipLevel, Stat } from "@/features/cold-read/LevelParts";
+import { FINISH, type Level } from "@/features/cold-read/levels";
 import { reducedMotion, useFlip } from "./flip";
 import { useRound, useWires } from "./useRound";
 import {
@@ -193,7 +194,7 @@ function Bin({ data, round, group, block, placed, onDrop, active }: {
 }
 
 /** The scoreboard across the top of a round. */
-function Hud({ round, score, placed, total }: { round: number; score: number; placed: number; total: number }) {
+function Hud({ round, score, placed, total, level }: { round: number; score: number; placed: number; total: number; level?: Level }) {
   const r = ROUND[ROUND_KEYS[round]];
   return (
     <header className="cr-hud tt-hud">
@@ -209,14 +210,15 @@ function Hud({ round, score, placed, total }: { round: number; score: number; pl
       <Stat label="Placed">
         {placed} / {total}
       </Stat>
-      <ScoreBox points={score} />
+      <ScoreBox points={score} level={level} />
+      <SkipLevel points={score} level={level} />
     </header>
   );
 }
 
 /** One round: the well with the falling block, the three groups, the next pages and the feedback. */
-function Round({ data, round, clock, total, onPoints, onDone }: {
-  data: TopicTetrisData; round: number; clock: () => number; total: number;
+function Round({ data, round, clock, total, level, onPoints, onDone }: {
+  data: TopicTetrisData; round: number; clock: () => number; total: number; level?: Level;
   onPoints: (points: number, right: boolean, fast: boolean) => void; onDone: () => void;
 }) {
   const pages = data.pages;
@@ -238,7 +240,7 @@ function Round({ data, round, clock, total, onPoints, onDone }: {
 
   return (
     <section className="cr-table tt-table" aria-label={`Round ${round + 1}: ${ROUND[ROUND_KEYS[round]].title}`}>
-      <Hud round={round} score={total} placed={placed.length} total={pages.length} />
+      <Hud round={round} score={total} placed={placed.length} total={pages.length} level={level} />
       <div className="tt-play">
         <div className="tt-board" ref={board}>
           {block && !waiting ? (
@@ -566,7 +568,7 @@ function Quiz({ onNext }: { onNext: () => void }) {
 }
 
 /** The ending: the takeaway, the score per round and the ways out. */
-function End({ data, score, tallies, home, onAgain }: { data: TopicTetrisData; score: number; tallies: Tally[]; home: string; onAgain: () => void }) {
+function End({ data, score, tallies, home, onAgain, level }: { data: TopicTetrisData; score: number; tallies: Tally[]; home: string; onAgain: () => void; level?: Level }) {
   return (
     <section className="tt-end" aria-labelledby="tt-end-title">
       <div className="tt-end-copy">
@@ -599,12 +601,14 @@ function End({ data, score, tallies, home, onAgain }: { data: TopicTetrisData; s
           ))}
         </ul>
         <p>You found 3 different ways to organise the same corpus.</p>
-        <button type="button" className="cr-go" onClick={onAgain} autoFocus>
-          Play again
+        <button type="button" className="cr-go" onClick={level ? () => level.onDone(score) : onAgain} autoFocus>
+          {level ? FINISH : "Play again"}
         </button>
-        <a className="tt-back" href={home}>
-          Back to Log-Log Legends
-        </a>
+        {level ? null : (
+          <a className="tt-back" href={home}>
+            Back to Log-Log Legends
+          </a>
+        )}
       </aside>
     </section>
   );
@@ -635,7 +639,8 @@ export function Real({ data }: { data: TopicTetrisData }) {
   );
 }
 
-export function TopicTetrisGame({ data, clock = Date.now, home = "../../" }: { data: TopicTetrisData; clock?: () => number; home?: string }) {
+// As a campaign level it plays all three rounds, and the ending's button hands its points to level.onDone.
+export function TopicTetrisGame({ data, clock = Date.now, home = "../../", level }: { data: TopicTetrisData; clock?: () => number; home?: string; level?: Level }) {
   const [stage, setStage] = useState<Stage>({ kind: "intro" });
   const [tallies, setTallies] = useState<Tally[]>([EMPTY_TALLY, EMPTY_TALLY, EMPTY_TALLY]);
   const [score, setScoreState] = useState(0);
@@ -689,6 +694,8 @@ export function TopicTetrisGame({ data, clock = Date.now, home = "../../" }: { d
             ]}
           />
           <StartRow option={<p className="cr-note">{data.pages.length} pages · 3 rounds</p>}>
+            {/* The intro has no scoreboard, so a level's skip sits beside Start. */}
+            <SkipLevel points={0} level={level} />
             <button type="button" className="cr-go" onClick={() => play(0)}>
               Start game →
             </button>
@@ -704,6 +711,7 @@ export function TopicTetrisGame({ data, clock = Date.now, home = "../../" }: { d
         round={stage.round}
         clock={clock}
         total={score}
+        level={level}
         onPoints={onPoints}
         onDone={() => {
           setScore(scoreRef.current + POINTS.round);
@@ -714,7 +722,7 @@ export function TopicTetrisGame({ data, clock = Date.now, home = "../../" }: { d
   if (stage.kind === "done")
     return (
       <section className="cr-table tt-table">
-        <Hud round={stage.round} score={score} placed={data.pages.length} total={data.pages.length} />
+        <Hud round={stage.round} score={score} placed={data.pages.length} total={data.pages.length} level={level} />
         <RoundDone
           data={data}
           round={stage.round}
@@ -743,7 +751,7 @@ export function TopicTetrisGame({ data, clock = Date.now, home = "../../" }: { d
     );
   return (
     <section className="cr-table tt-table">
-      <End data={data} score={score} tallies={tallies} home={home} onAgain={restart} />
+      <End data={data} score={score} tallies={tallies} home={home} onAgain={restart} level={level} />
     </section>
   );
 }

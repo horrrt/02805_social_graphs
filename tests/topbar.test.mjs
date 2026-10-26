@@ -39,7 +39,7 @@ const served = (route) => `https://example.org${BASE}${route === "404" ? "missin
 const target = (href, route) => new URL(href, served(route)).pathname.slice(BASE.length);
 
 test("the routes cover every kind of page", () => {
-  for (const route of ["", "weeks/week01/", "weeks/week02/", "weeks/week04/", "weeks/week06/", "weeks/week06/alternative/", "weeks/week06/essentials/", "play/", "play/cold-read/", "play/cold-read/round-3/", "styleguide/kit/states/", "mockups/", "prototypes/screen-test/"])
+  for (const route of ["", "weeks/week01/", "weeks/week02/", "weeks/week04/", "weeks/week06/", "weeks/week06/alternative/", "weeks/week06/essentials/", "weeks/week07/", "play/", "play/cold-read/", "play/cold-read/round-3/", "styleguide/kit/states/", "mockups/", "prototypes/screen-test/"])
     assert.ok(routes.includes(route), `no page.tsx found for /${route}`);
 });
 

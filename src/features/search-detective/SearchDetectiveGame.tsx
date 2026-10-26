@@ -6,7 +6,8 @@
 // takes the cases as a prop so tests can play it without a page.
 import { type KeyboardEvent, type Ref, useEffect, useRef, useState } from "react";
 import { CosineFormula } from "@/features/cold-read/Formulas";
-import { BestBox, ScoreBox, Stat, useBest, useKeys } from "@/features/cold-read/LevelParts";
+import { BestBox, ScoreBox, SkipLevel, Stat, useBest, useKeys } from "@/features/cold-read/LevelParts";
+import { FINISH, type Level } from "@/features/cold-read/levels";
 import { Rules } from "@/features/cold-read/StartPanel";
 import { byMapDistance, bySimilarity, keywordMisses, keywordTop, maxScore, POINTS, ROUNDS, type Round, scorePick, shared } from "./rounds";
 
@@ -56,13 +57,15 @@ export function bonusReason(round: Round) {
   return top.length > 1 ? "keyword search cannot single this one out" : `keyword search ranks ${top[0].title} first`;
 }
 
-export function SearchDetectiveGame({ rounds = ROUNDS }: { rounds?: Round[] }) {
+// As a campaign level it plays the first `level.items` cases, and the final screen hands its points to level.onDone.
+export function SearchDetectiveGame({ rounds: all = ROUNDS, level }: { rounds?: Round[]; level?: Level }) {
+  const rounds = level ? all.slice(0, level.items) : all;
   const [phase, setPhase] = useState<Phase>("intro");
   const [at, setAt] = useState(0);
   const [pick, setPick] = useState<string | null>(null);
   const [results, setResults] = useState<Result[]>([]);
   const [selected, setSelected] = useState<string>("query");
-  const { best, record } = useBest(BEST);
+  const { best, record } = useBest(level ? null : BEST);
   const [isNew, setIsNew] = useState(false);
   const action = useRef<HTMLButtonElement>(null);
   const table = useRef<HTMLElement>(null);
@@ -115,19 +118,20 @@ export function SearchDetectiveGame({ rounds = ROUNDS }: { rounds?: Round[] }) {
   return (
     <section className="cr-table sd-table" id="search-detective" aria-label="Semantic Search Detective" ref={table}>
       <div className="cr-hud" role="status">
-        <ScoreBox points={total} />
+        <ScoreBox points={total} level={level} />
         <Stat label="Case">
           {phase === "intro" ? 0 : Math.min(at + 1, rounds.length)}/{rounds.length}
         </Stat>
         <Stat label="Last case">{results.length ? `+${results.at(-1)!.points}` : "–"}</Stat>
-        <BestBox best={best} />
+        <BestBox best={best} level={level} />
+        <SkipLevel points={total} level={level} />
       </div>
 
       {phase === "intro" ? (
         <div className="cr-start">
           <p className="sd-lede">
-            You are a search detective. For each query, pick the document that answers it best, even when it uses none of the query’s words. Six cases,
-            about four minutes.
+            You are a search detective. For each query, pick the document that answers it best, even when it uses none of the query’s words. {rounds.length} cases,
+            about {Math.max(1, Math.round((rounds.length * 2) / 3))} minutes.
           </p>
           <Intro />
           <div className="cr-start-row">
@@ -143,7 +147,7 @@ export function SearchDetectiveGame({ rounds = ROUNDS }: { rounds?: Round[] }) {
           </div>
         </div>
       ) : phase === "done" ? (
-        <Final rounds={rounds} results={results} total={total} isNew={isNew} again={start} buttonRef={action} />
+        <Final rounds={rounds} results={results} total={total} isNew={isNew} again={level ? () => level.onDone(total) : start} inCampaign={Boolean(level)} buttonRef={action} />
       ) : (
         <div className="sd-case">
           <Progress rounds={rounds} at={at} phase={phase} results={results} />
@@ -402,8 +406,8 @@ function Explore({ round, pick, selected, onSelect, first, last, onNext, buttonR
   );
 }
 
-function Final({ rounds, results, total, isNew, again, buttonRef }: {
-  rounds: Round[]; results: Result[]; total: number; isNew: boolean; again: () => void; buttonRef: Ref<HTMLButtonElement>;
+function Final({ rounds, results, total, isNew, again, inCampaign, buttonRef }: {
+  rounds: Round[]; results: Result[]; total: number; isNew: boolean; again: () => void; inCampaign: boolean; buttonRef: Ref<HTMLButtonElement>;
 }) {
   const max = maxScore(rounds);
   const solved = results.filter((r) => r.grade === "hit").length;
@@ -448,7 +452,7 @@ function Final({ rounds, results, total, isNew, again, buttonRef }: {
       </div>
       <div className="sd-actions">
         <button ref={buttonRef} type="button" className="cr-go" onClick={again}>
-          Play again
+          {inCampaign ? FINISH : "Play again"}
         </button>
       </div>
     </div>

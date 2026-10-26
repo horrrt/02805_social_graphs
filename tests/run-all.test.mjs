@@ -39,6 +39,7 @@ const EXCLUDED = {
   "analysis/week06_gender.py": `${LIVE} (Wikidata): week06_gender.parquet`,
   "analysis/week06_cold_read_images.py": `${LIVE} (Wikipedia pageimages): week06_cold_read_images.json`,
   "analysis/week06_portraits.py": "downloads portrait images once and skips those on disk; not a derived number",
+  "analysis/week07_wikidata_names.py": `${LIVE} (Wikidata): week07_wikidata_names.parquet`,
 };
 
 test("every analysis/weekNN_*.py script is in a runner or excluded with a reason", () => {

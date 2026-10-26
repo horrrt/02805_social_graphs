@@ -136,10 +136,18 @@ export default function Page() {
                   </a>
                 </li>
                 <li>
-                  <a data-week="6" className="week-card current" href="weeks/week06/">
+                  <a data-week="6" className="week-card" href="weeks/week06/">
                     <span className="week-tag">Week 6 · What words mean</span>
                     <h3>Storm, Not Weather</h3>
                     <p className="week-q">What do counts, weights and word vectors give away about 303 Marvel pages?</p>
+                    <span className="week-go">Read the post →</span>
+                  </a>
+                </li>
+                <li>
+                  <a data-week="7" className="week-card current" href="weeks/week07/">
+                    <span className="week-tag">Week 7 · NLP III</span>
+                    <h3>Named Together</h3>
+                    <p className="week-q">When a Marvel page names two characters in one sentence, are their pages linked?</p>
                     <span className="week-go">Read the post →</span>
                   </a>
                 </li>
@@ -153,14 +161,24 @@ export default function Page() {
             </div>
             <div className="home-half">
               <ol className="week-grid">
-                {GAME_WEEKS.map(({ week, label, href, games }) => (
+                {GAME_WEEKS.map(({ week, label, href, games, campaign }) => (
                   <li key={week}>
-                    <a className="week-card" href={href ?? games[0].href}>
-                      <span className="week-tag">{label}</span>
-                      <h3>{games.length === 1 ? games[0].name : `${games.length} games`}</h3>
-                      <p className="week-q">{games.length === 1 ? games[0].blurb : games.map((g) => g.name).join(" · ")}</p>
-                      <span className="week-go">{games.length === 1 ? "Play →" : "Play them all →"}</span>
-                    </a>
+                    {campaign ? (
+                      // A week with a campaign shows the campaign: one game per section, played in a row.
+                      <a className="week-card" data-campaign href={campaign.href}>
+                        <span className="week-tag">{label} · Campaign</span>
+                        <h3>{campaign.name}</h3>
+                        <p className="week-q">{`${campaign.levels.length} levels, one per section: ${campaign.levels.join(" · ")}`}</p>
+                        <span className="week-go">Play the campaign →</span>
+                      </a>
+                    ) : (
+                      <a className="week-card" href={href ?? games[0].href}>
+                        <span className="week-tag">{label}</span>
+                        <h3>{games.length === 1 ? games[0].name : `${games.length} games`}</h3>
+                        <p className="week-q">{games.length === 1 ? games[0].blurb : games.map((g) => g.name).join(" · ")}</p>
+                        <span className="week-go">{games.length === 1 ? "Play →" : "Play them all →"}</span>
+                      </a>
+                    )}
                   </li>
                 ))}
               </ol>

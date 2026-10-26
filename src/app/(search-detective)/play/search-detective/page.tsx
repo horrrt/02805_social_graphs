@@ -6,7 +6,14 @@ import { SearchDetective } from "@/features/search-detective/SearchDetective";
 export default function Page() {
   return (
     <>
-      <PostTopbar root="../../" />
+      <PostTopbar
+        root="../../"
+        tools={
+          <nav className="cr-rounds" aria-label="Game tools">
+            <a href="../week07/">Campaign</a>
+          </nav>
+        }
+      />
       <div className="cr-shell">
         <main id="main">
           <p className="cr-h">Week 7 · Search by meaning</p>

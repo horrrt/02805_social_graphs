@@ -87,7 +87,19 @@ export const WEEKS = [
       blurb: "What do counts, weights and word vectors give away about 303 Marvel pages?",
     },
   },
-  { n: 7, courseTitle: "NLP III", short: "NLP III", date: "2026-10-21", status: "coming" },
+  {
+    n: 7,
+    courseTitle: "NLP III",
+    short: "NLP III",
+    date: "2026-10-21",
+    status: "live",
+    cabinet: {
+      name: "Named Together",
+      marquee: "NAMED TOGETHER",
+      href: "weeks/week07/",
+      blurb: "Two Marvel characters in one sentence. Are their pages linked?",
+    },
+  },
   {
     n: 8,
     courseTitle: "Networks × language",
