@@ -23,6 +23,7 @@ and limitations.
 - `data/` and `scripts/`: datasets, collection tools and exporters.
 - `tests/`: checks for the website, data and documentation.
 - `project/` and `review/`: methods, project notes, guidelines and review records.
+- Final-project groundwork, with its own source catalogue: [EU founder exits](https://github.com/angelabuxo/EU-founder-exits).
 
 ## How the site is built
 

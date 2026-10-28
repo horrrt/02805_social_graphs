@@ -99,6 +99,13 @@ def render_markdown():
         "Source of truth: [`scripts/migration/sources.py`](../scripts/migration/sources.py). "
         "Regenerate with `python scripts/migration/render_catalogue.py`.\n"
     )
+    out.append(
+        "Related catalogue: [EU founder exits](https://github.com/angelabuxo/EU-founder-exits) "
+        "lists the registers, funding databases and news archives for measuring what European "
+        "startup founders take home, each checked for whether its terms allow collection "
+        "([`data/founder_sources.tsv`](https://github.com/angelabuxo/EU-founder-exits/blob/main/data/founder_sources.tsv), "
+        "same columns as this catalogue plus `terms`).\n"
+    )
 
     out.append("## Contents\n")
     for key, title, blurb in sources.FAMILIES:
