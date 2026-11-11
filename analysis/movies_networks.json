@@ -1,0 +1,5365 @@
+{
+ "Avengers: Endgame": {
+  "title": "Avengers: Endgame",
+  "source": "https://imsdb.com/Movie%20Scripts/Avengers%3A%20Endgame%20Script.html",
+  "scenes": 130,
+  "issue": null,
+  "nodes": {
+   "A1 STEVE": {
+    "lines": 8,
+    "scenes": 3
+   },
+   "A1 THOR": {
+    "lines": 5,
+    "scenes": 3
+   },
+   "A1 TONY": {
+    "lines": 3,
+    "scenes": 2
+   },
+   "AGENT SITWELL": {
+    "lines": 4,
+    "scenes": 1
+   },
+   "AKIHIKO": {
+    "lines": 3,
+    "scenes": 1
+   },
+   "ALEXANDER PIERCE": {
+    "lines": 5,
+    "scenes": 2
+   },
+   "ANCIENT ONE": {
+    "lines": 25,
+    "scenes": 2
+   },
+   "ASTRAL BANNER": {
+    "lines": 10,
+    "scenes": 2
+   },
+   "BAD NEBULA": {
+    "lines": 22,
+    "scenes": 9
+   },
+   "BROCK RUMLOW": {
+    "lines": 3,
+    "scenes": 2
+   },
+   "BRUCE BANNER": {
+    "lines": 8,
+    "scenes": 3
+   },
+   "BUCKY BARNES": {
+    "lines": 3,
+    "scenes": 1
+   },
+   "CAROL DANVERS": {
+    "lines": 19,
+    "scenes": 11
+   },
+   "CLINT BARTON": {
+    "lines": 53,
+    "scenes": 19
+   },
+   "EBONY MAW": {
+    "lines": 7,
+    "scenes": 3
+   },
+   "FEMALE SHIELD AGENT": {
+    "lines": 4,
+    "scenes": 2
+   },
+   "FRIDAY": {
+    "lines": 6,
+    "scenes": 4
+   },
+   "FRIGGA": {
+    "lines": 19,
+    "scenes": 4
+   },
+   "GAMORA": {
+    "lines": 22,
+    "scenes": 9
+   },
+   "GRIEVING MAN": {
+    "lines": 4,
+    "scenes": 1
+   },
+   "HANK PYM": {
+    "lines": 5,
+    "scenes": 1
+   },
+   "HAPPY HOGAN": {
+    "lines": 4,
+    "scenes": 1
+   },
+   "HOWARD STARK": {
+    "lines": 19,
+    "scenes": 3
+   },
+   "KORG": {
+    "lines": 5,
+    "scenes": 1
+   },
+   "LILA BARTON": {
+    "lines": 3,
+    "scenes": 2
+   },
+   "M.P.": {
+    "lines": 4,
+    "scenes": 1
+   },
+   "MALE AGENT": {
+    "lines": 3,
+    "scenes": 1
+   },
+   "MORGAN STARK": {
+    "lines": 13,
+    "scenes": 5
+   },
+   "NATASHA": {
+    "lines": 74,
+    "scenes": 22
+   },
+   "NEBULA": {
+    "lines": 37,
+    "scenes": 23
+   },
+   "OKOYE": {
+    "lines": 3,
+    "scenes": 2
+   },
+   "OLD STEVE": {
+    "lines": 10,
+    "scenes": 1
+   },
+   "PEGGY CARTER": {
+    "lines": 5,
+    "scenes": 1
+   },
+   "PEPPER POTTS": {
+    "lines": 16,
+    "scenes": 4
+   },
+   "PETER PARKER": {
+    "lines": 8,
+    "scenes": 3
+   },
+   "QUILL": {
+    "lines": 10,
+    "scenes": 4
+   },
+   "RED SKULL": {
+    "lines": 5,
+    "scenes": 2
+   },
+   "RHODEY": {
+    "lines": 48,
+    "scenes": 20
+   },
+   "ROCKET": {
+    "lines": 59,
+    "scenes": 21
+   },
+   "RONIN": {
+    "lines": 3,
+    "scenes": 1
+   },
+   "SAM WILSON": {
+    "lines": 16,
+    "scenes": 4
+   },
+   "SCOTT LANG": {
+    "lines": 75,
+    "scenes": 28
+   },
+   "SMART HULK": {
+    "lines": 84,
+    "scenes": 23
+   },
+   "STEVE": {
+    "lines": 119,
+    "scenes": 40
+   },
+   "THANOS": {
+    "lines": 50,
+    "scenes": 10
+   },
+   "THOR": {
+    "lines": 76,
+    "scenes": 15
+   },
+   "TONY": {
+    "lines": 154,
+    "scenes": 53
+   },
+   "VALKYRIE": {
+    "lines": 12,
+    "scenes": 3
+   },
+   "WANDA": {
+    "lines": 4,
+    "scenes": 3
+   }
+  },
+  "edges": [
+   [
+    "A1 STEVE",
+    "A1 THOR",
+    1
+   ],
+   [
+    "A1 STEVE",
+    "A1 TONY",
+    1
+   ],
+   [
+    "A1 STEVE",
+    "BROCK RUMLOW",
+    1
+   ],
+   [
+    "A1 STEVE",
+    "SCOTT LANG",
+    2
+   ],
+   [
+    "A1 STEVE",
+    "STEVE",
+    2
+   ],
+   [
+    "A1 STEVE",
+    "TONY",
+    2
+   ],
+   [
+    "A1 THOR",
+    "A1 TONY",
+    2
+   ],
+   [
+    "A1 THOR",
+    "ALEXANDER PIERCE",
+    2
+   ],
+   [
+    "A1 THOR",
+    "BROCK RUMLOW",
+    1
+   ],
+   [
+    "A1 THOR",
+    "SCOTT LANG",
+    2
+   ],
+   [
+    "A1 THOR",
+    "TONY",
+    3
+   ],
+   [
+    "A1 TONY",
+    "ALEXANDER PIERCE",
+    1
+   ],
+   [
+    "A1 TONY",
+    "BROCK RUMLOW",
+    1
+   ],
+   [
+    "A1 TONY",
+    "SCOTT LANG",
+    1
+   ],
+   [
+    "A1 TONY",
+    "TONY",
+    2
+   ],
+   [
+    "AGENT SITWELL",
+    "BROCK RUMLOW",
+    1
+   ],
+   [
+    "AGENT SITWELL",
+    "STEVE",
+    1
+   ],
+   [
+    "AKIHIKO",
+    "CLINT BARTON",
+    1
+   ],
+   [
+    "AKIHIKO",
+    "NATASHA",
+    1
+   ],
+   [
+    "AKIHIKO",
+    "RONIN",
+    1
+   ],
+   [
+    "ALEXANDER PIERCE",
+    "SCOTT LANG",
+    1
+   ],
+   [
+    "ALEXANDER PIERCE",
+    "TONY",
+    2
+   ],
+   [
+    "ANCIENT ONE",
+    "ASTRAL BANNER",
+    2
+   ],
+   [
+    "ANCIENT ONE",
+    "SMART HULK",
+    2
+   ],
+   [
+    "ASTRAL BANNER",
+    "SMART HULK",
+    2
+   ],
+   [
+    "BAD NEBULA",
+    "BRUCE BANNER",
+    1
+   ],
+   [
+    "BAD NEBULA",
+    "CLINT BARTON",
+    1
+   ],
+   [
+    "BAD NEBULA",
+    "EBONY MAW",
+    1
+   ],
+   [
+    "BAD NEBULA",
+    "GAMORA",
+    6
+   ],
+   [
+    "BAD NEBULA",
+    "NATASHA",
+    1
+   ],
+   [
+    "BAD NEBULA",
+    "NEBULA",
+    4
+   ],
+   [
+    "BAD NEBULA",
+    "RHODEY",
+    2
+   ],
+   [
+    "BAD NEBULA",
+    "THANOS",
+    3
+   ],
+   [
+    "BROCK RUMLOW",
+    "SCOTT LANG",
+    1
+   ],
+   [
+    "BROCK RUMLOW",
+    "STEVE",
+    1
+   ],
+   [
+    "BROCK RUMLOW",
+    "TONY",
+    1
+   ],
+   [
+    "BRUCE BANNER",
+    "CAROL DANVERS",
+    2
+   ],
+   [
+    "BRUCE BANNER",
+    "EBONY MAW",
+    1
+   ],
+   [
+    "BRUCE BANNER",
+    "GAMORA",
+    1
+   ],
+   [
+    "BRUCE BANNER",
+    "NATASHA",
+    3
+   ],
+   [
+    "BRUCE BANNER",
+    "NEBULA",
+    3
+   ],
+   [
+    "BRUCE BANNER",
+    "RHODEY",
+    3
+   ],
+   [
+    "BRUCE BANNER",
+    "ROCKET",
+    2
+   ],
+   [
+    "BRUCE BANNER",
+    "STEVE",
+    2
+   ],
+   [
+    "BRUCE BANNER",
+    "THANOS",
+    2
+   ],
+   [
+    "BRUCE BANNER",
+    "THOR",
+    2
+   ],
+   [
+    "BUCKY BARNES",
+    "SAM WILSON",
+    1
+   ],
+   [
+    "BUCKY BARNES",
+    "SMART HULK",
+    1
+   ],
+   [
+    "BUCKY BARNES",
+    "STEVE",
+    1
+   ],
+   [
+    "CAROL DANVERS",
+    "FRIDAY",
+    2
+   ],
+   [
+    "CAROL DANVERS",
+    "NATASHA",
+    6
+   ],
+   [
+    "CAROL DANVERS",
+    "NEBULA",
+    6
+   ],
+   [
+    "CAROL DANVERS",
+    "OKOYE",
+    2
+   ],
+   [
+    "CAROL DANVERS",
+    "PEPPER POTTS",
+    2
+   ],
+   [
+    "CAROL DANVERS",
+    "PETER PARKER",
+    2
+   ],
+   [
+    "CAROL DANVERS",
+    "QUILL",
+    1
+   ],
+   [
+    "CAROL DANVERS",
+    "RHODEY",
+    6
+   ],
+   [
+    "CAROL DANVERS",
+    "ROCKET",
+    6
+   ],
+   [
+    "CAROL DANVERS",
+    "SAM WILSON",
+    1
+   ],
+   [
+    "CAROL DANVERS",
+    "SCOTT LANG",
+    2
+   ],
+   [
+    "CAROL DANVERS",
+    "STEVE",
+    8
+   ],
+   [
+    "CAROL DANVERS",
+    "THANOS",
+    3
+   ],
+   [
+    "CAROL DANVERS",
+    "THOR",
+    2
+   ],
+   [
+    "CAROL DANVERS",
+    "TONY",
+    3
+   ],
+   [
+    "CAROL DANVERS",
+    "WANDA",
+    2
+   ],
+   [
+    "CLINT BARTON",
+    "EBONY MAW",
+    2
+   ],
+   [
+    "CLINT BARTON",
+    "GAMORA",
+    3
+   ],
+   [
+    "CLINT BARTON",
+    "LILA BARTON",
+    2
+   ],
+   [
+    "CLINT BARTON",
+    "NATASHA",
+    8
+   ],
+   [
+    "CLINT BARTON",
+    "NEBULA",
+    4
+   ],
+   [
+    "CLINT BARTON",
+    "PETER PARKER",
+    1
+   ],
+   [
+    "CLINT BARTON",
+    "QUILL",
+    1
+   ],
+   [
+    "CLINT BARTON",
+    "RED SKULL",
+    2
+   ],
+   [
+    "CLINT BARTON",
+    "RHODEY",
+    3
+   ],
+   [
+    "CLINT BARTON",
+    "ROCKET",
+    2
+   ],
+   [
+    "CLINT BARTON",
+    "RONIN",
+    1
+   ],
+   [
+    "CLINT BARTON",
+    "SAM WILSON",
+    1
+   ],
+   [
+    "CLINT BARTON",
+    "SCOTT LANG",
+    4
+   ],
+   [
+    "CLINT BARTON",
+    "SMART HULK",
+    7
+   ],
+   [
+    "CLINT BARTON",
+    "STEVE",
+    6
+   ],
+   [
+    "CLINT BARTON",
+    "THANOS",
+    2
+   ],
+   [
+    "CLINT BARTON",
+    "THOR",
+    3
+   ],
+   [
+    "CLINT BARTON",
+    "TONY",
+    7
+   ],
+   [
+    "CLINT BARTON",
+    "VALKYRIE",
+    1
+   ],
+   [
+    "CLINT BARTON",
+    "WANDA",
+    1
+   ],
+   [
+    "EBONY MAW",
+    "GAMORA",
+    3
+   ],
+   [
+    "EBONY MAW",
+    "NATASHA",
+    1
+   ],
+   [
+    "EBONY MAW",
+    "NEBULA",
+    2
+   ],
+   [
+    "EBONY MAW",
+    "PETER PARKER",
+    1
+   ],
+   [
+    "EBONY MAW",
+    "QUILL",
+    1
+   ],
+   [
+    "EBONY MAW",
+    "RHODEY",
+    1
+   ],
+   [
+    "EBONY MAW",
+    "SAM WILSON",
+    1
+   ],
+   [
+    "EBONY MAW",
+    "SCOTT LANG",
+    1
+   ],
+   [
+    "EBONY MAW",
+    "SMART HULK",
+    2
+   ],
+   [
+    "EBONY MAW",
+    "STEVE",
+    2
+   ],
+   [
+    "EBONY MAW",
+    "THANOS",
+    3
+   ],
+   [
+    "EBONY MAW",
+    "THOR",
+    1
+   ],
+   [
+    "EBONY MAW",
+    "TONY",
+    2
+   ],
+   [
+    "EBONY MAW",
+    "VALKYRIE",
+    1
+   ],
+   [
+    "FEMALE SHIELD AGENT",
+    "M.P.",
+    1
+   ],
+   [
+    "FEMALE SHIELD AGENT",
+    "STEVE",
+    1
+   ],
+   [
+    "FEMALE SHIELD AGENT",
+    "TONY",
+    1
+   ],
+   [
+    "FRIDAY",
+    "MORGAN STARK",
+    1
+   ],
+   [
+    "FRIDAY",
+    "OKOYE",
+    1
+   ],
+   [
+    "FRIDAY",
+    "PEPPER POTTS",
+    2
+   ],
+   [
+    "FRIDAY",
+    "PETER PARKER",
+    2
+   ],
+   [
+    "FRIDAY",
+    "QUILL",
+    1
+   ],
+   [
+    "FRIDAY",
+    "ROCKET",
+    1
+   ],
+   [
+    "FRIDAY",
+    "SAM WILSON",
+    1
+   ],
+   [
+    "FRIDAY",
+    "SCOTT LANG",
+    1
+   ],
+   [
+    "FRIDAY",
+    "STEVE",
+    1
+   ],
+   [
+    "FRIDAY",
+    "THANOS",
+    2
+   ],
+   [
+    "FRIDAY",
+    "TONY",
+    3
+   ],
+   [
+    "FRIDAY",
+    "WANDA",
+    2
+   ],
+   [
+    "FRIGGA",
+    "ROCKET",
+    2
+   ],
+   [
+    "FRIGGA",
+    "THOR",
+    4
+   ],
+   [
+    "GAMORA",
+    "NATASHA",
+    1
+   ],
+   [
+    "GAMORA",
+    "NEBULA",
+    5
+   ],
+   [
+    "GAMORA",
+    "PETER PARKER",
+    1
+   ],
+   [
+    "GAMORA",
+    "QUILL",
+    1
+   ],
+   [
+    "GAMORA",
+    "RHODEY",
+    2
+   ],
+   [
+    "GAMORA",
+    "SAM WILSON",
+    1
+   ],
+   [
+    "GAMORA",
+    "SCOTT LANG",
+    1
+   ],
+   [
+    "GAMORA",
+    "SMART HULK",
+    2
+   ],
+   [
+    "GAMORA",
+    "STEVE",
+    2
+   ],
+   [
+    "GAMORA",
+    "THANOS",
+    4
+   ],
+   [
+    "GAMORA",
+    "THOR",
+    1
+   ],
+   [
+    "GAMORA",
+    "TONY",
+    2
+   ],
+   [
+    "GAMORA",
+    "VALKYRIE",
+    1
+   ],
+   [
+    "GRIEVING MAN",
+    "STEVE",
+    1
+   ],
+   [
+    "HANK PYM",
+    "STEVE",
+    1
+   ],
+   [
+    "HAPPY HOGAN",
+    "MORGAN STARK",
+    1
+   ],
+   [
+    "HOWARD STARK",
+    "TONY",
+    3
+   ],
+   [
+    "KORG",
+    "ROCKET",
+    1
+   ],
+   [
+    "KORG",
+    "SMART HULK",
+    1
+   ],
+   [
+    "KORG",
+    "THOR",
+    1
+   ],
+   [
+    "MALE AGENT",
+    "PEGGY CARTER",
+    1
+   ],
+   [
+    "MORGAN STARK",
+    "NATASHA",
+    1
+   ],
+   [
+    "MORGAN STARK",
+    "SCOTT LANG",
+    1
+   ],
+   [
+    "MORGAN STARK",
+    "STEVE",
+    1
+   ],
+   [
+    "MORGAN STARK",
+    "TONY",
+    4
+   ],
+   [
+    "NATASHA",
+    "NEBULA",
+    8
+   ],
+   [
+    "NATASHA",
+    "OKOYE",
+    1
+   ],
+   [
+    "NATASHA",
+    "RED SKULL",
+    2
+   ],
+   [
+    "NATASHA",
+    "RHODEY",
+    8
+   ],
+   [
+    "NATASHA",
+    "ROCKET",
+    6
+   ],
+   [
+    "NATASHA",
+    "RONIN",
+    1
+   ],
+   [
+    "NATASHA",
+    "SCOTT LANG",
+    8
+   ],
+   [
+    "NATASHA",
+    "SMART HULK",
+    5
+   ],
+   [
+    "NATASHA",
+    "STEVE",
+    13
+   ],
+   [
+    "NATASHA",
+    "THANOS",
+    2
+   ],
+   [
+    "NATASHA",
+    "THOR",
+    3
+   ],
+   [
+    "NATASHA",
+    "TONY",
+    6
+   ],
+   [
+    "NEBULA",
+    "OKOYE",
+    1
+   ],
+   [
+    "NEBULA",
+    "PETER PARKER",
+    1
+   ],
+   [
+    "NEBULA",
+    "QUILL",
+    3
+   ],
+   [
+    "NEBULA",
+    "RHODEY",
+    12
+   ],
+   [
+    "NEBULA",
+    "ROCKET",
+    6
+   ],
+   [
+    "NEBULA",
+    "SAM WILSON",
+    1
+   ],
+   [
+    "NEBULA",
+    "SCOTT LANG",
+    5
+   ],
+   [
+    "NEBULA",
+    "SMART HULK",
+    3
+   ],
+   [
+    "NEBULA",
+    "STEVE",
+    6
+   ],
+   [
+    "NEBULA",
+    "THANOS",
+    5
+   ],
+   [
+    "NEBULA",
+    "THOR",
+    4
+   ],
+   [
+    "NEBULA",
+    "TONY",
+    2
+   ],
+   [
+    "NEBULA",
+    "VALKYRIE",
+    1
+   ],
+   [
+    "OKOYE",
+    "PEPPER POTTS",
+    1
+   ],
+   [
+    "OKOYE",
+    "PETER PARKER",
+    1
+   ],
+   [
+    "OKOYE",
+    "QUILL",
+    1
+   ],
+   [
+    "OKOYE",
+    "RHODEY",
+    1
+   ],
+   [
+    "OKOYE",
+    "ROCKET",
+    1
+   ],
+   [
+    "OKOYE",
+    "SCOTT LANG",
+    2
+   ],
+   [
+    "OKOYE",
+    "STEVE",
+    1
+   ],
+   [
+    "OKOYE",
+    "THANOS",
+    1
+   ],
+   [
+    "OKOYE",
+    "TONY",
+    1
+   ],
+   [
+    "OKOYE",
+    "WANDA",
+    1
+   ],
+   [
+    "OLD STEVE",
+    "SAM WILSON",
+    1
+   ],
+   [
+    "PEPPER POTTS",
+    "PETER PARKER",
+    2
+   ],
+   [
+    "PEPPER POTTS",
+    "QUILL",
+    1
+   ],
+   [
+    "PEPPER POTTS",
+    "ROCKET",
+    1
+   ],
+   [
+    "PEPPER POTTS",
+    "SAM WILSON",
+    1
+   ],
+   [
+    "PEPPER POTTS",
+    "SCOTT LANG",
+    1
+   ],
+   [
+    "PEPPER POTTS",
+    "STEVE",
+    2
+   ],
+   [
+    "PEPPER POTTS",
+    "THANOS",
+    2
+   ],
+   [
+    "PEPPER POTTS",
+    "TONY",
+    4
+   ],
+   [
+    "PEPPER POTTS",
+    "WANDA",
+    2
+   ],
+   [
+    "PETER PARKER",
+    "QUILL",
+    2
+   ],
+   [
+    "PETER PARKER",
+    "ROCKET",
+    1
+   ],
+   [
+    "PETER PARKER",
+    "SAM WILSON",
+    2
+   ],
+   [
+    "PETER PARKER",
+    "SCOTT LANG",
+    2
+   ],
+   [
+    "PETER PARKER",
+    "SMART HULK",
+    1
+   ],
+   [
+    "PETER PARKER",
+    "STEVE",
+    2
+   ],
+   [
+    "PETER PARKER",
+    "THANOS",
+    3
+   ],
+   [
+    "PETER PARKER",
+    "THOR",
+    1
+   ],
+   [
+    "PETER PARKER",
+    "TONY",
+    3
+   ],
+   [
+    "PETER PARKER",
+    "VALKYRIE",
+    1
+   ],
+   [
+    "PETER PARKER",
+    "WANDA",
+    2
+   ],
+   [
+    "QUILL",
+    "RHODEY",
+    1
+   ],
+   [
+    "QUILL",
+    "ROCKET",
+    1
+   ],
+   [
+    "QUILL",
+    "SAM WILSON",
+    1
+   ],
+   [
+    "QUILL",
+    "SCOTT LANG",
+    2
+   ],
+   [
+    "QUILL",
+    "SMART HULK",
+    1
+   ],
+   [
+    "QUILL",
+    "STEVE",
+    1
+   ],
+   [
+    "QUILL",
+    "THANOS",
+    2
+   ],
+   [
+    "QUILL",
+    "THOR",
+    2
+   ],
+   [
+    "QUILL",
+    "TONY",
+    2
+   ],
+   [
+    "QUILL",
+    "VALKYRIE",
+    1
+   ],
+   [
+    "QUILL",
+    "WANDA",
+    1
+   ],
+   [
+    "RHODEY",
+    "ROCKET",
+    7
+   ],
+   [
+    "RHODEY",
+    "SCOTT LANG",
+    6
+   ],
+   [
+    "RHODEY",
+    "SMART HULK",
+    5
+   ],
+   [
+    "RHODEY",
+    "STEVE",
+    9
+   ],
+   [
+    "RHODEY",
+    "THANOS",
+    4
+   ],
+   [
+    "RHODEY",
+    "THOR",
+    4
+   ],
+   [
+    "RHODEY",
+    "TONY",
+    3
+   ],
+   [
+    "ROCKET",
+    "SAM WILSON",
+    1
+   ],
+   [
+    "ROCKET",
+    "SCOTT LANG",
+    5
+   ],
+   [
+    "ROCKET",
+    "SMART HULK",
+    7
+   ],
+   [
+    "ROCKET",
+    "STEVE",
+    7
+   ],
+   [
+    "ROCKET",
+    "THANOS",
+    2
+   ],
+   [
+    "ROCKET",
+    "THOR",
+    8
+   ],
+   [
+    "ROCKET",
+    "TONY",
+    6
+   ],
+   [
+    "ROCKET",
+    "VALKYRIE",
+    2
+   ],
+   [
+    "ROCKET",
+    "WANDA",
+    1
+   ],
+   [
+    "SAM WILSON",
+    "SCOTT LANG",
+    1
+   ],
+   [
+    "SAM WILSON",
+    "SMART HULK",
+    2
+   ],
+   [
+    "SAM WILSON",
+    "STEVE",
+    3
+   ],
+   [
+    "SAM WILSON",
+    "THANOS",
+    2
+   ],
+   [
+    "SAM WILSON",
+    "THOR",
+    1
+   ],
+   [
+    "SAM WILSON",
+    "TONY",
+    2
+   ],
+   [
+    "SAM WILSON",
+    "VALKYRIE",
+    1
+   ],
+   [
+    "SAM WILSON",
+    "WANDA",
+    1
+   ],
+   [
+    "SCOTT LANG",
+    "SMART HULK",
+    9
+   ],
+   [
+    "SCOTT LANG",
+    "STEVE",
+    12
+   ],
+   [
+    "SCOTT LANG",
+    "THANOS",
+    2
+   ],
+   [
+    "SCOTT LANG",
+    "THOR",
+    3
+   ],
+   [
+    "SCOTT LANG",
+    "TONY",
+    12
+   ],
+   [
+    "SCOTT LANG",
+    "VALKYRIE",
+    1
+   ],
+   [
+    "SCOTT LANG",
+    "WANDA",
+    1
+   ],
+   [
+    "SMART HULK",
+    "STEVE",
+    13
+   ],
+   [
+    "SMART HULK",
+    "THANOS",
+    2
+   ],
+   [
+    "SMART HULK",
+    "THOR",
+    6
+   ],
+   [
+    "SMART HULK",
+    "TONY",
+    10
+   ],
+   [
+    "SMART HULK",
+    "VALKYRIE",
+    2
+   ],
+   [
+    "STEVE",
+    "THANOS",
+    5
+   ],
+   [
+    "STEVE",
+    "THOR",
+    8
+   ],
+   [
+    "STEVE",
+    "TONY",
+    22
+   ],
+   [
+    "STEVE",
+    "VALKYRIE",
+    1
+   ],
+   [
+    "STEVE",
+    "WANDA",
+    1
+   ],
+   [
+    "THANOS",
+    "THOR",
+    2
+   ],
+   [
+    "THANOS",
+    "TONY",
+    5
+   ],
+   [
+    "THANOS",
+    "VALKYRIE",
+    1
+   ],
+   [
+    "THANOS",
+    "WANDA",
+    2
+   ],
+   [
+    "THOR",
+    "TONY",
+    6
+   ],
+   [
+    "THOR",
+    "VALKYRIE",
+    2
+   ],
+   [
+    "TONY",
+    "VALKYRIE",
+    1
+   ],
+   [
+    "TONY",
+    "WANDA",
+    2
+   ]
+  ]
+ },
+ "Barbie": {
+  "title": "Barbie",
+  "source": "https://imsdb.com/Movie%20Scripts/Barbie%20Script.html",
+  "scenes": 73,
+  "issue": null,
+  "nodes": {
+   "AARON DINKINS": {
+    "lines": 21,
+    "scenes": 5
+   },
+   "ALLAN": {
+    "lines": 18,
+    "scenes": 5
+   },
+   "BARBIE ALEXANDRA": {
+    "lines": 13,
+    "scenes": 7
+   },
+   "BARBIE ANA": {
+    "lines": 5,
+    "scenes": 4
+   },
+   "BARBIE EMMA": {
+    "lines": 14,
+    "scenes": 7
+   },
+   "BARBIE HARI": {
+    "lines": 11,
+    "scenes": 6
+   },
+   "BARBIE ISSA": {
+    "lines": 20,
+    "scenes": 6
+   },
+   "BARBIE MARGOT": {
+    "lines": 253,
+    "scenes": 40
+   },
+   "BARBIE MERMAID": {
+    "lines": 3,
+    "scenes": 3
+   },
+   "BARBIE RITU": {
+    "lines": 5,
+    "scenes": 5
+   },
+   "BARBIE SHARON": {
+    "lines": 12,
+    "scenes": 6
+   },
+   "DAN AT THE FBI": {
+    "lines": 4,
+    "scenes": 1
+   },
+   "FEMALE DOCTOR": {
+    "lines": 4,
+    "scenes": 1
+   },
+   "FEMALE PEDESTRIAN": {
+    "lines": 4,
+    "scenes": 2
+   },
+   "GLORIA": {
+    "lines": 77,
+    "scenes": 17
+   },
+   "HELEN MIRREN": {
+    "lines": 18,
+    "scenes": 9
+   },
+   "KEN KINGSLEY": {
+    "lines": 20,
+    "scenes": 10
+   },
+   "KEN NCUTI": {
+    "lines": 7,
+    "scenes": 4
+   },
+   "KEN RYAN GOSLING": {
+    "lines": 121,
+    "scenes": 27
+   },
+   "KEN SCOTT": {
+    "lines": 8,
+    "scenes": 5
+   },
+   "KEN SIMU": {
+    "lines": 16,
+    "scenes": 6
+   },
+   "MATTEL AGENT": {
+    "lines": 4,
+    "scenes": 1
+   },
+   "MATTEL CEO": {
+    "lines": 51,
+    "scenes": 10
+   },
+   "NERDY WELL MEANING DAD": {
+    "lines": 3,
+    "scenes": 2
+   },
+   "OFFICE EMPLOYEE": {
+    "lines": 3,
+    "scenes": 1
+   },
+   "OTHER GIRL": {
+    "lines": 4,
+    "scenes": 1
+   },
+   "RUTH": {
+    "lines": 15,
+    "scenes": 3
+   },
+   "SASHA": {
+    "lines": 55,
+    "scenes": 14
+   },
+   "WEIRD BARBIE": {
+    "lines": 49,
+    "scenes": 6
+   }
+  },
+  "edges": [
+   [
+    "AARON DINKINS",
+    "BARBIE MARGOT",
+    1
+   ],
+   [
+    "AARON DINKINS",
+    "DAN AT THE FBI",
+    1
+   ],
+   [
+    "AARON DINKINS",
+    "GLORIA",
+    2
+   ],
+   [
+    "AARON DINKINS",
+    "MATTEL CEO",
+    3
+   ],
+   [
+    "AARON DINKINS",
+    "SASHA",
+    1
+   ],
+   [
+    "ALLAN",
+    "BARBIE ALEXANDRA",
+    2
+   ],
+   [
+    "ALLAN",
+    "BARBIE ANA",
+    2
+   ],
+   [
+    "ALLAN",
+    "BARBIE EMMA",
+    3
+   ],
+   [
+    "ALLAN",
+    "BARBIE HARI",
+    3
+   ],
+   [
+    "ALLAN",
+    "BARBIE ISSA",
+    1
+   ],
+   [
+    "ALLAN",
+    "BARBIE MARGOT",
+    4
+   ],
+   [
+    "ALLAN",
+    "BARBIE MERMAID",
+    1
+   ],
+   [
+    "ALLAN",
+    "BARBIE RITU",
+    1
+   ],
+   [
+    "ALLAN",
+    "BARBIE SHARON",
+    2
+   ],
+   [
+    "ALLAN",
+    "GLORIA",
+    3
+   ],
+   [
+    "ALLAN",
+    "HELEN MIRREN",
+    2
+   ],
+   [
+    "ALLAN",
+    "KEN KINGSLEY",
+    4
+   ],
+   [
+    "ALLAN",
+    "KEN NCUTI",
+    1
+   ],
+   [
+    "ALLAN",
+    "KEN RYAN GOSLING",
+    3
+   ],
+   [
+    "ALLAN",
+    "KEN SCOTT",
+    1
+   ],
+   [
+    "ALLAN",
+    "KEN SIMU",
+    2
+   ],
+   [
+    "ALLAN",
+    "MATTEL CEO",
+    1
+   ],
+   [
+    "ALLAN",
+    "RUTH",
+    1
+   ],
+   [
+    "ALLAN",
+    "SASHA",
+    2
+   ],
+   [
+    "ALLAN",
+    "WEIRD BARBIE",
+    1
+   ],
+   [
+    "BARBIE ALEXANDRA",
+    "BARBIE ANA",
+    4
+   ],
+   [
+    "BARBIE ALEXANDRA",
+    "BARBIE EMMA",
+    5
+   ],
+   [
+    "BARBIE ALEXANDRA",
+    "BARBIE HARI",
+    5
+   ],
+   [
+    "BARBIE ALEXANDRA",
+    "BARBIE ISSA",
+    2
+   ],
+   [
+    "BARBIE ALEXANDRA",
+    "BARBIE MARGOT",
+    6
+   ],
+   [
+    "BARBIE ALEXANDRA",
+    "BARBIE MERMAID",
+    2
+   ],
+   [
+    "BARBIE ALEXANDRA",
+    "BARBIE RITU",
+    1
+   ],
+   [
+    "BARBIE ALEXANDRA",
+    "BARBIE SHARON",
+    5
+   ],
+   [
+    "BARBIE ALEXANDRA",
+    "GLORIA",
+    1
+   ],
+   [
+    "BARBIE ALEXANDRA",
+    "HELEN MIRREN",
+    2
+   ],
+   [
+    "BARBIE ALEXANDRA",
+    "KEN KINGSLEY",
+    4
+   ],
+   [
+    "BARBIE ALEXANDRA",
+    "KEN NCUTI",
+    3
+   ],
+   [
+    "BARBIE ALEXANDRA",
+    "KEN RYAN GOSLING",
+    5
+   ],
+   [
+    "BARBIE ALEXANDRA",
+    "KEN SCOTT",
+    3
+   ],
+   [
+    "BARBIE ALEXANDRA",
+    "KEN SIMU",
+    4
+   ],
+   [
+    "BARBIE ALEXANDRA",
+    "SASHA",
+    1
+   ],
+   [
+    "BARBIE ALEXANDRA",
+    "WEIRD BARBIE",
+    1
+   ],
+   [
+    "BARBIE ANA",
+    "BARBIE EMMA",
+    4
+   ],
+   [
+    "BARBIE ANA",
+    "BARBIE HARI",
+    3
+   ],
+   [
+    "BARBIE ANA",
+    "BARBIE ISSA",
+    1
+   ],
+   [
+    "BARBIE ANA",
+    "BARBIE MARGOT",
+    4
+   ],
+   [
+    "BARBIE ANA",
+    "BARBIE MERMAID",
+    2
+   ],
+   [
+    "BARBIE ANA",
+    "BARBIE SHARON",
+    4
+   ],
+   [
+    "BARBIE ANA",
+    "GLORIA",
+    1
+   ],
+   [
+    "BARBIE ANA",
+    "HELEN MIRREN",
+    2
+   ],
+   [
+    "BARBIE ANA",
+    "KEN KINGSLEY",
+    4
+   ],
+   [
+    "BARBIE ANA",
+    "KEN NCUTI",
+    3
+   ],
+   [
+    "BARBIE ANA",
+    "KEN RYAN GOSLING",
+    3
+   ],
+   [
+    "BARBIE ANA",
+    "KEN SCOTT",
+    3
+   ],
+   [
+    "BARBIE ANA",
+    "KEN SIMU",
+    3
+   ],
+   [
+    "BARBIE ANA",
+    "SASHA",
+    1
+   ],
+   [
+    "BARBIE ANA",
+    "WEIRD BARBIE",
+    1
+   ],
+   [
+    "BARBIE EMMA",
+    "BARBIE HARI",
+    5
+   ],
+   [
+    "BARBIE EMMA",
+    "BARBIE ISSA",
+    2
+   ],
+   [
+    "BARBIE EMMA",
+    "BARBIE MARGOT",
+    6
+   ],
+   [
+    "BARBIE EMMA",
+    "BARBIE MERMAID",
+    2
+   ],
+   [
+    "BARBIE EMMA",
+    "BARBIE RITU",
+    1
+   ],
+   [
+    "BARBIE EMMA",
+    "BARBIE SHARON",
+    5
+   ],
+   [
+    "BARBIE EMMA",
+    "GLORIA",
+    3
+   ],
+   [
+    "BARBIE EMMA",
+    "HELEN MIRREN",
+    2
+   ],
+   [
+    "BARBIE EMMA",
+    "KEN KINGSLEY",
+    5
+   ],
+   [
+    "BARBIE EMMA",
+    "KEN NCUTI",
+    3
+   ],
+   [
+    "BARBIE EMMA",
+    "KEN RYAN GOSLING",
+    5
+   ],
+   [
+    "BARBIE EMMA",
+    "KEN SCOTT",
+    3
+   ],
+   [
+    "BARBIE EMMA",
+    "KEN SIMU",
+    4
+   ],
+   [
+    "BARBIE EMMA",
+    "SASHA",
+    1
+   ],
+   [
+    "BARBIE EMMA",
+    "WEIRD BARBIE",
+    2
+   ],
+   [
+    "BARBIE HARI",
+    "BARBIE ISSA",
+    2
+   ],
+   [
+    "BARBIE HARI",
+    "BARBIE MARGOT",
+    6
+   ],
+   [
+    "BARBIE HARI",
+    "BARBIE MERMAID",
+    1
+   ],
+   [
+    "BARBIE HARI",
+    "BARBIE RITU",
+    1
+   ],
+   [
+    "BARBIE HARI",
+    "BARBIE SHARON",
+    4
+   ],
+   [
+    "BARBIE HARI",
+    "GLORIA",
+    2
+   ],
+   [
+    "BARBIE HARI",
+    "HELEN MIRREN",
+    2
+   ],
+   [
+    "BARBIE HARI",
+    "KEN KINGSLEY",
+    4
+   ],
+   [
+    "BARBIE HARI",
+    "KEN NCUTI",
+    2
+   ],
+   [
+    "BARBIE HARI",
+    "KEN RYAN GOSLING",
+    5
+   ],
+   [
+    "BARBIE HARI",
+    "KEN SCOTT",
+    2
+   ],
+   [
+    "BARBIE HARI",
+    "KEN SIMU",
+    3
+   ],
+   [
+    "BARBIE HARI",
+    "SASHA",
+    1
+   ],
+   [
+    "BARBIE HARI",
+    "WEIRD BARBIE",
+    1
+   ],
+   [
+    "BARBIE ISSA",
+    "BARBIE MARGOT",
+    4
+   ],
+   [
+    "BARBIE ISSA",
+    "BARBIE MERMAID",
+    1
+   ],
+   [
+    "BARBIE ISSA",
+    "BARBIE RITU",
+    1
+   ],
+   [
+    "BARBIE ISSA",
+    "BARBIE SHARON",
+    2
+   ],
+   [
+    "BARBIE ISSA",
+    "GLORIA",
+    3
+   ],
+   [
+    "BARBIE ISSA",
+    "HELEN MIRREN",
+    2
+   ],
+   [
+    "BARBIE ISSA",
+    "KEN KINGSLEY",
+    2
+   ],
+   [
+    "BARBIE ISSA",
+    "KEN NCUTI",
+    1
+   ],
+   [
+    "BARBIE ISSA",
+    "KEN RYAN GOSLING",
+    3
+   ],
+   [
+    "BARBIE ISSA",
+    "KEN SCOTT",
+    1
+   ],
+   [
+    "BARBIE ISSA",
+    "KEN SIMU",
+    3
+   ],
+   [
+    "BARBIE ISSA",
+    "MATTEL CEO",
+    1
+   ],
+   [
+    "BARBIE ISSA",
+    "RUTH",
+    1
+   ],
+   [
+    "BARBIE ISSA",
+    "SASHA",
+    3
+   ],
+   [
+    "BARBIE ISSA",
+    "WEIRD BARBIE",
+    2
+   ],
+   [
+    "BARBIE MARGOT",
+    "BARBIE MERMAID",
+    3
+   ],
+   [
+    "BARBIE MARGOT",
+    "BARBIE RITU",
+    1
+   ],
+   [
+    "BARBIE MARGOT",
+    "BARBIE SHARON",
+    5
+   ],
+   [
+    "BARBIE MARGOT",
+    "FEMALE PEDESTRIAN",
+    1
+   ],
+   [
+    "BARBIE MARGOT",
+    "GLORIA",
+    12
+   ],
+   [
+    "BARBIE MARGOT",
+    "HELEN MIRREN",
+    6
+   ],
+   [
+    "BARBIE MARGOT",
+    "KEN KINGSLEY",
+    7
+   ],
+   [
+    "BARBIE MARGOT",
+    "KEN NCUTI",
+    3
+   ],
+   [
+    "BARBIE MARGOT",
+    "KEN RYAN GOSLING",
+    19
+   ],
+   [
+    "BARBIE MARGOT",
+    "KEN SCOTT",
+    3
+   ],
+   [
+    "BARBIE MARGOT",
+    "KEN SIMU",
+    6
+   ],
+   [
+    "BARBIE MARGOT",
+    "MATTEL AGENT",
+    1
+   ],
+   [
+    "BARBIE MARGOT",
+    "MATTEL CEO",
+    3
+   ],
+   [
+    "BARBIE MARGOT",
+    "NERDY WELL MEANING DAD",
+    2
+   ],
+   [
+    "BARBIE MARGOT",
+    "OTHER GIRL",
+    1
+   ],
+   [
+    "BARBIE MARGOT",
+    "RUTH",
+    3
+   ],
+   [
+    "BARBIE MARGOT",
+    "SASHA",
+    13
+   ],
+   [
+    "BARBIE MARGOT",
+    "WEIRD BARBIE",
+    5
+   ],
+   [
+    "BARBIE MERMAID",
+    "BARBIE SHARON",
+    2
+   ],
+   [
+    "BARBIE MERMAID",
+    "GLORIA",
+    1
+   ],
+   [
+    "BARBIE MERMAID",
+    "HELEN MIRREN",
+    1
+   ],
+   [
+    "BARBIE MERMAID",
+    "KEN KINGSLEY",
+    2
+   ],
+   [
+    "BARBIE MERMAID",
+    "KEN NCUTI",
+    2
+   ],
+   [
+    "BARBIE MERMAID",
+    "KEN RYAN GOSLING",
+    2
+   ],
+   [
+    "BARBIE MERMAID",
+    "KEN SCOTT",
+    2
+   ],
+   [
+    "BARBIE MERMAID",
+    "KEN SIMU",
+    2
+   ],
+   [
+    "BARBIE MERMAID",
+    "SASHA",
+    1
+   ],
+   [
+    "BARBIE RITU",
+    "GLORIA",
+    1
+   ],
+   [
+    "BARBIE RITU",
+    "KEN KINGSLEY",
+    1
+   ],
+   [
+    "BARBIE RITU",
+    "KEN RYAN GOSLING",
+    1
+   ],
+   [
+    "BARBIE RITU",
+    "KEN SCOTT",
+    2
+   ],
+   [
+    "BARBIE SHARON",
+    "GLORIA",
+    1
+   ],
+   [
+    "BARBIE SHARON",
+    "HELEN MIRREN",
+    2
+   ],
+   [
+    "BARBIE SHARON",
+    "KEN KINGSLEY",
+    4
+   ],
+   [
+    "BARBIE SHARON",
+    "KEN NCUTI",
+    3
+   ],
+   [
+    "BARBIE SHARON",
+    "KEN RYAN GOSLING",
+    4
+   ],
+   [
+    "BARBIE SHARON",
+    "KEN SCOTT",
+    3
+   ],
+   [
+    "BARBIE SHARON",
+    "KEN SIMU",
+    4
+   ],
+   [
+    "BARBIE SHARON",
+    "SASHA",
+    1
+   ],
+   [
+    "BARBIE SHARON",
+    "WEIRD BARBIE",
+    1
+   ],
+   [
+    "FEMALE DOCTOR",
+    "KEN RYAN GOSLING",
+    1
+   ],
+   [
+    "FEMALE PEDESTRIAN",
+    "GLORIA",
+    1
+   ],
+   [
+    "FEMALE PEDESTRIAN",
+    "KEN RYAN GOSLING",
+    2
+   ],
+   [
+    "FEMALE PEDESTRIAN",
+    "MATTEL AGENT",
+    1
+   ],
+   [
+    "FEMALE PEDESTRIAN",
+    "SASHA",
+    1
+   ],
+   [
+    "GLORIA",
+    "HELEN MIRREN",
+    3
+   ],
+   [
+    "GLORIA",
+    "KEN KINGSLEY",
+    4
+   ],
+   [
+    "GLORIA",
+    "KEN NCUTI",
+    1
+   ],
+   [
+    "GLORIA",
+    "KEN RYAN GOSLING",
+    7
+   ],
+   [
+    "GLORIA",
+    "KEN SCOTT",
+    1
+   ],
+   [
+    "GLORIA",
+    "KEN SIMU",
+    3
+   ],
+   [
+    "GLORIA",
+    "MATTEL AGENT",
+    1
+   ],
+   [
+    "GLORIA",
+    "MATTEL CEO",
+    3
+   ],
+   [
+    "GLORIA",
+    "NERDY WELL MEANING DAD",
+    2
+   ],
+   [
+    "GLORIA",
+    "RUTH",
+    1
+   ],
+   [
+    "GLORIA",
+    "SASHA",
+    12
+   ],
+   [
+    "GLORIA",
+    "WEIRD BARBIE",
+    4
+   ],
+   [
+    "HELEN MIRREN",
+    "KEN KINGSLEY",
+    3
+   ],
+   [
+    "HELEN MIRREN",
+    "KEN NCUTI",
+    2
+   ],
+   [
+    "HELEN MIRREN",
+    "KEN RYAN GOSLING",
+    4
+   ],
+   [
+    "HELEN MIRREN",
+    "KEN SCOTT",
+    2
+   ],
+   [
+    "HELEN MIRREN",
+    "KEN SIMU",
+    3
+   ],
+   [
+    "HELEN MIRREN",
+    "MATTEL CEO",
+    1
+   ],
+   [
+    "HELEN MIRREN",
+    "NERDY WELL MEANING DAD",
+    1
+   ],
+   [
+    "HELEN MIRREN",
+    "RUTH",
+    1
+   ],
+   [
+    "HELEN MIRREN",
+    "SASHA",
+    3
+   ],
+   [
+    "HELEN MIRREN",
+    "WEIRD BARBIE",
+    3
+   ],
+   [
+    "KEN KINGSLEY",
+    "KEN NCUTI",
+    4
+   ],
+   [
+    "KEN KINGSLEY",
+    "KEN RYAN GOSLING",
+    9
+   ],
+   [
+    "KEN KINGSLEY",
+    "KEN SCOTT",
+    3
+   ],
+   [
+    "KEN KINGSLEY",
+    "KEN SIMU",
+    4
+   ],
+   [
+    "KEN KINGSLEY",
+    "MATTEL CEO",
+    1
+   ],
+   [
+    "KEN KINGSLEY",
+    "RUTH",
+    1
+   ],
+   [
+    "KEN KINGSLEY",
+    "SASHA",
+    3
+   ],
+   [
+    "KEN KINGSLEY",
+    "WEIRD BARBIE",
+    2
+   ],
+   [
+    "KEN NCUTI",
+    "KEN RYAN GOSLING",
+    4
+   ],
+   [
+    "KEN NCUTI",
+    "KEN SCOTT",
+    3
+   ],
+   [
+    "KEN NCUTI",
+    "KEN SIMU",
+    3
+   ],
+   [
+    "KEN NCUTI",
+    "SASHA",
+    1
+   ],
+   [
+    "KEN NCUTI",
+    "WEIRD BARBIE",
+    1
+   ],
+   [
+    "KEN RYAN GOSLING",
+    "KEN SCOTT",
+    3
+   ],
+   [
+    "KEN RYAN GOSLING",
+    "KEN SIMU",
+    6
+   ],
+   [
+    "KEN RYAN GOSLING",
+    "MATTEL AGENT",
+    1
+   ],
+   [
+    "KEN RYAN GOSLING",
+    "MATTEL CEO",
+    1
+   ],
+   [
+    "KEN RYAN GOSLING",
+    "OFFICE EMPLOYEE",
+    1
+   ],
+   [
+    "KEN RYAN GOSLING",
+    "RUTH",
+    1
+   ],
+   [
+    "KEN RYAN GOSLING",
+    "SASHA",
+    6
+   ],
+   [
+    "KEN RYAN GOSLING",
+    "WEIRD BARBIE",
+    2
+   ],
+   [
+    "KEN SCOTT",
+    "KEN SIMU",
+    3
+   ],
+   [
+    "KEN SCOTT",
+    "SASHA",
+    1
+   ],
+   [
+    "KEN SCOTT",
+    "WEIRD BARBIE",
+    1
+   ],
+   [
+    "KEN SIMU",
+    "MATTEL CEO",
+    1
+   ],
+   [
+    "KEN SIMU",
+    "RUTH",
+    1
+   ],
+   [
+    "KEN SIMU",
+    "SASHA",
+    3
+   ],
+   [
+    "KEN SIMU",
+    "WEIRD BARBIE",
+    2
+   ],
+   [
+    "MATTEL AGENT",
+    "SASHA",
+    1
+   ],
+   [
+    "MATTEL CEO",
+    "RUTH",
+    1
+   ],
+   [
+    "MATTEL CEO",
+    "SASHA",
+    2
+   ],
+   [
+    "MATTEL CEO",
+    "WEIRD BARBIE",
+    1
+   ],
+   [
+    "NERDY WELL MEANING DAD",
+    "SASHA",
+    2
+   ],
+   [
+    "OTHER GIRL",
+    "SASHA",
+    1
+   ],
+   [
+    "RUTH",
+    "SASHA",
+    1
+   ],
+   [
+    "RUTH",
+    "WEIRD BARBIE",
+    1
+   ],
+   [
+    "SASHA",
+    "WEIRD BARBIE",
+    3
+   ]
+  ]
+ },
+ "Godfather": {
+  "title": "Godfather",
+  "source": "https://imsdb.com/Movie%20Scripts/Godfather%20Script.html",
+  "scenes": 131,
+  "issue": null,
+  "nodes": {
+   "APPOLONIA": {
+    "lines": 3,
+    "scenes": 3
+   },
+   "BARZINI": {
+    "lines": 3,
+    "scenes": 1
+   },
+   "BONASERA": {
+    "lines": 18,
+    "scenes": 4
+   },
+   "CALO": {
+    "lines": 6,
+    "scenes": 5
+   },
+   "CARLO": {
+    "lines": 16,
+    "scenes": 8
+   },
+   "CLEMENZA": {
+    "lines": 46,
+    "scenes": 18
+   },
+   "CONNIE": {
+    "lines": 19,
+    "scenes": 7
+   },
+   "DON CORLEONE": {
+    "lines": 104,
+    "scenes": 25
+   },
+   "DON TOMMASSINO": {
+    "lines": 10,
+    "scenes": 2
+   },
+   "DRIVER": {
+    "lines": 3,
+    "scenes": 3
+   },
+   "FABRIZZIO": {
+    "lines": 18,
+    "scenes": 5
+   },
+   "FREDO": {
+    "lines": 16,
+    "scenes": 7
+   },
+   "GENCO": {
+    "lines": 3,
+    "scenes": 1
+   },
+   "GIRL": {
+    "lines": 3,
+    "scenes": 2
+   },
+   "HAGEN": {
+    "lines": 93,
+    "scenes": 32
+   },
+   "JOHNNY": {
+    "lines": 6,
+    "scenes": 3
+   },
+   "KAY": {
+    "lines": 62,
+    "scenes": 14
+   },
+   "LAMPONE": {
+    "lines": 3,
+    "scenes": 2
+   },
+   "LUCA": {
+    "lines": 5,
+    "scenes": 2
+   },
+   "MAMA": {
+    "lines": 11,
+    "scenes": 4
+   },
+   "MAN": {
+    "lines": 5,
+    "scenes": 4
+   },
+   "MCCLUSKEY": {
+    "lines": 9,
+    "scenes": 3
+   },
+   "MICHAEL": {
+    "lines": 210,
+    "scenes": 57
+   },
+   "MOE": {
+    "lines": 10,
+    "scenes": 1
+   },
+   "NAZORINE": {
+    "lines": 5,
+    "scenes": 1
+   },
+   "NERI": {
+    "lines": 5,
+    "scenes": 2
+   },
+   "NURSE": {
+    "lines": 6,
+    "scenes": 2
+   },
+   "PAULIE": {
+    "lines": 12,
+    "scenes": 6
+   },
+   "PRIEST": {
+    "lines": 6,
+    "scenes": 5
+   },
+   "SANDRA": {
+    "lines": 4,
+    "scenes": 2
+   },
+   "SOLLOZZO": {
+    "lines": 35,
+    "scenes": 11
+   },
+   "SONNY": {
+    "lines": 96,
+    "scenes": 22
+   },
+   "TESSIO": {
+    "lines": 17,
+    "scenes": 7
+   },
+   "VITELLI": {
+    "lines": 9,
+    "scenes": 1
+   },
+   "VOICE": {
+    "lines": 4,
+    "scenes": 2
+   },
+   "WOLTZ": {
+    "lines": 7,
+    "scenes": 2
+   }
+  },
+  "edges": [
+   [
+    "APPOLONIA",
+    "DON TOMMASSINO",
+    1
+   ],
+   [
+    "APPOLONIA",
+    "MICHAEL",
+    2
+   ],
+   [
+    "BARZINI",
+    "DON CORLEONE",
+    1
+   ],
+   [
+    "BONASERA",
+    "DON CORLEONE",
+    3
+   ],
+   [
+    "BONASERA",
+    "HAGEN",
+    2
+   ],
+   [
+    "CALO",
+    "FABRIZZIO",
+    2
+   ],
+   [
+    "CALO",
+    "MICHAEL",
+    3
+   ],
+   [
+    "CALO",
+    "VITELLI",
+    1
+   ],
+   [
+    "CARLO",
+    "CLEMENZA",
+    1
+   ],
+   [
+    "CARLO",
+    "CONNIE",
+    4
+   ],
+   [
+    "CARLO",
+    "DON CORLEONE",
+    1
+   ],
+   [
+    "CARLO",
+    "GIRL",
+    1
+   ],
+   [
+    "CARLO",
+    "HAGEN",
+    1
+   ],
+   [
+    "CARLO",
+    "MICHAEL",
+    4
+   ],
+   [
+    "CARLO",
+    "PAULIE",
+    1
+   ],
+   [
+    "CARLO",
+    "TESSIO",
+    1
+   ],
+   [
+    "CLEMENZA",
+    "DON CORLEONE",
+    1
+   ],
+   [
+    "CLEMENZA",
+    "HAGEN",
+    4
+   ],
+   [
+    "CLEMENZA",
+    "KAY",
+    1
+   ],
+   [
+    "CLEMENZA",
+    "LAMPONE",
+    2
+   ],
+   [
+    "CLEMENZA",
+    "MICHAEL",
+    7
+   ],
+   [
+    "CLEMENZA",
+    "PAULIE",
+    5
+   ],
+   [
+    "CLEMENZA",
+    "SANDRA",
+    1
+   ],
+   [
+    "CLEMENZA",
+    "SOLLOZZO",
+    1
+   ],
+   [
+    "CLEMENZA",
+    "SONNY",
+    6
+   ],
+   [
+    "CLEMENZA",
+    "TESSIO",
+    3
+   ],
+   [
+    "CLEMENZA",
+    "VOICE",
+    1
+   ],
+   [
+    "CONNIE",
+    "GIRL",
+    1
+   ],
+   [
+    "CONNIE",
+    "KAY",
+    1
+   ],
+   [
+    "CONNIE",
+    "MICHAEL",
+    2
+   ],
+   [
+    "CONNIE",
+    "SONNY",
+    2
+   ],
+   [
+    "DON CORLEONE",
+    "FREDO",
+    1
+   ],
+   [
+    "DON CORLEONE",
+    "GENCO",
+    1
+   ],
+   [
+    "DON CORLEONE",
+    "HAGEN",
+    9
+   ],
+   [
+    "DON CORLEONE",
+    "JOHNNY",
+    2
+   ],
+   [
+    "DON CORLEONE",
+    "KAY",
+    1
+   ],
+   [
+    "DON CORLEONE",
+    "LUCA",
+    1
+   ],
+   [
+    "DON CORLEONE",
+    "MICHAEL",
+    7
+   ],
+   [
+    "DON CORLEONE",
+    "NAZORINE",
+    1
+   ],
+   [
+    "DON CORLEONE",
+    "SANDRA",
+    1
+   ],
+   [
+    "DON CORLEONE",
+    "SOLLOZZO",
+    1
+   ],
+   [
+    "DON CORLEONE",
+    "SONNY",
+    3
+   ],
+   [
+    "DON CORLEONE",
+    "TESSIO",
+    1
+   ],
+   [
+    "DON TOMMASSINO",
+    "MICHAEL",
+    2
+   ],
+   [
+    "DRIVER",
+    "NERI",
+    1
+   ],
+   [
+    "DRIVER",
+    "SONNY",
+    1
+   ],
+   [
+    "FABRIZZIO",
+    "MICHAEL",
+    4
+   ],
+   [
+    "FABRIZZIO",
+    "VITELLI",
+    1
+   ],
+   [
+    "FREDO",
+    "HAGEN",
+    2
+   ],
+   [
+    "FREDO",
+    "JOHNNY",
+    1
+   ],
+   [
+    "FREDO",
+    "MICHAEL",
+    5
+   ],
+   [
+    "FREDO",
+    "MOE",
+    1
+   ],
+   [
+    "FREDO",
+    "SONNY",
+    1
+   ],
+   [
+    "GIRL",
+    "MICHAEL",
+    1
+   ],
+   [
+    "GIRL",
+    "TESSIO",
+    1
+   ],
+   [
+    "HAGEN",
+    "JOHNNY",
+    1
+   ],
+   [
+    "HAGEN",
+    "KAY",
+    3
+   ],
+   [
+    "HAGEN",
+    "LUCA",
+    1
+   ],
+   [
+    "HAGEN",
+    "MAMA",
+    1
+   ],
+   [
+    "HAGEN",
+    "MICHAEL",
+    8
+   ],
+   [
+    "HAGEN",
+    "NAZORINE",
+    1
+   ],
+   [
+    "HAGEN",
+    "PAULIE",
+    1
+   ],
+   [
+    "HAGEN",
+    "SOLLOZZO",
+    3
+   ],
+   [
+    "HAGEN",
+    "SONNY",
+    10
+   ],
+   [
+    "HAGEN",
+    "TESSIO",
+    4
+   ],
+   [
+    "HAGEN",
+    "WOLTZ",
+    1
+   ],
+   [
+    "JOHNNY",
+    "KAY",
+    1
+   ],
+   [
+    "JOHNNY",
+    "MICHAEL",
+    2
+   ],
+   [
+    "JOHNNY",
+    "MOE",
+    1
+   ],
+   [
+    "JOHNNY",
+    "SONNY",
+    1
+   ],
+   [
+    "KAY",
+    "MAMA",
+    2
+   ],
+   [
+    "KAY",
+    "MICHAEL",
+    11
+   ],
+   [
+    "KAY",
+    "SONNY",
+    1
+   ],
+   [
+    "LAMPONE",
+    "PAULIE",
+    2
+   ],
+   [
+    "LUCA",
+    "MAN",
+    1
+   ],
+   [
+    "LUCA",
+    "SOLLOZZO",
+    1
+   ],
+   [
+    "MAMA",
+    "SONNY",
+    1
+   ],
+   [
+    "MAN",
+    "MICHAEL",
+    1
+   ],
+   [
+    "MAN",
+    "SOLLOZZO",
+    1
+   ],
+   [
+    "MCCLUSKEY",
+    "MICHAEL",
+    3
+   ],
+   [
+    "MCCLUSKEY",
+    "SOLLOZZO",
+    2
+   ],
+   [
+    "MICHAEL",
+    "MOE",
+    1
+   ],
+   [
+    "MICHAEL",
+    "NERI",
+    1
+   ],
+   [
+    "MICHAEL",
+    "NURSE",
+    2
+   ],
+   [
+    "MICHAEL",
+    "PRIEST",
+    3
+   ],
+   [
+    "MICHAEL",
+    "SOLLOZZO",
+    3
+   ],
+   [
+    "MICHAEL",
+    "SONNY",
+    6
+   ],
+   [
+    "MICHAEL",
+    "TESSIO",
+    4
+   ],
+   [
+    "MICHAEL",
+    "VITELLI",
+    1
+   ],
+   [
+    "MICHAEL",
+    "VOICE",
+    1
+   ],
+   [
+    "NURSE",
+    "SONNY",
+    1
+   ],
+   [
+    "NURSE",
+    "VOICE",
+    1
+   ],
+   [
+    "PAULIE",
+    "SONNY",
+    2
+   ],
+   [
+    "SANDRA",
+    "SOLLOZZO",
+    1
+   ],
+   [
+    "SANDRA",
+    "SONNY",
+    2
+   ],
+   [
+    "SANDRA",
+    "VOICE",
+    1
+   ],
+   [
+    "SOLLOZZO",
+    "SONNY",
+    2
+   ],
+   [
+    "SOLLOZZO",
+    "VOICE",
+    1
+   ],
+   [
+    "SONNY",
+    "TESSIO",
+    2
+   ],
+   [
+    "SONNY",
+    "VOICE",
+    2
+   ]
+  ]
+ },
+ "Inception": {
+  "title": "Inception",
+  "source": "https://imsdb.com/Movie%20Scripts/Inception%20Script.html",
+  "scenes": 168,
+  "issue": null,
+  "nodes": {
+   "ARIADNE": {
+    "lines": 173,
+    "scenes": 49
+   },
+   "ARTHUR": {
+    "lines": 135,
+    "scenes": 48
+   },
+   "BLONDE": {
+    "lines": 5,
+    "scenes": 3
+   },
+   "BROWNING": {
+    "lines": 28,
+    "scenes": 7
+   },
+   "COBB": {
+    "lines": 454,
+    "scenes": 108
+   },
+   "EAMES": {
+    "lines": 89,
+    "scenes": 37
+   },
+   "ELDERLY BALD MAN": {
+    "lines": 3,
+    "scenes": 1
+   },
+   "ELDERLY JAPANESE MAN": {
+    "lines": 6,
+    "scenes": 2
+   },
+   "FATHER": {
+    "lines": 3,
+    "scenes": 2
+   },
+   "FISCHER": {
+    "lines": 68,
+    "scenes": 20
+   },
+   "FLIGHT ATTENDANT": {
+    "lines": 3,
+    "scenes": 2
+   },
+   "JAMES": {
+    "lines": 5,
+    "scenes": 1
+   },
+   "MAL": {
+    "lines": 64,
+    "scenes": 16
+   },
+   "MILES": {
+    "lines": 21,
+    "scenes": 2
+   },
+   "NASH": {
+    "lines": 6,
+    "scenes": 4
+   },
+   "SAITO": {
+    "lines": 81,
+    "scenes": 31
+   },
+   "YUSUF": {
+    "lines": 48,
+    "scenes": 17
+   }
+  },
+  "edges": [
+   [
+    "ARIADNE",
+    "ARTHUR",
+    17
+   ],
+   [
+    "ARIADNE",
+    "BROWNING",
+    1
+   ],
+   [
+    "ARIADNE",
+    "COBB",
+    38
+   ],
+   [
+    "ARIADNE",
+    "EAMES",
+    8
+   ],
+   [
+    "ARIADNE",
+    "FISCHER",
+    4
+   ],
+   [
+    "ARIADNE",
+    "MAL",
+    6
+   ],
+   [
+    "ARIADNE",
+    "MILES",
+    1
+   ],
+   [
+    "ARIADNE",
+    "SAITO",
+    3
+   ],
+   [
+    "ARIADNE",
+    "YUSUF",
+    3
+   ],
+   [
+    "ARTHUR",
+    "BROWNING",
+    1
+   ],
+   [
+    "ARTHUR",
+    "COBB",
+    26
+   ],
+   [
+    "ARTHUR",
+    "EAMES",
+    10
+   ],
+   [
+    "ARTHUR",
+    "FISCHER",
+    5
+   ],
+   [
+    "ARTHUR",
+    "JAMES",
+    1
+   ],
+   [
+    "ARTHUR",
+    "MAL",
+    1
+   ],
+   [
+    "ARTHUR",
+    "NASH",
+    2
+   ],
+   [
+    "ARTHUR",
+    "SAITO",
+    7
+   ],
+   [
+    "ARTHUR",
+    "YUSUF",
+    7
+   ],
+   [
+    "BLONDE",
+    "COBB",
+    1
+   ],
+   [
+    "BLONDE",
+    "FISCHER",
+    1
+   ],
+   [
+    "BROWNING",
+    "COBB",
+    3
+   ],
+   [
+    "BROWNING",
+    "EAMES",
+    2
+   ],
+   [
+    "BROWNING",
+    "FATHER",
+    1
+   ],
+   [
+    "BROWNING",
+    "FISCHER",
+    5
+   ],
+   [
+    "BROWNING",
+    "SAITO",
+    2
+   ],
+   [
+    "COBB",
+    "EAMES",
+    24
+   ],
+   [
+    "COBB",
+    "ELDERLY BALD MAN",
+    1
+   ],
+   [
+    "COBB",
+    "ELDERLY JAPANESE MAN",
+    1
+   ],
+   [
+    "COBB",
+    "FISCHER",
+    13
+   ],
+   [
+    "COBB",
+    "FLIGHT ATTENDANT",
+    1
+   ],
+   [
+    "COBB",
+    "JAMES",
+    1
+   ],
+   [
+    "COBB",
+    "MAL",
+    14
+   ],
+   [
+    "COBB",
+    "MILES",
+    2
+   ],
+   [
+    "COBB",
+    "NASH",
+    2
+   ],
+   [
+    "COBB",
+    "SAITO",
+    22
+   ],
+   [
+    "COBB",
+    "YUSUF",
+    9
+   ],
+   [
+    "EAMES",
+    "ELDERLY BALD MAN",
+    1
+   ],
+   [
+    "EAMES",
+    "FATHER",
+    1
+   ],
+   [
+    "EAMES",
+    "FISCHER",
+    4
+   ],
+   [
+    "EAMES",
+    "SAITO",
+    7
+   ],
+   [
+    "EAMES",
+    "YUSUF",
+    8
+   ],
+   [
+    "ELDERLY BALD MAN",
+    "SAITO",
+    1
+   ],
+   [
+    "ELDERLY BALD MAN",
+    "YUSUF",
+    1
+   ],
+   [
+    "FATHER",
+    "FISCHER",
+    2
+   ],
+   [
+    "FISCHER",
+    "FLIGHT ATTENDANT",
+    1
+   ],
+   [
+    "FISCHER",
+    "MAL",
+    1
+   ],
+   [
+    "FISCHER",
+    "SAITO",
+    1
+   ],
+   [
+    "MAL",
+    "SAITO",
+    1
+   ],
+   [
+    "NASH",
+    "SAITO",
+    1
+   ],
+   [
+    "SAITO",
+    "YUSUF",
+    3
+   ]
+  ]
+ },
+ "Oppenheimer": {
+  "title": "Oppenheimer",
+  "source": "https://imsdb.com/Movie%20Scripts/Oppenheimer%20Script.html",
+  "scenes": 242,
+  "issue": null,
+  "nodes": {
+   "ALVAREZ": {
+    "lines": 5,
+    "scenes": 2
+   },
+   "BAINBRIDGE": {
+    "lines": 4,
+    "scenes": 3
+   },
+   "BETHE": {
+    "lines": 17,
+    "scenes": 7
+   },
+   "BLACKETT": {
+    "lines": 10,
+    "scenes": 2
+   },
+   "BOHR": {
+    "lines": 24,
+    "scenes": 6
+   },
+   "BORDEN": {
+    "lines": 13,
+    "scenes": 3
+   },
+   "BUSH": {
+    "lines": 13,
+    "scenes": 5
+   },
+   "BYRNES": {
+    "lines": 3,
+    "scenes": 2
+   },
+   "CHAIRMAN": {
+    "lines": 7,
+    "scenes": 3
+   },
+   "CHARLOTTE": {
+    "lines": 5,
+    "scenes": 4
+   },
+   "CHEVALIER": {
+    "lines": 23,
+    "scenes": 5
+   },
+   "CONCERNED SCIENTIST": {
+    "lines": 3,
+    "scenes": 1
+   },
+   "CONDON": {
+    "lines": 10,
+    "scenes": 4
+   },
+   "COUNSEL": {
+    "lines": 8,
+    "scenes": 4
+   },
+   "EINSTEIN": {
+    "lines": 23,
+    "scenes": 6
+   },
+   "ELTENTON": {
+    "lines": 3,
+    "scenes": 1
+   },
+   "FERMI": {
+    "lines": 8,
+    "scenes": 5
+   },
+   "FEYNMAN": {
+    "lines": 7,
+    "scenes": 3
+   },
+   "FRANK": {
+    "lines": 20,
+    "scenes": 8
+   },
+   "FUCHS": {
+    "lines": 3,
+    "scenes": 2
+   },
+   "GARRISON": {
+    "lines": 39,
+    "scenes": 14
+   },
+   "GRAY": {
+    "lines": 16,
+    "scenes": 11
+   },
+   "GROVES": {
+    "lines": 119,
+    "scenes": 34
+   },
+   "HEISENBERG": {
+    "lines": 5,
+    "scenes": 1
+   },
+   "HILL": {
+    "lines": 13,
+    "scenes": 5
+   },
+   "HORNIG": {
+    "lines": 7,
+    "scenes": 3
+   },
+   "JOHNSON": {
+    "lines": 5,
+    "scenes": 1
+   },
+   "KISTIAKOWSKY": {
+    "lines": 14,
+    "scenes": 7
+   },
+   "KITTY": {
+    "lines": 77,
+    "scenes": 21
+   },
+   "LAWRENCE": {
+    "lines": 47,
+    "scenes": 14
+   },
+   "LOMANITZ": {
+    "lines": 6,
+    "scenes": 4
+   },
+   "LOUDSPEAKER": {
+    "lines": 9,
+    "scenes": 6
+   },
+   "MARSHALL": {
+    "lines": 4,
+    "scenes": 1
+   },
+   "MORRISON": {
+    "lines": 5,
+    "scenes": 2
+   },
+   "NICHOLS": {
+    "lines": 21,
+    "scenes": 8
+   },
+   "OPPENHEIMER": {
+    "lines": 578,
+    "scenes": 161
+   },
+   "PASH": {
+    "lines": 20,
+    "scenes": 7
+   },
+   "RABI": {
+    "lines": 54,
+    "scenes": 12
+   },
+   "ROBB": {
+    "lines": 123,
+    "scenes": 33
+   },
+   "RUTH": {
+    "lines": 5,
+    "scenes": 3
+   },
+   "SENATE AIDE": {
+    "lines": 53,
+    "scenes": 14
+   },
+   "SENATOR BARTLETT": {
+    "lines": 6,
+    "scenes": 3
+   },
+   "SENATOR MCGEE": {
+    "lines": 11,
+    "scenes": 8
+   },
+   "SENATOR PASTORE": {
+    "lines": 4,
+    "scenes": 4
+   },
+   "SERBER": {
+    "lines": 14,
+    "scenes": 8
+   },
+   "SNYDER": {
+    "lines": 4,
+    "scenes": 2
+   },
+   "STIMSON": {
+    "lines": 10,
+    "scenes": 1
+   },
+   "STRAUSS": {
+    "lines": 173,
+    "scenes": 46
+   },
+   "SZILARD": {
+    "lines": 7,
+    "scenes": 2
+   },
+   "TATLOCK": {
+    "lines": 38,
+    "scenes": 7
+   },
+   "TELLER": {
+    "lines": 36,
+    "scenes": 12
+   },
+   "TRUMAN": {
+    "lines": 18,
+    "scenes": 6
+   },
+   "VOLPE": {
+    "lines": 7,
+    "scenes": 5
+   },
+   "WEATHERMAN": {
+    "lines": 6,
+    "scenes": 2
+   },
+   "YOUNG OPPENHEIMER": {
+    "lines": 17,
+    "scenes": 3
+   }
+  },
+  "edges": [
+   [
+    "ALVAREZ",
+    "LAWRENCE",
+    2
+   ],
+   [
+    "ALVAREZ",
+    "OPPENHEIMER",
+    2
+   ],
+   [
+    "BAINBRIDGE",
+    "OPPENHEIMER",
+    1
+   ],
+   [
+    "BETHE",
+    "FUCHS",
+    1
+   ],
+   [
+    "BETHE",
+    "HORNIG",
+    1
+   ],
+   [
+    "BETHE",
+    "KISTIAKOWSKY",
+    2
+   ],
+   [
+    "BETHE",
+    "OPPENHEIMER",
+    6
+   ],
+   [
+    "BETHE",
+    "RABI",
+    1
+   ],
+   [
+    "BETHE",
+    "SERBER",
+    2
+   ],
+   [
+    "BETHE",
+    "TELLER",
+    4
+   ],
+   [
+    "BLACKETT",
+    "BOHR",
+    1
+   ],
+   [
+    "BLACKETT",
+    "OPPENHEIMER",
+    1
+   ],
+   [
+    "BLACKETT",
+    "YOUNG OPPENHEIMER",
+    2
+   ],
+   [
+    "BOHR",
+    "CHARLOTTE",
+    1
+   ],
+   [
+    "BOHR",
+    "GROVES",
+    1
+   ],
+   [
+    "BOHR",
+    "OPPENHEIMER",
+    3
+   ],
+   [
+    "BOHR",
+    "RUTH",
+    1
+   ],
+   [
+    "BOHR",
+    "TELLER",
+    1
+   ],
+   [
+    "BOHR",
+    "YOUNG OPPENHEIMER",
+    1
+   ],
+   [
+    "BORDEN",
+    "BUSH",
+    1
+   ],
+   [
+    "BORDEN",
+    "FERMI",
+    1
+   ],
+   [
+    "BORDEN",
+    "GARRISON",
+    1
+   ],
+   [
+    "BORDEN",
+    "GRAY",
+    1
+   ],
+   [
+    "BORDEN",
+    "LAWRENCE",
+    1
+   ],
+   [
+    "BORDEN",
+    "NICHOLS",
+    1
+   ],
+   [
+    "BORDEN",
+    "OPPENHEIMER",
+    2
+   ],
+   [
+    "BORDEN",
+    "RABI",
+    1
+   ],
+   [
+    "BORDEN",
+    "ROBB",
+    1
+   ],
+   [
+    "BORDEN",
+    "SENATOR MCGEE",
+    1
+   ],
+   [
+    "BORDEN",
+    "STRAUSS",
+    2
+   ],
+   [
+    "BUSH",
+    "BYRNES",
+    1
+   ],
+   [
+    "BUSH",
+    "FERMI",
+    2
+   ],
+   [
+    "BUSH",
+    "GROVES",
+    1
+   ],
+   [
+    "BUSH",
+    "LAWRENCE",
+    2
+   ],
+   [
+    "BUSH",
+    "MARSHALL",
+    1
+   ],
+   [
+    "BUSH",
+    "NICHOLS",
+    2
+   ],
+   [
+    "BUSH",
+    "OPPENHEIMER",
+    4
+   ],
+   [
+    "BUSH",
+    "RABI",
+    1
+   ],
+   [
+    "BUSH",
+    "SENATOR MCGEE",
+    1
+   ],
+   [
+    "BUSH",
+    "STIMSON",
+    1
+   ],
+   [
+    "BUSH",
+    "STRAUSS",
+    3
+   ],
+   [
+    "BYRNES",
+    "FERMI",
+    1
+   ],
+   [
+    "BYRNES",
+    "GROVES",
+    1
+   ],
+   [
+    "BYRNES",
+    "LAWRENCE",
+    1
+   ],
+   [
+    "BYRNES",
+    "MARSHALL",
+    1
+   ],
+   [
+    "BYRNES",
+    "OPPENHEIMER",
+    2
+   ],
+   [
+    "BYRNES",
+    "STIMSON",
+    1
+   ],
+   [
+    "BYRNES",
+    "STRAUSS",
+    1
+   ],
+   [
+    "BYRNES",
+    "TRUMAN",
+    1
+   ],
+   [
+    "CHAIRMAN",
+    "COUNSEL",
+    1
+   ],
+   [
+    "CHAIRMAN",
+    "HILL",
+    1
+   ],
+   [
+    "CHAIRMAN",
+    "SENATOR MCGEE",
+    1
+   ],
+   [
+    "CHAIRMAN",
+    "SENATOR PASTORE",
+    1
+   ],
+   [
+    "CHAIRMAN",
+    "STRAUSS",
+    2
+   ],
+   [
+    "CHAIRMAN",
+    "TELLER",
+    1
+   ],
+   [
+    "CHARLOTTE",
+    "GROVES",
+    1
+   ],
+   [
+    "CHARLOTTE",
+    "KITTY",
+    1
+   ],
+   [
+    "CHARLOTTE",
+    "OPPENHEIMER",
+    3
+   ],
+   [
+    "CHARLOTTE",
+    "TELLER",
+    1
+   ],
+   [
+    "CHARLOTTE",
+    "TRUMAN",
+    1
+   ],
+   [
+    "CHEVALIER",
+    "FRANK",
+    1
+   ],
+   [
+    "CHEVALIER",
+    "KITTY",
+    2
+   ],
+   [
+    "CHEVALIER",
+    "OPPENHEIMER",
+    5
+   ],
+   [
+    "CHEVALIER",
+    "TATLOCK",
+    2
+   ],
+   [
+    "CONCERNED SCIENTIST",
+    "OPPENHEIMER",
+    1
+   ],
+   [
+    "CONDON",
+    "GARRISON",
+    1
+   ],
+   [
+    "CONDON",
+    "GROVES",
+    3
+   ],
+   [
+    "CONDON",
+    "NICHOLS",
+    1
+   ],
+   [
+    "CONDON",
+    "OPPENHEIMER",
+    4
+   ],
+   [
+    "COUNSEL",
+    "SENATE AIDE",
+    3
+   ],
+   [
+    "COUNSEL",
+    "SENATOR MCGEE",
+    1
+   ],
+   [
+    "COUNSEL",
+    "STRAUSS",
+    4
+   ],
+   [
+    "EINSTEIN",
+    "FRANK",
+    1
+   ],
+   [
+    "EINSTEIN",
+    "OPPENHEIMER",
+    5
+   ],
+   [
+    "EINSTEIN",
+    "VOLPE",
+    1
+   ],
+   [
+    "ELTENTON",
+    "OPPENHEIMER",
+    1
+   ],
+   [
+    "FERMI",
+    "GROVES",
+    2
+   ],
+   [
+    "FERMI",
+    "KISTIAKOWSKY",
+    1
+   ],
+   [
+    "FERMI",
+    "LAWRENCE",
+    2
+   ],
+   [
+    "FERMI",
+    "MARSHALL",
+    1
+   ],
+   [
+    "FERMI",
+    "OPPENHEIMER",
+    4
+   ],
+   [
+    "FERMI",
+    "RABI",
+    2
+   ],
+   [
+    "FERMI",
+    "SENATOR MCGEE",
+    1
+   ],
+   [
+    "FERMI",
+    "STIMSON",
+    1
+   ],
+   [
+    "FERMI",
+    "STRAUSS",
+    1
+   ],
+   [
+    "FERMI",
+    "SZILARD",
+    1
+   ],
+   [
+    "FERMI",
+    "WEATHERMAN",
+    1
+   ],
+   [
+    "FEYNMAN",
+    "OPPENHEIMER",
+    2
+   ],
+   [
+    "FEYNMAN",
+    "RABI",
+    1
+   ],
+   [
+    "FEYNMAN",
+    "TELLER",
+    1
+   ],
+   [
+    "FRANK",
+    "GROVES",
+    2
+   ],
+   [
+    "FRANK",
+    "KISTIAKOWSKY",
+    1
+   ],
+   [
+    "FRANK",
+    "LAWRENCE",
+    1
+   ],
+   [
+    "FRANK",
+    "OPPENHEIMER",
+    4
+   ],
+   [
+    "FRANK",
+    "STRAUSS",
+    1
+   ],
+   [
+    "FRANK",
+    "TATLOCK",
+    1
+   ],
+   [
+    "FUCHS",
+    "GROVES",
+    1
+   ],
+   [
+    "FUCHS",
+    "HORNIG",
+    1
+   ],
+   [
+    "FUCHS",
+    "KISTIAKOWSKY",
+    1
+   ],
+   [
+    "FUCHS",
+    "OPPENHEIMER",
+    2
+   ],
+   [
+    "FUCHS",
+    "SERBER",
+    1
+   ],
+   [
+    "FUCHS",
+    "TELLER",
+    1
+   ],
+   [
+    "GARRISON",
+    "GRAY",
+    4
+   ],
+   [
+    "GARRISON",
+    "GROVES",
+    4
+   ],
+   [
+    "GARRISON",
+    "HILL",
+    1
+   ],
+   [
+    "GARRISON",
+    "KITTY",
+    5
+   ],
+   [
+    "GARRISON",
+    "OPPENHEIMER",
+    8
+   ],
+   [
+    "GARRISON",
+    "RABI",
+    2
+   ],
+   [
+    "GARRISON",
+    "ROBB",
+    4
+   ],
+   [
+    "GARRISON",
+    "VOLPE",
+    2
+   ],
+   [
+    "GRAY",
+    "GROVES",
+    1
+   ],
+   [
+    "GRAY",
+    "HEISENBERG",
+    1
+   ],
+   [
+    "GRAY",
+    "KITTY",
+    2
+   ],
+   [
+    "GRAY",
+    "OPPENHEIMER",
+    8
+   ],
+   [
+    "GRAY",
+    "RABI",
+    2
+   ],
+   [
+    "GRAY",
+    "ROBB",
+    8
+   ],
+   [
+    "GRAY",
+    "TELLER",
+    1
+   ],
+   [
+    "GRAY",
+    "VOLPE",
+    1
+   ],
+   [
+    "GROVES",
+    "JOHNSON",
+    1
+   ],
+   [
+    "GROVES",
+    "KISTIAKOWSKY",
+    3
+   ],
+   [
+    "GROVES",
+    "LAWRENCE",
+    2
+   ],
+   [
+    "GROVES",
+    "MARSHALL",
+    1
+   ],
+   [
+    "GROVES",
+    "NICHOLS",
+    1
+   ],
+   [
+    "GROVES",
+    "OPPENHEIMER",
+    26
+   ],
+   [
+    "GROVES",
+    "RABI",
+    1
+   ],
+   [
+    "GROVES",
+    "ROBB",
+    4
+   ],
+   [
+    "GROVES",
+    "RUTH",
+    1
+   ],
+   [
+    "GROVES",
+    "SERBER",
+    1
+   ],
+   [
+    "GROVES",
+    "STIMSON",
+    1
+   ],
+   [
+    "GROVES",
+    "TELLER",
+    1
+   ],
+   [
+    "GROVES",
+    "TRUMAN",
+    1
+   ],
+   [
+    "GROVES",
+    "WEATHERMAN",
+    2
+   ],
+   [
+    "HEISENBERG",
+    "OPPENHEIMER",
+    1
+   ],
+   [
+    "HEISENBERG",
+    "RABI",
+    1
+   ],
+   [
+    "HILL",
+    "KITTY",
+    2
+   ],
+   [
+    "HILL",
+    "ROBB",
+    1
+   ],
+   [
+    "HILL",
+    "SENATOR MCGEE",
+    1
+   ],
+   [
+    "HILL",
+    "SENATOR PASTORE",
+    2
+   ],
+   [
+    "HORNIG",
+    "KISTIAKOWSKY",
+    1
+   ],
+   [
+    "HORNIG",
+    "MORRISON",
+    1
+   ],
+   [
+    "HORNIG",
+    "OPPENHEIMER",
+    3
+   ],
+   [
+    "HORNIG",
+    "SERBER",
+    1
+   ],
+   [
+    "HORNIG",
+    "TELLER",
+    1
+   ],
+   [
+    "JOHNSON",
+    "OPPENHEIMER",
+    1
+   ],
+   [
+    "KISTIAKOWSKY",
+    "OPPENHEIMER",
+    6
+   ],
+   [
+    "KISTIAKOWSKY",
+    "RABI",
+    2
+   ],
+   [
+    "KISTIAKOWSKY",
+    "ROBB",
+    1
+   ],
+   [
+    "KISTIAKOWSKY",
+    "SERBER",
+    1
+   ],
+   [
+    "KISTIAKOWSKY",
+    "TELLER",
+    2
+   ],
+   [
+    "KISTIAKOWSKY",
+    "WEATHERMAN",
+    1
+   ],
+   [
+    "KITTY",
+    "OPPENHEIMER",
+    15
+   ],
+   [
+    "KITTY",
+    "ROBB",
+    2
+   ],
+   [
+    "KITTY",
+    "RUTH",
+    1
+   ],
+   [
+    "KITTY",
+    "TELLER",
+    1
+   ],
+   [
+    "KITTY",
+    "VOLPE",
+    2
+   ],
+   [
+    "LAWRENCE",
+    "LOMANITZ",
+    1
+   ],
+   [
+    "LAWRENCE",
+    "MARSHALL",
+    1
+   ],
+   [
+    "LAWRENCE",
+    "OPPENHEIMER",
+    13
+   ],
+   [
+    "LAWRENCE",
+    "RABI",
+    1
+   ],
+   [
+    "LAWRENCE",
+    "ROBB",
+    1
+   ],
+   [
+    "LAWRENCE",
+    "SENATOR BARTLETT",
+    1
+   ],
+   [
+    "LAWRENCE",
+    "SENATOR MCGEE",
+    1
+   ],
+   [
+    "LAWRENCE",
+    "STIMSON",
+    1
+   ],
+   [
+    "LAWRENCE",
+    "STRAUSS",
+    1
+   ],
+   [
+    "LOMANITZ",
+    "OPPENHEIMER",
+    4
+   ],
+   [
+    "LOMANITZ",
+    "SERBER",
+    1
+   ],
+   [
+    "LOMANITZ",
+    "SNYDER",
+    2
+   ],
+   [
+    "LOUDSPEAKER",
+    "OPPENHEIMER",
+    1
+   ],
+   [
+    "MARSHALL",
+    "OPPENHEIMER",
+    1
+   ],
+   [
+    "MARSHALL",
+    "STIMSON",
+    1
+   ],
+   [
+    "MORRISON",
+    "OPPENHEIMER",
+    1
+   ],
+   [
+    "MORRISON",
+    "SERBER",
+    1
+   ],
+   [
+    "MORRISON",
+    "STRAUSS",
+    1
+   ],
+   [
+    "NICHOLS",
+    "OPPENHEIMER",
+    6
+   ],
+   [
+    "NICHOLS",
+    "ROBB",
+    1
+   ],
+   [
+    "NICHOLS",
+    "STRAUSS",
+    6
+   ],
+   [
+    "OPPENHEIMER",
+    "PASH",
+    4
+   ],
+   [
+    "OPPENHEIMER",
+    "RABI",
+    9
+   ],
+   [
+    "OPPENHEIMER",
+    "ROBB",
+    22
+   ],
+   [
+    "OPPENHEIMER",
+    "RUTH",
+    3
+   ],
+   [
+    "OPPENHEIMER",
+    "SENATE AIDE",
+    1
+   ],
+   [
+    "OPPENHEIMER",
+    "SENATOR BARTLETT",
+    1
+   ],
+   [
+    "OPPENHEIMER",
+    "SENATOR MCGEE",
+    3
+   ],
+   [
+    "OPPENHEIMER",
+    "SENATOR PASTORE",
+    1
+   ],
+   [
+    "OPPENHEIMER",
+    "SERBER",
+    7
+   ],
+   [
+    "OPPENHEIMER",
+    "SNYDER",
+    2
+   ],
+   [
+    "OPPENHEIMER",
+    "STIMSON",
+    1
+   ],
+   [
+    "OPPENHEIMER",
+    "STRAUSS",
+    14
+   ],
+   [
+    "OPPENHEIMER",
+    "SZILARD",
+    2
+   ],
+   [
+    "OPPENHEIMER",
+    "TATLOCK",
+    7
+   ],
+   [
+    "OPPENHEIMER",
+    "TELLER",
+    9
+   ],
+   [
+    "OPPENHEIMER",
+    "TRUMAN",
+    2
+   ],
+   [
+    "OPPENHEIMER",
+    "VOLPE",
+    4
+   ],
+   [
+    "OPPENHEIMER",
+    "WEATHERMAN",
+    2
+   ],
+   [
+    "OPPENHEIMER",
+    "YOUNG OPPENHEIMER",
+    1
+   ],
+   [
+    "PASH",
+    "ROBB",
+    2
+   ],
+   [
+    "RABI",
+    "ROBB",
+    1
+   ],
+   [
+    "RABI",
+    "SENATOR MCGEE",
+    1
+   ],
+   [
+    "RABI",
+    "STRAUSS",
+    1
+   ],
+   [
+    "RABI",
+    "TELLER",
+    1
+   ],
+   [
+    "RABI",
+    "WEATHERMAN",
+    1
+   ],
+   [
+    "RABI",
+    "YOUNG OPPENHEIMER",
+    1
+   ],
+   [
+    "ROBB",
+    "SENATE AIDE",
+    1
+   ],
+   [
+    "ROBB",
+    "STRAUSS",
+    1
+   ],
+   [
+    "ROBB",
+    "TATLOCK",
+    1
+   ],
+   [
+    "ROBB",
+    "TELLER",
+    2
+   ],
+   [
+    "ROBB",
+    "VOLPE",
+    1
+   ],
+   [
+    "RUTH",
+    "STRAUSS",
+    1
+   ],
+   [
+    "SENATE AIDE",
+    "STRAUSS",
+    13
+   ],
+   [
+    "SENATOR BARTLETT",
+    "STRAUSS",
+    2
+   ],
+   [
+    "SENATOR MCGEE",
+    "STRAUSS",
+    6
+   ],
+   [
+    "SENATOR PASTORE",
+    "STRAUSS",
+    1
+   ],
+   [
+    "SERBER",
+    "SNYDER",
+    1
+   ],
+   [
+    "SERBER",
+    "STRAUSS",
+    1
+   ],
+   [
+    "SERBER",
+    "TELLER",
+    3
+   ],
+   [
+    "STRAUSS",
+    "TELLER",
+    1
+   ],
+   [
+    "STRAUSS",
+    "TRUMAN",
+    1
+   ]
+  ]
+ },
+ "Pulp Fiction": {
+  "title": "Pulp Fiction",
+  "source": "https://imsdb.com/Movie%20Scripts/Pulp%20Fiction%20Script.html",
+  "scenes": 68,
+  "issue": null,
+  "nodes": {
+   "BRETT": {
+    "lines": 27,
+    "scenes": 2
+   },
+   "BUDDY": {
+    "lines": 6,
+    "scenes": 1
+   },
+   "BUTCH": {
+    "lines": 135,
+    "scenes": 15
+   },
+   "ED SULLIVAN": {
+    "lines": 7,
+    "scenes": 1
+   },
+   "ENGLISH DAVE": {
+    "lines": 11,
+    "scenes": 3
+   },
+   "ESMARELDA": {
+    "lines": 20,
+    "scenes": 3
+   },
+   "FABIENNE": {
+    "lines": 90,
+    "scenes": 2
+   },
+   "HONEY BUNNY": {
+    "lines": 10,
+    "scenes": 3
+   },
+   "JIMMIE": {
+    "lines": 25,
+    "scenes": 7
+   },
+   "JODY": {
+    "lines": 21,
+    "scenes": 4
+   },
+   "JULES": {
+    "lines": 209,
+    "scenes": 22
+   },
+   "LANCE": {
+    "lines": 49,
+    "scenes": 6
+   },
+   "MANAGER": {
+    "lines": 5,
+    "scenes": 2
+   },
+   "MARSELLUS": {
+    "lines": 20,
+    "scenes": 7
+   },
+   "MAYNARD": {
+    "lines": 21,
+    "scenes": 2
+   },
+   "MIA": {
+    "lines": 81,
+    "scenes": 16
+   },
+   "PUMPKIN": {
+    "lines": 34,
+    "scenes": 3
+   },
+   "RAQUEL": {
+    "lines": 4,
+    "scenes": 1
+   },
+   "SPORTSCASTER #1": {
+    "lines": 3,
+    "scenes": 3
+   },
+   "THE WOLF": {
+    "lines": 46,
+    "scenes": 8
+   },
+   "VINCENT": {
+    "lines": 257,
+    "scenes": 35
+   },
+   "WINSTON": {
+    "lines": 8,
+    "scenes": 1
+   },
+   "YOLANDA": {
+    "lines": 5,
+    "scenes": 1
+   },
+   "YOUNG MAN": {
+    "lines": 27,
+    "scenes": 1
+   },
+   "YOUNG WOMAN": {
+    "lines": 24,
+    "scenes": 1
+   },
+   "ZED": {
+    "lines": 10,
+    "scenes": 1
+   }
+  },
+  "edges": [
+   [
+    "BRETT",
+    "BUTCH",
+    2
+   ],
+   [
+    "BRETT",
+    "FABIENNE",
+    1
+   ],
+   [
+    "BRETT",
+    "JULES",
+    2
+   ],
+   [
+    "BRETT",
+    "MARSELLUS",
+    1
+   ],
+   [
+    "BRETT",
+    "VINCENT",
+    1
+   ],
+   [
+    "BUDDY",
+    "MIA",
+    1
+   ],
+   [
+    "BUDDY",
+    "VINCENT",
+    1
+   ],
+   [
+    "BUTCH",
+    "ENGLISH DAVE",
+    1
+   ],
+   [
+    "BUTCH",
+    "ESMARELDA",
+    3
+   ],
+   [
+    "BUTCH",
+    "FABIENNE",
+    2
+   ],
+   [
+    "BUTCH",
+    "JULES",
+    2
+   ],
+   [
+    "BUTCH",
+    "MARSELLUS",
+    4
+   ],
+   [
+    "BUTCH",
+    "MAYNARD",
+    1
+   ],
+   [
+    "BUTCH",
+    "MIA",
+    1
+   ],
+   [
+    "BUTCH",
+    "SPORTSCASTER #1",
+    1
+   ],
+   [
+    "BUTCH",
+    "VINCENT",
+    3
+   ],
+   [
+    "ED SULLIVAN",
+    "MIA",
+    1
+   ],
+   [
+    "ED SULLIVAN",
+    "VINCENT",
+    1
+   ],
+   [
+    "ENGLISH DAVE",
+    "MARSELLUS",
+    2
+   ],
+   [
+    "ENGLISH DAVE",
+    "MIA",
+    1
+   ],
+   [
+    "ENGLISH DAVE",
+    "VINCENT",
+    2
+   ],
+   [
+    "FABIENNE",
+    "JULES",
+    1
+   ],
+   [
+    "HONEY BUNNY",
+    "JULES",
+    2
+   ],
+   [
+    "HONEY BUNNY",
+    "MANAGER",
+    2
+   ],
+   [
+    "HONEY BUNNY",
+    "PUMPKIN",
+    3
+   ],
+   [
+    "HONEY BUNNY",
+    "VINCENT",
+    2
+   ],
+   [
+    "HONEY BUNNY",
+    "YOLANDA",
+    1
+   ],
+   [
+    "HONEY BUNNY",
+    "YOUNG MAN",
+    1
+   ],
+   [
+    "HONEY BUNNY",
+    "YOUNG WOMAN",
+    1
+   ],
+   [
+    "JIMMIE",
+    "JULES",
+    4
+   ],
+   [
+    "JIMMIE",
+    "THE WOLF",
+    6
+   ],
+   [
+    "JIMMIE",
+    "VINCENT",
+    2
+   ],
+   [
+    "JODY",
+    "LANCE",
+    4
+   ],
+   [
+    "JODY",
+    "MIA",
+    1
+   ],
+   [
+    "JODY",
+    "VINCENT",
+    4
+   ],
+   [
+    "JULES",
+    "MANAGER",
+    2
+   ],
+   [
+    "JULES",
+    "MARSELLUS",
+    2
+   ],
+   [
+    "JULES",
+    "PUMPKIN",
+    2
+   ],
+   [
+    "JULES",
+    "RAQUEL",
+    1
+   ],
+   [
+    "JULES",
+    "THE WOLF",
+    4
+   ],
+   [
+    "JULES",
+    "VINCENT",
+    18
+   ],
+   [
+    "JULES",
+    "WINSTON",
+    1
+   ],
+   [
+    "JULES",
+    "YOLANDA",
+    1
+   ],
+   [
+    "LANCE",
+    "MIA",
+    1
+   ],
+   [
+    "LANCE",
+    "VINCENT",
+    6
+   ],
+   [
+    "MANAGER",
+    "PUMPKIN",
+    2
+   ],
+   [
+    "MANAGER",
+    "VINCENT",
+    2
+   ],
+   [
+    "MANAGER",
+    "YOLANDA",
+    1
+   ],
+   [
+    "MARSELLUS",
+    "MIA",
+    1
+   ],
+   [
+    "MARSELLUS",
+    "VINCENT",
+    3
+   ],
+   [
+    "MAYNARD",
+    "ZED",
+    1
+   ],
+   [
+    "MIA",
+    "VINCENT",
+    9
+   ],
+   [
+    "PUMPKIN",
+    "VINCENT",
+    2
+   ],
+   [
+    "PUMPKIN",
+    "YOLANDA",
+    1
+   ],
+   [
+    "PUMPKIN",
+    "YOUNG MAN",
+    1
+   ],
+   [
+    "PUMPKIN",
+    "YOUNG WOMAN",
+    1
+   ],
+   [
+    "RAQUEL",
+    "VINCENT",
+    1
+   ],
+   [
+    "RAQUEL",
+    "WINSTON",
+    1
+   ],
+   [
+    "THE WOLF",
+    "VINCENT",
+    3
+   ],
+   [
+    "VINCENT",
+    "WINSTON",
+    1
+   ],
+   [
+    "VINCENT",
+    "YOLANDA",
+    1
+   ],
+   [
+    "YOUNG MAN",
+    "YOUNG WOMAN",
+    1
+   ]
+  ]
+ }
+}
